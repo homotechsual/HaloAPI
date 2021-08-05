@@ -56,17 +56,18 @@ function Get-HaloAgent {
     )
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    if ($ActionID) {
-        $Parameters.Remove("ActionID") | Out-Null
+    # Workaround to prevent the query string processor from adding an 'agentid=' parameter by removing it from the set parameters.
+    if ($AgentID) {
+        $Parameters.Remove("AgentID") | Out-Null
     }
     if ($Me) {
         $Parameters.Remove("Me") | Out-Null
     }
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
-        if ($ActionID) {
-            Write-Verbose "Running in single-agent mode because '-ActionID' was provided."
-            $Resource = "api/agent/$ActionID$QueryString"
+        if ($AgentID) {
+            Write-Verbose "Running in single-agent mode because '-AgentID' was provided."
+            $Resource = "api/agent/$AgentID$QueryString"
         } elseif ($Me) {
             Write-Verbose "Running in 'Me' mode."
             $Resource = "api/agent/me"
@@ -78,10 +79,10 @@ function Get-HaloAgent {
             Method = "GET"
             Resource = $Resource
         }
-        $ActionResults = Invoke-HaloRequest @RequestParams
-        Return $ActionResults
+        $AgentResults = Invoke-HaloRequest @RequestParams
+        Return $AgentResults
     } catch {
-        Write-Error "Failed to get actions from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get agents from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }

@@ -73,6 +73,7 @@ function Get-HaloAction {
     )
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
+    # Workaround to prevent the query string processor from adding an 'actionid=' parameter by removing it from the set parameters.
     if ($ActionID) {
         $Parameters.Remove("ActionID") | Out-Null
     }
