@@ -2,15 +2,15 @@
 function Get-HaloUser {
     <#
         .SYNOPSIS
-            Gets tickets from the Halo API.
+            Gets users from the Halo API.
         .DESCRIPTION
-            Retrieves tickets from the Halo API - supports a variety of filtering parameters.
+            Retrieves users from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
     Param(
-        # Ticket ID
+        # User ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
         [int64]$UserID,
         # Paginate results
@@ -96,10 +96,10 @@ function Get-HaloUser {
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($UserID) {
-            Write-Verbose "Running in single-ticket mode because '-UserID' was provided."
+            Write-Verbose "Running in single-user mode because '-UserID' was provided."
             $Resource = "api/users/$UserID$QueryString"
         } else {
-            Write-Verbose "Running in multi-ticket mode."
+            Write-Verbose "Running in multi-user mode."
             $Resource = "api/users$($QueryString)"
         }    
         $RequestParams = @{
