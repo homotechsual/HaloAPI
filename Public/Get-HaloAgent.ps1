@@ -51,7 +51,7 @@ function Get-HaloAgent {
         [switch]$IncludeRoles,
         # Include extra detail objects (for example teams and roles) in the response.
         [Parameter( ParameterSetName = "Single" )]
-        [switch]$IncludeDetail
+        [switch]$IncludeDetails
         
     )
     $CommandName = $MyInvocation.InvocationName

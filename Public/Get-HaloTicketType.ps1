@@ -14,10 +14,10 @@ function Get-HaloTicketType {
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
         [int64]$TicketTypeID,
         # Show the count of tickets in the results.
-        [Parameter( ParameterSetName = "Multi")]
+        [Parameter( ParameterSetName = "Multi" )]
         [switch]$ShowCounts,
         # Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
-        [Parameter( ParameterSetName = "Multi")]
+        [Parameter( ParameterSetName = "Multi" )]
         [ValidateSet(
             "reqs",
             "opps",
@@ -26,7 +26,7 @@ function Get-HaloTicketType {
         [string]$Domain,
         # Filter counts to a specific view ID.
         [Parameter( ParameterSetName = "Multi" )]
-        [Alias("view_id0")]
+        [Alias("view_id")]
         [int32]$ViewID,
         # Include inactive ticket types in the results.
         [Parameter( ParameterSetName = "Multi" )]
