@@ -91,7 +91,7 @@ function Get-HaloInvoice {
             Write-Verbose "Running in single-invoice mode because '-InvoiceID' was provided."
             $Resource = "api/invoice/$InvoiceID$QueryString"
         } else {
-            Write-Verbose "Running in multi-team mode."
+            Write-Verbose "Running in multi-invoice mode."
             $Resource = "api/invoice$($QueryString)"
         }    
         $RequestParams = @{
