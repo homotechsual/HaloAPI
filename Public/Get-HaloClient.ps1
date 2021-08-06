@@ -1,5 +1,5 @@
 #Requires -Version 7
-function Get-HaloUser {
+function Get-HaloClient {
     <#
         .SYNOPSIS
             Gets clients from the Halo API.
@@ -56,7 +56,7 @@ function Get-HaloUser {
     )
     $CommandName = $PSCmdlet.MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'userid=' parameter by removing it from the set parameters.
+    # Workaround to prevent the query string processor from adding a 'clientid=' parameter by removing it from the set parameters.
     if ($ClientID) {
         $Parameters.Remove("ClientID") | Out-Null
     }
