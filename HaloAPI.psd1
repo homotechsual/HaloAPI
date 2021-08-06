@@ -75,6 +75,7 @@
         'Get-HaloClient',
         'Get-HaloContract',
         'Get-HaloTicket',
+        'Get-HaloTicketType',
         'Get-HaloUser'
     )
     
