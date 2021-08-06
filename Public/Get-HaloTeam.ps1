@@ -1,5 +1,5 @@
 #Requires -Version 7
-function Get-HaloContract {
+function Get-HaloTeam {
     <#
         .SYNOPSIS
             Gets teams from the Halo API.
@@ -58,27 +58,27 @@ function Get-HaloContract {
     )
     $CommandName = $PSCmdlet.MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'contractid=' parameter by removing it from the set parameters.
-    if ($ContractID) {
-        $Parameters.Remove("ContractID") | Out-Null
+    # Workaround to prevent the query string processor from adding a 'teamid=' parameter by removing it from the set parameters.
+    if ($TeamID) {
+        $Parameters.Remove("TeamID") | Out-Null
     }
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
-        if ($ContractID) {
-            Write-Verbose "Running in single-contract mode because '-ContractID' was provided."
-            $Resource = "api/clientcontract/$ContractID$QueryString"
+        if ($TeamID) {
+            Write-Verbose "Running in single-team mode because '-TeamID' was provided."
+            $Resource = "api/team/$ContractID$QueryString"
         } else {
-            Write-Verbose "Running in multi-contract mode."
-            $Resource = "api/clientcontract$($QueryString)"
+            Write-Verbose "Running in multi-team mode."
+            $Resource = "api/team$($QueryString)"
         }    
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
         }
-        $ContractResults = Invoke-HaloRequest @RequestParams
-        Return $ContractResults
+        $TeamResults = Invoke-HaloRequest @RequestParams
+        Return $TeamResults
     } catch {
-        Write-Error "Failed to get contracts from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get teams from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }
