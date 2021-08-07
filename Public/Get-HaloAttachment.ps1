@@ -16,7 +16,7 @@ function Get-HaloAttachment {
         [Parameter( ParameterSetName = "SinglePath", Mandatory = $True )]
         [int64]$AttachmentID,
         # Returns attachments from the ticket ID specified
-        [Parameter( ParameterSetName = "Multi", Mandatory = $True )]
+        [Parameter( ParameterSetName = "Multi" )]
         [Alias("ticket_id")]
         [int64]$TicketID,
         # Returns attachments from the action ID specified (requires ticket_id)
