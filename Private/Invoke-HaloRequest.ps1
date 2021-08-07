@@ -30,6 +30,12 @@ function Invoke-HaloRequest {
         # Returns the Raw result. Useful for file downloads
         [Switch]$RawResult
     )
+    Write-Verbose "Staring Invoke"
+    Write-Verbose "Method: $Method"
+    Write-Verbose "Resource: $Resource"
+    Write-Verbose "Body: $Body"
+    Write-Verbose "RawResult: $RawResult"
+    
     if ($null -eq $Script:HAPIConnectionInformation) {
         Throw "Missing Halo connection information, please run 'Connect-HaloAPI' first."
     }
