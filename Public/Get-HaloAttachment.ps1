@@ -33,7 +33,7 @@ function Get-HaloAttachment {
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails,
-        # Allow Writing Directly to File, using the specified file name eg c:\temp\myfile.txt
+        # Allow Writing Directly to File, using the specified path and file name eg c:\temp\myfile.txt
         [Parameter( ParameterSetName = "SingleFile", Mandatory = $True )]
         [String]$OutFile,
         # Allow Writing Directly to File, using the specified path and the original file name eg c:\temp\
@@ -52,41 +52,38 @@ function Get-HaloAttachment {
             Write-Verbose "Running in single-asset mode because '-AttachmentID' was provided."
             $Resource = "api/Attachment/$($AttachmentID)$($QueryString)"
             $RequestParams = @{
-                Method = "GET"
-                Resource = $Resource
+                Method    = "GET"
+                Resource  = $Resource
                 RawResult = $True
             }
-        } else {
+        }
+        else {
             Write-Verbose "Running in multi-asset mode."
             $Resource = "api/Attachment$($QueryString)"
             $RequestParams = @{
-                Method = "GET"
+                Method   = "GET"
                 Resource = $Resource
             }
         }    
         
         $AssetResults = Invoke-HaloRequest @RequestParams
 
-        if ($AttachmentID){
+        if ($AttachmentID) {
             Write-Verbose "Processing single mode response"
-            if ($OutFile){
-                Write-Verbose "Attempting to output to file $OutFile"
-                # Write into file
-                $file = [System.IO.FileStream]::new($OutFile, [System.IO.FileMode]::Create)
-                $file.write($AssetResults.Content, 0, $AssetResults.RawContentLength)
-                $file.close()
+            if ($OutFile -or $OutPath) {
+                # Get the file name or set it
+                if ($OutPath) {
+                    Write-Verbose "Attempting to output to path $OutPath"
+                    $contentDisposition = $AssetResults.Headers.'Content-Disposition'
+                    $disposition = [System.Net.Mime.ContentDisposition]::new($contentDisposition)
+                    $fileName = $disposition.FileName
+                    $path = Join-Path $OutPath $fileName
+                } else {
+                    Write-Verbose "Attempting to output to file $OutFile"
+                    $path = $OutFile
+                }                                      
 
-            } elseif ($OutPath) {
-                Write-Verbose "Attempting to output to path $OutPath"
-                # Extract name
-                $contentDisposition = $AssetResults.Headers.'Content-Disposition'
-                $disposition = [System.Net.Mime.ContentDisposition]::new($contentDisposition)
-                $fileName = $disposition.FileName
-
-                $path = Join-Path $OutPath $fileName
-                Write-Verbose "File path detected as $path"
-
-                # Write into file
+                Write-Verbose "Writing File $path"
                 $file = [System.IO.FileStream]::new($path, [System.IO.FileMode]::Create)
                 $file.write($AssetResults.Content, 0, $AssetResults.RawContentLength)
                 $file.close()
