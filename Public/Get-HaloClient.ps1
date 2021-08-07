@@ -64,7 +64,7 @@ function Get-HaloClient {
     try {
         if ($ClientID) {
             Write-Verbose "Running in single-client mode because '-ClientID' was provided."
-            $Resource = "api/client/$ClientID$QueryString"
+            $Resource = "api/client/$($ClientID)$($QueryString)"
         } else {
             Write-Verbose "Running in multi-client mode."
             $Resource = "api/client$($QueryString)"

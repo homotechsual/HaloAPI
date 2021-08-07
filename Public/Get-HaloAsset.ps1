@@ -1,0 +1,109 @@
+#Requires -Version 7
+function Get-HaloAsset {
+    <#
+        .SYNOPSIS
+            Gets assets from the Halo API.
+        .DESCRIPTION
+            Retrieves assets from the Halo API - supports a variety of filtering parameters.
+        .OUTPUTS
+            A powershell object containing the response.
+    #>
+    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    Param(
+        # Asset ID
+        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [int64]$AssetID,
+        # Paginate results
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("pageinate")]
+        [switch]$Paginate,
+        # Number of results per page.
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("page_size")]
+        [int32]$PageSize,
+        # Which page to return.
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("page_no")]
+        [int32]$PageNo,
+        # Which field to order results based on.
+        [Parameter( ParameterSetName = "Multi" )]
+        [string]$Order,
+        # Order results in descending order (respects the field choice in '-Order')
+        [Parameter( ParameterSetName = "Multi" )]
+        [switch]$OrderDesc,
+        # Filter by Assets with an asset field like your search
+        [Parameter( ParameterSetName = "Multi" )]
+        [string]$Search,
+        # Filter by Assets belonging to a particular ticket
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("ticket_id")]
+        [int64]$TicketID,
+        # Filter by Assets belonging to a particular client
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("client_id")]
+        [int64]$ClientID,
+        # Filter by Assets belonging to a particular site
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("site_id")]
+        [int64]$SiteID,
+        # Filter by Assets belonging to a particular user
+        [Parameter( ParameterSetName = "Multi" )]
+        [string]$Username,
+        # Filter by Assets belonging to a particular Asset group
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("assetgroup_id")]
+        [int64]$AssetGroupID,
+        # Filter by Assets belonging to a particular Asset type
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("assettype_id")]
+        [int64]$AssetTypeID,
+        # Filter by Assets linked to a particular Asset
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("linkedto_id")]
+        [int64]$LinkedToID,
+        # Include inactive Assets in the response
+        [Parameter( ParameterSetName = "Single" )]
+        [Switch]$includeinactive,
+        # Include active Assets in the response
+        [Parameter( ParameterSetName = "Single" )]
+        [Switch]$includeactive,
+        # Include child Assets in the response
+        [Parameter( ParameterSetName = "Single" )]
+        [Switch]$includechildren,
+        # Filter by Assets linked to a particular Asset
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("contract_id")]
+        [int64]$ContractID,   
+        # Include extra objects in the result.
+        [Parameter( ParameterSetName = "Single" )]
+        [Switch]$IncludeDetails,
+        # Include the last action in the result.
+        [Parameter( ParameterSetName = "Single" )]
+        [Switch]$IncludeDiagramDetails
+    )
+    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $Parameters = (Get-Command -Name $CommandName).Parameters
+    # Workaround to prevent the query string processor from adding a 'assetid=' parameter by removing it from the set parameters.
+    if ($AssetID) {
+        $Parameters.Remove("AssetID") | Out-Null
+    }
+    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    try {
+        if ($AssetID) {
+            Write-Verbose "Running in single-asset mode because '-AssetID' was provided."
+            $Resource = "api/Asset/$($AssetID)$($QueryString)"
+        } else {
+            Write-Verbose "Running in multi-asset mode."
+            $Resource = "api/Asset$($QueryString)"
+        }    
+        $RequestParams = @{
+            Method = "GET"
+            Resource = $Resource
+        }
+        $AssetResults = Invoke-HaloRequest @RequestParams
+        Return $AssetResults
+    } catch {
+        Write-Error "Failed to get assets from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
+    }
+}

@@ -52,7 +52,7 @@ function Get-HaloContract {
     try {
         if ($ContractID) {
             Write-Verbose "Running in single-contract mode because '-ContractID' was provided."
-            $Resource = "api/clientcontract/$ContractID$QueryString"
+            $Resource = "api/clientcontract/$($ContractID)$($QueryString)"
         } else {
             Write-Verbose "Running in multi-contract mode."
             $Resource = "api/clientcontract$($QueryString)"

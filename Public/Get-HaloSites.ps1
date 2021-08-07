@@ -63,7 +63,7 @@ function Get-HaloSite {
     try {
         if ($SiteID) {
             Write-Verbose "Running in single-site mode because '-SiteID' was provided."
-            $Resource = "api/site/$SiteID$QueryString"
+            $Resource = "api/site/$($SiteID)$($QueryString)"
         } else {
             Write-Verbose "Running in multi-site mode."
             $Resource = "api/site$($QueryString)"

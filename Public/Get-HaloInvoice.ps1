@@ -89,7 +89,7 @@ function Get-HaloInvoice {
     try {
         if ($InvoiceID) {
             Write-Verbose "Running in single-invoice mode because '-InvoiceID' was provided."
-            $Resource = "api/invoice/$InvoiceID$QueryString"
+            $Resource = "api/invoice/$($InvoiceID)$($QueryString)"
         } else {
             Write-Verbose "Running in multi-invoice mode."
             $Resource = "api/invoice$($QueryString)"

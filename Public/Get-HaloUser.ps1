@@ -97,7 +97,7 @@ function Get-HaloUser {
     try {
         if ($UserID) {
             Write-Verbose "Running in single-user mode because '-UserID' was provided."
-            $Resource = "api/users/$UserID$QueryString"
+            $Resource = "api/users/$($UserID)$($QueryString)"
         } else {
             Write-Verbose "Running in multi-user mode."
             $Resource = "api/users$($QueryString)"

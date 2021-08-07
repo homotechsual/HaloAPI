@@ -78,8 +78,8 @@ function Get-HaloAppointment {
             Method = "GET"
             Resource = $Resource
         }
-        $ReportResults = Invoke-HaloRequest @RequestParams
-        Return $ReportResults
+        $AppointmentResults = Invoke-HaloRequest @RequestParams
+        Return $AppointmentResults
     } catch {
         Write-Error "Failed to get Appointments from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"

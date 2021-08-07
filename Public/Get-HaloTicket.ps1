@@ -265,7 +265,7 @@ function Get-HaloTicket {
     try {
         if ($TicketID) {
             Write-Verbose "Running in single-ticket mode because '-TicketID' was provided."
-            $Resource = "api/tickets/$TicketID$QueryString"
+            $Resource = "api/tickets/$($TicketID)$($QueryString)"
         } else {
             Write-Verbose "Running in multi-ticket mode."
             $Resource = "api/tickets$($QueryString)"
