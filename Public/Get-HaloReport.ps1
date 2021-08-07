@@ -92,7 +92,7 @@ function Get-HaloReport {
     )
     $CommandName = $PSCmdlet.MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'ticketid=' parameter by removing it from the set parameters.
+    # Workaround to prevent the query string processor from adding a 'reportid=' parameter by removing it from the set parameters.
     if ($ReportID) {
         $Parameters.Remove("ReportID") | Out-Null
     }
@@ -102,7 +102,7 @@ function Get-HaloReport {
             Write-Verbose "Running in single-report mode because '-ReportID' was provided."
             $Resource = "api/Report/$($ReportID)$($QueryString)"
         } else {
-            Write-Verbose "Running in multi-ticket mode."
+            Write-Verbose "Running in multi-report mode."
             $Resource = "api/Report$($QueryString)"
         }    
         $RequestParams = @{
