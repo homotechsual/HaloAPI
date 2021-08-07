@@ -251,7 +251,7 @@ function Get-HaloTicket {
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails,
-        # Incldue the last action in the result.
+        # Include the last action in the result.
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeLastAction
     )

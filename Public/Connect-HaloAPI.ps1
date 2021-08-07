@@ -6,7 +6,7 @@ function Connect-HaloAPI {
         .DESCRIPTION
             Creates a new connection to a Halo instance and stores this in a PowerShell Session.
         .EXAMPLE
-            PS C:\> New-HaloConnection -URL "https://example.halopsa.com" -ClientId "c9534241-dde9-4d04-9d45-32b1fbff22ed" -ClientSecret "14c0c9af-2db1-48ab-b29c-51975df4afa2-739e4ef2-9aad-4fe9-b486-794feca48ea8" -Scopes "all" -Tenant "demo"
+            PS C:\> Connect-HaloAPI -URL "https://example.halopsa.com" -ClientId "c9534241-dde9-4d04-9d45-32b1fbff22ed" -ClientSecret "14c0c9af-2db1-48ab-b29c-51975df4afa2-739e4ef2-9aad-4fe9-b486-794feca48ea8" -Scopes "all" -Tenant "demo"
             This logs into Halo using the Client Credentials authorisation flow.
         .OUTPUTS
             Sets two script-scoped variables to hold connection and authentication information.
