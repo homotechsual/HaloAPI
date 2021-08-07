@@ -43,7 +43,7 @@ function Get-HaloTicketType {
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'tickettypeid=' parameter by removing it from the set parameters.
     if ($TicketTypeID) {
-        $Parameters.Remove("UserID") | Out-Null
+        $Parameters.Remove("TicketTypeID") | Out-Null
     }
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
