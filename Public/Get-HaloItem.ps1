@@ -1,18 +1,18 @@
 #Requires -Version 7
-function Get-HaloReport {
+function Get-HaloItem {
     <#
         .SYNOPSIS
-            Gets reports from the Halo API.
+            Gets items from the Halo API.
         .DESCRIPTION
-            Retrieves reports from the Halo API - supports a variety of filtering parameters.
+            Retrieves items from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
     Param(
-        # Report ID
+        # Item ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
-        [int64]$ReportID,
+        [int64]$ItemID,
         # Number of records to return
         [Parameter( ParameterSetName = "Multi" )]
         [int64]$Count,
@@ -60,60 +60,34 @@ function Get-HaloReport {
         [string]$OrderBy5,
         # Whether to order ascending or descending
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc5,
-        # Filters by the specified ticket
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("ticket_id")]
-        [int64]$TicketID,
-        # Filters by the specified client
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("client_id")]
-        [int64]$ClientID,
-        # Filters by the specified site
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("site_id")]
-        [int64]$SiteID,
-        # Filters by the specified user
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("user_id")]
-        [int64]$UserID,
-        # Filters by the specified report group
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("reportgroup_id")]
-        [int64]$ReportGroupID,
-        # Whether to return only records for reports that include graphs
-        [Parameter( ParameterSetName = "Multi" )]
-        [switch]$ChartOnly,  
+        [switch]$OrderByDesc5,  
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
-        [switch]$IncludeDetails,
-        # Whether to include the report data in the response
-        [Parameter( ParameterSetName = "Single" )]
-        [switch]$LoadReport
+        [switch]$IncludeDetails
     )
     $CommandName = $PSCmdlet.MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'reportid=' parameter by removing it from the set parameters.
-    if ($ReportID) {
-        $Parameters.Remove("ReportID") | Out-Null
+    # Workaround to prevent the query string processor from adding a 'itemid=' parameter by removing it from the set parameters.
+    if ($ItemID) {
+        $Parameters.Remove("ItemID") | Out-Null
     }
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
-        if ($ReportID) {
-            Write-Verbose "Running in single-report mode because '-ReportID' was provided."
-            $Resource = "api/Report/$($ReportID)$($QueryString)"
+        if ($ItemID) {
+            Write-Verbose "Running in single-item mode because '-ItemID' was provided."
+            $Resource = "api/Item/$($ItemID)$($QueryString)"
         } else {
             Write-Verbose "Running in multi-report mode."
-            $Resource = "api/Report$($QueryString)"
+            $Resource = "api/Item$($QueryString)"
         }    
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
         }
-        $ReportResults = Invoke-HaloRequest @RequestParams
-        Return $ReportResults
+        $ItemResults = Invoke-HaloRequest @RequestParams
+        Return $ItemResults
     } catch {
-        Write-Error "Failed to get reports from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get items from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }
