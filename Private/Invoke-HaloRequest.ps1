@@ -26,7 +26,9 @@ function Invoke-HaloRequest {
         # The request body to send.
         [String]$Body,
         # Allows the request to be performed without authentication.
-        [Switch]$AllowAnonymous
+        [Switch]$AllowAnonymous,
+        # Returns the Raw result. Useful for file downloads
+        [Switch]$RawResult
     )
     if ($null -eq $Script:HAPIConnectionInformation) {
         Throw "Missing Halo connection information, please run 'Connect-HaloAPI' first."
@@ -70,7 +72,11 @@ function Invoke-HaloRequest {
             }
         }
         Write-Debug "Response headers: $($Response.Headers | Out-String)"
-        $Results = $Response.Content | ConvertFrom-Json
+        if ($RawResult){
+            $Results = $Response
+        } else {
+            $Results = $Response.Content | ConvertFrom-Json
+        }
         return $Results
     } catch {
         $ExceptionResponse = $_.Exception.Response
