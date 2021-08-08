@@ -112,7 +112,29 @@
         'New-HaloItem',
         'Set-HaloItem',
         'New-HaloKBArticle',
-        'Set-HaloKBArticle'
+        'Set-HaloKBArticle',
+        'New-HaloOpportunity',
+        'Set-HaloOpportunity',
+        'New-HaloProject',
+        'Set-HaloProject',
+        'New-HaloQuote',
+        'Set-HaloQuote',
+        'New-HaloReport',
+        'Set-HaloReport',
+        'New-HaloSite',
+        'Set-HaloSite',
+        'New-HaloStatus',
+        'Set-HaloStatus',
+        'New-HaloSupplier',
+        'Set-HaloSupplier',
+        'New-HaloTeam',
+        'Set-HaloTeam',
+        'New-HaloTicket',
+        'Set-HaloTicket',
+        'New-HaloTicketType',
+        'Set-HaloTicketType',
+        'New-HaloUser',
+        'Set-HaloUser'
     )
     
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
