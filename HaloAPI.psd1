@@ -92,9 +92,27 @@
         'Get-HaloStatus',
         'Get-HaloSupplier',
         'Get-HaloLookup',
-        'Get-HaloTemplate'
+        'Get-HaloTemplate',
+        'New-HaloAction',
+        'Set-HaloAction',
+        'New-HaloAgent',
+        'Set-HaloAgent',
+        'New-HaloAppointment',
+        'Set-HaloAppointment',
+        'New-HaloAsset',
+        'Set-HaloAsset',
+        'New-HaloAttachment',
+        'Set-HaloAttachment',
         'New-HaloClient',
-        'Set-HaloClient'
+        'Set-HaloClient',
+        'New-HaloContract',
+        'Set-HaloContract',
+        'New-HaloInvoice',
+        'Set-HaloInvoice',
+        'New-HaloItem',
+        'Set-HaloItem',
+        'New-HaloKBArticle',
+        'Set-HaloKBArticle'
     )
     
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
