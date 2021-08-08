@@ -1,0 +1,271 @@
+[
+    {
+      "id": 0,
+      "name": "string",
+      "ticket_count": 0,
+      "visible": true,
+      "enduserscanselect": true,
+      "itilrequesttype": 0,
+      "statusafteruserupdate": 0,
+      "statusaftersupplierupdate": 0,
+      "closedrequestswithupdates": 0,
+      "includeinmobiledbsync": true,
+      "workflow_id": 0,
+      "workflow_name": "string",
+      "always_bcc": "string",
+      "reopenedstatus": 0,
+      "closedrequestsemailid": 0,
+      "webannouncement": "string",
+      "chargerate": 0,
+      "initial_status": 0,
+      "default_team": "string",
+      "default_agent": 0,
+      "default_agent_name": "string",
+      "default_sla": 0,
+      "default_priority": 0,
+      "default_category_1": "string",
+      "default_category_2": "string",
+      "default_category_3": "string",
+      "default_category_4": "string",
+      "default_summary": "string",
+      "default_details": "string",
+      "default_details_html": "string",
+      "default_excludefromsla": true,
+      "default_showforusers": true,
+      "default_sendack": 0,
+      "default_sendemail": true,
+      "allowall_actions": true,
+      "allowed_actions": [
+        {
+          "id": 0,
+          "type": 0,
+          "key1": 0,
+          "key1_name": "string",
+          "key2": 0,
+          "key2_name": "string",
+          "_warning": "string"
+        }
+      ],
+      "allowall_status": true,
+      "allowed_status": [
+        {
+          "ticketype_id": 0,
+          "tickettype_name": "string",
+          "status_id": 0,
+          "status_name": "string",
+          "tickettype_group_id": 0,
+          "_warning": "string"
+        }
+      ],
+      "allowall_category1": true,
+      "allowed_category1": [
+        {
+          "id": 0,
+          "type": 0,
+          "client_id": 0,
+          "tickettype_id": 0,
+          "team_id": 0,
+          "service_id": 0,
+          "category_id": 0,
+          "category_value": "string",
+          "_warning": "string"
+        }
+      ],
+      "allowall_category2": true,
+      "allowed_category2": [
+        {
+          "id": 0,
+          "type": 0,
+          "client_id": 0,
+          "tickettype_id": 0,
+          "team_id": 0,
+          "service_id": 0,
+          "category_id": 0,
+          "category_value": "string",
+          "_warning": "string"
+        }
+      ],
+      "allowall_category3": true,
+      "allowed_category3": [
+        {
+          "id": 0,
+          "type": 0,
+          "client_id": 0,
+          "tickettype_id": 0,
+          "team_id": 0,
+          "service_id": 0,
+          "category_id": 0,
+          "category_value": "string",
+          "_warning": "string"
+        }
+      ],
+      "allowall_category4": true,
+      "allowed_category4": [
+        {
+          "id": 0,
+          "type": 0,
+          "client_id": 0,
+          "tickettype_id": 0,
+          "team_id": 0,
+          "service_id": 0,
+          "category_id": 0,
+          "category_value": "string",
+          "_warning": "string"
+        }
+      ],
+      "approval_process_id": 0,
+      "approval_process_name": "string",
+      "from_mailbox_id": 0,
+      "hide_respond": true,
+      "close_kb_action": 0,
+      "default_product_id": 0,
+      "default_product_name": "string",
+      "email_start_tag_override": "string",
+      "email_end_tag_override": "string",
+      "acknowledgementtemplate": 0,
+      "acknowledgementtemplate_name": "string",
+      "acknowledgementtemplateooh": 0,
+      "acknowledgementtemplateooh_name": "string",
+      "dontsendslareminders": true,
+      "fields": [
+        {
+          "id": 0,
+          "rtid": 0,
+          "fieldid": 0,
+          "seq": 0,
+          "tableid": 0,
+          "groupid": 0,
+          "endusernew": 0,
+          "enduserdetail": 0,
+          "technew": 0,
+          "techdetail": 0,
+          "fieldname": "string",
+          "fieldinfo": {
+            "id": 0,
+            "name": "string",
+            "label": "string",
+            "labellong": "string",
+            "summary": "string",
+            "hint": "string",
+            "lookup": 0,
+            "type": 0,
+            "custom": 0,
+            "usage": 0,
+            "tab_id": 0,
+            "tab_name": "string",
+            "table_id": 0,
+            "table_name": "string",
+            "readonly": true,
+            "addunknown": true,
+            "extratype": 0,
+            "calcfield": "string",
+            "characterlimit": 0,
+            "characterlimittype": 0,
+            "inputtype": 0,
+            "copytochild": true,
+            "searchable": true,
+            "user_searchable": true,
+            "defaultvalue": "string",
+            "ordervaluesalphanumerically": true,
+            "defaultvalue_lookup": "string",
+            "values": [
+              {
+                "lookupid": 0,
+                "id": 0,
+                "name": "string",
+                "value2": "string",
+                "value2_bool": true,
+                "value3": "string",
+                "value3_bool": true,
+                "value4": "string",
+                "value4_bool": true,
+                "value5": "string",
+                "value5_bool": true,
+                "value6": "string",
+                "value6_bool": true,
+                "rates": [
+                  {
+                    "id": 0,
+                    "area": 0,
+                    "charge_id": 0,
+                    "startdate": "2019-08-02T14:35:57.042Z",
+                    "rate": 0,
+                    "org": 0,
+                    "minimum": 0,
+                    "increment": 0,
+                    "oohmultiplier": 0,
+                    "holidaymultiplier": 0,
+                    "weekendmultiplier": 0,
+                    "surcharge": true,
+                    "round": 0,
+                    "current": true,
+                    "_warning": "string"
+                  }
+                ],
+                "_warning": "string"
+              }
+            ],
+            "new_values": "string",
+            "variable_name": "string",
+            "faults_field_name": "string",
+            "actions_field_name": "string",
+            "table_info": {
+              "id": 0,
+              "name": "string",
+              "linkto_table_id": 0,
+              "note": "string",
+              "fields": [
+                {}
+              ],
+              "_warning": "string"
+            },
+            "client_restrictions": [
+              {
+                "id": 0,
+                "client_id": 0,
+                "client_name": "string",
+                "field_id": 0
+              }
+            ],
+            "_warning": "string"
+          },
+          "visibility_conditions": [
+            {
+              "id": 0,
+              "tickettype_id": 0,
+              "field_id": 0,
+              "lookup_field_id": 0,
+              "lookup_value_id": 0,
+              "lookup_value": "string",
+              "_warning": "string"
+            }
+          ],
+          "value_restrictions": [
+            {
+              "id": 0,
+              "tickettype_id": 0,
+              "field_id": 0,
+              "value_id": 0,
+              "value_name": "string",
+              "_warning": "string"
+            }
+          ],
+          "group": {
+            "id": 0,
+            "header": "string",
+            "name": "string",
+            "fields": [
+              {}
+            ],
+            "_warning": "string"
+          },
+          "_warning": "string"
+        }
+      ],
+      "_warning": "string",
+      "use": "string",
+      "sequence": 0,
+      "group_id": 0,
+      "group_name": "string"
+    }
+  ]

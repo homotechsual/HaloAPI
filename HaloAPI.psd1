@@ -91,6 +91,8 @@
         'Get-HaloQuote',
         'Get-HaloStatus',
         'Get-HaloSupplier',
+        'Get-HaloLookup',
+        'Get-HaloTemplate'
         'New-HaloClient',
         'Set-HaloClient'
     )

@@ -1,0 +1,231 @@
+[
+    {
+      "id": 0,
+      "name": "string",
+      "sql": "string",
+      "reportingperiod": 0,
+      "availablefields": "string",
+      "selectedfields": "string",
+      "reportingperiodstartdate": "2020-07-03T12:53:38.676Z",
+      "reportingperiodenddate": "2020-07-03T12:53:38.677Z",
+      "reportingperioddatefield": "string",
+      "sqlid": 0,
+      "charttitle": "string",
+      "xaxis": "string",
+      "yaxis": "string",
+      "xaxiscaption": "string",
+      "yaxiscaption": "string",
+      "graphorderby": "string",
+      "charttype": 0,
+      "graphorder": 0,
+      "count": true,
+      "sum": true,
+      "showgraphvalues": true,
+      "client": "string",
+      "builtinid": true,
+      "seriestype1": 0,
+      "seriestype2": 0,
+      "seriestype3": 0,
+      "seriestype4": 0,
+      "seriestype5": 0,
+      "yaxis1": "string",
+      "yaxis2": "string",
+      "yaxis3": "string",
+      "yaxis4": "string",
+      "yaxis5": "string",
+      "stackbars": true,
+      "includesummary": true,
+      "timezonename": "string",
+      "onlyshowsummaries": true,
+      "usetechlink": true,
+      "is_published": true,
+      "published_id": "string",
+      "sqlhasdatefilter": true,
+      "usesdynamicsql": true,
+      "available_columns": [
+        {
+          "id": 0,
+          "report_id": 0,
+          "name": "string",
+          "data_type": "string",
+          "data_type_group": "string",
+          "sequence": 0,
+          "filter": "string",
+          "groupbystatus": 0,
+          "groupbycalc": 0,
+          "hidden": true,
+          "orderby": 0,
+          "orderby_desc": true,
+          "_warning": "string"
+        }
+      ],
+      "columns": [
+        {
+          "id": 0,
+          "report_id": 0,
+          "name": "string",
+          "data_type": "string",
+          "data_type_group": "string",
+          "sequence": 0,
+          "filter": "string",
+          "groupbystatus": 0,
+          "groupbycalc": 0,
+          "hidden": true,
+          "orderby": 0,
+          "orderby_desc": true,
+          "_warning": "string"
+        }
+      ],
+      "filters": [
+        {
+          "id": 0,
+          "report_id": 0,
+          "fieldname": "string",
+          "data_type": "string",
+          "data_type_group": "string",
+          "numericruletype": 0,
+          "numericvalue": 0,
+          "stringrulevalues": [
+            {
+              "value": "string",
+              "label": "string"
+            }
+          ],
+          "stringruletext": "string",
+          "stringruletype": 0,
+          "_warning": "string"
+        }
+      ],
+      "filterable_columns": [
+        {
+          "id": 0,
+          "report_id": 0,
+          "name": "string",
+          "data_type": "string",
+          "data_type_group": "string",
+          "sequence": 0,
+          "filter": "string",
+          "groupbystatus": 0,
+          "groupbycalc": 0,
+          "hidden": true,
+          "orderby": 0,
+          "orderby_desc": true,
+          "_warning": "string"
+        }
+      ],
+      "permissions_agent": [
+        {
+          "agent_id": 0,
+          "agent_name": "string",
+          "report_id": 0,
+          "readonly": true
+        }
+      ],
+      "permissions_user": [
+        {
+          "user_id": 0,
+          "user_name": "string",
+          "report_id": 0
+        }
+      ],
+      "schedule": [
+        {
+          "id": 0,
+          "name": "string",
+          "type": 0,
+          "domain": "string",
+          "group_id": 0,
+          "restriction_type": "string",
+          "restrictto_department_id": 0,
+          "restrictto_department_name": "string",
+          "restrictto_team_id": 0,
+          "restrictto_team_name": "string",
+          "restrictto_agent_id": 0,
+          "restrictto_agent_name": "string",
+          "summary": "string",
+          "tickettype_id": 0,
+          "rule_count": 0,
+          "creation_rules": [
+            {
+              "id": 0,
+              "parent_template_id": 0,
+              "child_template_id": 0,
+              "rule_type": 0,
+              "createonchildclose_id": 0,
+              "createonchildclose_name": "string",
+              "working_days": 0,
+              "outcome_id": 0,
+              "outcome_name": "string",
+              "field_id": 0,
+              "field_name": "string",
+              "approvalstatus": 0,
+              "_warning": "string"
+            }
+          ],
+          "todo_list": [
+            {
+              "template_id": 0,
+              "id": 0,
+              "text": "string",
+              "sequence": 0,
+              "_warning": "string"
+            }
+          ],
+          "emailto": "string",
+          "emailcc": "string",
+          "emailsubject": "string",
+          "time": "2020-07-03T12:53:38.677Z",
+          "disabled": true,
+          "lastcreated": "2020-07-03T12:53:38.677Z",
+          "nextcreationdate": "2020-07-03T12:53:38.677Z"
+        }
+      ],
+      "local_library_id": 0,
+      "is_onlinerepository_report": true,
+      "get_reportfield_values": "string",
+      "filter_lookup_values": [
+        {
+          "value": "string",
+          "label": "string"
+        }
+      ],
+      "report": {
+        "loaded": true,
+        "load_error": "string",
+        "rows": [
+          {}
+        ],
+        "chart_labels": [
+          {}
+        ],
+        "chart_dataset": [
+          {}
+        ],
+        "chart_dataset1": [
+          {}
+        ],
+        "chart_dataset2": [
+          {}
+        ],
+        "chart_dataset3": [
+          {}
+        ],
+        "chart_dataset4": [
+          {}
+        ],
+        "chart_dataset5": [
+          {}
+        ]
+      },
+      "_testonly": true,
+      "_testchart": true,
+      "_loadreportonly": true,
+      "_warning": "string",
+      "group_id": 0,
+      "group_name": "string",
+      "description": "string",
+      "restrictaccess": true,
+      "systemreportid": 0,
+      "_canupdate": true
+    }
+  ]

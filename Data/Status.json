@@ -1,0 +1,22 @@
+[
+    {
+      "id": 0,
+      "name": "string",
+      "shortname": "string",
+      "ticket_count": 0,
+      "statusemailid": 0,
+      "statusemailfreqdays": 0,
+      "statusnochangehours": 0,
+      "notifystatuschange": 0,
+      "timeuntilloffhold": 0,
+      "dontsendslareminders": true,
+      "showonquickchange": true,
+      "statusnochangehoursmanager": 0,
+      "statusnochangetemplate": 0,
+      "_warning": "string",
+      "type": 0,
+      "sequence": 0,
+      "colour": "string",
+      "slaaction": "string"
+    }
+  ]

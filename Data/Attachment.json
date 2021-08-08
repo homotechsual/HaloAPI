@@ -1,0 +1,22 @@
+[
+    {
+      "id": 0,
+      "filename": "string",
+      "datecreated": "2019-08-02T14:35:55.127Z",
+      "note": "string",
+      "filesize": 0,
+      "type": 0,
+      "unique_id": 0,
+      "desc": "string",
+      "data": "string",
+      "ticket_id": 0,
+      "action_id": 0,
+      "user_id": 0,
+      "agent_id": 0,
+      "attachmentaction_id": 0,
+      "_canupdate": true,
+      "_warning": "string",
+      "showforusers": true,
+      "data_base64": "string"
+    }
+  ]

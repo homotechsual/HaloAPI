@@ -18,7 +18,7 @@ function Get-HaloAction {
         [int64]$Count,
         # Get actions for a single ticket with the specified ID.
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
-        [Parameter( ParameterSetName = "Multi", Mandatory = $True )] # ?ACT Query with Halo why this is required.
+        [Parameter( ParameterSetName = "Multi" )] # ?ACT Query with Halo why this is required.
         [Alias("ticket_id")]
         [int32]$TicketID,
         # Exclude system-performed actions.
@@ -81,10 +81,10 @@ function Get-HaloAction {
     try {
         if ($ActionID) {
             Write-Verbose "Running in single-action mode because '-ActionID' was provided."
-            $Resource = "api/action/$($ActionID)$($QueryString)"
+            $Resource = "api/Actions/$($ActionID)$($QueryString)"
         } else {
             Write-Verbose "Running in multi-action mode."
-            $Resource = "api/action$($QueryString)"
+            $Resource = "api/Actions$($QueryString)"
         }
         $RequestParams = @{
             Method = "GET"

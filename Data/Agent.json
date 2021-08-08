@@ -1,0 +1,500 @@
+[
+    {
+      "id": 0,
+      "name": "string",
+      "onlinestatus_actual": 0,
+      "onlinestatus": 0,
+      "is_online": true,
+      "lastonline": "string",
+      "team": "string",
+      "isdisabled": true,
+      "email": "string",
+      "ad": "string",
+      "lastlogindate": "2019-08-02T14:35:57.535Z",
+      "agentphotopath": "string",
+      "initials": "string",
+      "firstname": "string",
+      "surname": "string",
+      "colour": "string",
+      "jobtitle": "string",
+      "sms": "string",
+      "extensionnumber": "string",
+      "ticket_count": 0,
+      "is_agent": true,
+      "one_client": 0,
+      "teams": [
+        {
+          "id": 0,
+          "agent_id": 0,
+          "agent_name": "string",
+          "team_id": 0,
+          "team_name": "string",
+          "department_id": 0,
+          "role_id": "string",
+          "role_name": "string",
+          "is_manager": true,
+          "unassigned_access": true,
+          "otheragent_access": true,
+          "fortickets": true,
+          "foropps": true,
+          "forprojects": true,
+          "in_section": true
+        }
+      ],
+      "departments": [
+        {
+          "id": 0,
+          "agent_id": 0,
+          "agent_name": "string",
+          "department_id": 0,
+          "department_name": "string",
+          "role_id": "string",
+          "role_name": "string",
+          "membershiplevel": 0,
+          "includeteamsintree": true
+        }
+      ],
+      "clients": [
+        {
+          "id": 0,
+          "agent_id": 0,
+          "agent_name": "string",
+          "client_id": 0,
+          "client_name": "string",
+          "role_id": "string",
+          "role_name": "string"
+        }
+      ],
+      "datecreated": "2019-08-02T14:35:57.536Z",
+      "password": "string",
+      "oldpassword": "string",
+      "workday_id": 0,
+      "workday_name": "string",
+      "lunchbreak": 0,
+      "costprice": 0,
+      "agentphotodata": "string",
+      "pagesize": 0,
+      "signature": "string",
+      "default_filter_id_tickets": 0,
+      "default_filter_name_tickets": "string",
+      "default_columns_id_tickets": 0,
+      "default_columns_name_tickets": "string",
+      "default_view_tickets": "string",
+      "default_view_tickets_selectedid": 0,
+      "default_view_tickets_selectedname": "string",
+      "default_filter_id_opps": 0,
+      "default_filter_name_opps": "string",
+      "default_columns_id_opps": 0,
+      "default_columns_name_opps": "string",
+      "default_view_opps": "string",
+      "default_view_opps_selectedid": 0,
+      "default_view_opps_selectedname": "string",
+      "default_action_view": "string",
+      "default_action_display": 0,
+      "default_feed_view": "string",
+      "ticket_preview_mode": 0,
+      "default_ticket_preview_size": 0,
+      "list_type": 0,
+      "navmenu_mode": 0,
+      "default_calendar_view": "string",
+      "calendar_options": "string",
+      "search_options": "string",
+      "newtabpref": 0,
+      "theme": "string",
+      "language_id": 0,
+      "language_name": "string",
+      "app_colour": "string",
+      "app_colour_type": 0,
+      "actionscreen_display_type": 0,
+      "homescreenchartid": 0,
+      "homescreenchartname": "string",
+      "homescreenchartpublishedid": "string",
+      "sendowneremails": true,
+      "dontemailmeifiloggedit": true,
+      "workhour_start": 0,
+      "workhour_end": 0,
+      "chargerate": 0,
+      "activedirectory_dn": "string",
+      "third_party_guid": "string",
+      "roles": [
+        {
+          "teams": [
+            {
+              "id": 0,
+              "agent_id": 0,
+              "agent_name": "string",
+              "team_id": 0,
+              "team_name": "string",
+              "department_id": 0,
+              "role_id": "string",
+              "role_name": "string",
+              "is_manager": true,
+              "unassigned_access": true,
+              "otheragent_access": true,
+              "fortickets": true,
+              "foropps": true,
+              "forprojects": true,
+              "in_section": true
+            }
+          ],
+          "departments": [
+            {
+              "id": 0,
+              "agent_id": 0,
+              "agent_name": "string",
+              "department_id": 0,
+              "department_name": "string",
+              "role_id": "string",
+              "role_name": "string",
+              "membershiplevel": 0,
+              "includeteamsintree": true
+            }
+          ],
+          "clients": [
+            {
+              "id": 0,
+              "agent_id": 0,
+              "agent_name": "string",
+              "client_id": 0,
+              "client_name": "string",
+              "role_id": "string",
+              "role_name": "string"
+            }
+          ],
+          "claims": [
+            {
+              "type": "string",
+              "value": "string"
+            }
+          ],
+          "agents": [
+            {
+              "id": 0,
+              "name": "string",
+              "onlinestatus_actual": 0,
+              "onlinestatus": 0,
+              "is_online": true,
+              "lastonline": "string",
+              "team": "string",
+              "isdisabled": true,
+              "email": "string",
+              "ad": "string",
+              "lastlogindate": "2019-08-02T14:35:57.536Z",
+              "agentphotopath": "string",
+              "initials": "string",
+              "firstname": "string",
+              "surname": "string",
+              "colour": "string",
+              "jobtitle": "string",
+              "sms": "string",
+              "extensionnumber": "string",
+              "ticket_count": 0,
+              "is_agent": true,
+              "one_client": 0,
+              "teams": [
+                {
+                  "id": 0,
+                  "agent_id": 0,
+                  "agent_name": "string",
+                  "team_id": 0,
+                  "team_name": "string",
+                  "department_id": 0,
+                  "role_id": "string",
+                  "role_name": "string",
+                  "is_manager": true,
+                  "unassigned_access": true,
+                  "otheragent_access": true,
+                  "fortickets": true,
+                  "foropps": true,
+                  "forprojects": true,
+                  "in_section": true
+                }
+              ],
+              "departments": [
+                {
+                  "id": 0,
+                  "agent_id": 0,
+                  "agent_name": "string",
+                  "department_id": 0,
+                  "department_name": "string",
+                  "role_id": "string",
+                  "role_name": "string",
+                  "membershiplevel": 0,
+                  "includeteamsintree": true
+                }
+              ],
+              "clients": [
+                {
+                  "id": 0,
+                  "agent_id": 0,
+                  "agent_name": "string",
+                  "client_id": 0,
+                  "client_name": "string",
+                  "role_id": "string",
+                  "role_name": "string"
+                }
+              ],
+              "_canupdate": true,
+              "_canupdate_moreinfo": true
+            }
+          ],
+          "_warning": "string",
+          "id": "string",
+          "name": "string",
+          "normalizedName": "string",
+          "concurrencyStamp": "string"
+        }
+      ],
+      "add_roles": [
+        {
+          "teams": [
+            {
+              "id": 0,
+              "agent_id": 0,
+              "agent_name": "string",
+              "team_id": 0,
+              "team_name": "string",
+              "department_id": 0,
+              "role_id": "string",
+              "role_name": "string",
+              "is_manager": true,
+              "unassigned_access": true,
+              "otheragent_access": true,
+              "fortickets": true,
+              "foropps": true,
+              "forprojects": true,
+              "in_section": true
+            }
+          ],
+          "departments": [
+            {
+              "id": 0,
+              "agent_id": 0,
+              "agent_name": "string",
+              "department_id": 0,
+              "department_name": "string",
+              "role_id": "string",
+              "role_name": "string",
+              "membershiplevel": 0,
+              "includeteamsintree": true
+            }
+          ],
+          "clients": [
+            {
+              "id": 0,
+              "agent_id": 0,
+              "agent_name": "string",
+              "client_id": 0,
+              "client_name": "string",
+              "role_id": "string",
+              "role_name": "string"
+            }
+          ],
+          "claims": [
+            {
+              "type": "string",
+              "value": "string"
+            }
+          ],
+          "agents": [
+            {
+              "id": 0,
+              "name": "string",
+              "onlinestatus_actual": 0,
+              "onlinestatus": 0,
+              "is_online": true,
+              "lastonline": "string",
+              "team": "string",
+              "isdisabled": true,
+              "email": "string",
+              "ad": "string",
+              "lastlogindate": "2019-08-02T14:35:57.536Z",
+              "agentphotopath": "string",
+              "initials": "string",
+              "firstname": "string",
+              "surname": "string",
+              "colour": "string",
+              "jobtitle": "string",
+              "sms": "string",
+              "extensionnumber": "string",
+              "ticket_count": 0,
+              "is_agent": true,
+              "one_client": 0,
+              "teams": [
+                {
+                  "id": 0,
+                  "agent_id": 0,
+                  "agent_name": "string",
+                  "team_id": 0,
+                  "team_name": "string",
+                  "department_id": 0,
+                  "role_id": "string",
+                  "role_name": "string",
+                  "is_manager": true,
+                  "unassigned_access": true,
+                  "otheragent_access": true,
+                  "fortickets": true,
+                  "foropps": true,
+                  "forprojects": true,
+                  "in_section": true
+                }
+              ],
+              "departments": [
+                {
+                  "id": 0,
+                  "agent_id": 0,
+                  "agent_name": "string",
+                  "department_id": 0,
+                  "department_name": "string",
+                  "role_id": "string",
+                  "role_name": "string",
+                  "membershiplevel": 0,
+                  "includeteamsintree": true
+                }
+              ],
+              "clients": [
+                {
+                  "id": 0,
+                  "agent_id": 0,
+                  "agent_name": "string",
+                  "client_id": 0,
+                  "client_name": "string",
+                  "role_id": "string",
+                  "role_name": "string"
+                }
+              ],
+              "_canupdate": true,
+              "_canupdate_moreinfo": true
+            }
+          ],
+          "_warning": "string",
+          "id": "string",
+          "name": "string",
+          "normalizedName": "string",
+          "concurrencyStamp": "string"
+        }
+      ],
+      "claims": [
+        {
+          "type": "string",
+          "value": "string"
+        }
+      ],
+      "languagepack": {
+        "id": 0,
+        "name": "string",
+        "short_name": "string",
+        "active": true,
+        "flag": "string",
+        "is_custom": true,
+        "synctonhd": true,
+        "linked_id": 0,
+        "linked_code": "string",
+        "translations": [
+          {
+            "value": "string",
+            "label": "string"
+          }
+        ],
+        "translation_details": [
+          {
+            "id": 0,
+            "language_id": 0,
+            "sysid": 0,
+            "systype": 0,
+            "translation": "string",
+            "iscustomised": true,
+            "description": "string",
+            "default_string": "string",
+            "_warning": "string"
+          }
+        ],
+        "translations_are_custom": true,
+        "_warning": "string"
+      },
+      "department": "string",
+      "_is_a_departmentmanager": true,
+      "_is_a_teammanager": true,
+      "cannedtext": [
+        {
+          "id": 0,
+          "name": "string",
+          "group_id": 0,
+          "text": "string",
+          "html": "string",
+          "restriction_type": 0,
+          "department_id": 0,
+          "department_name": "string",
+          "team_id": 0,
+          "team_name": "string",
+          "agent_id": 0,
+          "agent_name": "string",
+          "_canupdate": true,
+          "_warning": "string"
+        }
+      ],
+      "templates": [
+        {
+          "id": 0,
+          "name": "string",
+          "type": 0,
+          "domain": "string",
+          "group_id": 0,
+          "restriction_type": "string",
+          "restrictto_department_id": 0,
+          "restrictto_department_name": "string",
+          "restrictto_team_id": 0,
+          "restrictto_team_name": "string",
+          "restrictto_agent_id": 0,
+          "restrictto_agent_name": "string",
+          "summary": "string",
+          "tickettype_id": 0,
+          "rule_count": 0,
+          "creation_rules": [
+            {
+              "id": 0,
+              "parent_template_id": 0,
+              "child_template_id": 0,
+              "rule_type": 0,
+              "createonchildclose_id": 0,
+              "createonchildclose_name": "string",
+              "working_days": 0,
+              "outcome_id": 0,
+              "outcome_name": "string",
+              "field_id": 0,
+              "field_name": "string",
+              "approvalstatus": 0,
+              "_warning": "string"
+            }
+          ],
+          "todo_list": [
+            {
+              "template_id": 0,
+              "id": 0,
+              "text": "string",
+              "sequence": 0,
+              "_warning": "string"
+            }
+          ],
+          "emailto": "string",
+          "emailcc": "string",
+          "emailsubject": "string",
+          "time": "2019-08-02T14:35:57.536Z",
+          "disabled": true,
+          "lastcreated": "2019-08-02T14:35:57.536Z",
+          "nextcreationdate": "2019-08-02T14:35:57.536Z"
+        }
+      ],
+      "twofactor_enabled": true,
+      "current_action_type": "string",
+      "current_action_name": "string",
+      "_isnew": true,
+      "adconnection": 0,
+      "useadlogin": 0,
+      "container_dn": "string",
+      "is_sales": true,
+      "_warning": "string",
+      "_canupdate": true,
+      "_canupdate_moreinfo": true
+    }
+  ]

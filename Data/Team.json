@@ -1,0 +1,179 @@
+[
+    {
+      "id": 0,
+      "name": "string",
+      "sequence": 0,
+      "forrequests": true,
+      "foropps": true,
+      "forprojects": true,
+      "ticket_count": 0,
+      "department_id": 0,
+      "department_name": "string",
+      "inactive": true,
+      "override_column_id": 0,
+      "managers": [
+        {
+          "id": 0,
+          "name": "string",
+          "agent_id": 0,
+          "user_id": 0
+        }
+      ],
+      "workinghoursbeforealert": 0,
+      "emailaddress": "string",
+      "addtoallagents": true,
+      "allowlivechat": true,
+      "rtid": 0,
+      "mailbox_override": 0,
+      "agents": [
+        {
+          "id": 0,
+          "agent_id": 0,
+          "agent_name": "string",
+          "team_id": 0,
+          "team_name": "string",
+          "department_id": 0,
+          "role_id": "string",
+          "role_name": "string",
+          "is_manager": true,
+          "unassigned_access": true,
+          "otheragent_access": true,
+          "fortickets": true,
+          "foropps": true,
+          "forprojects": true,
+          "in_section": true
+        }
+      ],
+      "organisation_id": 0,
+      "cannedtext": [
+        {
+          "id": 0,
+          "name": "string",
+          "group_id": 0,
+          "text": "string",
+          "html": "string",
+          "restriction_type": 0,
+          "department_id": 0,
+          "department_name": "string",
+          "team_id": 0,
+          "team_name": "string",
+          "agent_id": 0,
+          "agent_name": "string",
+          "_canupdate": true,
+          "_warning": "string"
+        }
+      ],
+      "templates": [
+        {
+          "id": 0,
+          "name": "string",
+          "type": 0,
+          "domain": "string",
+          "group_id": 0,
+          "restriction_type": "string",
+          "restrictto_department_id": 0,
+          "restrictto_department_name": "string",
+          "restrictto_team_id": 0,
+          "restrictto_team_name": "string",
+          "restrictto_agent_id": 0,
+          "restrictto_agent_name": "string",
+          "summary": "string",
+          "tickettype_id": 0,
+          "rule_count": 0,
+          "creation_rules": [
+            {
+              "id": 0,
+              "parent_template_id": 0,
+              "child_template_id": 0,
+              "rule_type": 0,
+              "createonchildclose_id": 0,
+              "createonchildclose_name": "string",
+              "working_days": 0,
+              "outcome_id": 0,
+              "outcome_name": "string",
+              "field_id": 0,
+              "field_name": "string",
+              "approvalstatus": 0,
+              "_warning": "string"
+            }
+          ],
+          "todo_list": [
+            {
+              "template_id": 0,
+              "id": 0,
+              "text": "string",
+              "sequence": 0,
+              "_warning": "string"
+            }
+          ],
+          "emailto": "string",
+          "emailcc": "string",
+          "emailsubject": "string",
+          "time": "2019-08-02T14:35:57.075Z",
+          "disabled": true,
+          "lastcreated": "2019-08-02T14:35:57.075Z",
+          "nextcreationdate": "2019-08-02T14:35:57.075Z"
+        }
+      ],
+      "allowall_category1": true,
+      "allowed_category1": [
+        {
+          "id": 0,
+          "type": 0,
+          "client_id": 0,
+          "tickettype_id": 0,
+          "team_id": 0,
+          "service_id": 0,
+          "category_id": 0,
+          "category_value": "string",
+          "_warning": "string"
+        }
+      ],
+      "allowall_category2": true,
+      "allowed_category2": [
+        {
+          "id": 0,
+          "type": 0,
+          "client_id": 0,
+          "tickettype_id": 0,
+          "team_id": 0,
+          "service_id": 0,
+          "category_id": 0,
+          "category_value": "string",
+          "_warning": "string"
+        }
+      ],
+      "allowall_category3": true,
+      "allowed_category3": [
+        {
+          "id": 0,
+          "type": 0,
+          "client_id": 0,
+          "tickettype_id": 0,
+          "team_id": 0,
+          "service_id": 0,
+          "category_id": 0,
+          "category_value": "string",
+          "_warning": "string"
+        }
+      ],
+      "allowall_category4": true,
+      "allowed_category4": [
+        {
+          "id": 0,
+          "type": 0,
+          "client_id": 0,
+          "tickettype_id": 0,
+          "team_id": 0,
+          "service_id": 0,
+          "category_id": 0,
+          "category_value": "string",
+          "_warning": "string"
+        }
+      ],
+      "override_column_name": "string",
+      "_warning": "string",
+      "_canupdate": true,
+      "_canupdate2": true
+    }
+  ]
