@@ -1,9 +1,9 @@
 Function Set-HaloAttachment {
     <#
     .SYNOPSIS
-        Updates an Attachment via the Halo API.
+        Updates an attachment via the Halo API.
     .DESCRIPTION
-        Function to send an Attachment update request to the Halo API
+        Function to send an attachment update request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloAttachment {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Attachment
     )
-    Invoke-HaloUpdate -Object $Attachment -Endpoint "Attachment" -update
+    Invoke-HaloUpdate -Object $Attachment -Endpoint "attachment" -Update
 }

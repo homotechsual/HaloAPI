@@ -1,9 +1,9 @@
 Function New-HaloReport {
     <#
     .SYNOPSIS
-        Creates a Report via the Halo API.
+        Creates a report via the Halo API.
     .DESCRIPTION
-        Function to send a Report creation request to the Halo API
+        Function to send a report creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

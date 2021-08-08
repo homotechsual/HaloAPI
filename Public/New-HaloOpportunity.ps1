@@ -1,9 +1,9 @@
 Function New-HaloOpportunity {
     <#
     .SYNOPSIS
-        Creates an Opportunity via the Halo API.
+        Creates an opportunity via the Halo API.
     .DESCRIPTION
-        Function to send an Opportunity creation request to the Halo API
+        Function to send an opportunity creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

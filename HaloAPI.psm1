@@ -8,4 +8,7 @@ foreach ($Function in @($Functions)){
     }
 }
 [int64]$Script:HAPITokenExpiry = 3600
+New-Alias -Name "Get-HaloArticle" -Value Get-HaloKBArticle
+New-Alias -Name "New-HaloArticle" -Value New-HaloKBArticle
+New-Alias -Name "Set-HaloArticle" -Value Set-HaloKBArticle
 Export-ModuleMember -Function $Functions.BaseName -Alias *

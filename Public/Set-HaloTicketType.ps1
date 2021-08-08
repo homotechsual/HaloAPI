@@ -1,9 +1,9 @@
 Function Set-HaloTicketType {
     <#
     .SYNOPSIS
-        Updates a TicketType via the Halo API.
+        Updates a ticket type via the Halo API.
     .DESCRIPTION
-        Function to send a TicketType update request to the Halo API
+        Function to send a ticket type update request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloTicketType {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$TicketType
     )
-    Invoke-HaloUpdate -Object $TicketType -Endpoint "TicketType" -update
+    Invoke-HaloUpdate -Object $TicketType -Endpoint "tickettype" -Update
 }

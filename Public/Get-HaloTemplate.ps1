@@ -16,6 +16,7 @@ function Get-HaloTemplate {
             "Action",
             "Agent",
             "Appointment",
+            "Article",
             "Asset",
             "Attachment",
             "Client",
@@ -38,10 +39,12 @@ function Get-HaloTemplate {
         # Return with null values
         [switch]$NullVariables
     )
-
+    # Handle types with aliases/multiple names.
+    if ($Type -eq "Article") {
+        $Type = "KBArticle"
+    }
     # Fetch the object from a template json file in the data directory
-    $TemplateObject = Get-Content "$PSScriptRoot/../Data/$Type.json" -raw | convertfrom-json -depth 100
-    
+    $TemplateObject = Get-Content "$PSScriptRoot/../Data/$Type.json" -raw | ConvertFrom-Json -depth 100
     # If null variables were requested null them all
     if ($NullVariables){
         $ReturnObject = Get-HaloNullObject -NullObject $TemplateObject

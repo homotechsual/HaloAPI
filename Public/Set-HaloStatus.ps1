@@ -1,9 +1,9 @@
 Function Set-HaloStatus {
     <#
     .SYNOPSIS
-        Updates a Status via the Halo API.
+        Updates a status via the Halo API.
     .DESCRIPTION
-        Function to send a Status update request to the Halo API
+        Function to send a status update request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloStatus {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Status
     )
-    Invoke-HaloUpdate -Object $Status -Endpoint "Status" -update
+    Invoke-HaloUpdate -Object $Status -Endpoint "status" -Update
 }

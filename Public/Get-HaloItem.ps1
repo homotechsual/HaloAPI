@@ -65,7 +65,7 @@ function Get-HaloItem {
         [Parameter( ParameterSetName = "Single" )]
         [switch]$IncludeDetails
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'itemid=' parameter by removing it from the set parameters.
     if ($ItemID) {
@@ -75,10 +75,10 @@ function Get-HaloItem {
     try {
         if ($ItemID) {
             Write-Verbose "Running in single-item mode because '-ItemID' was provided."
-            $Resource = "api/Item/$($ItemID)$($QueryString)"
+            $Resource = "api/item/$($ItemID)$($QueryString)"
         } else {
-            Write-Verbose "Running in multi-report mode."
-            $Resource = "api/Item$($QueryString)"
+            Write-Verbose "Running in multi-item mode."
+            $Resource = "api/item$($QueryString)"
         }    
         $RequestParams = @{
             Method = "GET"

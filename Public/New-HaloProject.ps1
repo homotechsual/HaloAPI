@@ -1,9 +1,9 @@
 Function New-HaloProject {
     <#
     .SYNOPSIS
-        Creates a Project via the Halo API.
+        Creates a project via the Halo API.
     .DESCRIPTION
-        Function to send a Project creation request to the Halo API
+        Function to send a project creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

@@ -13,7 +13,7 @@ function Get-HaloTeam {
         # Team ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
         [int64]$TeamID,
-        # Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
+        # Filter teams to a specific type: reqs = tickets, opps = opportunities and prjs = projects.
         [Parameter( ParameterSetName = "Multi" )]
         [ValidateSet(
             "reqs",
@@ -56,7 +56,7 @@ function Get-HaloTeam {
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'teamid=' parameter by removing it from the set parameters.
     if ($TeamID) {
@@ -66,7 +66,7 @@ function Get-HaloTeam {
     try {
         if ($TeamID) {
             Write-Verbose "Running in single-team mode because '-TeamID' was provided."
-            $Resource = "api/team/$($ContractID)$($QueryString)"
+            $Resource = "api/team/$($TeamID)$($QueryString)"
         } else {
             Write-Verbose "Running in multi-team mode."
             $Resource = "api/team$($QueryString)"

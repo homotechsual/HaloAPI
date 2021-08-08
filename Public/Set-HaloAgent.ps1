@@ -12,5 +12,5 @@ Function Set-HaloAgent {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Agent
     )
-    Invoke-HaloUpdate -Object $Agent -Endpoint "Agent" -update
+    Invoke-HaloUpdate -Object $Agent -Endpoint "agent" -Update
 }

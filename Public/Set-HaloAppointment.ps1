@@ -12,5 +12,5 @@ Function Set-HaloAppointment {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Appointment
     )
-    Invoke-HaloUpdate -Object $Appointment -Endpoint "Appointment" -update
+    Invoke-HaloUpdate -Object $Appointment -Endpoint "appointment" -Update
 }

@@ -2,7 +2,7 @@
 function Get-HaloLookup {
     <#
         .SYNOPSIS
-            Gets Lookup information from the Halo API.
+            Gets lookup information from the Halo API.
         .DESCRIPTION
             Retrieves lookup types from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
@@ -17,7 +17,7 @@ function Get-HaloLookup {
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
         [Parameter( ParameterSetName = "Multi", Mandatory = $True )]
         [int64]$LookupID,
-        # Show all receords
+        # Show all records
         [Parameter( ParameterSetName = "Multi" )]
         [switch]$ShowAll,
         # Include extra objects in the result.
@@ -25,7 +25,7 @@ function Get-HaloLookup {
         [Alias("exclude_zero")]
         [Switch]$ExcludeZero
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'ItemID=' parameter by removing it from the set parameters.
     if ($ItemID) {
@@ -34,11 +34,11 @@ function Get-HaloLookup {
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($ItemID) {
-            Write-Verbose "Running in single mode because '-ItemID' was provided."
+            Write-Verbose "Running in single-lookup mode because '-ItemID' was provided."
             $Resource = "api/Lookup/$($ItemID)$($QueryString)"
         }
         else {
-            Write-Verbose "Running in multi mode."
+            Write-Verbose "Running in multi-lookup mode."
             $Resource = "api/Lookup$($QueryString)"
         }    
         $RequestParams = @{
@@ -49,7 +49,7 @@ function Get-HaloLookup {
         Return $LookupResults
     }
     catch {
-        Write-Error "Failed to get Lookups from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get lookups from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }

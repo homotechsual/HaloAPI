@@ -1,5 +1,5 @@
 
-function Get-HaloNullObject{
+function Get-HaloNullObject {
     <#
         .SYNOPSIS
             Nulls all values of an object
@@ -16,7 +16,7 @@ function Get-HaloNullObject{
     $NullObject.PSObject.Properties | ForEach-Object {
         Write-Verbose "Attribute Name: $($_.name)"
         Write-Verbose "Attribute Type: $(($_.Value.GetType()).name)"
-        if (($_.Value.GetType()).name -ne "PSCustomObject"){
+        if ($_.Value -isnot [PSCustomObject]) {
            $_.Value = $Null
         } else {
             $_.Value = Get-HaloNullObject -NullObject $_.Value

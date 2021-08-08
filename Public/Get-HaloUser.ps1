@@ -87,7 +87,7 @@ function Get-HaloUser {
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludePopups
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'userid=' parameter by removing it from the set parameters.
     if ($UserID) {

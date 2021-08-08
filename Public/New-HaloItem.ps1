@@ -1,9 +1,9 @@
 Function New-HaloItem {
     <#
     .SYNOPSIS
-        Creates an Item via the Halo API.
+        Creates an item via the Halo API.
     .DESCRIPTION
-        Function to send an Item creation request to the Halo API
+        Function to send an item creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

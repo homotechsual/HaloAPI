@@ -1,9 +1,9 @@
 Function New-HaloContract {
     <#
     .SYNOPSIS
-        Creates an Contract via the Halo API.
+        Creates a contract via the Halo API.
     .DESCRIPTION
-        Function to send an Contract creation request to the Halo API
+        Function to send a contract creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

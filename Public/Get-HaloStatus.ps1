@@ -10,7 +10,7 @@ function Get-HaloStatus {
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
     Param(
-        # Ticket Type ID
+        # Status ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
         [int64]$StatusID,
         # Filter by Status type e.g. 'ticket' returns all ticket statuses
@@ -41,7 +41,7 @@ function Get-HaloStatus {
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'StatusID=' parameter by removing it from the set parameters.
     if ($StatusID) {
@@ -50,11 +50,11 @@ function Get-HaloStatus {
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($StatusID) {
-            Write-Verbose "Running in single mode because '-StatusID' was provided."
+            Write-Verbose "Running in single-status mode because '-StatusID' was provided."
             $Resource = "api/Status/$($StatusID)$($QueryString)"
         }
         else {
-            Write-Verbose "Running in multi mode."
+            Write-Verbose "Running in multi-status mode."
             $Resource = "api/Status$($QueryString)"
         }    
         $RequestParams = @{
@@ -65,7 +65,7 @@ function Get-HaloStatus {
         Return $StatusResults
     }
     catch {
-        Write-Error "Failed to get Statuses from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get statuses from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }

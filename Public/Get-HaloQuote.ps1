@@ -81,7 +81,7 @@ function Get-HaloQuote {
         [Parameter( ParameterSetName = "Single" )]
         [switch]$IncludeDetails
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'QuoteID=' parameter by removing it from the set parameters.
     if ($QuoteID) {
@@ -90,11 +90,11 @@ function Get-HaloQuote {
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($QuoteID) {
-            Write-Verbose "Running in single mode because '-QuoteID' was provided."
-            $Resource = "api/Quotation/$($QuoteID)$($QueryString)"
+            Write-Verbose "Running in single-quote mode because '-QuoteID' was provided."
+            $Resource = "api/quotation/$($QuoteID)$($QueryString)"
         } else {
-            Write-Verbose "Running in multi mode."
-            $Resource = "api/Quotation$($QueryString)"
+            Write-Verbose "Running in multi-quote mode."
+            $Resource = "api/quotation$($QueryString)"
         }    
         $RequestParams = @{
             Method = "GET"
@@ -103,7 +103,7 @@ function Get-HaloQuote {
         $QuoteResults = Invoke-HaloRequest @RequestParams
         Return $QuoteResults
     } catch {
-        Write-Error "Failed to get Quotes from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get quotes from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }

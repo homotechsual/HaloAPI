@@ -1,9 +1,9 @@
 Function Set-HaloSite {
     <#
     .SYNOPSIS
-        Updates a Site via the Halo API.
+        Updates a site via the Halo API.
     .DESCRIPTION
-        Function to send a Site update request to the Halo API
+        Function to send a site update request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloSite {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Site
     )
-    Invoke-HaloUpdate -Object $Site -Endpoint "Site" -update
+    Invoke-HaloUpdate -Object $Site -Endpoint "site" -Update
 }

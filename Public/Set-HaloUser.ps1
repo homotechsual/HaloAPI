@@ -1,9 +1,9 @@
 Function Set-HaloUser {
     <#
     .SYNOPSIS
-        Updates a User via the Halo API.
+        Updates a user via the Halo API.
     .DESCRIPTION
-        Function to send a User update request to the Halo API
+        Function to send a user update request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloUser {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$User
     )
-    Invoke-HaloUpdate -Object $User -Endpoint "Users" -update
+    Invoke-HaloUpdate -Object $User -Endpoint "users" -Update
 }

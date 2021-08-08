@@ -12,5 +12,5 @@ Function Set-HaloAction {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Action
     )
-    Invoke-HaloUpdate -Object $Action -Endpoint "Actions" -update
+    Invoke-HaloUpdate -Object $Action -Endpoint "actions" -Update
 }

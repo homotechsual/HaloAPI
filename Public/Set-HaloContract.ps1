@@ -1,9 +1,9 @@
 Function New-HaloContract {
     <#
     .SYNOPSIS
-        Updates an Contract via the Halo API.
+        Updates a contract via the Halo API.
     .DESCRIPTION
-        Function to send an Contract update request to the Halo API
+        Function to send a contract update request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function New-HaloContract {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Contract
     )
-    Invoke-HaloUpdate -Object $Contract -Endpoint "ClientContract" -update
+    Invoke-HaloUpdate -Object $Contract -Endpoint "clientcontract" -Update
 }

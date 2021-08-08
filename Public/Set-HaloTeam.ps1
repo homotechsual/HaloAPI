@@ -1,9 +1,9 @@
 Function Set-HaloTeam {
     <#
     .SYNOPSIS
-        Updates a Team via the Halo API.
+        Updates a team via the Halo API.
     .DESCRIPTION
-        Function to send a Team update request to the Halo API
+        Function to send a team update request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloTeam {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Team
     )
-    Invoke-HaloUpdate -Object $Team -Endpoint "Team" -update
+    Invoke-HaloUpdate -Object $Team -Endpoint "team" -Update
 }

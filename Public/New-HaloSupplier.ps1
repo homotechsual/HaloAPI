@@ -1,9 +1,9 @@
 Function New-HaloSupplier {
     <#
     .SYNOPSIS
-        Creates a Supplier via the Halo API.
+        Creates a supplier via the Halo API.
     .DESCRIPTION
-        Function to send a Supplier creation request to the Halo API
+        Function to send a supplier creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

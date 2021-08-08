@@ -1,9 +1,9 @@
 Function New-HaloTicketType {
     <#
     .SYNOPSIS
-        Creates a TicketType via the Halo API.
+        Creates a ticket type via the Halo API.
     .DESCRIPTION
-        Function to send a TicketType creation request to the Halo API
+        Function to send a ticket type creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

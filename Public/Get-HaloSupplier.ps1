@@ -51,7 +51,7 @@ function Get-HaloSupplier {
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'SupplierID=' parameter by removing it from the set parameters.
     if ($SupplierID) {
@@ -60,11 +60,11 @@ function Get-HaloSupplier {
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($SupplierID) {
-            Write-Verbose "Running in single mode because '-SupplierID' was provided."
-            $Resource = "api/Supplier/$($SupplierID)$($QueryString)"
+            Write-Verbose "Running in single-supplier mode because '-SupplierID' was provided."
+            $Resource = "api/supplier/$($SupplierID)$($QueryString)"
         } else {
-            Write-Verbose "Running in multit mode."
-            $Resource = "api/Supplier$($QueryString)"
+            Write-Verbose "Running in multi-supplier mode."
+            $Resource = "api/supplier$($QueryString)"
         }    
         $RequestParams = @{
             Method = "GET"

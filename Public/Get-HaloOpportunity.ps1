@@ -2,15 +2,15 @@
 function Get-HaloOpportunity {
     <#
         .SYNOPSIS
-            Gets Opportunities from the Halo API.
+            Gets opportunities from the Halo API.
         .DESCRIPTION
-            Retrieves Opportunities from the Halo API - supports a variety of filtering parameters.
+            Retrieves opportunities from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
     Param(
-        # Ticket ID
+        # Opportunity ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
         [int64]$OpportunityID,
         # Paginate results
@@ -255,9 +255,8 @@ function Get-HaloOpportunity {
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeLastAction
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    
     # Workaround to prevent the query string processor from adding a 'OpportunityID=' parameter by removing it from the set parameters.
     if ($OpportunityID) {
         $Parameters.Remove("OpportunityID") | Out-Null
@@ -265,18 +264,18 @@ function Get-HaloOpportunity {
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($OpportunityID) {
-            Write-Verbose "Running in single-ticket mode because '-OpportunityID' was provided."
-            $Resource = "api/Opportunities/$($OpportunityID)$($QueryString)"
+            Write-Verbose "Running in single-opportunity mode because '-OpportunityID' was provided."
+            $Resource = "api/opportunities/$($OpportunityID)$($QueryString)"
         } else {
-            Write-Verbose "Running in multi-ticket mode."
-            $Resource = "api/Opportunities$($QueryString)"
+            Write-Verbose "Running in multi-opportunity mode."
+            $Resource = "api/opportunities$($QueryString)"
         }    
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
         }
-        $OppoResults = Invoke-HaloRequest @RequestParams
-        Return $OppoResults
+        $OpportunityResults = Invoke-HaloRequest @RequestParams
+        Return $OpportunityResults
     } catch {
         Write-Error "Failed to get opportunities from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"

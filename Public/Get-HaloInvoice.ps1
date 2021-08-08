@@ -77,9 +77,8 @@ function Get-HaloInvoice {
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("user_id")]
         [int32]$UserID
-
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'invoiceid=' parameter by removing it from the set parameters.
     if ($InvoiceID) {

@@ -39,7 +39,7 @@ function Get-HaloTicketType {
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'tickettypeid=' parameter by removing it from the set parameters.
     if ($TicketTypeID) {

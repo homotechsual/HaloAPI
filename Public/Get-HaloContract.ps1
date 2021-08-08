@@ -42,7 +42,7 @@ function Get-HaloContract {
         [Alias("client_id")]
         [int32]$ClientID
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'contractid=' parameter by removing it from the set parameters.
     if ($ContractID) {

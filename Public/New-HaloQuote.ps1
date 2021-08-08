@@ -1,9 +1,9 @@
 Function New-HaloQuote {
     <#
     .SYNOPSIS
-        Creates a Quote via the Halo API.
+        Creates a quote via the Halo API.
     .DESCRIPTION
-        Function to send a Quote creation request to the Halo API
+        Function to send a quote creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

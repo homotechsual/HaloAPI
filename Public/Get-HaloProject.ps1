@@ -2,15 +2,15 @@
 function Get-HaloProject {
     <#
         .SYNOPSIS
-            Gets Projects from the Halo API.
+            Gets projects from the Halo API.
         .DESCRIPTION
-            Retrieves Projects from the Halo API - supports a variety of filtering parameters.
+            Retrieves projects from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
     Param(
-        # Ticket ID
+        # Project ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
         [int64]$ProjectID,
         # Paginate results
@@ -258,9 +258,8 @@ function Get-HaloProject {
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeLastAction
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    
     # Workaround to prevent the query string processor from adding a 'ProjectID=' parameter by removing it from the set parameters.
     if ($ProjectID) {
         $Parameters.Remove("ProjectID") | Out-Null
@@ -268,20 +267,20 @@ function Get-HaloProject {
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($ProjectID) {
-            Write-Verbose "Running in single mode because '-ProjectID' was provided."
-            $Resource = "api/Projects/$($ProjectID)$($QueryString)"
+            Write-Verbose "Running in single-project mode because '-ProjectID' was provided."
+            $Resource = "api/projects/$($ProjectID)$($QueryString)"
         } else {
-            Write-Verbose "Running in multi mode."
-            $Resource = "api/Projects$($QueryString)"
+            Write-Verbose "Running in multi-project mode."
+            $Resource = "api/projects$($QueryString)"
         }    
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
         }
-        $OppoResults = Invoke-HaloRequest @RequestParams
-        Return $OppoResults
+        $ProjectResults = Invoke-HaloRequest @RequestParams
+        Return $ProjectResults
     } catch {
-        Write-Error "Failed to get Projects from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get projects from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }

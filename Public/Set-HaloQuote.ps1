@@ -1,9 +1,9 @@
 Function Set-HaloQuote {
     <#
     .SYNOPSIS
-        Updates a Quote via the Halo API.
+        Updates a quote via the Halo API.
     .DESCRIPTION
-        Function to send a Quote creation update to the Halo API
+        Function to send a quote creation update to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloQuote {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Quote
     )
-    Invoke-HaloUpdate -Object $Quote -Endpoint "Quotation" -update
+    Invoke-HaloUpdate -Object $Quote -Endpoint "quotation" -Update
 }

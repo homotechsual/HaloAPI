@@ -1,9 +1,9 @@
 Function New-HaloInvoice {
     <#
     .SYNOPSIS
-        Creates an Invoice via the Halo API.
+        Creates an invoice via the Halo API.
     .DESCRIPTION
-        Function to send an Invoice creation request to the Halo API
+        Function to send an invoice creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

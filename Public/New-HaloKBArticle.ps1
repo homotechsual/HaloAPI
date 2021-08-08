@@ -1,9 +1,9 @@
 Function New-HaloKBArticle {
     <#
     .SYNOPSIS
-        Creates an KBArticle via the Halo API.
+        Creates a knowledgebase article via the Halo API.
     .DESCRIPTION
-        Function to send an KBArticle creation request to the Halo API
+        Function to send a knowledgebase article creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

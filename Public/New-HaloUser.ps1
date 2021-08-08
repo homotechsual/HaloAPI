@@ -1,9 +1,9 @@
 Function New-HaloUser {
     <#
     .SYNOPSIS
-        Creates a User via the Halo API.
+        Creates a user via the Halo API.
     .DESCRIPTION
-        Function to send a User creation request to the Halo API
+        Function to send a user creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

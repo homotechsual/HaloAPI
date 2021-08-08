@@ -2,15 +2,15 @@
 function Get-HaloKBArticle {
     <#
         .SYNOPSIS
-            Gets KB Articles from the Halo API.
+            Gets knowledgebase articles from the Halo API.
         .DESCRIPTION
-            Retrieves KB Articles from the Halo API - supports a variety of filtering parameters.
+            Retrieves knowledgebase articles from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
     Param(
-        # Item ID
+        # Article ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
         [int64]$KBArticleID,
         # Number of records to return
@@ -41,7 +41,7 @@ function Get-HaloKBArticle {
         [Parameter( ParameterSetName = "Single" )]
         [switch]$IncludeDetails
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'KBArticleid=' parameter by removing it from the set parameters.
     if ($KBArticleID) {
@@ -50,10 +50,10 @@ function Get-HaloKBArticle {
     $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($KBArticleID) {
-            Write-Verbose "Running in single-item mode because '-KBArticleID' was provided."
+            Write-Verbose "Running in single-article mode because '-KBArticleID' was provided."
             $Resource = "api/KBArticle/$($KBArticleID)$($QueryString)"
         } else {
-            Write-Verbose "Running in multi-item mode."
+            Write-Verbose "Running in multi-article mode."
             $Resource = "api/KBArticle$($QueryString)"
         }    
         $RequestParams = @{
@@ -63,7 +63,7 @@ function Get-HaloKBArticle {
         $ItemResults = Invoke-HaloRequest @RequestParams
         Return $ItemResults
     } catch {
-        Write-Error "Failed to get KB Articles from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get knowledgebase articles from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }

@@ -1,9 +1,9 @@
 Function Set-HaloOpportunity {
     <#
     .SYNOPSIS
-        Updates an Opportunity via the Halo API.
+        Updates an opportunity via the Halo API.
     .DESCRIPTION
-        Function to send an Opportunity update request to the Halo API
+        Function to send an opportunity update request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloOpportunity {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Opportunity
     )
-    Invoke-HaloUpdate -Object $Opportunity -Endpoint "Opportunities" -update
+    Invoke-HaloUpdate -Object $Opportunity -Endpoint "opportunities" -Update
 }

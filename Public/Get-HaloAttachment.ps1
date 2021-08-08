@@ -40,7 +40,7 @@ function Get-HaloAttachment {
         [Parameter( ParameterSetName = "SinglePath", Mandatory = $True )]
         [String]$OutPath
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'attachmentid=' parameter by removing it from the set parameters.
     if ($AttachmentID) {
@@ -50,7 +50,7 @@ function Get-HaloAttachment {
     try {
         if ($AttachmentID) {
             Write-Verbose "Running in single-asset mode because '-AttachmentID' was provided."
-            $Resource = "api/Attachment/$($AttachmentID)$($QueryString)"
+            $Resource = "api/attachment/$($AttachmentID)$($QueryString)"
             $RequestParams = @{
                 Method    = "GET"
                 Resource  = $Resource
@@ -59,44 +59,39 @@ function Get-HaloAttachment {
         }
         else {
             Write-Verbose "Running in multi-asset mode."
-            $Resource = "api/Attachment$($QueryString)"
+            $Resource = "api/attachment$($QueryString)"
             $RequestParams = @{
                 Method   = "GET"
                 Resource = $Resource
             }
         }    
-        
-        $AssetResults = Invoke-HaloRequest @RequestParams
-
+        $AttachmentResults = Invoke-HaloRequest @RequestParams
         if ($AttachmentID) {
             Write-Verbose "Processing single mode response"
             if ($OutFile -or $OutPath) {
                 # Get the file name or set it
                 if ($OutPath) {
                     Write-Verbose "Attempting to output to path $OutPath"
-                    $contentDisposition = $AssetResults.Headers.'Content-Disposition'
-                    $disposition = [System.Net.Mime.ContentDisposition]::new($contentDisposition)
-                    $fileName = $disposition.FileName
-                    $path = Join-Path $OutPath $fileName
+                    $ContentDisposition = $AttachmentResults.Headers.'Content-Disposition'
+                    $Disposition = [System.Net.Mime.ContentDisposition]::new($ContentDisposition)
+                    $FileName = $Disposition.FileName
+                    $Path = Join-Path $OutPath $FileName
                 } else {
                     Write-Verbose "Attempting to output to file $OutFile"
-                    $path = $OutFile
+                    $Path = $OutFile
                 }                                      
 
-                Write-Verbose "Writing File $path"
-                $file = [System.IO.FileStream]::new($path, [System.IO.FileMode]::Create)
-                $file.write($AssetResults.Content, 0, $AssetResults.RawContentLength)
-                $file.close()
+                Write-Verbose "Writing File $Path"
+                $File = [System.IO.FileStream]::new($Path, [System.IO.FileMode]::Create)
+                $File.write($AttachmentResults.Content, 0, $AttachmentResults.RawContentLength)
+                $File.close()
             
             } else {
-                return $AssetResults.Content
-            }
-            
+                return $AttachmentResults.Content
+            }    
         } else {
-            Return $AssetResults
-        }
-
-        
+            Return $AttachmentResults
+        }   
     } catch {
         Write-Error "Failed to get attachments from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"

@@ -1,9 +1,9 @@
 Function New-HaloAttachment {
     <#
     .SYNOPSIS
-        Creates an Attachment via the Halo API.
+        Creates an attachment via the Halo API.
     .DESCRIPTION
-        Function to send an Attachment creation request to the Halo API
+        Function to send an attachment creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

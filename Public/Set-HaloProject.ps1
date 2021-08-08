@@ -1,9 +1,9 @@
 Function Set-HaloProject {
     <#
     .SYNOPSIS
-        Updates a Project via the Halo API.
+        Updates a project via the Halo API.
     .DESCRIPTION
-        Function to send a Project creation update to the Halo API
+        Function to send a project creation update to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloProject {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Project
     )
-    Invoke-HaloUpdate -Object $Project -Endpoint "Projects" -update
+    Invoke-HaloUpdate -Object $Project -Endpoint "projects" -Update
 }

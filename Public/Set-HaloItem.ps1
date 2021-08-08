@@ -1,9 +1,9 @@
 Function Set-HaloItem {
     <#
     .SYNOPSIS
-        Updates an Item via the Halo API.
+        Updates an item via the Halo API.
     .DESCRIPTION
-        Function to send an Item update request to the Halo API
+        Function to send an item update request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloItem {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Item
     )
-    Invoke-HaloUpdate -Object $Item -Endpoint "Item" -update
+    Invoke-HaloUpdate -Object $Item -Endpoint "item" -Update
 }

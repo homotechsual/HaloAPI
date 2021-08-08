@@ -22,14 +22,16 @@ function Invoke-HaloUpdate {
 
     try {
         if ($Update) {
-            Write-Verbose "Performing Update"
             if ($null -eq $Object.id){
-                Throw "Updates must have ID"
+                Throw "Updates must have an ID"
+            } else {
+                Write-Verbose "Updating $($Endpoint)"
             }
         } else {
-            Write-Verbose "Performing Creation"
             if ($null -ne $Object.id){
-                Throw "Creation must not have ID"
+                Throw "Creates must not have an ID"
+            } else {
+                Write-Verbose "Creating $($Endpoint)"
             }
         }
  

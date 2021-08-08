@@ -1,9 +1,9 @@
 Function New-HaloAction {
     <#
     .SYNOPSIS
-        Creates a action via the Halo API.
+        Creates an action via the Halo API.
     .DESCRIPTION
-        Function to send a action creation request to the Halo API
+        Function to send an action creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

@@ -1,9 +1,9 @@
 Function Set-HaloReport {
     <#
     .SYNOPSIS
-        Updates a Report via the Halo API.
+        Updates a report via the Halo API.
     .DESCRIPTION
-        Function to send a Report creation update to the Halo API
+        Function to send a report creation update to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>
@@ -12,5 +12,5 @@ Function Set-HaloReport {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Report
     )
-    Invoke-HaloUpdate -Object $Report -Endpoint "Report" -update
+    Invoke-HaloUpdate -Object $Report -Endpoint "report" -Update
 }

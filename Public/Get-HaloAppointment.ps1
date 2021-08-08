@@ -59,7 +59,7 @@ function Get-HaloAppointment {
         [Parameter( ParameterSetName = "Single" )]
         [switch]$IncludeDetails
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'appointmentid=' parameter by removing it from the set parameters.
     if ($AppointmentID) {
@@ -81,7 +81,7 @@ function Get-HaloAppointment {
         $AppointmentResults = Invoke-HaloRequest @RequestParams
         Return $AppointmentResults
     } catch {
-        Write-Error "Failed to get Appointments from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get appointments from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }

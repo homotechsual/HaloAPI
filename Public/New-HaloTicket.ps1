@@ -1,9 +1,9 @@
 Function New-HaloTicket {
     <#
     .SYNOPSIS
-        Creates a Ticket via the Halo API.
+        Creates a ticket via the Halo API.
     .DESCRIPTION
-        Function to send a Ticket creation request to the Halo API
+        Function to send a ticket creation request to the Halo API
     .OUTPUTS
         Outputs an object containing the response from the web request.
     #>

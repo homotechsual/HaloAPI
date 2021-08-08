@@ -12,5 +12,5 @@ Function Set-HaloClient {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Client
     )
-    Invoke-HaloUpdate -Update -Object $Client -Endpoint "Client"
+    Invoke-HaloUpdate -Object $Client -Endpoint "client" -Update
 }

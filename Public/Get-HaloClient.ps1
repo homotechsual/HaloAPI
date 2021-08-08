@@ -54,7 +54,7 @@ function Get-HaloClient {
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeActivity
     )
-    $CommandName = $PSCmdlet.MyInvocation.InvocationName
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'clientid=' parameter by removing it from the set parameters.
     if ($ClientID) {
