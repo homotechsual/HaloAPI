@@ -1,11 +1,12 @@
 # HaloAPI - A [PowerShell](https://microsoft.com/powershell) module for [Halo Service Solutions](https://haloservicesolutions.com/) software
 
+[![Azure DevOps Pipeline Status](https://img.shields.io/azure-devops/tests/MSPsUK/HaloAPI/1?style=for-the-badge)](https://dev.azure.com/MSPsUK/HaloAPI/_build?definitionId=1)
 [![Azure DevOps Code Coverage](https://img.shields.io/azure-devops/coverage/MSPsUK/HaloAPI/1?style=for-the-badge)](https://)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/HaloAPI?style=for-the-badge)](https://)
 [![License](https://img.shields.io/github/license/homotechsual/HaloAPI?style=for-the-badge)](https://haloapi.mit-license.org/)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/homotechsual?style=for-the-badge)](https://)
-[![Stable Release](https://img.shields.io/powershellgallery/v/HaloAPI?style=for-the-badge)](https://)
-[![Preview Release](https://img.shields.io/powershellgallery/v/HaloAPI?include_prereleases&style=for-the-badge)](https://)
+[![Stable Release](https://img.shields.io/powershellgallery/v/HaloAPI?label=Stable+Release&style=for-the-badge)](https://)
+[![Preview Release](https://img.shields.io/powershellgallery/v/HaloAPI?label=Preview+Release&include_prereleases&style=for-the-badge)](https://)
 
 ## Who are we?
 
