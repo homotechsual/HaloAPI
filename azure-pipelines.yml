@@ -36,4 +36,4 @@ steps:
 - powershell: Invoke-Build -Configuration 'Production' -Task Clean, CopyModuleFiles, PublishModule
   displayName: 'Publish PowerShell Module'
   env:
-    PSGallery: $(PSGallery-APIKey)
+    PSGallery: $(PSGalleryAPIKey)

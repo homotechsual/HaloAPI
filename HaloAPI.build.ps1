@@ -78,7 +78,7 @@ task PublishModule -if ($Configuration -eq 'Production') {
         # Build a splat containing the required details and make sure to Stop for errors which will trigger the catch
         $params = @{
             Path        = ("$($PSScriptRoot)\Output\HaloAPI")
-            NuGetApiKey = $env:PSGalleryKey
+            NuGetApiKey = $env:PSGalleryAPIKey
             ErrorAction = "Stop"
         }
         Publish-Module @params
