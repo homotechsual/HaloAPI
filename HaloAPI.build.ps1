@@ -10,6 +10,15 @@ Param (
 Set-StrictMode -Version Latest
 #endregion
 
+#region Task: Update the PowerShell Module Help Files.
+# Pre-requisites: PowerShell Module PlatyPS.
+task UpdateHelp {
+    Import-Module -Path ".\HaloAPI.psd1" -Force
+    Update-MarkdownHelp -Path ".\Docs\Markdown"
+    New-ExternalHelp -Path ".\Docs\Markdown" -OutputPath ".\Docs\en_GB" -Force
+}
+#endregion
+
 #region Task: Copy PowerShell Module files to output folder for release on PSGallery
 task CopyModuleFiles {
     # Copy Module Files to Output Folder
@@ -38,7 +47,6 @@ task Test {
     if ($Result.FailedCount -gt 0) {
         throw 'Pester tests failed'
     }
-
 }
 #endregion
 
