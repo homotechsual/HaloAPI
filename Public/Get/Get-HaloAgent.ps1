@@ -71,7 +71,7 @@ function Get-HaloAgent {
         } elseif ($Me) {
             Write-Verbose "Running in 'Me' mode."
             $Resource = "api/agent/me"
-        } else {I 
+        } else {
             Write-Verbose "Running in multi-agent mode."
             $Resource = "api/agent$($QueryString)"
         }

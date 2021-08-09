@@ -4,8 +4,12 @@
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/HaloAPI?style=for-the-badge)](https://)
 [![License](https://img.shields.io/github/license/homotechsual/HaloAPI?style=for-the-badge)](https://haloapi.mit-license.org/)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/homotechsual?style=for-the-badge)](https://)
-[![Stable Release](https://img.shields.io/powershellgallery/v/HaloAPI&style=for-the-badge)](https://)
+[![Stable Release](https://img.shields.io/powershellgallery/v/HaloAPI?style=for-the-badge)](https://)
 [![Preview Release](https://img.shields.io/powershellgallery/v/HaloAPI?include_prereleases&style=for-the-badge)](https://)
+
+## Who are we?
+
+We are Mikey O'Toole ([@homotechsual](https://github.com/homotechsual) and Luke Whitelock ([@LWhitelock](https://github.com/lwhitelock)) we are both directors for (separate) UK-based managed IT services providers who share a passion for automation and good quality MSP software tools.
 
 ## What is this?
 
