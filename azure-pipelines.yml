@@ -4,7 +4,7 @@ trigger:
   - main
 
 pool:
-  vmImage: 'vs2019-win2019'
+  vmImage: 'vs2017-win2016'
 
 variables:
   - group: AKS
