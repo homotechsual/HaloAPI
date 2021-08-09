@@ -1,0 +1,39 @@
+# Docs: https://aka.ms/yaml
+name: $(Build.DefinitionName)-$(Date:yyyyMMdd))
+trigger:
+  - main
+
+pool:
+  vmImage: 'vs2019-win2019'
+
+variables:
+  - group: AKS
+
+steps:
+- powershell: .\bootstrap.ps1
+  displayName: 'Install pre-requisites'
+
+- task: Pester@10
+  inputs:
+    scriptFolder: '$(System.DefaultWorkingDirectory)\*'
+    resultsFile: '$(Common.TestResultsDirectory)\Test-$(Build.DefinitionName)-$(Build.BuildNumber)-Results.xml'
+    CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
+    usePSCore: true
+    additionalModulePath: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '**/Test-*-*-Results.xml'
+    searchFolder: '$(Common.TestResultsDirectory)'
+    failTaskOnFailedTests: true
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'JaCoCo'
+    summaryFileLocation: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
+
+- powershell: Invoke-Build -Configuration 'Production' -Task Clean, CopyModuleFiles, PublishModule
+  displayName: 'Publish PowerShell Module'
+  env:
+    PSGallery: $(PSGallery-APIKey)

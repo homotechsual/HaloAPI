@@ -11,7 +11,7 @@
     RootModule = '.\HaloAPI.psm1'
     
     # Version number of this module.
-    ModuleVersion = '0.1'
+    ModuleVersion = '1.0.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -166,26 +166,28 @@
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags = @(
                 'HaloPSA',
-                'Halo PSA',
                 'PSA',
                 'Halo',
                 'API',
-                'Halo Service Solutions',
                 'HaloServiceSolutions',
-                'Halo ITSM',
                 'HaloITSM',
-                'Halo Service Desk',
-                'HaloServiceDesk'
+                'HaloServiceDesk',
+                'ITSM',
+                'Service',
+                'Desk',
+                'REST',
+                'MSP',
+                'Automation'
             )
     
             # A URL to the license for this module.
-            # LicenseUri = ''
+            LicenseUri = 'https://haloapi.mit-license.org/'
     
             # A URL to the main website for this project.
-            # ProjectUri = ''
+            ProjectUri = 'https://github.com/homotechsual/HaloAPI'
     
             # A URL to an icon representing this module.
-            # IconUri = ''
+            IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
     
             # ReleaseNotes of this module
             # ReleaseNotes = ''
