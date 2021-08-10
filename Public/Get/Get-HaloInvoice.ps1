@@ -92,7 +92,9 @@ function Get-HaloInvoice {
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "invoices"
             }
         } else {
             Write-Verbose "Running in multi-invoice mode."
@@ -103,6 +105,7 @@ function Get-HaloInvoice {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "invoices"
             }
         }    
         $InvoiceResults = New-HaloRequest @RequestParams

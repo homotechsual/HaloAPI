@@ -56,7 +56,9 @@ function Get-HaloContract {
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "clientcontracts"
             }
         } else {
             Write-Verbose "Running in multi-contract mode."
@@ -67,6 +69,7 @@ function Get-HaloContract {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "clientcontracts"
             }
         }
         $ContractResults = New-HaloRequest @RequestParams

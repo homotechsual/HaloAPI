@@ -101,7 +101,9 @@ function Get-HaloUser {
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "users"
             }
         } else {
             Write-Verbose "Running in multi-user mode."
@@ -112,6 +114,7 @@ function Get-HaloUser {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "users"
             }
         }
         $UserResults = New-HaloRequest @RequestParams

@@ -1,18 +1,18 @@
 #Requires -Version 7
-function Get-HaloQuote {
+function Get-HaloSalesOrder {
     <#
         .SYNOPSIS
-            Gets quotes from the Halo API.
+            Gets sales orders from the Halo API.
         .DESCRIPTION
-            Retrieves quotes from the Halo API - supports a variety of filtering parameters.
+            Retrieves sales orders from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
     Param(
-        # Quote ID
+        # Sales Order ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
-        [int64]$QuoteID,
+        [int64]$SalesOrderID,
         # Number of records to return
         [Parameter( ParameterSetName = "Multi" )]
         [int64]$Count,
@@ -31,40 +31,27 @@ function Get-HaloQuote {
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("page_no")]
         [int32]$PageNo,
-        # The name of the first field to order by
+        # Include open sales orders in the results.
         [Parameter( ParameterSetName = "Multi" )]
-        [string]$OrderBy,
-        # Whether to order ascending or descending
+        [switch]$Open,
+        # Include closed sales orders in the results.
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc,
-        # The name of the second field to order by
+        [switch]$Closed,
+        # Include sales orders which require ordering in the results.
         [Parameter( ParameterSetName = "Multi" )]
-        [string]$OrderBy2,
-        # Whether to order ascending or descending
+        [switch]$NeedsOrdering,
+        # Include active sales orders in the results.
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc2,
-        # The name of the third field to order by
+        [switch]$IncludeActive,
+        # Include inactive sales orders in the results.
         [Parameter( ParameterSetName = "Multi" )]
-        [string]$OrderBy3,
-        # Whether to order ascending or descending
+        [switch]$IncludeInactive,
+        # Which field to order results based on.
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc3,
-        # The name of the fourth field to order by
+        [string]$Order,
+        # Order results in descending order (respects the field choice in '-Order')
         [Parameter( ParameterSetName = "Multi" )]
-        [string]$OrderBy4,
-        # Whether to order ascending or descending
-        [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc4,
-        # The name of the fifth field to order by
-        [Parameter( ParameterSetName = "Multi" )]
-        [string]$OrderBy5,
-        # Whether to order ascending or descending
-        [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc5,
-        # Filters by the specified ticket
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("ticket_id")]
-        [int64]$TicketID,
+        [switch]$OrderDesc,
         # Filters by the specified client
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("client_id")]
@@ -73,48 +60,47 @@ function Get-HaloQuote {
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("site_id")]
         [int64]$SiteID,
-        # Filters by the specified user
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("user_id")]
-        [int64]$UserID,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
-        [switch]$IncludeDetails
+        [switch]$IncludeDetails,
+        # Include billing details in the result.
+        [Parameter( ParameterSetName = "Single" )]
+        [switch]$IncludeBillingInfo
     )
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'QuoteID=' parameter by removing it from the set parameters.
-    if ($QuoteID) {
-        $Parameters.Remove("QuoteID") | Out-Null
+    # Workaround to prevent the query string processor from adding a 'SalesOrderID=' parameter by removing it from the set parameters.
+    if ($SalesOrderID) {
+        $Parameters.Remove("SalesOrderID") | Out-Null
     }
     try {
-        if ($QuoteID) {
-            Write-Verbose "Running in single-quote mode because '-QuoteID' was provided."
+        if ($SalesOrderID) {
+            Write-Verbose "Running in single-sales order mode because '-SalesOrderID' was provided."
             $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/quotation/$($QuoteID)"
+            $Resource = "api/salesorder/$($SalesOrderID)"
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = "quotes"
+                ResourceType = "salesorders"
             }
         } else {
-            Write-Verbose "Running in multi-quote mode."
+            Write-Verbose "Running in multi-sales order mode."
             $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = "api/quotation"
+            $Resource = "api/salesorder"
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
-                ResourceType = "quotes"
+                ResourceType = "salesorders"
             }
         }
-        $QuoteResults = New-HaloRequest @RequestParams
-        Return $QuoteResults
+        $SalesOrderResults = New-HaloRequest @RequestParams
+        Return $SalesOrderResults
     } catch {
-        Write-Error "Failed to get quotes from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get sales orders from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }

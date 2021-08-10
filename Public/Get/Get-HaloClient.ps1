@@ -68,7 +68,9 @@ function Get-HaloClient {
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "clients"
             }
         } else {
             Write-Verbose "Running in multi-client mode."
@@ -79,6 +81,7 @@ function Get-HaloClient {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "clients"
             }
         }
         $ClientResults = New-HaloRequest @RequestParams

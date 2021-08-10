@@ -1,18 +1,18 @@
 #Requires -Version 7
-function Get-HaloItem {
+function Get-HaloService {
     <#
         .SYNOPSIS
-            Gets items from the Halo API.
+            Gets services from the Halo API.
         .DESCRIPTION
-            Retrieves items from the Halo API - supports a variety of filtering parameters.
+            Retrieves services from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
     Param(
-        # Item ID
+        # Service ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
-        [int64]$ItemID,
+        [int64]$ServiceID,
         # Number of records to return
         [Parameter( ParameterSetName = "Multi" )]
         [int64]$Count,
@@ -31,74 +31,73 @@ function Get-HaloItem {
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("page_no")]
         [int32]$PageNo,
-        # The name of the first field to order by
+        # Which field to order results based on.
         [Parameter( ParameterSetName = "Multi" )]
-        [string]$OrderBy,
-        # Whether to order ascending or descending
+        [string]$Order,
+        # Order results in descending order (respects the field choice in '-Order')
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc,
-        # The name of the second field to order by
+        [switch]$OrderDesc,
+        # Filters by services accessible to the specified user.
         [Parameter( ParameterSetName = "Multi" )]
-        [string]$OrderBy2,
-        # Whether to order ascending or descending
+        [Alias("user_id")]
+        [int32]$UserID,
+        # Filters by the specified array of operational status IDs.
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc2,
-        # The name of the third field to order by
+        [Alias("service_status_ids")]
+        [int32[]]$ServiceStatusIDs,
+        # Filters by the specified service catalogue.
         [Parameter( ParameterSetName = "Multi" )]
-        [string]$OrderBy3,
-        # Whether to order ascending or descending
+        [Alias("service_catalogue_type")]
+        [int32]$ServiceCatalogueType,
+        # Filters by the specified array of service category IDs.
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc3,
-        # The name of the fourth field to order by
+        [Alias("service_category_ids")]
+        [int32[]]$ServiceCategoryIDs,
+        # Filters by the specified ITIL ticket type ID.
         [Parameter( ParameterSetName = "Multi" )]
-        [string]$OrderBy4,
-        # Whether to order ascending or descending
+        [Alias("itil_ticket_type")]
+        [int32]$ITILTicketType,
+        # Include service status information in the result.
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc4,
-        # The name of the fifth field to order by
-        [Parameter( ParameterSetName = "Multi" )]
-        [string]$OrderBy5,
-        # Whether to order ascending or descending
-        [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc5,  
+        [switch]$IncludeStatusInfo,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [switch]$IncludeDetails
     )
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'itemid=' parameter by removing it from the set parameters.
-    if ($ItemID) {
-        $Parameters.Remove("ItemID") | Out-Null
+    # Workaround to prevent the query string processor from adding a ServiceID=' parameter by removing it from the set parameters.
+    if ($ServiceID) {
+        $Parameters.Remove("ServiceID") | Out-Null
     }
     try {
-        if ($ItemID) {
-            Write-Verbose "Running in single-item mode because '-ItemID' was provided."
+        if ($ServiceID) {
+            Write-Verbose "Running in single-service mode because '-ServiceID' was provided."
             $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/item/$($ItemID)"
+            $Resource = "api/service/$($ServiceID)"
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = "items"
+                ResourceType = "services"
             }
         } else {
-            Write-Verbose "Running in multi-item mode."
+            Write-Verbose "Running in multi-service mode."
             $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = "api/item"
+            $Resource = "api/service"
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
-                ResourceType = "items"
+                ResourceType = "services"
             }
         }
-        $ItemResults = New-HaloRequest @RequestParams
-        Return $ItemResults
+        $ServiceResults = New-HaloRequest @RequestParams
+        Return $ServiceResults
     } catch {
-        Write-Error "Failed to get items from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get services from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }

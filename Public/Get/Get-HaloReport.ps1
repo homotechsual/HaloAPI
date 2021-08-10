@@ -105,7 +105,9 @@ function Get-HaloReport {
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "reports"
             }
         } else {
             Write-Verbose "Running in multi-report mode."
@@ -116,6 +118,7 @@ function Get-HaloReport {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "reports"
             }
         }
         $ReportResults = New-HaloRequest @RequestParams

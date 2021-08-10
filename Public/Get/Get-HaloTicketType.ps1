@@ -57,7 +57,9 @@ function Get-HaloTicketType {
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
+            AutoPaginateOff = $True
             QSCollection = $QSCollection
+            ResourceType = "tickettypes"
         }
         $TicketTypeResults = New-HaloRequest @RequestParams
         Return $TicketTypeResults

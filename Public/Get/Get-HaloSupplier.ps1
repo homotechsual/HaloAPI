@@ -65,7 +65,9 @@ function Get-HaloSupplier {
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "suppliers"
             }
         } else {
             Write-Verbose "Running in multi-supplier mode."
@@ -76,6 +78,7 @@ function Get-HaloSupplier {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "suppliers"
             }
         }
         $SupplierResults = New-HaloRequest @RequestParams

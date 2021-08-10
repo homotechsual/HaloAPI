@@ -106,6 +106,7 @@ function Get-HaloAsset {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "assets"
             }
         }    
         $AssetResults = New-HaloRequest @RequestParams

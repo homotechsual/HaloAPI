@@ -60,6 +60,9 @@ function Get-HaloStatus {
         $RequestParams = @{
             Method   = "GET"
             Resource = $Resource
+            AutoPaginateOff = $True
+            QSCollection = $QSCollection
+            ResourceType = "statuses"
         }
         $StatusResults = New-HaloRequest @RequestParams
         Return $StatusResults

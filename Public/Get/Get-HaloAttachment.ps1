@@ -55,7 +55,9 @@ function Get-HaloAttachment {
                 Method    = "GET"
                 Resource  = $Resource
                 RawResult = $True
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "attachments"
             }
         }
         else {
@@ -64,7 +66,9 @@ function Get-HaloAttachment {
             $RequestParams = @{
                 Method   = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "attachments"
             }
         }    
         $AttachmentResults = New-HaloRequest @RequestParams

@@ -272,7 +272,9 @@ function Get-HaloProject {
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "tickets"
             }
         } else {
             Write-Verbose "Running in multi-project mode."
@@ -283,6 +285,7 @@ function Get-HaloProject {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "tickets"
             }
         }
         $ProjectResults = New-HaloRequest @RequestParams

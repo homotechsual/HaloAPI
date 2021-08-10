@@ -9,7 +9,8 @@ function New-HaloQueryString {
             Mandatory = $True
         )]
         [Hashtable]$Parameters,
-        [Switch]$IsMulti
+        [Switch]$IsMulti,
+        [Switch]$CommaSeparatedArrays
     )
     Write-Verbose "Building parameters for $($CommandName). Use '-Debug' with '-Verbose' to see parameter values as they are built."
     $QSCollection = [Hashtable]@{}
@@ -34,7 +35,12 @@ function New-HaloQueryString {
                     $Query = ([String]$ParameterVariable.Name).ToLower()
                 }
                 $Value = $ParameterVariable.Value
-                if ($Value -is [array]) {
+                if (($Value -is [array]) -and ($CommaSeparatedArrays)) {
+                    Write-Debug "Building comma separated array string."
+                    $QueryValue = $Value -join ","
+                    $QSCollection.Add($Query, $QueryValue)
+                    Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
+                } elseif (($Value -is [array]) -and (-not $CommaSeparatedArrays)) {
                     foreach ($ArrayValue in $Value) {
                         $QSCollection.Add($Query, $ArrayValue)
                         Write-Debug "Adding parameter $($Query) with value $($ArrayValue)"
@@ -59,15 +65,8 @@ function New-HaloQueryString {
                     $Query = ([String]$ParameterVariable.Name).ToLower()
                 }
                 $Value = ([String]$ParameterVariable.Value).ToLower()
-                if ($Value -is [array]) {
-                    foreach ($ArrayValue in $Value) {
-                        $QSCollection.Add($Query, $ArrayValue)
-                        Write-Debug "Adding parameter $($Query) with value $($ArrayValue)"
-                    }
-                } else {
-                    $QSCollection.Add($Query, $Value)
-                    Write-Debug "Adding parameter $($Query) with value $($Value)"
-                }
+                $QSCollection.Add($Query, $Value)
+                Write-Debug "Adding parameter $($Query) with value $($Value)"
             }
         }
         if (($Parameter.ParameterType.Name -eq "Int32") -or ($Parameter.ParameterType.Name -eq "Int64") -or ($Parameter.ParameterType.Name -eq "Int32[]") -or ($Parameter.ParameterType.Name -eq "Int64[]")) {
@@ -84,7 +83,12 @@ function New-HaloQueryString {
                     $Query = ([String]$ParameterVariable.Name).ToLower()
                 }
                 $Value = $ParameterVariable.Value
-                if ($Value -is [array]) {
+                if (($Value -is [array]) -and ($CommaSeparatedArrays)) {
+                    Write-Debug "Building comma separated array string."
+                    $QueryValue = $Value -join ","
+                    $QSCollection.Add($Query, $QueryValue)
+                    Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
+                } elseif (($Value -is [array]) -and (-not $CommaSeparatedArrays)) {
                     foreach ($ArrayValue in $Value) {
                         $QSCollection.Add($Query, $ArrayValue)
                         Write-Debug "Adding parameter $($Query) with value $($ArrayValue)"
