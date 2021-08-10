@@ -73,6 +73,9 @@ function Get-HaloTicket {
         # Include next activity date in the results.
         [Parameter( ParameterSetName = "Multi" )]
         [switch]$IncludeNextActivityDate,
+        # Filter by the specified ticket area.
+        [Parameter( ParameterSetName = "Multi" )]
+        [int32]$TicketAreaID,
         # Filter by the specified list.
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("list_id")]
@@ -269,7 +272,9 @@ function Get-HaloTicket {
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "tickets"
             }
         } else {
             Write-Verbose "Running in multi-ticket mode."
@@ -280,6 +285,7 @@ function Get-HaloTicket {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "tickets"
             }
         }
         $TicketResults = New-HaloRequest @RequestParams

@@ -22,16 +22,16 @@ function New-HaloRequest {
             Mandatory = $True
         )]
         [String]$Resource,
+        # Returns the Raw result. Useful for file downloads
+        [Switch]$RawResult,
         # The request body to send.
         [String]$Body,
         # A hashtable used to build the query string.
         [Hashtable]$QSCollection,
-        # Allows the request to be performed without authentication.
-        [Switch]$AllowAnonymous,
-        # Returns the Raw result. Useful for file downloads
-        [Switch]$RawResult,
         # Disables auto pagination.
-        [Switch]$AutoPaginateOff
+        [Switch]$AutoPaginateOff,
+        # The key for the results object.
+        [String]$ResourceType
     )
     if ($null -eq $Script:HAPIConnectionInformation) {
         Throw "Missing Halo connection information, please run 'Connect-HaloAPI' first."
@@ -63,18 +63,19 @@ function New-HaloRequest {
         $PageNum = $QSCollection.page_no
         $PageSize = $QSCollection.page_size
     }
-    Write-Debug "Query string in New-HaloRequest contains: $($QSCollection | Out-String)"
     if ($QSCollection) {
+        Write-Debug "Query string in New-HaloRequest contains: $($QSCollection | Out-String)"
         $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
         Write-Verbose "Building [HttpQSCollection] for New-HaloRequest"
         foreach ($Key in $QSCollection.Keys) {
             $QueryStringCollection.Add($Key, $QSCollection.$Key)
         }
     } else {
-        Write-Warning "Query string collection not present..."
+        Write-Debug "Query string collection not present..."
     }
     $QSBuilder = [System.UriBuilder]::new()
     if ($AutoPaginateOff) {
+        Write-Debug "Automatic pagination is off."
         $QSBuilder.Query = $QueryStringCollection.ToString()
         $Query = $QSBuilder.Query.ToString()
         $WebRequestParams = @{
@@ -84,7 +85,13 @@ function New-HaloRequest {
             Uri = "$($Script:HAPIConnectionInformation.URL)$($Resource)$($Query)"
         }
         Write-Debug "Building new HaloRequest with params: $($WebRequestParams | Out-String)"
-        $Result = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
+        $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
+        Write-Debug "Halo request returned $($Response | Out-String)"
+        if ($Response.PSObject.Properties.name -match $ResourceType) {
+            $Result = $Response.$ResourceType
+        } else {
+            $Result = $Response
+        }
     } elseif ($PageNum) {
         $Result = do {
             Write-Verbose "Processing page $PageNum"
@@ -100,10 +107,15 @@ function New-HaloRequest {
             }
             Write-Debug "Building new HaloRequest with params: $($WebRequestParams | Out-String)"
             $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
+            Write-Debug "Halo request returned $($Response | Out-String)"
             $NumPages = [Math]::Ceiling($Response.record_count / $PageSize)
             Write-Verbose "Total number of pages to process: $NumPages"
             $PageNum++
-            $Response | Select-Object "record_count", "users"
+            if ($Response.PSObject.Properties.name -match $ResourceType) {
+                $Response.$ResourceType
+            } else {
+                $Response
+            }
         } while ($PageNum -lt $NumPages)
     }
     Return $Result

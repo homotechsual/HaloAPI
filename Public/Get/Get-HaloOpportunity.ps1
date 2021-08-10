@@ -269,7 +269,9 @@ function Get-HaloOpportunity {
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "tickets"
             }
         } else {
             Write-Verbose "Running in multi-opportunity mode."
@@ -280,6 +282,7 @@ function Get-HaloOpportunity {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "tickets"
             }
         }
         $OpportunityResults = New-HaloRequest @RequestParams

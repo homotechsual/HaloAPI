@@ -89,7 +89,9 @@ function Get-HaloAction {
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
+            AutoPaginateOff = $True
             QSCollection = $QSCollection
+            ResourceType = "actions"
         }
         $ActionResults = New-HaloRequest @RequestParams
         Return $ActionResults

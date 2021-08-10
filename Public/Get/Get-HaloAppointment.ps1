@@ -77,7 +77,9 @@ function Get-HaloAppointment {
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
+            AutoPaginateOff = $True
             QSCollection = $QSCollection
+            ResourceType = "appointments"
         }
         $AppointmentResults = New-HaloRequest @RequestParams
         Return $AppointmentResults

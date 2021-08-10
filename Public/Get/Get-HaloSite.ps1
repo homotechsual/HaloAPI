@@ -67,7 +67,9 @@ function Get-HaloSite {
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "sites"
             }
         } else {
             Write-Verbose "Running in multi-site mode."
@@ -78,6 +80,7 @@ function Get-HaloSite {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
+                ResourceType = "sites"
             }
         }
         $SiteResults = New-HaloRequest @RequestParams

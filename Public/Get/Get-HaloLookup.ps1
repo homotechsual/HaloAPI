@@ -44,7 +44,9 @@ function Get-HaloLookup {
         $RequestParams = @{
             Method   = "GET"
             Resource = $Resource
+            AutoPaginateOff = $True
             QSCollection = $QSCollection
+            ResourceType = "lookups"
         }
         $LookupResults = New-HaloRequest @RequestParams
         Return $LookupResults

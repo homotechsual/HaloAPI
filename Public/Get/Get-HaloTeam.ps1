@@ -74,7 +74,9 @@ function Get-HaloTeam {
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
+            AutoPaginateOff = $True
             QSCollection = $QSCollection
+            ResourceType = "teams"
         }
         $TeamResults = New-HaloRequest @RequestParams
         Return $TeamResults

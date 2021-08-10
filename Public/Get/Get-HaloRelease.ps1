@@ -1,18 +1,18 @@
 #Requires -Version 7
-function Get-HaloKBArticle {
+function Get-HaloRelease {
     <#
         .SYNOPSIS
-            Gets knowledgebase articles from the Halo API.
+            Gets software releases from the Halo API.
         .DESCRIPTION
-            Retrieves knowledgebase articles from the Halo API - supports a variety of filtering parameters.
+            Retrieves software releases from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
     Param(
-        # Article ID
+        # Software Release ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
-        [int64]$KBArticleID,
+        [int64]$ReleaseID,
         # Number of records to return
         [Parameter( ParameterSetName = "Multi" )]
         [int64]$Count,
@@ -31,50 +31,57 @@ function Get-HaloKBArticle {
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("page_no")]
         [int32]$PageNo,
-        # The name of the first field to order by
+        # Which field to order results based on.
         [Parameter( ParameterSetName = "Multi" )]
         [string]$Order,
-        # Whether to order ascending or descending
+        # Order results in descending order (respects the field choice in '-Order')
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderDesc,  
+        [switch]$OrderDesc,
+        # Include release note count in the result.
+        [Parameter( ParameterSetName = "Multi" )]
+        [switch]$IncludeNoteCount,
+        # Filter by specified product ID.
+        [Parameter( ParameterSetName = "Multi" )]
+        [Alias("product_id")]
+        [int32]$ProductID,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [switch]$IncludeDetails
     )
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'KBArticleid=' parameter by removing it from the set parameters.
-    if ($KBArticleID) {
-        $Parameters.Remove("KBArticleID") | Out-Null
+    # Workaround to prevent the query string processor from adding a ReleaseID=' parameter by removing it from the set parameters.
+    if ($ReleaseID) {
+        $Parameters.Remove("ReleaseID") | Out-Null
     }
     try {
-        if ($KBArticleID) {
-            Write-Verbose "Running in single-article mode because '-KBArticleID' was provided."
+        if ($ReleaseID) {
+            Write-Verbose "Running in single-software release mode because '-ReleaseID' was provided."
             $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/KBArticle/$($KBArticleID)"
+            $Resource = "api/release/$($ReleaseID)"
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = "articles"
+                ResourceType = "releases"
             }
         } else {
-            Write-Verbose "Running in multi-article mode."
+            Write-Verbose "Running in multi-software release mode."
             $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = "api/KBArticle"
+            $Resource = "api/release"
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
-                ResourceType = "articles"
+                ResourceType = "releases"
             }
         }
-        $ItemResults = New-HaloRequest @RequestParams
-        Return $ItemResults
+        $ReleaseResults = New-HaloRequest @RequestParams
+        Return $ReleaseResults
     } catch {
-        Write-Error "Failed to get knowledgebase articles from the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Error "Failed to get software releases from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }
 }

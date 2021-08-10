@@ -78,7 +78,9 @@ function Get-HaloAgent {
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
+            AutoPaginateOff = $True
             QSCollection = $QSCollection
+            ResourceType = "agents"
         }
         $AgentResults = New-HaloRequest @RequestParams
         Return $AgentResults

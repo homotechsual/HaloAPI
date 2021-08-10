@@ -15,7 +15,7 @@ function Invoke-HaloUpdate {
         # Object to Update / Create
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Object,
-        # End Point to use
+        # Endpoint to use
         [Parameter( Mandatory = $True )]
         [string]$Endpoint
     )
@@ -35,12 +35,12 @@ function Invoke-HaloUpdate {
             }
         }
  
-        $RequestParams = @{
+        $WebRequestParams = @{
             Method = "POST"
             Resource = "api/$Endpoint"
             Body = $Object | ConvertTo-Json -Depth 100 -AsArray
         }
-        $ClientResults = New-HaloRequest @RequestParams
+        $ClientResults = Invoke-HaloRequest -WebRequestParams $WebRequestParams
         Return $ClientResults
     } catch {
         Write-Error "Failed to create/update $Endpoint in the Halo API. You'll see more detail if using '-Verbose'"

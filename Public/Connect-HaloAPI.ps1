@@ -127,13 +127,13 @@ function Connect-HaloAPI {
         $AuthToken = @{
             Type = $TokenPayload.token_type
             Access = $TokenPayload.access_token
-            Expires = Get-TokenExpiry -ExpiresIn $Script:HAPITokenExpiry # Works around a bug where the API returns a 9 hour lifetime for all tokens.
+            Expires = Get-TokenExpiry -ExpiresIn $TokenPayload.expires_in
             Refresh = $TokenPayload.refresh_token
             Id = $TokenPayload.id_token
         }
         Set-Variable -Name "HAPIAuthToken" -Value $AuthToken -Visibility Private -Scope Script -Force
         Write-Verbose "Got authentication token."
-        Write-Debug "Authentication token set to: $($Script:HAPIAuthToken | Out-String)"
+        Write-Debug "Authentication token set to: $($Script:HAPIAuthToken | Out-String -Width 2048)"
     } catch {
         $ExceptionResponse = $_.Exception.Response
         Write-Error "The Halo API request `($($ExceptionResponse.RequestMessage.Method) $($ExceptionResponse.RequestMessage.RequestUri)`) responded with $($ExceptionResponse.StatusCode.Value__): $($ExceptionResponse.ReasonPhrase). You'll see more detail if using '-Verbose'"
