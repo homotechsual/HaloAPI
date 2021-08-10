@@ -60,20 +60,28 @@ function Get-HaloClient {
     if ($ClientID) {
         $Parameters.Remove("ClientID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($ClientID) {
             Write-Verbose "Running in single-client mode because '-ClientID' was provided."
-            $Resource = "api/client/$($ClientID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/client/$($ClientID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-client mode."
-            $Resource = "api/client$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/client"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $ClientResults = Invoke-HaloRequest @RequestParams
+        $ClientResults = New-HaloRequest @RequestParams
         Return $ClientResults
     } catch {
         Write-Error "Failed to get clients from the Halo API. You'll see more detail if using '-Verbose'"

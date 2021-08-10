@@ -261,20 +261,28 @@ function Get-HaloTicket {
     if ($TicketID) {
         $Parameters.Remove("TicketID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($TicketID) {
             Write-Verbose "Running in single-ticket mode because '-TicketID' was provided."
-            $Resource = "api/tickets/$($TicketID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/tickets/$($TicketID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-ticket mode."
-            $Resource = "api/tickets$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/tickets"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $TicketResults = Invoke-HaloRequest @RequestParams
+        $TicketResults = New-HaloRequest @RequestParams
         Return $TicketResults
     } catch {
         Write-Error "Failed to get tickets from the Halo API. You'll see more detail if using '-Verbose'"

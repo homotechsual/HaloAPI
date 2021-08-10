@@ -8,10 +8,11 @@ function New-HaloQueryString {
         [Parameter(
             Mandatory = $True
         )]
-        [Hashtable]$Parameters
+        [Hashtable]$Parameters,
+        [Switch]$IsMulti
     )
     Write-Verbose "Building parameters for $($CommandName). Use '-Debug' with '-Verbose' to see parameter values as they are built."
-    $QSCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
+    $QSCollection = [Hashtable]@{}
     foreach ($Parameter in $Parameters.Values) {
         # Skip system parameters.
         if (([System.Management.Automation.Cmdlet]::CommonParameters).Contains($Parameter.Name)) {
@@ -22,7 +23,7 @@ function New-HaloQueryString {
         if (($Parameter.ParameterType.Name -eq "String") -or ($Parameter.ParameterType.Name -eq "String[]")) {
             Write-Debug "Found String or String Array param $($ParameterVariable.Name)"
             if ([String]::IsNullOrEmpty($ParameterVariable.Value)) {
-                Write-Debug "Skipping $($ParameterVariable.Name)"
+                Write-Debug "Skipping unset param $($ParameterVariable.Name)"
                 Continue
             } else {
                 if ($Parameter.Aliases) {
@@ -47,7 +48,7 @@ function New-HaloQueryString {
         if ($Parameter.ParameterType.Name -eq "SwitchParameter") {
             Write-Debug "Found Switch param $($ParameterVariable.Name)"
             if ($ParameterVariable.Value -eq $False) {
-                Write-Debug "Skipping $($ParameterVariable.Name)"
+                Write-Debug "Skipping unset param $($ParameterVariable.Name)"
                 Continue
             } else {
                 if ($Parameter.Aliases) {
@@ -72,7 +73,7 @@ function New-HaloQueryString {
         if (($Parameter.ParameterType.Name -eq "Int32") -or ($Parameter.ParameterType.Name -eq "Int64") -or ($Parameter.ParameterType.Name -eq "Int32[]") -or ($Parameter.ParameterType.Name -eq "Int64[]")) {
             Write-Debug "Found Int or Int Array param $($ParameterVariable.Name)"
             if (($ParameterVariable.Value -eq 0) -or ($null -eq $ParameterVariable.Value)) {
-                Write-Debug "Skipping $($ParameterVariable.Name)"
+                Write-Debug "Skipping unset param $($ParameterVariable.Name)"
                 Continue
             } else {
                 if ($Parameter.Aliases) {
@@ -95,8 +96,24 @@ function New-HaloQueryString {
             }
         }
     }
-    $QSBuilder = [System.UriBuilder]::new()
-    $QSBuilder.Query = $QSCollection.ToString()
-    $QS = $QSBuilder.Query.ToString()
-    Return [String]$QS
+    if ("count" -in $QSCollection) {
+        Write-Warning "Halo recommend use of pagination with the '-Paginate' parameter instead of '-Count'."
+    }
+    if ((('pageinate' -notin $QSCollection) -and ('count' -notin $QSCollection)) -and ($IsMulti)) {
+        Write-Warning "Running in 'multi' mode but neither '-Paginate' or '-Count' was specified. All results will be returned."
+        $QSCollection.Add('pageinate', 'true')
+        if (-not($QSCollection.page_size)) {
+            $QSCollection.Add('page_size', $Script:HAPIDefaultPageSize)
+        }
+        $QSCollection.Add('page_no', 1)
+    }
+    if (('pageinate' -in $QSCollection) -and ('page_size' -notin $QSCollection) -and ($IsMulti)) {
+        Write-Warning "Parameter '-PageSize' was not provided for a paginated request. Using default value of $($Script:HAPIDefaultPageSize)"
+    }
+    if (('pageinate' -in $QSCollection) -and ('page_no' -notin $QSCollection) -and ($IsMulti)) {
+        Write-Error "When using pagination you must specify an initial page number with '-PageNo'."
+        Break
+    }
+    Write-Debug "Query collection contains $($QSCollection | Out-String)"
+    Return $QSCollection
 }

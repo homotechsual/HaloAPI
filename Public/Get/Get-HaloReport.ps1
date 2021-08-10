@@ -97,20 +97,28 @@ function Get-HaloReport {
     if ($ReportID) {
         $Parameters.Remove("ReportID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($ReportID) {
             Write-Verbose "Running in single-report mode because '-ReportID' was provided."
-            $Resource = "api/Report/$($ReportID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/Report/$($ReportID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-report mode."
-            $Resource = "api/Report$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/Report"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $ReportResults = Invoke-HaloRequest @RequestParams
+        $ReportResults = New-HaloRequest @RequestParams
         Return $ReportResults
     } catch {
         Write-Error "Failed to get reports from the Halo API. You'll see more detail if using '-Verbose'"

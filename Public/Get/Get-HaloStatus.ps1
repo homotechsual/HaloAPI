@@ -47,21 +47,21 @@ function Get-HaloStatus {
     if ($StatusID) {
         $Parameters.Remove("StatusID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($StatusID) {
             Write-Verbose "Running in single-status mode because '-StatusID' was provided."
-            $Resource = "api/Status/$($StatusID)$($QueryString)"
+            $Resource = "api/status/$($StatusID)"
         }
         else {
             Write-Verbose "Running in multi-status mode."
-            $Resource = "api/Status$($QueryString)"
+            $Resource = "api/status"
         }    
         $RequestParams = @{
             Method   = "GET"
             Resource = $Resource
         }
-        $StatusResults = Invoke-HaloRequest @RequestParams
+        $StatusResults = New-HaloRequest @RequestParams
         Return $StatusResults
     }
     catch {

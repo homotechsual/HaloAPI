@@ -40,7 +40,7 @@ function Invoke-HaloUpdate {
             Resource = "api/$Endpoint"
             Body = $Object | ConvertTo-Json -Depth 100 -AsArray
         }
-        $ClientResults = Invoke-HaloRequest @RequestParams
+        $ClientResults = New-HaloRequest @RequestParams
         Return $ClientResults
     } catch {
         Write-Error "Failed to create/update $Endpoint in the Halo API. You'll see more detail if using '-Verbose'"

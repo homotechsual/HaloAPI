@@ -59,20 +59,28 @@ function Get-HaloSite {
     if ($SiteID) {
         $Parameters.Remove("SiteID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($SiteID) {
             Write-Verbose "Running in single-site mode because '-SiteID' was provided."
-            $Resource = "api/site/$($SiteID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/site/$($SiteID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-site mode."
-            $Resource = "api/site$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/site"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $SiteResults = Invoke-HaloRequest @RequestParams
+        $SiteResults = New-HaloRequest @RequestParams
         Return $SiteResults
     } catch {
         Write-Error "Failed to get sites from the Halo API. You'll see more detail if using '-Verbose'"

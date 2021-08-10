@@ -84,20 +84,28 @@ function Get-HaloInvoice {
     if ($InvoiceID) {
         $Parameters.Remove("InvoiceID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($InvoiceID) {
             Write-Verbose "Running in single-invoice mode because '-InvoiceID' was provided."
-            $Resource = "api/invoice/$($InvoiceID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/invoice/$($InvoiceID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-invoice mode."
-            $Resource = "api/invoice$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/invoice"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
-        }
-        $InvoiceResults = Invoke-HaloRequest @RequestParams
+        $InvoiceResults = New-HaloRequest @RequestParams
         Return $InvoiceResults
     } catch {
         Write-Error "Failed to get invoices from the Halo API. You'll see more detail if using '-Verbose'"

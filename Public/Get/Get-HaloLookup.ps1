@@ -31,21 +31,22 @@ function Get-HaloLookup {
     if ($ItemID) {
         $Parameters.Remove("ItemID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($ItemID) {
             Write-Verbose "Running in single-lookup mode because '-ItemID' was provided."
-            $Resource = "api/Lookup/$($ItemID)$($QueryString)"
+            $Resource = "api/Lookup/$($ItemID)"
         }
         else {
             Write-Verbose "Running in multi-lookup mode."
-            $Resource = "api/Lookup$($QueryString)"
+            $Resource = "api/Lookup"
         }    
         $RequestParams = @{
             Method   = "GET"
             Resource = $Resource
+            QSCollection = $QSCollection
         }
-        $LookupResults = Invoke-HaloRequest @RequestParams
+        $LookupResults = New-HaloRequest @RequestParams
         Return $LookupResults
     }
     catch {

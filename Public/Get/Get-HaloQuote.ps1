@@ -87,20 +87,28 @@ function Get-HaloQuote {
     if ($QuoteID) {
         $Parameters.Remove("QuoteID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($QuoteID) {
             Write-Verbose "Running in single-quote mode because '-QuoteID' was provided."
-            $Resource = "api/quotation/$($QuoteID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/quotation/$($QuoteID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-quote mode."
-            $Resource = "api/quotation$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/quotation"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $QuoteResults = Invoke-HaloRequest @RequestParams
+        $QuoteResults = New-HaloRequest @RequestParams
         Return $QuoteResults
     } catch {
         Write-Error "Failed to get quotes from the Halo API. You'll see more detail if using '-Verbose'"

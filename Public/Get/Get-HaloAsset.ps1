@@ -20,7 +20,7 @@ function Get-HaloAsset {
         # Number of results per page.
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("page_size")]
-        [int32]$PageSize,
+        [int32]$PageSize = $Script:HAPIDefaultPageSize,
         # Which page to return.
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("page_no")]
@@ -87,20 +87,28 @@ function Get-HaloAsset {
     if ($AssetID) {
         $Parameters.Remove("AssetID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($AssetID) {
             Write-Verbose "Running in single-asset mode because '-AssetID' was provided."
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
             $Resource = "api/Asset/$($AssetID)$($QueryString)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-asset mode."
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
             $Resource = "api/Asset$($QueryString)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
-        }
-        $AssetResults = Invoke-HaloRequest @RequestParams
+        $AssetResults = New-HaloRequest @RequestParams
         Return $AssetResults
     } catch {
         Write-Error "Failed to get assets from the Halo API. You'll see more detail if using '-Verbose'"

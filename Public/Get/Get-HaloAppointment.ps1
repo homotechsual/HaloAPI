@@ -65,20 +65,21 @@ function Get-HaloAppointment {
     if ($AppointmentID) {
         $Parameters.Remove("AppointmentID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($AppointmentID) {
             Write-Verbose "Running in single-appointment mode because '-AppointmentID' was provided."
-            $Resource = "api/Appointment/$($AppointmentID)$($QueryString)"
+            $Resource = "api/Appointment/$($AppointmentID)"
         } else {
             Write-Verbose "Running in multi-appointment mode."
-            $Resource = "api/Appointment$($QueryString)"
+            $Resource = "api/Appointment"
         }    
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
+            QSCollection = $QSCollection
         }
-        $AppointmentResults = Invoke-HaloRequest @RequestParams
+        $AppointmentResults = New-HaloRequest @RequestParams
         Return $AppointmentResults
     } catch {
         Write-Error "Failed to get appointments from the Halo API. You'll see more detail if using '-Verbose'"

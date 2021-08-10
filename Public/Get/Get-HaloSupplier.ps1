@@ -57,20 +57,28 @@ function Get-HaloSupplier {
     if ($SupplierID) {
         $Parameters.Remove("SupplierID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($SupplierID) {
             Write-Verbose "Running in single-supplier mode because '-SupplierID' was provided."
-            $Resource = "api/supplier/$($SupplierID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/supplier/$($SupplierID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-supplier mode."
-            $Resource = "api/supplier$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/supplier"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $SupplierResults = Invoke-HaloRequest @RequestParams
+        $SupplierResults = New-HaloRequest @RequestParams
         Return $SupplierResults
     } catch {
         Write-Error "Failed to get suppliers from the Halo API. You'll see more detail if using '-Verbose'"

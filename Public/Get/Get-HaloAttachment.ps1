@@ -46,26 +46,28 @@ function Get-HaloAttachment {
     if ($AttachmentID) {
         $Parameters.Remove("AttachmentID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($AttachmentID) {
             Write-Verbose "Running in single-asset mode because '-AttachmentID' was provided."
-            $Resource = "api/attachment/$($AttachmentID)$($QueryString)"
+            $Resource = "api/attachment/$($AttachmentID)"
             $RequestParams = @{
                 Method    = "GET"
                 Resource  = $Resource
                 RawResult = $True
+                QSCollection = $QSCollection
             }
         }
         else {
             Write-Verbose "Running in multi-asset mode."
-            $Resource = "api/attachment$($QueryString)"
+            $Resource = "api/attachment"
             $RequestParams = @{
                 Method   = "GET"
                 Resource = $Resource
+                QSCollection = $QSCollection
             }
         }    
-        $AttachmentResults = Invoke-HaloRequest @RequestParams
+        $AttachmentResults = New-HaloRequest @RequestParams
         if ($AttachmentID) {
             Write-Verbose "Processing single mode response"
             if ($OutFile -or $OutPath) {
