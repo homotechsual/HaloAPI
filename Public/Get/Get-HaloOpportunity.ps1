@@ -261,20 +261,28 @@ function Get-HaloOpportunity {
     if ($OpportunityID) {
         $Parameters.Remove("OpportunityID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($OpportunityID) {
             Write-Verbose "Running in single-opportunity mode because '-OpportunityID' was provided."
-            $Resource = "api/opportunities/$($OpportunityID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/opportunities/$($OpportunityID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-opportunity mode."
-            $Resource = "api/opportunities$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/opportunities"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $OpportunityResults = Invoke-HaloRequest @RequestParams
+        $OpportunityResults = New-HaloRequest @RequestParams
         Return $OpportunityResults
     } catch {
         Write-Error "Failed to get opportunities from the Halo API. You'll see more detail if using '-Verbose'"

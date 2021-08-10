@@ -77,20 +77,21 @@ function Get-HaloAction {
     if ($ActionID) {
         $Parameters.Remove("ActionID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($ActionID) {
             Write-Verbose "Running in single-action mode because '-ActionID' was provided."
-            $Resource = "api/actions/$($ActionID)$($QueryString)"
+            $Resource = "api/actions/$($ActionID)"
         } else {
             Write-Verbose "Running in multi-action mode."
-            $Resource = "api/actions$($QueryString)"
+            $Resource = "api/actions"
         }
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
+            QSCollection = $QSCollection
         }
-        $ActionResults = Invoke-HaloRequest @RequestParams
+        $ActionResults = New-HaloRequest @RequestParams
         Return $ActionResults
     } catch {
         Write-Error "Failed to get actions from the Halo API. You'll see more detail if using '-Verbose'"

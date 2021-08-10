@@ -63,23 +63,24 @@ function Get-HaloAgent {
     if ($Me) {
         $Parameters.Remove("Me") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($AgentID) {
             Write-Verbose "Running in single-agent mode because '-AgentID' was provided."
-            $Resource = "api/agent/$($AgentID)$($QueryString)"
+            $Resource = "api/agent/$($AgentID)"
         } elseif ($Me) {
             Write-Verbose "Running in 'Me' mode."
             $Resource = "api/agent/me"
         } else {
             Write-Verbose "Running in multi-agent mode."
-            $Resource = "api/agent$($QueryString)"
+            $Resource = "api/agent"
         }
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
+            QSCollection = $QSCollection
         }
-        $AgentResults = Invoke-HaloRequest @RequestParams
+        $AgentResults = New-HaloRequest @RequestParams
         Return $AgentResults
     } catch {
         Write-Error "Failed to get agents from the Halo API. You'll see more detail if using '-Verbose'"

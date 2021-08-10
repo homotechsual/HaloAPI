@@ -71,20 +71,28 @@ function Get-HaloItem {
     if ($ItemID) {
         $Parameters.Remove("ItemID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($ItemID) {
             Write-Verbose "Running in single-item mode because '-ItemID' was provided."
-            $Resource = "api/item/$($ItemID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/item/$($ItemID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-item mode."
-            $Resource = "api/item$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/item"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $ItemResults = Invoke-HaloRequest @RequestParams
+        $ItemResults = New-HaloRequest @RequestParams
         Return $ItemResults
     } catch {
         Write-Error "Failed to get items from the Halo API. You'll see more detail if using '-Verbose'"

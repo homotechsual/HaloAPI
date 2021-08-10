@@ -62,20 +62,21 @@ function Get-HaloTeam {
     if ($TeamID) {
         $Parameters.Remove("TeamID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($TeamID) {
             Write-Verbose "Running in single-team mode because '-TeamID' was provided."
-            $Resource = "api/team/$($TeamID)$($QueryString)"
+            $Resource = "api/team/$($TeamID)"
         } else {
             Write-Verbose "Running in multi-team mode."
-            $Resource = "api/team$($QueryString)"
+            $Resource = "api/team"
         }    
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
+            QSCollection = $QSCollection
         }
-        $TeamResults = Invoke-HaloRequest @RequestParams
+        $TeamResults = New-HaloRequest @RequestParams
         Return $TeamResults
     } catch {
         Write-Error "Failed to get teams from the Halo API. You'll see more detail if using '-Verbose'"

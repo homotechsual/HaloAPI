@@ -48,20 +48,28 @@ function Get-HaloContract {
     if ($ContractID) {
         $Parameters.Remove("ContractID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($ContractID) {
             Write-Verbose "Running in single-contract mode because '-ContractID' was provided."
-            $Resource = "api/clientcontract/$($ContractID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/clientcontract/$($ContractID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-contract mode."
-            $Resource = "api/clientcontract$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/clientcontract"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $ContractResults = Invoke-HaloRequest @RequestParams
+        $ContractResults = New-HaloRequest @RequestParams
         Return $ContractResults
     } catch {
         Write-Error "Failed to get contracts from the Halo API. You'll see more detail if using '-Verbose'"

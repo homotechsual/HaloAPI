@@ -45,20 +45,21 @@ function Get-HaloTicketType {
     if ($TicketTypeID) {
         $Parameters.Remove("TicketTypeID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($TicketTypeID) {
             Write-Verbose "Running in single-ticket-type mode because '-TicketTypeID' was provided."
-            $Resource = "api/tickettype/$($TicketTypeID)$($QueryString)"
+            $Resource = "api/tickettype/$($TicketTypeID)"
         } else {
             Write-Verbose "Running in multi-ticket-type mode."
-            $Resource = "api/tickettype$($QueryString)"
+            $Resource = "api/tickettype"
         }    
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource
+            QSCollection = $QSCollection
         }
-        $TicketTypeResults = Invoke-HaloRequest @RequestParams
+        $TicketTypeResults = New-HaloRequest @RequestParams
         Return $TicketTypeResults
     } catch {
         Write-Error "Failed to get ticket types from the Halo API. You'll see more detail if using '-Verbose'"

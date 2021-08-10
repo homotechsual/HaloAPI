@@ -7,7 +7,8 @@ foreach ($Function in @($Functions)){
         Write-Error -Message "Failed to import function $($Function.FullName): $_"
     }
 }
-[int64]$Script:HAPITokenExpiry = 3600
+[int32]$Script:HAPITokenExpiry = 3600
+[int32]$Script:HAPIDefaultPageSize = 2000
 New-Alias -Name "Get-HaloArticle" -Value Get-HaloKBArticle
 New-Alias -Name "New-HaloArticle" -Value New-HaloKBArticle
 New-Alias -Name "Set-HaloArticle" -Value Set-HaloKBArticle

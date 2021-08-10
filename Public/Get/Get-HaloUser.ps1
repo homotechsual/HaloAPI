@@ -93,20 +93,28 @@ function Get-HaloUser {
     if ($UserID) {
         $Parameters.Remove("UserID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($UserID) {
             Write-Verbose "Running in single-user mode because '-UserID' was provided."
-            $Resource = "api/users/$($UserID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/users/$($UserID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-user mode."
-            $Resource = "api/users$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/users"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $UserResults = Invoke-HaloRequest @RequestParams
+        $UserResults = New-HaloRequest @RequestParams
         Return $UserResults
     } catch {
         Write-Error "Failed to get users from the Halo API. You'll see more detail if using '-Verbose'"

@@ -47,20 +47,28 @@ function Get-HaloKBArticle {
     if ($KBArticleID) {
         $Parameters.Remove("KBArticleID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($KBArticleID) {
             Write-Verbose "Running in single-article mode because '-KBArticleID' was provided."
-            $Resource = "api/KBArticle/$($KBArticleID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/KBArticle/$($KBArticleID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-article mode."
-            $Resource = "api/KBArticle$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/KBArticle"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $ItemResults = Invoke-HaloRequest @RequestParams
+        $ItemResults = New-HaloRequest @RequestParams
         Return $ItemResults
     } catch {
         Write-Error "Failed to get knowledgebase articles from the Halo API. You'll see more detail if using '-Verbose'"

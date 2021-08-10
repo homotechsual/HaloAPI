@@ -264,20 +264,28 @@ function Get-HaloProject {
     if ($ProjectID) {
         $Parameters.Remove("ProjectID") | Out-Null
     }
-    $QueryString = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($ProjectID) {
             Write-Verbose "Running in single-project mode because '-ProjectID' was provided."
-            $Resource = "api/projects/$($ProjectID)$($QueryString)"
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $Resource = "api/projects/$($ProjectID)"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                QSCollection = $QSCollection
+            }
         } else {
             Write-Verbose "Running in multi-project mode."
-            $Resource = "api/projects$($QueryString)"
-        }    
-        $RequestParams = @{
-            Method = "GET"
-            Resource = $Resource
+            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = "api/projects"
+            $RequestParams = @{
+                Method = "GET"
+                Resource = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection = $QSCollection
+            }
         }
-        $ProjectResults = Invoke-HaloRequest @RequestParams
+        $ProjectResults = New-HaloRequest @RequestParams
         Return $ProjectResults
     } catch {
         Write-Error "Failed to get projects from the Halo API. You'll see more detail if using '-Verbose'"
