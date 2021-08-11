@@ -31,7 +31,7 @@ stages:
   
   - stage: Test
     jobs:
-      - job: Test
+      - job: Test & Publish
         steps:
           - task: Pester@10
             inputs:
@@ -40,12 +40,10 @@ stages:
               CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
               UsePSCore: true
               AdditionalModulePath: '$(Build.ArtifactStagingDirectory)'
-      - job: Publish
-        steps:
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'NUnit'
-              testResultsFiles: 'Pester-Results.xml'
+              testResultsFiles: '$(Common.TestResultsDirectory)\Pester-Results.xml'
               searchFolder: '$(Common.TestResultsDirectory)'
               failTaskOnFailedTests: true
           - task: PublishCodeCoverageResults@1
