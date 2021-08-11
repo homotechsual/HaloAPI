@@ -9,8 +9,9 @@ Function New-HaloOpportunity {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new opportunity.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Opportunity
     )
-    Invoke-HaloUpdate -Object $Opportunity -Endpoint "Opportunities"
+    Invoke-HaloUpdate -Object $Opportunity -Endpoint "opportunities"
 }

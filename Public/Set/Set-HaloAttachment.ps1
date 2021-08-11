@@ -9,6 +9,7 @@ Function Set-HaloAttachment {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing attachment.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Attachment
     )

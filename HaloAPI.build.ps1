@@ -13,37 +13,36 @@ Set-StrictMode -Version Latest
 #region Task: Update the PowerShell Module Help Files.
 # Pre-requisites: PowerShell Module PlatyPS.
 task UpdateHelp {
-    Import-Module -Path ".\HaloAPI.psd1" -Force
-    Update-MarkdownHelp -Path ".\Docs\Markdown"
-    New-ExternalHelp -Path ".\Docs\Markdown" -OutputPath ".\Docs\en_GB" -Force
+    Import-Module -Name "HaloAPI" -Force
+    Update-MarkdownHelp -Path "$($PSScriptRoot)\Docs\Markdown"
+    New-ExternalHelp -Path "$($PSScriptRoot)\Docs\Markdown" -OutputPath "$($PSScriptRoot)\Docs\en_GB" -Force
 }
 #endregion
 
 #region Task: Copy PowerShell Module files to output folder for release on PSGallery
 task CopyModuleFiles {
     # Copy Module Files to Output Folder
-    if (-not (Test-Path ".\Output\HaloAPI")) {
-        New-Item -Path ".\Output\HaloAPI" -ItemType Directory | Out-Null
+    if (-not (Test-Path "$($PSScriptRoot)\Output\HaloAPI")) {
+        New-Item -Path "$($PSScriptRoot)\Output\HaloAPI" -ItemType Directory | Out-Null
     }
-    Copy-Item -Path '.\Data\' -Filter *.* -Recurse -Destination ".\Output\HaloAPI" -Force
-    Copy-Item -Path '.\Private\' -Filter *.* -Recurse -Destination ".\Output\HaloAPI" -Force
-    Copy-Item -Path '.\Public\' -Filter *.* -Recurse -Destination ".\Output\HaloAPI" -Force
-    Copy-Item -Path '.\Tests\' -Filter *.* -Recurse -Destination ".\Output\HaloAPI" -Force
+    Copy-Item -Path "$($PSScriptRoot)\Data\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\HaloAPI" -Force
+    Copy-Item -Path "$($PSScriptRoot)\Private\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\HaloAPI" -Force
+    Copy-Item -Path "$($PSScriptRoot)\Public\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\HaloAPI" -Force
 
     #Copy Module Manifest files
     Copy-Item -Path @(
-        '.\LICENSE.md'
-        '.\CHANGELOG.md'
-        '.\README.md'
-        '.\HaloAPI.psd1'
-        '.\HaloAPI.psm1'
-    ) -Destination ".\Output\HaloAPI" -Force        
+        "$($PSScriptRoot)\LICENSE.md"
+        "$($PSScriptRoot)\CHANGELOG.md"
+        "$($PSScriptRoot)\README.md"
+        "$($PSScriptRoot)\HaloAPI.psd1"
+        "$($PSScriptRoot)\HaloAPI.psm1"
+    ) -Destination "$($PSScriptRoot)\Output\HaloAPI" -Force        
 }
 #endregion
 
 #region Task: Run all Pester tests in folder .\Tests
 task Test {
-    $Result = Invoke-Pester ".\Tests" -PassThru
+    $Result = Invoke-Pester "$($PSScriptRoot)\Tests" -PassThru
     if ($Result.FailedCount -gt 0) {
         throw 'Pester tests failed'
     }
@@ -56,13 +55,13 @@ task UpdateManifest {
     Import-Module -Name PlatyPS
 
     # Find Latest Version in Change log.
-    $CHANGELOG = Get-Content -Path ".\CHANGELOG.md"
+    $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md"
     $MarkdownObject = [Markdown.MAML.Parser.MarkdownParser]::new()
     [regex]$Regex = "\d\.\d\.\d"
     $Versions = $Regex.Matches($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) | ForEach-Object { $_.Value }
     ($Versions | Measure-Object -Maximum).Maximum
 
-    $ManifestPath = ".\HaloAPI.psd"
+    $ManifestPath = "$($PSScriptRoot)\HaloAPI.psd1"
  
     # Start by importing the manifest to determine the version, then add 1 to the Build
     $Manifest = Test-ModuleManifest -Path $ManifestPath
@@ -71,12 +70,12 @@ task UpdateManifest {
     Write-Output -InputObject ("New Module version: $($NewVersion)")
 
     # Update Manifest file with Release Notes
-    $CHANGELOG = Get-Content -Path .\CHANGELOG.md
+    $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md"
     $MarkdownObject = [Markdown.MAML.Parser.MarkdownParser]::new()
     $ReleaseNotes = ((($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) -Match '\d\.\d\.\d') -Split ' - ')[1]
     
     #Update Module with new version
-    Update-ModuleManifest -ModuleVersion $NewVersion -Path ".\HaloAPI.psd" -ReleaseNotes $ReleaseNotes
+    Update-ModuleManifest -ModuleVersion $NewVersion -Path "$($PSScriptRoot)\HaloAPI.psd1" -ReleaseNotes $ReleaseNotes
 }
 #endregion
 
@@ -101,8 +100,8 @@ task PublishModule -if ($Configuration -eq 'Production') {
 #region Task: Clean up Output folder
 task Clean {
     # Clean output folder
-    if ((Test-Path ".\Output")) {
-        Remove-Item -Path ".\Output" -Recurse -Force
+    if ((Test-Path "$($PSScriptRoot)\Output")) {
+        Remove-Item -Path "$($PSScriptRoot)\Output" -Recurse -Force
     }
 }
 #endregion

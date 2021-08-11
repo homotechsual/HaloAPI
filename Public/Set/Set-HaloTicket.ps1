@@ -9,6 +9,7 @@ Function Set-HaloTicket {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing ticket.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Ticket
     )

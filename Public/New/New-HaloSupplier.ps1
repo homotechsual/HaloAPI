@@ -9,8 +9,9 @@ Function New-HaloSupplier {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new supplier.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Supplier
     )
-    Invoke-HaloUpdate -Object $Supplier -Endpoint "Supplier"
+    Invoke-HaloUpdate -Object $Supplier -Endpoint "supplier"
 }

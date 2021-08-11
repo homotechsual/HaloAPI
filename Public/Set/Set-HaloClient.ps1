@@ -9,6 +9,7 @@ Function Set-HaloClient {
     #> 
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing client.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Client
     )

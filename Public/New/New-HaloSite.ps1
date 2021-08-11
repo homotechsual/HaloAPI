@@ -9,8 +9,9 @@ Function New-HaloSite {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new site.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Site
     )
-    Invoke-HaloUpdate -Object $Site -Endpoint "Site"
+    Invoke-HaloUpdate -Object $Site -Endpoint "site"
 }

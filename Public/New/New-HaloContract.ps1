@@ -9,8 +9,9 @@ Function New-HaloContract {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new contract.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Contract
     )
-    Invoke-HaloUpdate -Object $Contract -Endpoint "ClientContract"
+    Invoke-HaloUpdate -Object $Contract -Endpoint "clientcontract"
 }

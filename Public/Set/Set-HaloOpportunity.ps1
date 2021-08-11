@@ -9,6 +9,7 @@ Function Set-HaloOpportunity {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing opportunity.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Opportunity
     )

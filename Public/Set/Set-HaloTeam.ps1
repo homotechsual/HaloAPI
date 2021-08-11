@@ -9,6 +9,7 @@ Function Set-HaloTeam {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing team.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Team
     )

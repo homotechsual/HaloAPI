@@ -9,6 +9,7 @@ Function Set-HaloStatus {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing status.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Status
     )

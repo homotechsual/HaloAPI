@@ -9,6 +9,7 @@ Function Set-HaloSupplier {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing supplier.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Supplier
     )

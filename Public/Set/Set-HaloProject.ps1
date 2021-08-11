@@ -9,6 +9,7 @@ Function Set-HaloProject {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing project.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Project
     )

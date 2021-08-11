@@ -9,6 +9,7 @@ Function Set-HaloKBArticle {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing knowedgebase article.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$KBArticle
     )

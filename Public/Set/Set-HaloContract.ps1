@@ -9,6 +9,7 @@ Function New-HaloContract {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing contract.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Contract
     )

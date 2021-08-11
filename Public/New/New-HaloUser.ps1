@@ -9,8 +9,9 @@ Function New-HaloUser {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new user.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$User
     )
-    Invoke-HaloUpdate -Object $User -Endpoint "Users"
+    Invoke-HaloUpdate -Object $User -Endpoint "users"
 }

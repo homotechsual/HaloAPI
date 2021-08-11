@@ -9,8 +9,9 @@ Function New-HaloTicket {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new ticket.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Ticket
     )
-    Invoke-HaloUpdate -Object $Ticket -Endpoint "Tickets"
+    Invoke-HaloUpdate -Object $Ticket -Endpoint "tickets"
 }

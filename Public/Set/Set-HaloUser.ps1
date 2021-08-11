@@ -9,6 +9,7 @@ Function Set-HaloUser {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing user.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$User
     )

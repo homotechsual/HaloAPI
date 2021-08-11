@@ -9,6 +9,7 @@ Function Set-HaloReport {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing report.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Report
     )

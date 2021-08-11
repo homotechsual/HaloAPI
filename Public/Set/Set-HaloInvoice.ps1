@@ -9,6 +9,7 @@ Function Set-HaloInvoice {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing invoice.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Invoice
     )
