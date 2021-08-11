@@ -9,6 +9,8 @@ function Invoke-HaloRequest {
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
+    [Cmdletbinding()]
+    [OutputType([BasicHtmlWebResponseObject], [PSCustomObject])]
     param (
         # Hashtable containing the web request parameters.
         [Hashtable]$WebRequestParams,
@@ -18,15 +20,15 @@ function Invoke-HaloRequest {
     try {
         Write-Verbose "Making a $($WebRequestParams.Method) request to $($WebRequestParams.Uri)"
         switch ($Method) {
-            {($_ -eq "PUT") -or ($_ -eq "POST") -or ($_ -eq "DELETE") -or ($_ -eq "PATCH")} {
+            { ($_ -eq "PUT") -or ($_ -eq "POST") -or ($_ -eq "DELETE") -or ($_ -eq "PATCH") } {
                 $Response = Invoke-WebRequest @WebRequestParams -Body $Body
             }
-            {($_ -eq "GET")} {
+            { ($_ -eq "GET") } {
                 $Response = Invoke-WebRequest @WebRequestParams
             }
         }
         Write-Debug "Response headers: $($Response.Headers | Out-String)"
-        if ($RawResult){
+        if ($RawResult) {
             $Results = $Response
         } else {
             $Results = $Response.Content | ConvertFrom-Json

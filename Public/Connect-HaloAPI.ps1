@@ -14,6 +14,7 @@ function Connect-HaloAPI {
     [CmdletBinding(
         DefaultParameterSetName = 'Client Credentials'
     )]
+    [OutputType([System.Void])]
     Param (
         # The URL of the Halo instance to connect to.
         [Parameter(
@@ -118,7 +119,7 @@ function Connect-HaloAPI {
         Uri = $AuthURL
         Method = "POST"
         Body = $AuthReqBody
-        ContentType = "application/x-www-form-urlencoded" 
+        ContentType = "application/x-www-form-urlencoded"
     }
     try {
         $AuthReponse = Invoke-WebRequest @WebRequestParams

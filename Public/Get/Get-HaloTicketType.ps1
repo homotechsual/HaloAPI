@@ -9,6 +9,8 @@ function Get-HaloTicketType {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Ticket Type ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -53,7 +55,7 @@ function Get-HaloTicketType {
         } else {
             Write-Verbose "Running in multi-ticket-type mode."
             $Resource = "api/tickettype"
-        }    
+        }
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource

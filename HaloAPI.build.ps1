@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-        Build script for HaloAPI module - uses 'Invoke-Build' https://github.com/nightroman/Invoke-Build 
+        Build script for HaloAPI module - uses 'Invoke-Build' https://github.com/nightroman/Invoke-Build
 #>
 Param (
     [String]$Configuration = 'Development'
@@ -36,7 +36,7 @@ task CopyModuleFiles {
         "$($PSScriptRoot)\README.md"
         "$($PSScriptRoot)\HaloAPI.psd1"
         "$($PSScriptRoot)\HaloAPI.psm1"
-    ) -Destination "$($PSScriptRoot)\Output\HaloAPI" -Force        
+    ) -Destination "$($PSScriptRoot)\Output\HaloAPI" -Force
 }
 #endregion
 
@@ -62,7 +62,7 @@ task UpdateManifest {
     ($Versions | Measure-Object -Maximum).Maximum
 
     $ManifestPath = "$($PSScriptRoot)\HaloAPI.psd1"
- 
+
     # Start by importing the manifest to determine the version, then add 1 to the Build
     $Manifest = Test-ModuleManifest -Path $ManifestPath
     [System.Version]$Version = $Manifest.Version
@@ -73,7 +73,7 @@ task UpdateManifest {
     $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md"
     $MarkdownObject = [Markdown.MAML.Parser.MarkdownParser]::new()
     $ReleaseNotes = ((($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) -Match '\d\.\d\.\d') -Split ' - ')[1]
-    
+
     #Update Module with new version
     Update-ModuleManifest -ModuleVersion $NewVersion -Path "$($PSScriptRoot)\HaloAPI.psd1" -ReleaseNotes $ReleaseNotes
 }
@@ -84,14 +84,13 @@ task PublishModule -if ($Configuration -eq 'Production') {
     Try {
         # Build a splat containing the required details and make sure to Stop for errors which will trigger the catch
         $params = @{
-            Path        = ("$($PSScriptRoot)\Output\HaloAPI")
+            Path = ("$($PSScriptRoot)\Output\HaloAPI")
             NuGetApiKey = $env:PSGalleryAPIKey
             ErrorAction = "Stop"
         }
         Publish-Module @params
         Write-Output -InputObject ("HaloAPI PowerShell Module version $($NewVersion) published to the PowerShell Gallery")
-    }
-    Catch {
+    } Catch {
         Throw $_
     }
 }

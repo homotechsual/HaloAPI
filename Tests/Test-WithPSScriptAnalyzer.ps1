@@ -5,19 +5,18 @@ param (
     [string]$ScriptDirectory,
     # Comma separated list of specific PSScriptAnalyzer rules to exclude
     [string]$ScriptAnalyzerExcludeRules
-
 )
 
 function Add-PRComment {
-[CmdletBinding()]
-param (
-    [Parameter(Mandatory = $true)]
-    [string]
-    $Body
-)
+    [CmdletBinding()]
+    [OutputType([System.Void])]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]
+        $Body
+    )
     Write-Verbose "Posting PR Comment via Azure DevOps REST API"
-
-    # post the comment to the pull request
+    # Post the comment to the pull request
     Try {
         $uri = "$($Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$Env:SYSTEM_TEAMPROJECTID/_apis/git/repositories/$($Env:BUILD_REPOSITORY_NAME)/pullRequests/$($Env:SYSTEM_PULLREQUEST_PULLREQUESTID)/threads?api-version=5.1"
         Write-Verbose "Constructed URL: $uri"
@@ -33,8 +32,8 @@ param (
     }
 }
 
-$ScriptAnalyzerRules = Get-ScriptAnalyzerRule -Severity Error, Warning, Information
-$ScriptAnalyzerResult = Invoke-ScriptAnalyzer -Path $ScriptDirectory -Recurse -IncludeRule $ScriptAnalyzerRules -ExcludeRule $ScriptAnalyzerExcludeRules
+
+$ScriptAnalyzerResult = Invoke-ScriptAnalyzer -Path $ScriptDirectory -Recurse -Settings "$($Env:SYSTEM_DEFAULTWORKINGDIRECTORY)\PSScriptAnalyzerSettings.psd1" -ExcludeRule $ScriptAnalyzerExcludeRules
 
 if ( $ScriptAnalyzerResult ) {
     $ScriptAnalyzerResultString = $ScriptAnalyzerResult | Out-String

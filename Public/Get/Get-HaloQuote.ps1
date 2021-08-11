@@ -9,6 +9,8 @@ function Get-HaloQuote {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Quote ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]

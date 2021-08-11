@@ -9,6 +9,8 @@ function Get-HaloReport {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Report ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -83,7 +85,7 @@ function Get-HaloReport {
         [int64]$ReportGroupID,
         # Whether to return only records for reports that include graphs
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$ChartOnly,  
+        [switch]$ChartOnly,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [switch]$IncludeDetails,

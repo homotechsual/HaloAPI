@@ -11,6 +11,8 @@ function New-HaloRequest {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding()]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     param (
         # The HTTP request method.
         [Parameter(
@@ -24,8 +26,6 @@ function New-HaloRequest {
         [String]$Resource,
         # Returns the Raw result. Useful for file downloads
         [Switch]$RawResult,
-        # The request body to send.
-        [String]$Body,
         # A hashtable used to build the query string.
         [Hashtable]$QSCollection,
         # Disables auto pagination.
@@ -39,7 +39,7 @@ function New-HaloRequest {
     if (($null -eq $Script:HAPIAuthToken) -and ($null -eq $AllowAnonymous)) {
         Throw "Missing Halo authentication tokens, please add '-AllowAnonymous' to the PowerShell command to return public data (if supported)."
     }
-    $Now = Get-Date 
+    $Now = Get-Date
     if ($Script:HAPIAuthToken.Expires -le $Now) {
         Write-Verbose "The auth token has expired, renewing."
         $ReconnectParameters = @{
@@ -62,6 +62,8 @@ function New-HaloRequest {
         Write-Verbose "Automatically paginating."
         $PageNum = $QSCollection.page_no
         $PageSize = $QSCollection.page_size
+    } elseif ((-not $QSCollection.pageinate) -and ($QSCollection.page_size)) {
+        $QSCollection.Remove("page_size")
     }
     if ($QSCollection) {
         Write-Debug "Query string in New-HaloRequest contains: $($QSCollection | Out-String)"

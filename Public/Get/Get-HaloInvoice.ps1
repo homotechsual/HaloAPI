@@ -9,6 +9,8 @@ function Get-HaloInvoice {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Invoice ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -107,7 +109,7 @@ function Get-HaloInvoice {
                 QSCollection = $QSCollection
                 ResourceType = "invoices"
             }
-        }    
+        }
         $InvoiceResults = New-HaloRequest @RequestParams
         Return $InvoiceResults
     } catch {

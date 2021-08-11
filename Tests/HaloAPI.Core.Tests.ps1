@@ -11,55 +11,54 @@ BeforeAll {
         Remove-Module $ModuleName -Force
     }
     Import-Module $ManifestPath -Verbose:$False
-    $Script:ManifestHash = Invoke-Expression -Command (Get-Content $ManifestPath -Raw)
+    $Script:ManifestHash = Get-Content $ManifestPath -Raw
 }
 
 # Test that the manifest is generally correct. Not a functional test.
-Describe -Name 'Core' -Fixture {
-    It -Name 'Manifest is valid' -Test {
+Describe 'Core' {
+    It 'Manifest is valid' {
         {
             Test-ModuleManifest -Path $ManifestPath -ErrorAction Stop -WarningAction SilentlyContinue
         } | Should -Not -Throw
     }
 
-    It -Name 'Root module is correct' -Test {
+    It 'Root module is correct' {
         $Script:ManifestHash.RootModule | Should -Be ".\$($ModuleName).psm1"
     }
 
-    It -Name 'Has a description' -Test {
+    It 'Has a description' {
         $Script:ManifestHash.Description | Should -Not -BeNullOrEmpty
     }
 
-    It -Name 'GUID is correct' -Test {
+    It 'GUID is correct' {
         $Script:ManifestHash.GUID | Should -Be '8bc83215-4735-4029-9f40-e05fe3e8f73b'
     }
 
-    It -Name 'Version is valid' -Test {
+    It 'Version is valid' {
         $Script:ManifestHash.ModuleVersion -As [Version] | Should -Not -BeNullOrEmpty
     }
 
-    It -Name 'Copyright is present' -Test {
+    It 'Copyright is present' {
         $Script:ManifestHash.Copyright | Should -Not -BeNullOrEmpty
     }
 
-    It -Name 'License URI is correct' -Test {
+    It 'License URI is correct' {
         $Script:ManifestHash.PrivateData.Values.LicenseUri | Should -Be 'https://haloapi.mit-license.org/'
     }
 
-    It -Name 'Project URI is correct' -Test {
+    It 'Project URI is correct' {
         $Script:ManifestHash.PrivateData.Values.ProjectUri | Should -Be 'https://github.com/homotechsual/HaloAPI'
     }
 
-    It -Name "PowerShell Gallery tags do not contain spaces" -Test {
+    It 'PowerShell Gallery tags do not contain spaces' {
         foreach ($Tag in $Script:ManifestHash.PrivateData.Values.tags) {
             $Tag -NotMatch '\s' | Should -Be $True
         }
     }
 }
 
-
-Describe -Name 'Module HaloAPI loads' -Fixture {
-    It -Name 'Passed Module load' -Test {
+Describe 'Module HaloAPI loads' {
+    It 'Passed Module load' {
         Get-Module -Name 'HaloAPI' | Should -Not -Be $null
     }
 }

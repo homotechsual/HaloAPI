@@ -9,6 +9,8 @@ function Get-HaloTimesheet {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Return the timesheet for the specified team.
         [Parameter( ParameterSetName = "Multi" )]
@@ -21,7 +23,7 @@ function Get-HaloTimesheet {
         [int32[]]$SelectedAgents,
         # Return the selected types.
         [Parameter( ParameterSetName = "Multi" )]
-        [int32[]]$SelectedTypes = @(0,1,2,3),
+        [int32[]]$SelectedTypes = @(0, 1 , 2, 3),
         # Timesheet start date/time.
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("start_date")]

@@ -9,6 +9,8 @@ function Get-HaloTeam {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Team ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -70,7 +72,7 @@ function Get-HaloTeam {
         } else {
             Write-Verbose "Running in multi-team mode."
             $Resource = "api/team"
-        }    
+        }
         $RequestParams = @{
             Method = "GET"
             Resource = $Resource

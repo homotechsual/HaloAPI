@@ -1,5 +1,7 @@
 function New-HaloQueryString {
     [CmdletBinding()]
+    [OutputType([Hashtable])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     param (
         [Parameter(
             Mandatory = $True

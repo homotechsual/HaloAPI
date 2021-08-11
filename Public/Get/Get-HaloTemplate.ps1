@@ -9,6 +9,8 @@ function Get-HaloTemplate {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Type of object to get template for
         [Parameter( Mandatory = $True )]
@@ -44,9 +46,9 @@ function Get-HaloTemplate {
         $Type = "KBArticle"
     }
     # Fetch the object from a template json file in the data directory
-    $TemplateObject = Get-Content "$PSScriptRoot/../Data/$Type.json" -raw | ConvertFrom-Json -depth 100
+    $TemplateObject = Get-Content "$PSScriptRoot/../Data/$Type.json" -Raw | ConvertFrom-Json -Depth 100
     # If null variables were requested null them all
-    if ($NullVariables){
+    if ($NullVariables) {
         $ReturnObject = Get-HaloNullObject -NullObject $TemplateObject
     } else {
         $ReturnObject = $TemplateObject

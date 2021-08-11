@@ -9,6 +9,8 @@ function Get-HaloProject {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Project ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -35,11 +37,11 @@ function Get-HaloProject {
         [Parameter( ParameterSetName = "Single" )]
         [Parameter( ParameterSetName = "Multi" )]
         [switch]$TicketIDOnly,
-        # The ID of the filter profile to use to filter results. 
+        # The ID of the filter profile to use to filter results.
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("view_id")]
         [int32]$ViewID,
-        # The ID of the column profile to use to control data returned in the results. 
+        # The ID of the column profile to use to control data returned in the results.
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("columns_id")]
         [int32]$ColumnsID,

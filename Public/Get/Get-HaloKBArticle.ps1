@@ -9,6 +9,8 @@ function Get-HaloKBArticle {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Article ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -36,7 +38,7 @@ function Get-HaloKBArticle {
         [string]$Order,
         # Whether to order ascending or descending
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderDesc,  
+        [switch]$OrderDesc,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [switch]$IncludeDetails

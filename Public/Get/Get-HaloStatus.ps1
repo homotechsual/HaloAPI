@@ -9,6 +9,8 @@ function Get-HaloStatus {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Status ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -52,13 +54,12 @@ function Get-HaloStatus {
         if ($StatusID) {
             Write-Verbose "Running in single-status mode because '-StatusID' was provided."
             $Resource = "api/status/$($StatusID)"
-        }
-        else {
+        } else {
             Write-Verbose "Running in multi-status mode."
             $Resource = "api/status"
-        }    
+        }
         $RequestParams = @{
-            Method   = "GET"
+            Method = "GET"
             Resource = $Resource
             AutoPaginateOff = $True
             QSCollection = $QSCollection
@@ -66,8 +67,7 @@ function Get-HaloStatus {
         }
         $StatusResults = New-HaloRequest @RequestParams
         Return $StatusResults
-    }
-    catch {
+    } catch {
         Write-Error "Failed to get statuses from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }

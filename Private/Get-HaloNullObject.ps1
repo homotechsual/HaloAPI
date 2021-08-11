@@ -9,6 +9,7 @@ function Get-HaloNullObject {
             A powershell object containing the response.
     #>
     [CmdletBinding()]
+    [OutputType([PSCustomObject])]
     param(
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$NullObject

@@ -9,6 +9,8 @@ function Get-HaloAgent {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Get the agent object for the access token owner
         [Parameter( ParameterSetName = "Me", Mandatory = $True )]

@@ -1,6 +1,6 @@
 #Requires -Version 7
-$Functions  = @(Get-ChildItem -Path $PSScriptRoot\Public\ -Include *.ps1 -Recurse) + @(Get-ChildItem -Path $PSScriptRoot\Private\ -Include *.ps1 -Recurse)
-foreach ($Function in @($Functions)){
+$Functions = @(Get-ChildItem -Path $PSScriptRoot\Public\ -Include *.ps1 -Recurse) + @(Get-ChildItem -Path $PSScriptRoot\Private\ -Include *.ps1 -Recurse)
+foreach ($Function in @($Functions)) {
     try {
         . $Function.FullName
     } catch {
