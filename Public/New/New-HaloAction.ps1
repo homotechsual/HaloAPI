@@ -9,8 +9,9 @@ Function New-HaloAction {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new action.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Action
     )
-    Invoke-HaloUpdate -Object $Action -Endpoint "Actions"
+    Invoke-HaloUpdate -Object $Action -Endpoint "actions"
 }

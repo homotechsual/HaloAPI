@@ -9,8 +9,9 @@ Function New-HaloAgent {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new agent.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Agent
     )
-    Invoke-HaloUpdate -Object $Agent -Endpoint "Agent"
+    Invoke-HaloUpdate -Object $Agent -Endpoint "agent"
 }

@@ -9,8 +9,9 @@ Function New-HaloStatus {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new status.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Status
     )
-    Invoke-HaloUpdate -Object $Status -Endpoint "Status"
+    Invoke-HaloUpdate -Object $Status -Endpoint "status"
 }

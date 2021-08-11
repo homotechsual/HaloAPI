@@ -9,8 +9,9 @@ Function New-HaloItem {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new item.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Item
     )
-    Invoke-HaloUpdate -Object $Item -Endpoint "Item"
+    Invoke-HaloUpdate -Object $Item -Endpoint "item"
 }

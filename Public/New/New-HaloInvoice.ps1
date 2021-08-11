@@ -9,8 +9,9 @@ Function New-HaloInvoice {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new invoice.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Invoice
     )
-    Invoke-HaloUpdate -Object $Invoice -Endpoint "Invoice"
+    Invoke-HaloUpdate -Object $Invoice -Endpoint "invoice"
 }

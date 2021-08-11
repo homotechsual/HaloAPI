@@ -9,8 +9,9 @@ Function New-HaloProject {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new project.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Project
     )
-    Invoke-HaloUpdate -Object $Project -Endpoint "Projects"
+    Invoke-HaloUpdate -Object $Project -Endpoint "projects"
 }

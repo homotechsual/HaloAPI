@@ -9,8 +9,9 @@ Function New-HaloAsset {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new asset.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Asset
     )
-    Invoke-HaloUpdate -Object $Asset -Endpoint "Asset"
+    Invoke-HaloUpdate -Object $Asset -Endpoint "asset"
 }

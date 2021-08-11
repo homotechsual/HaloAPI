@@ -9,6 +9,7 @@ Function Set-HaloSite {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing site.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Site
     )

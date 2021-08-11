@@ -9,6 +9,7 @@ Function Set-HaloAppointment {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing appointment.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Appointment
     )

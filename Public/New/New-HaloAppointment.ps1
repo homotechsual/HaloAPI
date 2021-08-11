@@ -9,8 +9,9 @@ Function New-HaloAppointment {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new appointment.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Appointment
     )
-    Invoke-HaloUpdate -Object $Appointment -Endpoint "Appointment"
+    Invoke-HaloUpdate -Object $Appointment -Endpoint "appointment"
 }

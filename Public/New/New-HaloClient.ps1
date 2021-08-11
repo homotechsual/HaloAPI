@@ -9,8 +9,9 @@ Function New-HaloClient {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new client.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Client
     )
-    Invoke-HaloUpdate -Object $Client -Endpoint "Client"
+    Invoke-HaloUpdate -Object $Client -Endpoint "client"
 }

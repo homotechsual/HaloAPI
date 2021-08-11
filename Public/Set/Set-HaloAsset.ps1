@@ -9,6 +9,7 @@ Function Set-HaloAsset {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing asset.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Asset
     )

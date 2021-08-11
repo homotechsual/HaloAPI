@@ -9,6 +9,7 @@ Function Set-HaloAgent {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing agent.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Agent
     )

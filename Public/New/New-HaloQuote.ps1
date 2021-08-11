@@ -9,8 +9,9 @@ Function New-HaloQuote {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new quotation.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Quote
     )
-    Invoke-HaloUpdate -Object $Quote -Endpoint "Quotation"
+    Invoke-HaloUpdate -Object $Quote -Endpoint "quotation"
 }

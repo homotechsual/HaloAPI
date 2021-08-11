@@ -9,6 +9,7 @@ Function Set-HaloItem {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing item.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Item
     )

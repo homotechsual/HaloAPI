@@ -9,8 +9,9 @@ Function New-HaloReport {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new report.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Report
     )
-    Invoke-HaloUpdate -Object $Report -Endpoint "Report"
+    Invoke-HaloUpdate -Object $Report -Endpoint "report"
 }

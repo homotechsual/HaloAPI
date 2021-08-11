@@ -1,6 +1,10 @@
 # Changelog
 
+* 2021-08-11
+
+  Version 1.0.2 - Fix a bug with `Get-HaloAsset` when supplying the `AssetID` parameter.
+
 * 2021-08-08
   
-  Version 1.0.0 - Initial release of the HaloAPI PowerShell module. `Get`, `Set` and `New` are implemented for all documented and discovered endpoints.
+  Version 1.0.1 - Initial release of the HaloAPI PowerShell module.
   

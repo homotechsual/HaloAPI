@@ -9,8 +9,9 @@ Function New-HaloTeam {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new team.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Team
     )
-    Invoke-HaloUpdate -Object $Team -Endpoint "Team"
+    Invoke-HaloUpdate -Object $Team -Endpoint "team"
 }

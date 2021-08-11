@@ -9,8 +9,9 @@ Function New-HaloAttachment {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new attachment.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Attachment
     )
-    Invoke-HaloUpdate -Object $Attachment -Endpoint "Attachment"
+    Invoke-HaloUpdate -Object $Attachment -Endpoint "attachment"
 }

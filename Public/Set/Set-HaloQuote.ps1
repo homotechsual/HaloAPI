@@ -9,6 +9,7 @@ Function Set-HaloQuote {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing quotation.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Quote
     )

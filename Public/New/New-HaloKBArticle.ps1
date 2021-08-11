@@ -9,8 +9,9 @@ Function New-HaloKBArticle {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to create a new knowledgebase article.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$KBArticle
     )
-    Invoke-HaloUpdate -Object $KBArticle -Endpoint "KBArticle"
+    Invoke-HaloUpdate -Object $KBArticle -Endpoint "kbarticle"
 }

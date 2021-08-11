@@ -9,6 +9,7 @@ Function Set-HaloAction {
     #>
     [CmdletBinding()]
     Param (
+        # Object containing properties and values used to update an existing action.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Action
     )
