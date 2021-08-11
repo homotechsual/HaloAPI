@@ -35,8 +35,8 @@ stages:
           - task: Pester@10
             inputs:
               ScriptFolder: '$(System.DefaultWorkingDirectory)\*'
-              ResultsFile: '$(Common.TestResultsDirectory)\Test-$(Build.DefinitionName)-$(Date:yyyyMMdd)-Results.xml'
-              CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-$(Build.DefinitionName)-$(Date:yyyyMMdd)-Coverage.xml'
+              ResultsFile: '$(Common.TestResultsDirectory)\Pester-Results.xml'
+              CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
               UsePSCore: true
               AdditionalModulePath: '$(Build.ArtifactStagingDirectory)'
       - job: Publish
@@ -44,13 +44,13 @@ stages:
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'NUnit'
-              testResultsFiles: '$(Common.TestResultsDirectory)/Test-$(Build.DefinitionName)-$(Date:yyyyMMdd)-Results.xml'
+              testResultsFiles: 'Test-Results.xml'
               searchFolder: '$(Common.TestResultsDirectory)'
               failTaskOnFailedTests: true
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: 'JaCoCo'
-              summaryFileLocation: '$(Common.TestResultsDirectory)\Code-$(Build.DefinitionName)-$(Date:yyyyMMdd)-Coverage.xml'
+              summaryFileLocation: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
 
   - stage: Release
     jobs:
