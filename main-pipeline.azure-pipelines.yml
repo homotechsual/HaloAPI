@@ -47,7 +47,6 @@ stages:
               failTaskOnFailedTests: true
           - task: PublishCodeCoverageResults@1
             inputs:
-              codeCoverageTool: 'JaCoCo'
               summaryFileLocation: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
 
   - stage: Release
