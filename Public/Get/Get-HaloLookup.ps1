@@ -9,6 +9,8 @@ function Get-HaloLookup {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Lookup Item ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -36,13 +38,12 @@ function Get-HaloLookup {
         if ($ItemID) {
             Write-Verbose "Running in single-lookup mode because '-ItemID' was provided."
             $Resource = "api/Lookup/$($ItemID)"
-        }
-        else {
+        } else {
             Write-Verbose "Running in multi-lookup mode."
             $Resource = "api/Lookup"
-        }    
+        }
         $RequestParams = @{
-            Method   = "GET"
+            Method = "GET"
             Resource = $Resource
             AutoPaginateOff = $True
             QSCollection = $QSCollection
@@ -50,8 +51,7 @@ function Get-HaloLookup {
         }
         $LookupResults = New-HaloRequest @RequestParams
         Return $LookupResults
-    }
-    catch {
+    } catch {
         Write-Error "Failed to get lookups from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"
     }

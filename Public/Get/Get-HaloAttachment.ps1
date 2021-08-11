@@ -9,6 +9,8 @@ function Get-HaloAttachment {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Attachment ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -52,25 +54,24 @@ function Get-HaloAttachment {
             Write-Verbose "Running in single-asset mode because '-AttachmentID' was provided."
             $Resource = "api/attachment/$($AttachmentID)"
             $RequestParams = @{
-                Method    = "GET"
-                Resource  = $Resource
+                Method = "GET"
+                Resource = $Resource
                 RawResult = $True
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
                 ResourceType = "attachments"
             }
-        }
-        else {
+        } else {
             Write-Verbose "Running in multi-asset mode."
             $Resource = "api/attachment"
             $RequestParams = @{
-                Method   = "GET"
+                Method = "GET"
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
                 ResourceType = "attachments"
             }
-        }    
+        }
         $AttachmentResults = New-HaloRequest @RequestParams
         if ($AttachmentID) {
             Write-Verbose "Processing single mode response"
@@ -85,19 +86,18 @@ function Get-HaloAttachment {
                 } else {
                     Write-Verbose "Attempting to output to file $OutFile"
                     $Path = $OutFile
-                }                                      
+                }
 
                 Write-Verbose "Writing File $Path"
                 $File = [System.IO.FileStream]::new($Path, [System.IO.FileMode]::Create)
                 $File.write($AttachmentResults.Content, 0, $AttachmentResults.RawContentLength)
                 $File.close()
-            
             } else {
                 return $AttachmentResults.Content
-            }    
+            }
         } else {
             Return $AttachmentResults
-        }   
+        }
     } catch {
         Write-Error "Failed to get attachments from the Halo API. You'll see more detail if using '-Verbose'"
         Write-Verbose "$_"

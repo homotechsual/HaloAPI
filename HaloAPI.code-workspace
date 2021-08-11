@@ -6,6 +6,8 @@
 	],
 	"settings": {
 		"editor.tabSize": 4,
-		"azure-pipelines.customSchemaFile": ".\\DevOps\\azurepipelines.schema.json"
+		"azure-pipelines.customSchemaFile": ".\\DevOps\\azurepipelines.schema.json",
+		"powershell.pester.useLegacyCodeLens": false,
+		"powershell.codeFormatting.preset": "OTBS"
 	}
 }

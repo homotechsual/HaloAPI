@@ -9,6 +9,7 @@ function Get-TokenExpiry {
         A powershell date/time object representing the token expiry.
     #>
     [CmdletBinding()]
+    [OutputType([DateTime])]
     param (
         # Timestamp value for token expiry. e.g 3600
         [Parameter(

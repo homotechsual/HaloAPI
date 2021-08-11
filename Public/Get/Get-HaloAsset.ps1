@@ -9,6 +9,8 @@ function Get-HaloAsset {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Asset ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -73,7 +75,7 @@ function Get-HaloAsset {
         # Filter by Assets linked to a particular Asset
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("contract_id")]
-        [int64]$ContractID,   
+        [int64]$ContractID,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails,

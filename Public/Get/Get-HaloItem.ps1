@@ -9,6 +9,8 @@ function Get-HaloItem {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Item ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
@@ -60,7 +62,7 @@ function Get-HaloItem {
         [string]$OrderBy5,
         # Whether to order ascending or descending
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$OrderByDesc5,  
+        [switch]$OrderByDesc5,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [switch]$IncludeDetails

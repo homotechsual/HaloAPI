@@ -1,0 +1,52 @@
+# Docs: https://aka.ms/yaml
+name: $(Build.DefinitionName)-$(Date:yyyyMMdd)
+pr:
+
+pool:
+  vmImage: 'vs2017-win2016'
+
+variables:
+  - group: AKV
+
+stages:
+  - stage: Setup
+    jobs: 
+      - job: Setup
+        steps:
+          - powershell: .\bootstrap.ps1
+            displayName: 'Install pre-requisites'
+  - stage: Lint
+    jobs:
+      - job: Lint
+        steps:
+          - task: PowerShell@2
+            displayName: 'Lint with PS Script Analyzer'
+            inputs:
+              TargetType: filePath
+              PWSH: true
+              FilePath: '$(System.DefaultWorkingDirectory)\Tests\Test-WithPSScriptAnalyzer.ps1'
+              Arguments: '-ScriptDirectory $(System.DefaultWorkingDirectory)'
+  
+  - stage: Test
+    jobs:
+      - job: Test
+        steps:
+          - task: Pester@10
+            inputs:
+              ScriptFolder: '$(System.DefaultWorkingDirectory)\*'
+              ResultsFile: '$(Common.TestResultsDirectory)\Test-$(Build.DefinitionName)-$(Build.BuildNumber)-Results.xml'
+              CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-$(Build.DefinitionName)-$(Build.BuildNumber)-Coverage.xml'
+              UsePSCore: true
+              AdditionalModulePath: '$(Build.ArtifactStagingDirectory)'
+      - job: Publish
+        steps:
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'NUnit'
+              testResultsFiles: '$(Common.TestResultsDirectory)/Test-$(Build.DefinitionName)-$(Build.BuildNumber)-Results.xml'
+              searchFolder: '$(Common.TestResultsDirectory)'
+              failTaskOnFailedTests: true
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: 'JaCoCo'
+              summaryFileLocation: '$(Common.TestResultsDirectory)\Code-$(Build.DefinitionName)-$(Build.BuildNumber)-Coverage.xml'

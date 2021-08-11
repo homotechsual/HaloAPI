@@ -9,6 +9,8 @@ function Get-HaloRelease {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Software Release ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]

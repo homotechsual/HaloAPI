@@ -9,6 +9,8 @@ function Get-HaloSalesOrder {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Sales Order ID
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
