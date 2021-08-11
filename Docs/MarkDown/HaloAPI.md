@@ -12,212 +12,212 @@ Locale: en_GB
 
 ## HaloAPI Cmdlets
 ### [Connect-HaloAPI](Connect-HaloAPI.md)
-{{ Fill in the Description }}
+Creates a new connection to a Halo instance.
 
 ### [Get-HaloAction](Get-HaloAction.md)
-{{ Fill in the Description }}
+Gets actions from the Halo API.
 
 ### [Get-HaloAgent](Get-HaloAgent.md)
-{{ Fill in the Description }}
+Gets agents from the Halo API.
 
 ### [Get-HaloAppointment](Get-HaloAppointment.md)
-{{ Fill in the Description }}
+Gets appointments from the Halo API.
 
 ### [Get-HaloAsset](Get-HaloAsset.md)
-{{ Fill in the Description }}
+Gets assets from the Halo API.
 
 ### [Get-HaloAttachment](Get-HaloAttachment.md)
-{{ Fill in the Description }}
+Gets attachments from the Halo API.
 
 ### [Get-HaloClient](Get-HaloClient.md)
-{{ Fill in the Description }}
+Gets clients from the Halo API.
 
 ### [Get-HaloContract](Get-HaloContract.md)
-{{ Fill in the Description }}
+Gets contracts from the Halo API.
 
 ### [Get-HaloInvoice](Get-HaloInvoice.md)
-{{ Fill in the Description }}
+Gets invoices from the Halo API.
 
 ### [Get-HaloItem](Get-HaloItem.md)
-{{ Fill in the Description }}
+Gets items from the Halo API.
 
 ### [Get-HaloKBArticle](Get-HaloKBArticle.md)
-{{ Fill in the Description }}
+Gets knowledgebase articles from the Halo API.
 
 ### [Get-HaloLookup](Get-HaloLookup.md)
-{{ Fill in the Description }}
+Gets lookup information from the Halo API.
 
 ### [Get-HaloOpportunity](Get-HaloOpportunity.md)
-{{ Fill in the Description }}
+Gets opportunities from the Halo API.
 
 ### [Get-HaloProject](Get-HaloProject.md)
-{{ Fill in the Description }}
+Gets projects from the Halo API.
 
 ### [Get-HaloPurchaseOrder](Get-HaloPurchaseOrder.md)
-{{ Fill in the Description }}
+Gets purchase orders from the Halo API.
 
 ### [Get-HaloQuote](Get-HaloQuote.md)
-{{ Fill in the Description }}
+Gets quotes from the Halo API.
 
 ### [Get-HaloRelease](Get-HaloRelease.md)
-{{ Fill in the Description }}
+Gets software releases from the Halo API.
 
 ### [Get-HaloReport](Get-HaloReport.md)
-{{ Fill in the Description }}
+Gets reports from the Halo API.
 
 ### [Get-HaloSalesOrder](Get-HaloSalesOrder.md)
-{{ Fill in the Description }}
+Gets sales orders from the Halo API.
 
 ### [Get-HaloService](Get-HaloService.md)
-{{ Fill in the Description }}
+Gets services from the Halo API.
 
 ### [Get-HaloSite](Get-HaloSite.md)
-{{ Fill in the Description }}
+Gets sites from the Halo API.
 
 ### [Get-HaloStatus](Get-HaloStatus.md)
-{{ Fill in the Description }}
+Gets statuses from the Halo API.
 
 ### [Get-HaloSupplier](Get-HaloSupplier.md)
-{{ Fill in the Description }}
+Gets suppliers from the Halo API.
 
 ### [Get-HaloTeam](Get-HaloTeam.md)
-{{ Fill in the Description }}
+Gets teams from the Halo API.
 
 ### [Get-HaloTemplate](Get-HaloTemplate.md)
-{{ Fill in the Description }}
+Gets a template object for the Halo API.
 
 ### [Get-HaloTicket](Get-HaloTicket.md)
-{{ Fill in the Description }}
+Gets tickets from the Halo API.
 
 ### [Get-HaloTicketType](Get-HaloTicketType.md)
-{{ Fill in the Description }}
+Gets ticket types from the Halo API.
 
 ### [Get-HaloTimesheet](Get-HaloTimesheet.md)
-{{ Fill in the Description }}
+Gets timesheets from the Halo API.
 
 ### [Get-HaloUser](Get-HaloUser.md)
-{{ Fill in the Description }}
+Gets users from the Halo API.
 
 ### [New-HaloAction](New-HaloAction.md)
-{{ Fill in the Description }}
+Creates an action via the Halo API.
 
 ### [New-HaloAgent](New-HaloAgent.md)
-{{ Fill in the Description }}
+Creates an agent via the Halo API.
 
 ### [New-HaloAppointment](New-HaloAppointment.md)
-{{ Fill in the Description }}
+Creates an appointment via the Halo API.
 
 ### [New-HaloAsset](New-HaloAsset.md)
-{{ Fill in the Description }}
+Creates an asset via the Halo API.
 
 ### [New-HaloAttachment](New-HaloAttachment.md)
-{{ Fill in the Description }}
+Creates an attachment via the Halo API.
 
 ### [New-HaloClient](New-HaloClient.md)
-{{ Fill in the Description }}
+Creates a client via the Halo API.
 
 ### [New-HaloContract](New-HaloContract.md)
-{{ Fill in the Description }}
+Updates a contract via the Halo API.
 
 ### [New-HaloInvoice](New-HaloInvoice.md)
-{{ Fill in the Description }}
+Creates an invoice via the Halo API.
 
 ### [New-HaloItem](New-HaloItem.md)
-{{ Fill in the Description }}
+Creates an item via the Halo API.
 
 ### [New-HaloKBArticle](New-HaloKBArticle.md)
-{{ Fill in the Description }}
+Creates a knowledgebase article via the Halo API.
 
 ### [New-HaloOpportunity](New-HaloOpportunity.md)
-{{ Fill in the Description }}
+Creates an opportunity via the Halo API.
 
 ### [New-HaloProject](New-HaloProject.md)
-{{ Fill in the Description }}
+Creates a project via the Halo API.
 
 ### [New-HaloQuote](New-HaloQuote.md)
-{{ Fill in the Description }}
+Creates a quote via the Halo API.
 
 ### [New-HaloReport](New-HaloReport.md)
-{{ Fill in the Description }}
+Creates a report via the Halo API.
 
 ### [New-HaloSite](New-HaloSite.md)
-{{ Fill in the Description }}
+Creates a site via the Halo API.
 
 ### [New-HaloStatus](New-HaloStatus.md)
-{{ Fill in the Description }}
+Creates a status via the Halo API.
 
 ### [New-HaloSupplier](New-HaloSupplier.md)
-{{ Fill in the Description }}
+Creates a supplier via the Halo API.
 
 ### [New-HaloTeam](New-HaloTeam.md)
-{{ Fill in the Description }}
+Creates a team via the Halo API.
 
 ### [New-HaloTicket](New-HaloTicket.md)
-{{ Fill in the Description }}
+Creates a ticket via the Halo API.
 
 ### [New-HaloTicketType](New-HaloTicketType.md)
-{{ Fill in the Description }}
+Creates a ticket type via the Halo API.
 
 ### [New-HaloUser](New-HaloUser.md)
-{{ Fill in the Description }}
+Creates a user via the Halo API.
 
 ### [Set-HaloAction](Set-HaloAction.md)
-{{ Fill in the Description }}
+Updates an action via the Halo API.
 
 ### [Set-HaloAgent](Set-HaloAgent.md)
-{{ Fill in the Description }}
+Updates an agent via the Halo API.
 
 ### [Set-HaloAppointment](Set-HaloAppointment.md)
-{{ Fill in the Description }}
+Updates an appointment via the Halo API.
 
 ### [Set-HaloAsset](Set-HaloAsset.md)
-{{ Fill in the Description }}
+Updates an asset via the Halo API.
 
 ### [Set-HaloAttachment](Set-HaloAttachment.md)
-{{ Fill in the Description }}
+Updates an attachment via the Halo API.
 
 ### [Set-HaloClient](Set-HaloClient.md)
-{{ Fill in the Description }}
+Updates a client via the Halo API.
 
 ### [Set-HaloInvoice](Set-HaloInvoice.md)
-{{ Fill in the Description }}
+Updates an invoice via the Halo API.
 
 ### [Set-HaloItem](Set-HaloItem.md)
-{{ Fill in the Description }}
+Updates an item via the Halo API.
 
 ### [Set-HaloKBArticle](Set-HaloKBArticle.md)
-{{ Fill in the Description }}
+Updates a knowledgebase article via the Halo API.
 
 ### [Set-HaloOpportunity](Set-HaloOpportunity.md)
-{{ Fill in the Description }}
+Updates an opportunity via the Halo API.
 
 ### [Set-HaloProject](Set-HaloProject.md)
-{{ Fill in the Description }}
+Updates a project via the Halo API.
 
 ### [Set-HaloQuote](Set-HaloQuote.md)
-{{ Fill in the Description }}
+Updates a quote via the Halo API.
 
 ### [Set-HaloReport](Set-HaloReport.md)
-{{ Fill in the Description }}
+Updates a report via the Halo API.
 
 ### [Set-HaloSite](Set-HaloSite.md)
-{{ Fill in the Description }}
+Updates a site via the Halo API.
 
 ### [Set-HaloStatus](Set-HaloStatus.md)
-{{ Fill in the Description }}
+Updates a status via the Halo API.
 
 ### [Set-HaloSupplier](Set-HaloSupplier.md)
-{{ Fill in the Description }}
+Updates a supplier via the Halo API.
 
 ### [Set-HaloTeam](Set-HaloTeam.md)
-{{ Fill in the Description }}
+Updates a team via the Halo API.
 
 ### [Set-HaloTicket](Set-HaloTicket.md)
-{{ Fill in the Description }}
+Updates a ticket via the Halo API.
 
 ### [Set-HaloTicketType](Set-HaloTicketType.md)
-{{ Fill in the Description }}
+Updates a ticket type via the Halo API.
 
 ### [Set-HaloUser](Set-HaloUser.md)
-{{ Fill in the Description }}
+Updates a user via the Halo API.
 

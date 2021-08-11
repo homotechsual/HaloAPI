@@ -34,6 +34,21 @@ Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
+### -ClientID
+Filter by the specified client ID.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: client_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ContractID
 Contract ID
 
@@ -49,43 +64,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Paginate
-Paginate results
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: pageinate
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageSize
-Number of results per page.
+### -Count
+The number of contracts to return if not using pagination.
 
 ```yaml
 Type: Int32
 Parameter Sets: Multi
-Aliases: page_size
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageNo
-Which page to return.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
+Aliases:
 
 Required: False
 Position: Named
@@ -124,6 +109,51 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -PageNo
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+Number of results per page.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Search
 Return contracts matching the search term in the results.
 
@@ -135,36 +165,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Count
-The number of contracts to return if not using pagination.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ClientID
-Filter by the specified client ID.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: client_id
-
-Required: False
-Position: Named
-Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

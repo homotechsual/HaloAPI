@@ -50,13 +50,28 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Paginate
-Paginate results
+### -Count
+The number of clients to return if not using pagination.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeActive
+Include active clients in the results.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: Multi
-Aliases: pageinate
+Aliases:
 
 Required: False
 Position: Named
@@ -65,32 +80,47 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageSize
-Number of results per page.
+### -IncludeActivity
+Include ticket activity in the result.
 
 ```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_size
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageNo
-Which page to return.
+### -IncludeDetails
+Include extra objects in the result.
 
 ```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeInactive
+Include inactive clients in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -125,6 +155,51 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -PageNo
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+Number of results per page.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Search
 Return clients matching the search term in the results.
 
@@ -151,81 +226,6 @@ Aliases: toplevel_id
 Required: False
 Position: Named
 Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeActive
-Include active clients in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeInactive
-Include inactive clients in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Count
-The number of clients to return if not using pagination.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeActivity
-Include ticket activity in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

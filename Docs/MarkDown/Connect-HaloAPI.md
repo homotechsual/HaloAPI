@@ -31,21 +31,6 @@ This logs into Halo using the Client Credentials authorisation flow with all ava
 
 ## PARAMETERS
 
-### -URL
-The URL of the Halo instance to connect to.
-
-```yaml
-Type: Uri
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ClientID
 The Client ID for the application configured in Halo.
 
@@ -102,6 +87,21 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -URL
+The URL of the Halo instance to connect to.
+
+```yaml
+Type: Uri
+Parameter Sets: (All)
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

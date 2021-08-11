@@ -36,15 +36,15 @@ Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
-### -QuoteID
-Quote ID
+### -ClientID
+Filters by the specified client
 
 ```yaml
 Type: Int64
-Parameter Sets: Single
-Aliases:
+Parameter Sets: Multi
+Aliases: client_id
 
-Required: True
+Required: False
 Position: Named
 Default value: 0
 Accept pipeline input: False
@@ -66,8 +66,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Search
-Filters response based on the search string
+### -IncludeDetails
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderBy
+The name of the first field to order by
 
 ```yaml
 Type: String
@@ -81,53 +96,53 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Paginate
-Paginate results
+### -OrderBy2
+The name of the second field to order by
 
 ```yaml
-Type: SwitchParameter
+Type: String
 Parameter Sets: Multi
-Aliases: pageinate
+Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageSize
-Number of results per page.
+### -OrderBy3
+The name of the third field to order by
 
 ```yaml
-Type: Int32
+Type: String
 Parameter Sets: Multi
-Aliases: page_size
+Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageNo
-Which page to return.
+### -OrderBy4
+The name of the fourth field to order by
 
 ```yaml
-Type: Int32
+Type: String
 Parameter Sets: Multi
-Aliases: page_no
+Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrderBy
-The name of the first field to order by
+### -OrderBy5
+The name of the fifth field to order by
 
 ```yaml
 Type: String
@@ -156,21 +171,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrderBy2
-The name of the second field to order by
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -OrderByDesc2
 Whether to order ascending or descending
 
@@ -182,21 +182,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderBy3
-The name of the third field to order by
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -216,21 +201,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrderBy4
-The name of the fourth field to order by
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -OrderByDesc4
 Whether to order ascending or descending
 
@@ -242,21 +212,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderBy5
-The name of the fifth field to order by
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -276,13 +231,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TicketID
-Filters by the specified ticket
+### -PageNo
+Which page to return.
 
 ```yaml
-Type: Int64
+Type: Int32
 Parameter Sets: Multi
-Aliases: ticket_id
+Aliases: page_no
 
 Required: False
 Position: Named
@@ -291,17 +246,62 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ClientID
-Filters by the specified client
+### -PageSize
+Number of results per page.
 
 ```yaml
-Type: Int64
+Type: Int32
 Parameter Sets: Multi
-Aliases: client_id
+Aliases: page_size
 
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -QuoteID
+Quote ID
+
+```yaml
+Type: Int64
+Parameter Sets: Single
+Aliases:
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Search
+Filters response based on the search string
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -321,6 +321,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -TicketID
+Filters by the specified ticket
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases: ticket_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -UserID
 Filters by the specified user
 
@@ -332,21 +347,6 @@ Aliases: user_id
 Required: False
 Position: Named
 Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

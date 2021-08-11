@@ -40,21 +40,6 @@ Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
-### -Me
-Get the agent object for the access token owner
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Me
-Aliases:
-
-Required: True
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -AgentID
 Agent ID.
 
@@ -70,8 +55,128 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Team
-Filter by the specified team name.
+### -ClientID
+Filter by the specified client ID (agents who have access to this client).
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: client_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DepartmentID
+Filter by the specified department ID.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: department_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDetails
+Include extra detail objects (for example teams and roles) in the response.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDisabled
+Include agents with disabled accounts.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeEnabled
+Include agents with enabled accounts (defaults to $True).
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeRoles
+Include the agent's roles list in the response.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeUnassigned
+Include the system unassigned agent account.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Me
+Get the agent object for the access token owner
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Me
+Aliases:
+
+Required: True
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Role
+Filter by the specified role ID (requires int as string.)
 
 ```yaml
 Type: String
@@ -116,38 +221,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -DepartmentID
-Filter by the specified department ID.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: department_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ClientID
-Filter by the specified client ID (agents who have access to this client).
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: client_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Role
-Filter by the specified role ID (requires int as string.)
+### -Team
+Filter by the specified team name.
 
 ```yaml
 Type: String
@@ -157,81 +232,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeEnabled
-Include agents with enabled accounts (defaults to $True).
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDisabled
-Include agents with disabled accounts.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeUnassigned
-Include the system unassigned agent account.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeRoles
-Include the agent's roles list in the response.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-Include extra detail objects (for example teams and roles) in the response.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
