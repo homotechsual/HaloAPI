@@ -30,7 +30,7 @@ stages:
   
   - stage: Test
     jobs:
-      - job: Test and Publish
+      - job: TestandPublish
         steps:
           - task: Pester@10
             inputs:
