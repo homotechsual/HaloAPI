@@ -11,7 +11,7 @@ BeforeAll {
         Remove-Module $ModuleName -Force
     }
     Import-Module $ManifestPath -Verbose:$False
-    $Script:ModuleInformation = Import-module -Name $ManifestPath -PassThru
+    $Script:ModuleInformation = Import-Module -Name $ManifestPath -PassThru
 
 }
 

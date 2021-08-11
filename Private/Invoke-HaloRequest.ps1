@@ -10,7 +10,7 @@ function Invoke-HaloRequest {
             Outputs an object containing the response from the web request.
     #>
     [Cmdletbinding()]
-    [OutputType([BasicHtmlWebResponseObject], [PSCustomObject])]
+    [OutputType([PSCustomObject])]
     param (
         # Hashtable containing the web request parameters.
         [Hashtable]$WebRequestParams,
