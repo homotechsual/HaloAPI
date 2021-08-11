@@ -10,23 +10,43 @@ function Invoke-HaloRequest {
             Outputs an object containing the response from the web request.
     #>
     [Cmdletbinding()]
-    [OutputType([BasicHtmlWebResponseObject], [PSCustomObject])]
+    [OutputType([PSCustomObject])]
     param (
         # Hashtable containing the web request parameters.
         [Hashtable]$WebRequestParams,
         # Returns the Raw result. Useful for file downloads.
         [Switch]$RawResult
     )
+    if ($null -eq $Script:HAPIConnectionInformation) {
+        Throw "Missing Halo connection information, please run 'Connect-HaloAPI' first."
+    }
+    if (($null -eq $Script:HAPIAuthToken) -and ($null -eq $AllowAnonymous)) {
+        Throw "Missing Halo authentication tokens, please add '-AllowAnonymous' to the PowerShell command to return public data (if supported)."
+    }
+    $Now = Get-Date
+    if ($Script:HAPIAuthToken.Expires -le $Now) {
+        Write-Verbose "The auth token has expired, renewing."
+        $ReconnectParameters = @{
+            URL = $Script:HAPIConnectionInformation.URL
+            ClientId = $Script:HAPIConnectionInformation.ClientID
+            ClientSecret = $Script:HAPIConnectionInformation.ClientSecret
+            Scopes = $Script:HAPIConnectionInformation.AuthScopes
+            Tenant = $Script:HAPIConnectionInformation.Tenant
+        }
+        Connect-HaloAPI @ReconnectParameters
+    }
+    if ($null -ne $Script:HAPIAuthToken) {
+        $AuthHeaders = @{
+            Authorization = "$($Script:HAPIAuthToken.Type) $($Script:HAPIAuthToken.Access)"
+        }
+    } else {
+        $AuthHeaders = $null
+    }
     try {
         Write-Verbose "Making a $($WebRequestParams.Method) request to $($WebRequestParams.Uri)"
-        switch ($Method) {
-            { ($_ -eq "PUT") -or ($_ -eq "POST") -or ($_ -eq "DELETE") -or ($_ -eq "PATCH") } {
-                $Response = Invoke-WebRequest @WebRequestParams -Body $Body
-            }
-            { ($_ -eq "GET") } {
-                $Response = Invoke-WebRequest @WebRequestParams
-            }
-        }
+        
+        $Response = Invoke-WebRequest @WebRequestParams -Headers $AuthHeaders -ContentType "application/json"
+        
         Write-Debug "Response headers: $($Response.Headers | Out-String)"
         if ($RawResult) {
             $Results = $Response
@@ -41,4 +61,3 @@ function Invoke-HaloRequest {
         Write-Verbose $_
     }
 }
-

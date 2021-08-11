@@ -38,7 +38,7 @@ function Invoke-HaloUpdate {
         }
         $WebRequestParams = @{
             Method = "POST"
-            Resource = "api/$Endpoint"
+            Uri = "$($Script:HAPIConnectionInformation.URL)api/$Endpoint"
             Body = $Object | ConvertTo-Json -Depth 100 -AsArray
         }
         $UpdateResults = Invoke-HaloRequest -WebRequestParams $WebRequestParams

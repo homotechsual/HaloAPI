@@ -78,6 +78,7 @@
         'Get-HaloAttachment',
         'Get-HaloClient',
         'Get-HaloContract',
+        'Get-HaloField',
         'Get-HaloInvoice',
         'Get-HaloItem',
         'Get-HaloKBArticle',
@@ -140,7 +141,8 @@
         'Set-HaloTeam',
         'Set-HaloTicket',
         'Set-HaloTicketType',
-        'Set-HaloUser'
+        'Set-HaloUser',
+        'Remove-HaloAction'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
