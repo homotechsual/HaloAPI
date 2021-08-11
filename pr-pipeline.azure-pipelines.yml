@@ -1,6 +1,8 @@
 # Docs: https://aka.ms/yaml
 name: $(Build.DefinitionName)-$(Date:yyyyMMdd)
 pr:
+  - main
+  - develop
 
 pool:
   vmImage: 'vs2017-win2016'

@@ -33,6 +33,21 @@ Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
+### -ExcludeZero
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: exclude_zero
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ItemID
 Lookup Item ID
 
@@ -70,21 +85,6 @@ Show all records
 Type: SwitchParameter
 Parameter Sets: Multi
 Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludeZero
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: exclude_zero
 
 Required: False
 Position: Named

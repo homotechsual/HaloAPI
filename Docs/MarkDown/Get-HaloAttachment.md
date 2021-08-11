@@ -44,36 +44,6 @@ Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
-### -AttachmentID
-Attachment ID
-
-```yaml
-Type: Int64
-Parameter Sets: SinglePath, SingleFile, Single
-Aliases:
-
-Required: True
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TicketID
-Returns attachments from the ticket ID specified
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases: ticket_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ActionID
 Returns attachments from the action ID specified (requires ticket_id)
 
@@ -89,30 +59,15 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Type
-Returns attachments of the specified type
+### -AttachmentID
+Attachment ID
 
 ```yaml
 Type: Int64
-Parameter Sets: Multi
+Parameter Sets: SinglePath, SingleFile, Single
 Aliases:
 
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -UniqueID
-Returns an attachment with the unique ID specified
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases: unique_id
-
-Required: False
+Required: True
 Position: Named
 Default value: 0
 Accept pipeline input: False
@@ -160,6 +115,51 @@ Aliases:
 Required: True
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TicketID
+Returns attachments from the ticket ID specified
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases: ticket_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Type
+Returns attachments of the specified type
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UniqueID
+Returns an attachment with the unique ID specified
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases: unique_id
+
+Required: False
+Position: Named
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
