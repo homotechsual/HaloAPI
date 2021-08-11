@@ -91,16 +91,18 @@ function Get-HaloAsset {
         if ($AssetID) {
             Write-Verbose "Running in single-asset mode because '-AssetID' was provided."
             $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/Asset/$($AssetID)$($QueryString)"
+            $Resource = "api/asset/$($AssetID)"
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = "assets"
             }
         } else {
             Write-Verbose "Running in multi-asset mode."
             $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = "api/Asset$($QueryString)"
+            $Resource = "api/asset"
             $RequestParams = @{
                 Method = "GET"
                 Resource = $Resource

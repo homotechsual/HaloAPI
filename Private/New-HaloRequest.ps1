@@ -62,6 +62,8 @@ function New-HaloRequest {
         Write-Verbose "Automatically paginating."
         $PageNum = $QSCollection.page_no
         $PageSize = $QSCollection.page_size
+    } elseif ((-not $QSCollection.pageinate) -and ($QSCollection.page_size)) {
+        $QSCollection.Remove("page_size")
     }
     if ($QSCollection) {
         Write-Debug "Query string in New-HaloRequest contains: $($QSCollection | Out-String)"
