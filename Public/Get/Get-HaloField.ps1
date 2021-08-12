@@ -33,18 +33,18 @@ function Get-HaloField {
     $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
     try {
         if ($FieldID) {
-            Write-Verbose "Running in single-lookup mode because '-FieldID' was provided."
+            Write-Verbose "Running in single-field mode because '-FieldID' was provided."
             $Resource = "api/Field/$($FieldID)"
         } else {
-            Write-Verbose "Running in multi-lookup mode."
+            Write-Verbose "Running in multi-field mode."
             $Resource = "api/Field"
         }
         $RequestParams = @{
-            Method          = "GET"
-            Resource        = $Resource
+            Method = "GET"
+            Resource = $Resource
             AutoPaginateOff = $True
-            QSCollection    = $QSCollection
-            ResourceType    = "fields"
+            QSCollection = $QSCollection
+            ResourceType = "fields"
         }
         $FieldResults = New-HaloGETRequest @RequestParams
         Return $FieldResults
