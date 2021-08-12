@@ -8,13 +8,18 @@ Function New-HaloTicketType {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new ticket type.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$TicketType
+        [Object]$TicketType
     )
-    if ($PSCmdlet.ShouldProcess("Ticket Type", "Create")) {
-        Invoke-HaloUpdate -Object $TicketType -Endpoint "tickettype"
+    try {
+        if ($PSCmdlet.ShouldProcess("Ticket Type '$($TicketType.name)'", "Create")) {
+            New-HaloPOSTRequest -Object $TicketType -Endpoint "tickettype"
+        }
+    } catch {
+        Write-Error "Failed to create ticket type with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

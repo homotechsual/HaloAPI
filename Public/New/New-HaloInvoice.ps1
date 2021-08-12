@@ -8,13 +8,18 @@ Function New-HaloInvoice {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new invoice.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Invoice
+        [Object]$Invoice
     )
-    if ($PSCmdlet.ShouldProcess("Invoice", "Create")) {
-        Invoke-HaloUpdate -Object $Invoice -Endpoint "invoice"
+    try {
+        if ($PSCmdlet.ShouldProcess("Invoice '$($Invoice.invoicenumber)'", "Create")) {
+            New-HaloPOSTRequest -Object $Invoice -Endpoint "invoice"
+        }
+    } catch {
+        Write-Error "Failed to create invoice with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

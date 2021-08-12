@@ -1,6 +1,7 @@
 # Docs: https://aka.ms/yaml
 name: $(Build.DefinitionName)-$(Date:yyyyMMdd)
-pr:
+trigger:
+  - main
 
 pool:
   vmImage: 'vs2017-win2016'
@@ -29,24 +30,23 @@ stages:
   
   - stage: Test
     jobs:
-      - job: Test
+      - job: TestandPublish
         steps:
           - task: Pester@10
             inputs:
               ScriptFolder: '$(System.DefaultWorkingDirectory)\*'
-              ResultsFile: '$(Common.TestResultsDirectory)\Test-$(Build.DefinitionName)-$(Build.BuildNumber)-Results.xml'
-              CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-$(Build.DefinitionName)-$(Build.BuildNumber)-Coverage.xml'
+              ResultsFile: '$(Common.TestResultsDirectory)\Pester-Results.xml'
+              CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-Coverage.xml'        
               UsePSCore: true
               AdditionalModulePath: '$(Build.ArtifactStagingDirectory)'
-      - job: Publish
-        steps:
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'NUnit'
-              testResultsFiles: '$(Common.TestResultsDirectory)/Test-$(Build.DefinitionName)-$(Build.BuildNumber)-Results.xml'
+              testResultsFiles: '$(Common.TestResultsDirectory)\Pester-Results.xml'
               searchFolder: '$(Common.TestResultsDirectory)'
               failTaskOnFailedTests: true
           - task: PublishCodeCoverageResults@1
             inputs:
+              summaryFileLocation: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
               codeCoverageTool: 'JaCoCo'
-              summaryFileLocation: '$(Common.TestResultsDirectory)\Code-$(Build.DefinitionName)-$(Build.BuildNumber)-Coverage.xml'
+              pathToSources: '$(System.DefaultWorkingDirectory)'

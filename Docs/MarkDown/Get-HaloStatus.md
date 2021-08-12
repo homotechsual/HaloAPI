@@ -34,6 +34,81 @@ Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
+### -Domain
+Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeClosed
+Exclude the closed status from the response
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludePending
+Exclude the pending closure status from the response
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDetails
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ShowCounts
+Show the count of tickets in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -StatusID
 Status ID
 
@@ -65,36 +140,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ShowCounts
-Show the count of tickets in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Domain
-Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ViewID
 Filter counts to a specific view ID.
 
@@ -106,51 +151,6 @@ Aliases: view_id
 Required: False
 Position: Named
 Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludePending
-Exclude the pending closure status from the response
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludeClosed
-Exclude the closed status from the response
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

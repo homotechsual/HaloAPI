@@ -9,7 +9,7 @@ function Get-HaloTicket {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Ticket ID
@@ -290,7 +290,7 @@ function Get-HaloTicket {
                 ResourceType = "tickets"
             }
         }
-        $TicketResults = New-HaloRequest @RequestParams
+        $TicketResults = New-HaloGETRequest @RequestParams
         Return $TicketResults
     } catch {
         Write-Error "Failed to get tickets from the Halo API. You'll see more detail if using '-Verbose'"

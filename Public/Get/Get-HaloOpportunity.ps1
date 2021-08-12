@@ -9,7 +9,7 @@ function Get-HaloOpportunity {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Opportunity ID
@@ -287,7 +287,7 @@ function Get-HaloOpportunity {
                 ResourceType = "tickets"
             }
         }
-        $OpportunityResults = New-HaloRequest @RequestParams
+        $OpportunityResults = New-HaloGETRequest @RequestParams
         Return $OpportunityResults
     } catch {
         Write-Error "Failed to get opportunities from the Halo API. You'll see more detail if using '-Verbose'"

@@ -8,13 +8,23 @@ Function Set-HaloTicketType {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing ticket type.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$TicketType
+        [Object]$TicketType
     )
-    if ($PSCmdlet.ShouldProcess("Ticket Type", "Update")) {
-        Invoke-HaloUpdate -Object $TicketType -Endpoint "tickettype" -Update
+    try {
+        $ObjectToUpdate = Get-HaloTicketType -TicketTypeID $TicketType.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Ticket Type '$($TicketType.name)'", "Update")) {
+                New-HaloPOSTRequest -Object $TicketType -Endpoint "tickettype" -Update
+            }
+        } else {
+            Throw "Ticket Type not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update ticket type with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

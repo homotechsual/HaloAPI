@@ -8,13 +8,23 @@ Function Set-HaloOpportunity {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing opportunity.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Opportunity
+        [Object]$Opportunity
     )
-    if ($PSCmdlet.ShouldProcess("Opportunity", "Update")) {
-        Invoke-HaloUpdate -Object $Opportunity -Endpoint "opportunities" -Update
+    try {
+        $ObjectToUpdate = Get-HaloOpportunity -OpportunityID $Opportunity.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Opportunity '$($ObjectToUpdate.summary)'", "Update")) {
+                New-HaloPOSTRequest -Object $Opportunity -Endpoint "opportunities" -Update
+            }
+        } else {
+            Throw "Opportunity was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update opportunity with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

@@ -1,17 +1,17 @@
-function New-HaloRequest {
+function New-HaloGETRequest {
     <#
         .SYNOPSIS
             Builds a request for the Halo API.
         .DESCRIPTION
             Wrapper function to build web requests for the Halo API.
         .EXAMPLE
-            PS C:\> New-HaloRequest -Method "GET" -Resource "/api/Articles"
+            PS C:\> New-HaloGETRequest -Method "GET" -Resource "/api/Articles"
             Gets all Knowledgebase Articles
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding()]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     param (
         # The HTTP request method.
@@ -33,31 +33,7 @@ function New-HaloRequest {
         # The key for the results object.
         [String]$ResourceType
     )
-    if ($null -eq $Script:HAPIConnectionInformation) {
-        Throw "Missing Halo connection information, please run 'Connect-HaloAPI' first."
-    }
-    if (($null -eq $Script:HAPIAuthToken) -and ($null -eq $AllowAnonymous)) {
-        Throw "Missing Halo authentication tokens, please add '-AllowAnonymous' to the PowerShell command to return public data (if supported)."
-    }
-    $Now = Get-Date
-    if ($Script:HAPIAuthToken.Expires -le $Now) {
-        Write-Verbose "The auth token has expired, renewing."
-        $ReconnectParameters = @{
-            URL = $Script:HAPIConnectionInformation.URL
-            ClientId = $Script:HAPIConnectionInformation.ClientID
-            ClientSecret = $Script:HAPIConnectionInformation.ClientSecret
-            Scopes = $Script:HAPIConnectionInformation.AuthScopes
-            Tenant = $Script:HAPIConnectionInformation.Tenant
-        }
-        Connect-HaloAPI @ReconnectParameters
-    }
-    if ($null -ne $Script:HAPIAuthToken) {
-        $AuthHeaders = @{
-            Authorization = "$($Script:HAPIAuthToken.Type) $($Script:HAPIAuthToken.Access)"
-        }
-    } else {
-        $AuthHeaders = $null
-    }
+    
     if (($null -ne $QSCollection) -and ($QSCollection.pageinate -eq 'true') -and (-not($AutoPaginateOff))) {
         Write-Verbose "Automatically paginating."
         $PageNum = $QSCollection.page_no
@@ -66,9 +42,9 @@ function New-HaloRequest {
         $QSCollection.Remove("page_size")
     }
     if ($QSCollection) {
-        Write-Debug "Query string in New-HaloRequest contains: $($QSCollection | Out-String)"
+        Write-Debug "Query string in New-HaloGETRequest contains: $($QSCollection | Out-String)"
         $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
-        Write-Verbose "Building [HttpQSCollection] for New-HaloRequest"
+        Write-Verbose "Building [HttpQSCollection] for New-HaloGETRequest"
         foreach ($Key in $QSCollection.Keys) {
             $QueryStringCollection.Add($Key, $QSCollection.$Key)
         }
@@ -81,15 +57,13 @@ function New-HaloRequest {
         $QSBuilder.Query = $QueryStringCollection.ToString()
         $Query = $QSBuilder.Query.ToString()
         $WebRequestParams = @{
-            ContentType = "application/json"
-            Headers = $AuthHeaders
             Method = $Method
             Uri = "$($Script:HAPIConnectionInformation.URL)$($Resource)$($Query)"
         }
         Write-Debug "Building new HaloRequest with params: $($WebRequestParams | Out-String)"
         $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
         Write-Debug "Halo request returned $($Response | Out-String)"
-        if ($Response.PSObject.Properties.name -match $ResourceType) {
+        if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
             $Result = $Response.$ResourceType
         } else {
             $Result = $Response
@@ -102,8 +76,6 @@ function New-HaloRequest {
             $QSBuilder.Query = $QueryStringCollection.ToString()
             $Query = $QSBuilder.Query.ToString()
             $WebRequestParams = @{
-                ContentType = "application/json"
-                Headers = $AuthHeaders
                 Method = $Method
                 Uri = "$($Script:HAPIConnectionInformation.URL)$($Resource)$($Query)"
             }
@@ -113,7 +85,7 @@ function New-HaloRequest {
             $NumPages = [Math]::Ceiling($Response.record_count / $PageSize)
             Write-Verbose "Total number of pages to process: $NumPages"
             $PageNum++
-            if ($Response.PSObject.Properties.name -match $ResourceType) {
+            if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
                 $Response.$ResourceType
             } else {
                 $Response

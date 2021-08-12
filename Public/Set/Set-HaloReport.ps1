@@ -8,13 +8,23 @@ Function Set-HaloReport {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing report.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Report
+        [Object]$Report
     )
-    if ($PSCmdlet.ShouldProcess("Report", "Update")) {
-        Invoke-HaloUpdate -Object $Report -Endpoint "report" -Update
+    try {
+        $ObjectToUpdate = Get-HaloReport -ReportID $Report.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Report '$($ObjectToUpdate.name)'", "Update")) {
+                New-HaloPOSTRequest -Object $Report -Endpoint "report" -Update
+            }
+        } else {
+            Throw "Report was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update report with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

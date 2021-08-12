@@ -8,13 +8,18 @@ Function New-HaloTeam {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new team.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Team
+        [Object]$Team
     )
-    if ($PSCmdlet.ShouldProcess("Team", "Create")) {
-        Invoke-HaloUpdate -Object $Team -Endpoint "team"
+    try {
+        if ($PSCmdlet.ShouldProcess("Team '$($Team.name)'", "Create")) {
+            New-HaloPOSTRequest -Object $Team -Endpoint "team"
+        }
+    } catch {
+        Write-Error "Failed to create team with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

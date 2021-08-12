@@ -9,7 +9,7 @@ function Get-HaloAttachment {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Attachment ID
@@ -18,7 +18,7 @@ function Get-HaloAttachment {
         [Parameter( ParameterSetName = "SinglePath", Mandatory = $True )]
         [int64]$AttachmentID,
         # Returns attachments from the ticket ID specified
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = "Multi", Mandatory = $True )]
         [Alias("ticket_id")]
         [int64]$TicketID,
         # Returns attachments from the action ID specified (requires ticket_id)
@@ -72,7 +72,7 @@ function Get-HaloAttachment {
                 ResourceType = "attachments"
             }
         }
-        $AttachmentResults = New-HaloRequest @RequestParams
+        $AttachmentResults = New-HaloGETRequest @RequestParams
         if ($AttachmentID) {
             Write-Verbose "Processing single mode response"
             if ($OutFile -or $OutPath) {

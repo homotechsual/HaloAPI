@@ -9,7 +9,7 @@ function Get-HaloContract {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Contract ID
@@ -60,7 +60,7 @@ function Get-HaloContract {
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = "clientcontracts"
+                ResourceType = "contracts"
             }
         } else {
             Write-Verbose "Running in multi-contract mode."
@@ -71,10 +71,10 @@ function Get-HaloContract {
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
-                ResourceType = "clientcontracts"
+                ResourceType = "contracts"
             }
         }
-        $ContractResults = New-HaloRequest @RequestParams
+        $ContractResults = New-HaloGETRequest @RequestParams
         Return $ContractResults
     } catch {
         Write-Error "Failed to get contracts from the Halo API. You'll see more detail if using '-Verbose'"

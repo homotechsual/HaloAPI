@@ -9,7 +9,7 @@ function Get-HaloTimesheet {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Return the timesheet for the specified team.
@@ -54,7 +54,7 @@ function Get-HaloTimesheet {
             QSCollection = $QSCollection
             ResourceType = "timesheets"
         }
-        $ReleaseResults = New-HaloRequest @RequestParams
+        $ReleaseResults = New-HaloGETRequest @RequestParams
         Return $ReleaseResults
     } catch {
         Write-Error "Failed to get timesheets from the Halo API. You'll see more detail if using '-Verbose'"

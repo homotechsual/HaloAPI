@@ -9,7 +9,7 @@ function Get-HaloLookup {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Lookup Item ID
@@ -49,7 +49,7 @@ function Get-HaloLookup {
             QSCollection = $QSCollection
             ResourceType = "lookups"
         }
-        $LookupResults = New-HaloRequest @RequestParams
+        $LookupResults = New-HaloGETRequest @RequestParams
         Return $LookupResults
     } catch {
         Write-Error "Failed to get lookups from the Halo API. You'll see more detail if using '-Verbose'"

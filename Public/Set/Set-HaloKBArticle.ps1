@@ -8,13 +8,23 @@ Function Set-HaloKBArticle {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing knowedgebase article.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$KBArticle
+        [Object]$KBArticle
     )
-    if ($PSCmdlet.ShouldProcess("Article", "Update")) {
-        Invoke-HaloUpdate -Object $KBArticle -Endpoint "kbarticle" -Update
+    try {
+        $ObjectToUpdate = Get-HaloKBArticle -ArticleID $KBArticle.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Article '$($ObjectToUpdate.name)'", "Update")) {
+                New-HaloPOSTRequest -Object $KBArticle -Endpoint "kbarticle" -Update
+            }
+        } else {
+            Throw "Article was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update article with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

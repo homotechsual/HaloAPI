@@ -8,13 +8,23 @@ Function Set-HaloStatus {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing status.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Status
+        [Object]$Status
     )
-    if ($PSCmdlet.ShouldProcess("Status", "Update")) {
-        Invoke-HaloUpdate -Object $Status -Endpoint "status" -Update
+    try {
+        $ObjectToUpdate = Get-HaloStatus -StatusID $Status.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Status '$($ObjectToUpdate.name)'", "Update")) {
+                New-HaloPOSTRequest -Object $Status -Endpoint "status" -Update
+            }
+        } else {
+            Throw "Status was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update status with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

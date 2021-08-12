@@ -8,13 +8,23 @@ Function Set-HaloInvoice {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing invoice.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Invoice
+        [Object]$Invoice
     )
-    if ($PSCmdlet.ShouldProcess("Invoice", "Update")) {
-        Invoke-HaloUpdate -Object $Invoice -Endpoint "invoice" -Update
+    try {
+        $ObjectToUpdate = Get-HaloInvoice -InvoiceID $Invoice.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Invoice '$($ObjectToUpdate.invoicenumber)'", "Update")) {
+                New-HaloPOSTRequest -Object $Invoice -Endpoint "invoice" -Update
+            }
+        } else {
+            Throw "Invoice was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update invoice with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

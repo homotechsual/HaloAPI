@@ -9,7 +9,7 @@ function Get-HaloClient {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Client ID
@@ -86,7 +86,7 @@ function Get-HaloClient {
                 ResourceType = "clients"
             }
         }
-        $ClientResults = New-HaloRequest @RequestParams
+        $ClientResults = New-HaloGETRequest @RequestParams
         Return $ClientResults
     } catch {
         Write-Error "Failed to get clients from the Halo API. You'll see more detail if using '-Verbose'"

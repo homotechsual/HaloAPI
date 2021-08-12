@@ -9,7 +9,7 @@ function Get-HaloAppointment {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Appointment ID
@@ -83,7 +83,7 @@ function Get-HaloAppointment {
             QSCollection = $QSCollection
             ResourceType = "appointments"
         }
-        $AppointmentResults = New-HaloRequest @RequestParams
+        $AppointmentResults = New-HaloGETRequest @RequestParams
         Return $AppointmentResults
     } catch {
         Write-Error "Failed to get appointments from the Halo API. You'll see more detail if using '-Verbose'"

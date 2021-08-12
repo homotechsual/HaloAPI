@@ -8,13 +8,18 @@ Function New-HaloUser {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new user.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$User
+        [Object]$User
     )
-    if ($PSCmdlet.ShouldProcess("User", "Create")) {
-        Invoke-HaloUpdate -Object $User -Endpoint "users"
+    try {
+        if ($PSCmdlet.ShouldProcess("User '$($User.name)'", "Create")) {
+            New-HaloPOSTRequest -Object $User -Endpoint "users"
+        }
+    } catch {
+        Write-Error "Failed to create user with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

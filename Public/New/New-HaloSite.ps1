@@ -8,13 +8,18 @@ Function New-HaloSite {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new site.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Site
+        [Object]$Site
     )
-    if ($PSCmdlet.ShouldProcess("Site", "Create")) {
-        Invoke-HaloUpdate -Object $Site -Endpoint "site"
+    try {
+        if ($PSCmdlet.ShouldProcess("Site '$($Site.name)'", "Create")) {
+            New-HaloPOSTRequest -Object $Site -Endpoint "site"
+        }
+    } catch {
+        Write-Error "Failed to create site with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

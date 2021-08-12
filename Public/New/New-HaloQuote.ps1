@@ -8,13 +8,18 @@ Function New-HaloQuote {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new quotation.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Quote
+        [Object]$Quote
     )
-    if ($PSCmdlet.ShouldProcess("Quotation", "Create")) {
-        Invoke-HaloUpdate -Object $Quote -Endpoint "quotation"
+    try {
+        if ($PSCmdlet.ShouldProcess("Quote '$($Quote.title)'", "Create")) {
+            New-HaloPOSTRequest -Object $Quote -Endpoint "quotation"
+        }
+    } catch {
+        Write-Error "Failed to create quote with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

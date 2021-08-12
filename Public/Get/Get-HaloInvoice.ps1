@@ -9,7 +9,7 @@ function Get-HaloInvoice {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Invoice ID
@@ -110,7 +110,7 @@ function Get-HaloInvoice {
                 ResourceType = "invoices"
             }
         }
-        $InvoiceResults = New-HaloRequest @RequestParams
+        $InvoiceResults = New-HaloGETRequest @RequestParams
         Return $InvoiceResults
     } catch {
         Write-Error "Failed to get invoices from the Halo API. You'll see more detail if using '-Verbose'"

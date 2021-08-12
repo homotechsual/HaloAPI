@@ -1,8 +1,8 @@
 # Changelog
 
-* 2021-08-11
+* 2021-08-12
 
-  Version 1.0.3 - Coding standards fixes and further bugfix for `Get-HaloAsset`.
+  Version 1.1.0 - Change to output formats - now outputs the objects/results directly. No more `(Get-HaloAction).actions`. Add the first two `Remove-` commands. Leaner more efficient core.
 
 * 2021-08-11
 

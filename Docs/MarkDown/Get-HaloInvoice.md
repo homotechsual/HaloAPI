@@ -36,15 +36,15 @@ Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
-### -InvoiceID
-Invoice ID
+### -ClientID
+Filter by the specified client ID.
 
 ```yaml
-Type: Int64
-Parameter Sets: Single
-Aliases:
+Type: Int32
+Parameter Sets: Multi
+Aliases: client_id
 
-Required: True
+Required: False
 Position: Named
 Default value: 0
 Accept pipeline input: False
@@ -66,8 +66,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Search
-Return contracts matching the search term in the results.
+### -InvoiceID
+Invoice ID
+
+```yaml
+Type: Int64
+Parameter Sets: Single
+Aliases:
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderBy
+First field to order the results by.
 
 ```yaml
 Type: String
@@ -81,53 +96,53 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Paginate
-Paginate results
+### -OrderBy2
+Second field to order the results by.
 
 ```yaml
-Type: SwitchParameter
+Type: String
 Parameter Sets: Multi
-Aliases: pageinate
+Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageSize
-Number of results per page.
+### -OrderBy3
+Third field to order the results by.
 
 ```yaml
-Type: Int32
+Type: String
 Parameter Sets: Multi
-Aliases: page_size
+Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageNo
-Which page to return.
+### -OrderBy4
+Fourth field to order the results by.
 
 ```yaml
-Type: Int32
+Type: String
 Parameter Sets: Multi
-Aliases: page_no
+Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrderBy
-First field to order the results by.
+### -OrderBy5
+Fifth field to order the results by.
 
 ```yaml
 Type: String
@@ -156,21 +171,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrderBy2
-Second field to order the results by.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -OrderByDesc2
 Order results for the second field in descending order (respects the field choice in '-OrderBy2')
 
@@ -182,21 +182,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderBy3
-Third field to order the results by.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -216,21 +201,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrderBy4
-Fourth field to order the results by.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -OrderByDesc4
 Order results for the fourth field in descending order (respects the field choice in '-OrderBy4')
 
@@ -242,21 +212,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderBy5
-Fifth field to order the results by.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -276,13 +231,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TicketID
-Filter by the specified ticket ID.
+### -PageNo
+Which page to return.
 
 ```yaml
 Type: Int32
 Parameter Sets: Multi
-Aliases: ticket_id
+Aliases: page_no
 
 Required: False
 Position: Named
@@ -291,17 +246,47 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ClientID
-Filter by the specified client ID.
+### -PageSize
+Number of results per page.
 
 ```yaml
 Type: Int32
 Parameter Sets: Multi
-Aliases: client_id
+Aliases: page_size
 
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Search
+Return contracts matching the search term in the results.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -313,6 +298,21 @@ Filter by the specified site ID.
 Type: Int32
 Parameter Sets: Multi
 Aliases: site_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TicketID
+Filter by the specified ticket ID.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: ticket_id
 
 Required: False
 Position: Named

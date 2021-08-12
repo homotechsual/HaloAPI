@@ -8,13 +8,23 @@ Function Set-HaloSupplier {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing supplier.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Supplier
+        [Object]$Supplier
     )
-    if ($PSCmdlet.ShouldProcess("Supplier", "Update")) {
-        Invoke-HaloUpdate -Object $Supplier -Endpoint "supplier" -Update
+    try {
+        $ObjectToUpdate = Get-HaloSupplier -SupplierID $Supplier.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Supplier '$($ObjectToUpdate.name)'", "Update")) {
+                New-HaloPOSTRequest -Object $Supplier -Endpoint "supplier" -Update
+            }
+        } else {
+            Throw "Supplier was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update supplier with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

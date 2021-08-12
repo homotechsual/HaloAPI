@@ -8,13 +8,23 @@ Function Set-HaloTeam {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing team.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Team
+        [Object]$Team
     )
-    if ($PSCmdlet.ShouldProcess("Team", "Update")) {
-        Invoke-HaloUpdate -Object $Team -Endpoint "team" -Update
+    try {
+        $ObjectToUpdate = Get-HaloTeam -TeamID $Team.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Team '$($ObjectToUpdate.name)'", "Update")) {
+                New-HaloPOSTRequest -Object $Team -Endpoint "team" -Update
+            }
+        } else {
+            Throw "Team was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update team with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

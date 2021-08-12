@@ -1,6 +1,6 @@
 function New-HaloQueryString {
     [CmdletBinding()]
-    [OutputType([Hashtable])]
+    [OutputType([String], [Hashtable])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     param (
         [Parameter(
@@ -12,7 +12,8 @@ function New-HaloQueryString {
         )]
         [Hashtable]$Parameters,
         [Switch]$IsMulti,
-        [Switch]$CommaSeparatedArrays
+        [Switch]$CommaSeparatedArrays,
+        [Switch]$AsString
     )
     Write-Verbose "Building parameters for $($CommandName). Use '-Debug' with '-Verbose' to see parameter values as they are built."
     $QSCollection = [Hashtable]@{}
@@ -121,5 +122,11 @@ function New-HaloQueryString {
         Break
     }
     Write-Debug "Query collection contains $($QSCollection | Out-String)"
-    Return $QSCollection
+    if ($AsString) {
+        $QSBuilder.Query = $QSCollection.ToString()
+        $Query = $QSBuilder.Query.ToString()
+        Return $Query
+    } else {
+        Return $QSCollection
+    }
 }

@@ -18,7 +18,7 @@ function Get-HaloNullObject {
         Write-Verbose "Attribute Name: $($_.name)"
         Write-Verbose "Attribute Type: $(($_.Value.GetType()).name)"
         if ($_.Value -isnot [PSCustomObject]) {
-           $_.Value = $Null
+            $_.Value = $Null
         } else {
             $_.Value = Get-HaloNullObject -NullObject $_.Value
         }

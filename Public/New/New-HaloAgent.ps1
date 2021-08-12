@@ -8,13 +8,18 @@ Function New-HaloAgent {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new agent.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Agent
+        [Object]$Agent
     )
-    if ($PSCmdlet.ShouldProcess("Agent", "Create")) {
-        Invoke-HaloUpdate -Object $Agent -Endpoint "agent"
+    try {
+        if ($PSCmdlet.ShouldProcess("Agent '$($Agent.name)'", "Create")) {
+            New-HaloPOSTRequest -Object $Agent -Endpoint "agent"
+        }
+    } catch {
+        Write-Error "Failed to create agent with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }
