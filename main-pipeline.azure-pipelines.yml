@@ -54,6 +54,7 @@ stages:
               pathToSources: '$(System.DefaultWorkingDirectory)'
 
   - stage: Release
+    dependsOn: 'Test'
     jobs:
       - job: Build
         steps:

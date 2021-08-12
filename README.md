@@ -1,16 +1,16 @@
 # HaloAPI - A [PowerShell](https://microsoft.com/powershell) module for [Halo Service Solutions](https://haloservicesolutions.com/) software
 
-[![Azure DevOps Pipeline Status](https://img.shields.io/azure-devops/tests/MSPsUK/HaloAPI/1?style=for-the-badge)](https://dev.azure.com/MSPsUK/HaloAPI/_build?definitionId=1)
-[![Azure DevOps Code Coverage](https://img.shields.io/azure-devops/coverage/MSPsUK/HaloAPI/1?style=for-the-badge)](https://)
-[![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/HaloAPI?style=for-the-badge)](https://)
+[![Azure DevOps Pipeline Status](https://img.shields.io/azure-devops/tests/MSPsUK/HaloAPI/4?style=for-the-badge)](https://dev.azure.com/MSPsUK/HaloAPI/_build?definitionId=4)
+[![Azure DevOps Code Coverage](https://img.shields.io/azure-devops/coverage/MSPsUK/HaloAPI/4?style=for-the-badge)](https://dev.azure.com/MSPsUK/HaloAPI/_build?definitionId=4)
+[![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/HaloAPI?style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
 [![License](https://img.shields.io/github/license/homotechsual/HaloAPI?style=for-the-badge)](https://haloapi.mit-license.org/)
-[![GitHub Sponsors](https://img.shields.io/github/sponsors/homotechsual?style=for-the-badge)](https://)
-[![Stable Release](https://img.shields.io/powershellgallery/v/HaloAPI?label=Stable+Release&style=for-the-badge)](https://)
-[![Preview Release](https://img.shields.io/powershellgallery/v/HaloAPI?label=Preview+Release&include_prereleases&style=for-the-badge)](https://)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/homotechsual?style=for-the-badge)](https://github.com/sponsors/homotechsual/)
+[![Stable Release](https://img.shields.io/powershellgallery/v/HaloAPI?label=Stable+Release&style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
+[![Preview Release](https://img.shields.io/powershellgallery/v/HaloAPI?label=Preview+Release&include_prereleases&style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
 
 ## Who are we?
 
-We are Mikey O'Toole ([@homotechsual](https://github.com/homotechsual) and Luke Whitelock ([@LWhitelock](https://github.com/lwhitelock)) we are both directors for (separate) UK-based managed IT services providers who share a passion for automation and good quality MSP software tools.
+We are Mikey O'Toole ([@homotechsual](https://github.com/homotechsual)) and Luke Whitelock ([@LWhitelock](https://github.com/lwhitelock)) we are both directors for (separate) UK-based managed IT services providers who share a passion for automation and good quality MSP software tools.
 
 ## What is this?
 

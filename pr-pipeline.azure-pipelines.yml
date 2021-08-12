@@ -1,7 +1,6 @@
 # Docs: https://aka.ms/yaml
 name: $(Build.DefinitionName)-$(Date:yyyyMMdd)
-pr:
-  - main
+trigger:
   - develop
 
 pool:
@@ -37,8 +36,7 @@ stages:
             inputs:
               ScriptFolder: '$(System.DefaultWorkingDirectory)\*'
               ResultsFile: '$(Common.TestResultsDirectory)\Pester-Results.xml'
-              CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
-              
+              CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-Coverage.xml'        
               UsePSCore: true
               AdditionalModulePath: '$(Build.ArtifactStagingDirectory)'
           - task: PublishTestResults@2
