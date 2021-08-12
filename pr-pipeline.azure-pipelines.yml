@@ -38,6 +38,7 @@ stages:
               ScriptFolder: '$(System.DefaultWorkingDirectory)\*'
               ResultsFile: '$(Common.TestResultsDirectory)\Pester-Results.xml'
               CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
+              
               UsePSCore: true
               AdditionalModulePath: '$(Build.ArtifactStagingDirectory)'
           - task: PublishTestResults@2
@@ -49,3 +50,5 @@ stages:
           - task: PublishCodeCoverageResults@1
             inputs:
               summaryFileLocation: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
+              codeCoverageTool: 'JaCoCo'
+              pathToSources: '$(System.DefaultWorkingDirectory)'

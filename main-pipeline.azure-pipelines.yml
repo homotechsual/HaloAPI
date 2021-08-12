@@ -17,6 +17,7 @@ stages:
           - powershell: .\bootstrap.ps1
             displayName: 'Install pre-requisites'
   - stage: Lint
+    dependsOn: 'Setup'
     jobs:
       - job: Lint
         steps:
@@ -29,6 +30,7 @@ stages:
               Arguments: '-ScriptDirectory $(System.DefaultWorkingDirectory)'
   
   - stage: Test
+    dependsOn: 'Setup'
     jobs:
       - job: TestandPublish
         steps:
@@ -36,18 +38,20 @@ stages:
             inputs:
               ScriptFolder: '$(System.DefaultWorkingDirectory)\*'
               ResultsFile: '$(Common.TestResultsDirectory)\Pester-Results.xml'
-              CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
+              CodeCoverageOutputFile: '$(Common.TestResultsDirectory)\Code-Coverage.xml'  
               UsePSCore: true
               AdditionalModulePath: '$(Build.ArtifactStagingDirectory)'
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'NUnit'
-              testResultsFiles: 'Pester-Results.xml'
+              testResultsFiles: '$(Common.TestResultsDirectory)\Pester-Results.xml'
               searchFolder: '$(Common.TestResultsDirectory)'
               failTaskOnFailedTests: true
           - task: PublishCodeCoverageResults@1
             inputs:
               summaryFileLocation: '$(Common.TestResultsDirectory)\Code-Coverage.xml'
+              codeCoverageTool: 'JaCoCo'
+              pathToSources: '$(System.DefaultWorkingDirectory)'
 
   - stage: Release
     jobs:
