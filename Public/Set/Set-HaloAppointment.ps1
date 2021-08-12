@@ -14,7 +14,17 @@ Function Set-HaloAppointment {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Appointment
     )
-    if ($PSCmdlet.ShouldProcess("Appointment", "Update")) {
-        Invoke-HaloUpdate -Object $Appointment -Endpoint "appointment" -Update
+    try {
+        $ObjectToUpdate = Get-HaloAppointment -AppointmentID $Appointment.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Appointment '$($ObjectToUpdate.subject)'", "Update")) {
+                New-HaloPOSTRequest -Object $Appointment -Endpoint "appointment" -Update
+            }
+        } else {
+            Throw "Appointment was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update appointment with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

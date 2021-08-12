@@ -8,13 +8,23 @@ Function Set-HaloSite {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing site.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Site
+        [Object]$Site
     )
-    if ($PSCmdlet.ShouldProcess("Site", "Update")) {
-        Invoke-HaloUpdate -Object $Site -Endpoint "site" -Update
+    try {
+        $ObjectToUpdate = Get-HaloSite -SiteID $Site.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Site '$($ObjectToUpdate.name)'", "Update")) {
+                New-HaloPOSTRequest -Object $Site -Endpoint "site" -Update
+            }
+        } else {
+            Throw "Site was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update site with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

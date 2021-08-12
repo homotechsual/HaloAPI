@@ -1,17 +1,17 @@
-function New-HaloRequest {
+function New-HaloGETRequest {
     <#
         .SYNOPSIS
             Builds a request for the Halo API.
         .DESCRIPTION
             Wrapper function to build web requests for the Halo API.
         .EXAMPLE
-            PS C:\> New-HaloRequest -Method "GET" -Resource "/api/Articles"
+            PS C:\> New-HaloGETRequest -Method "GET" -Resource "/api/Articles"
             Gets all Knowledgebase Articles
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding()]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     param (
         # The HTTP request method.
@@ -42,9 +42,9 @@ function New-HaloRequest {
         $QSCollection.Remove("page_size")
     }
     if ($QSCollection) {
-        Write-Debug "Query string in New-HaloRequest contains: $($QSCollection | Out-String)"
+        Write-Debug "Query string in New-HaloGETRequest contains: $($QSCollection | Out-String)"
         $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
-        Write-Verbose "Building [HttpQSCollection] for New-HaloRequest"
+        Write-Verbose "Building [HttpQSCollection] for New-HaloGETRequest"
         foreach ($Key in $QSCollection.Keys) {
             $QueryStringCollection.Add($Key, $QSCollection.$Key)
         }
@@ -63,7 +63,7 @@ function New-HaloRequest {
         Write-Debug "Building new HaloRequest with params: $($WebRequestParams | Out-String)"
         $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
         Write-Debug "Halo request returned $($Response | Out-String)"
-        if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [PSCustomObject])) {
+        if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
             $Result = $Response.$ResourceType
         } else {
             $Result = $Response
@@ -85,7 +85,7 @@ function New-HaloRequest {
             $NumPages = [Math]::Ceiling($Response.record_count / $PageSize)
             Write-Verbose "Total number of pages to process: $NumPages"
             $PageNum++
-            if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [PSCustomObject])) {
+            if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
                 $Response.$ResourceType
             } else {
                 $Response

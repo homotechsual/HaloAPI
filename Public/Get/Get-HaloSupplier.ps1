@@ -9,7 +9,7 @@ function Get-HaloSupplier {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Supplier ID
@@ -83,7 +83,7 @@ function Get-HaloSupplier {
                 ResourceType = "suppliers"
             }
         }
-        $SupplierResults = New-HaloRequest @RequestParams
+        $SupplierResults = New-HaloGETRequest @RequestParams
         Return $SupplierResults
     } catch {
         Write-Error "Failed to get suppliers from the Halo API. You'll see more detail if using '-Verbose'"

@@ -1,5 +1,5 @@
 #Requires -Version 7
-function Invoke-HaloUpdate {
+function New-HaloPOSTRequest {
     <#
     .SYNOPSIS
         Sends a formatted web request to the Halo API.
@@ -9,7 +9,8 @@ function Invoke-HaloUpdate {
         Outputs an object containing the response from the web request.
     #>
     [CmdletBinding()]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     Param(
         # If Updating
         [switch]$Update,

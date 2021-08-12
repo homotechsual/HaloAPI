@@ -8,13 +8,18 @@ Function New-HaloReport {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new report.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Report
+        [Object]$Report
     )
-    if ($PSCmdlet.ShouldProcess("Report", "Create")) {
-        Invoke-HaloUpdate -Object $Report -Endpoint "report"
+    try {
+        if ($PSCmdlet.ShouldProcess("Report '$($Report.name)'", "Create")) {
+            New-HaloPOSTRequest -Object $Report -Endpoint "report"
+        }
+    } catch {
+        Write-Error "Failed to create report with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

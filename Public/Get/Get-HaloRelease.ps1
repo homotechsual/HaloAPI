@@ -9,7 +9,7 @@ function Get-HaloRelease {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Software Release ID
@@ -80,7 +80,7 @@ function Get-HaloRelease {
                 ResourceType = "releases"
             }
         }
-        $ReleaseResults = New-HaloRequest @RequestParams
+        $ReleaseResults = New-HaloGETRequest @RequestParams
         Return $ReleaseResults
     } catch {
         Write-Error "Failed to get software releases from the Halo API. You'll see more detail if using '-Verbose'"

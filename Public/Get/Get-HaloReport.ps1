@@ -9,7 +9,7 @@ function Get-HaloReport {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Report ID
@@ -123,7 +123,7 @@ function Get-HaloReport {
                 ResourceType = "reports"
             }
         }
-        $ReportResults = New-HaloRequest @RequestParams
+        $ReportResults = New-HaloGETRequest @RequestParams
         Return $ReportResults
     } catch {
         Write-Error "Failed to get reports from the Halo API. You'll see more detail if using '-Verbose'"

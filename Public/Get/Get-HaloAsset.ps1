@@ -9,7 +9,7 @@ function Get-HaloAsset {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Asset ID
@@ -113,7 +113,7 @@ function Get-HaloAsset {
                 ResourceType = "assets"
             }
         }    
-        $AssetResults = New-HaloRequest @RequestParams
+        $AssetResults = New-HaloGETRequest @RequestParams
         Return $AssetResults
     } catch {
         Write-Error "Failed to get assets from the Halo API. You'll see more detail if using '-Verbose'"

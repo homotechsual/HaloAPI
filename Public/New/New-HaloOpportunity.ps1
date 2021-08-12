@@ -8,13 +8,18 @@ Function New-HaloOpportunity {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new opportunity.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Opportunity
+        [Object]$Opportunity
     )
-    if ($PSCmdlet.ShouldProcess("Opportunity", "Create")) {
-        Invoke-HaloUpdate -Object $Opportunity -Endpoint "opportunities"
+    try {
+        if ($PSCmdlet.ShouldProcess("Opportunity '$($Opportunity.summary)'", "Create")) {
+            New-HaloPOSTRequest -Object $Opportunity -Endpoint "opportunities"
+        }
+    } catch {
+        Write-Error "Failed to create opportunity with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

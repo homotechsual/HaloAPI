@@ -8,13 +8,18 @@ Function New-HaloClient {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new client.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Client
+        [Object]$Client
     )
-    if ($PSCmdlet.ShouldProcess("Client", "Create")) {
-        Invoke-HaloUpdate -Object $Client -Endpoint "client"
+    try {
+        if ($PSCmdlet.ShouldProcess("Client '$($Client.name)", "Create")) {
+            New-HaloPOSTRequest -Object $Client -Endpoint "client"
+        }
+    } catch {
+        Write-Error "Failed to create client with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

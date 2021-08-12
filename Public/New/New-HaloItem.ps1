@@ -8,13 +8,18 @@ Function New-HaloItem {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new item.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Item
+        [Object]$Item
     )
-    if ($PSCmdlet.ShouldProcess("Client", "Create")) {
-        Invoke-HaloUpdate -Object $Item -Endpoint "item"
+    try {
+        if ($PSCmdlet.ShouldProcess("Item '$($Item.name)'", "Create")) {
+            New-HaloPOSTRequest -Object $Item -Endpoint "item"
+        }
+    } catch {
+        Write-Error "Failed to create item with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

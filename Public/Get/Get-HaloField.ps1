@@ -9,7 +9,7 @@ function Get-HaloField {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Lookup Item ID
@@ -46,7 +46,7 @@ function Get-HaloField {
             QSCollection    = $QSCollection
             ResourceType    = "fields"
         }
-        $FieldResults = New-HaloRequest @RequestParams
+        $FieldResults = New-HaloGETRequest @RequestParams
         Return $FieldResults
     } catch {
         Write-Error "Failed to get fields from the Halo API. You'll see more detail if using '-Verbose'"

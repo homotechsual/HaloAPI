@@ -8,13 +8,18 @@ Function New-HaloAppointment {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new appointment.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Appointment
+        [Object]$Appointment
     )
-    if ($PSCmdlet.ShouldProcess("Appointment", "Create")) {
-        Invoke-HaloUpdate -Object $Appointment -Endpoint "appointment"
+    try {
+        if ($PSCmdlet.ShouldProcess("Appointment '$($Appointment.subject)'", "Create")) {
+            New-HaloPOSTRequest -Object $Appointment -Endpoint "appointment"
+        }
+    } catch {
+        Write-Error "Failed to create appointment with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

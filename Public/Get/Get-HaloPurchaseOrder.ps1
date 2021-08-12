@@ -9,7 +9,7 @@ function Get-HaloPurchaseOrder {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Purchase Order ID
@@ -96,7 +96,7 @@ function Get-HaloPurchaseOrder {
                 ResourceType = "purchaseorders"
             }
         }
-        $PurchaseOrderResults = New-HaloRequest @RequestParams
+        $PurchaseOrderResults = New-HaloGETRequest @RequestParams
         Return $PurchaseOrderResults
     } catch {
         Write-Error "Failed to get purchase orders from the Halo API. You'll see more detail if using '-Verbose'"

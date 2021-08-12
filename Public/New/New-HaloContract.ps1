@@ -8,13 +8,18 @@ Function New-HaloContract {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new contract.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Contract
+        [Object]$Contract
     )
-    if ($PSCmdlet.ShouldProcess("Contract", "Create")) {
-        Invoke-HaloUpdate -Object $Contract -Endpoint "clientcontract"
+    try {
+        if ($PSCmdlet.ShouldProcess("Contract '$($Contract.ref)'", "Create")) {
+            New-HaloPOSTRequest -Object $Contract -Endpoint "clientcontract"
+        }
+    } catch {
+        Write-Error "Failed to create contract with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

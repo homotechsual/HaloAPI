@@ -9,7 +9,7 @@ function Get-HaloTeam {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Team ID
@@ -80,7 +80,7 @@ function Get-HaloTeam {
             QSCollection = $QSCollection
             ResourceType = "teams"
         }
-        $TeamResults = New-HaloRequest @RequestParams
+        $TeamResults = New-HaloGETRequest @RequestParams
         Return $TeamResults
     } catch {
         Write-Error "Failed to get teams from the Halo API. You'll see more detail if using '-Verbose'"

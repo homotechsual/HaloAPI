@@ -9,7 +9,7 @@ function Get-HaloTicketType {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Ticket Type ID
@@ -63,7 +63,7 @@ function Get-HaloTicketType {
             QSCollection = $QSCollection
             ResourceType = "tickettypes"
         }
-        $TicketTypeResults = New-HaloRequest @RequestParams
+        $TicketTypeResults = New-HaloGETRequest @RequestParams
         Return $TicketTypeResults
     } catch {
         Write-Error "Failed to get ticket types from the Halo API. You'll see more detail if using '-Verbose'"

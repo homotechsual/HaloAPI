@@ -8,13 +8,23 @@ Function Set-HaloAsset {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing asset.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Asset
+        [Object]$Asset
     )
-    if ($PSCmdlet.ShouldProcess("Asset", "Update")) {
-        Invoke-HaloUpdate -Object $Asset -Endpoint "asset" -Update
+    try {
+        $ObjectToUpdate = Get-HaloAsset -AssetID $Asset.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Asset '$($ObjectToUpdate.inventory_name)'", "Update")) {
+                New-HaloPOSTRequest -Object $Asset -Endpoint "asset" -Update
+            }
+        } else {
+            Throw "Asset was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update agent with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

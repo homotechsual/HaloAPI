@@ -9,7 +9,7 @@ function Get-HaloAction {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Action ID.
@@ -20,7 +20,7 @@ function Get-HaloAction {
         [int64]$Count,
         # Get actions for a single ticket with the specified ID.
         [Parameter( ParameterSetName = "Single", Mandatory = $True )]
-        [Parameter( ParameterSetName = "Multi" )] # ?ACT Query with Halo why this is required.
+        [Parameter( ParameterSetName = "Multi", Mandatory = $True )]
         [Alias("ticket_id")]
         [int32]$TicketID,
         # Exclude system-performed actions.
@@ -95,7 +95,7 @@ function Get-HaloAction {
             QSCollection = $QSCollection
             ResourceType = "actions"
         }
-        $ActionResults = New-HaloRequest @RequestParams
+        $ActionResults = New-HaloGETRequest @RequestParams
         Return $ActionResults
     } catch {
         Write-Error "Failed to get actions from the Halo API. You'll see more detail if using '-Verbose'"

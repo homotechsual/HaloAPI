@@ -1,5 +1,5 @@
 #Requires -Version 7
-function Invoke-HaloRemove {
+function New-HaloDELETERequest {
     <#
     .SYNOPSIS
         Sends a formatted web request to the Halo API.
@@ -9,7 +9,8 @@ function Invoke-HaloRemove {
         Outputs an object containing the response from the web request.
     #>
     [CmdletBinding()]
-    [OutputType([PSCustomObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
+    [OutputType([Object])]
     Param(
         # Endpoint for Delete Request
         [Parameter( Mandatory = $True )]

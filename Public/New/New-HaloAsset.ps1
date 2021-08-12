@@ -8,13 +8,18 @@ Function New-HaloAsset {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new asset.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Asset
+        [Object]$Asset
     )
-    if ($PSCmdlet.ShouldProcess("Asset", "Create")) {
-        Invoke-HaloUpdate -Object $Asset -Endpoint "asset"
+    try {
+        if ($PSCmdlet.ShouldProcess("Asset $($Asset.inventory_number)", "Create")) {
+            New-HaloPOSTRequest -Object $Asset -Endpoint "asset"
+        }
+    } catch {
+        Write-Error "Failed to create asset with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

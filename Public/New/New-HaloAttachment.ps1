@@ -8,13 +8,18 @@ Function New-HaloAttachment {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new attachment.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Attachment
+        [Object]$Attachment
     )
-    if ($PSCmdlet.ShouldProcess("Attachment", "Create")) {
-        Invoke-HaloUpdate -Object $Attachment -Endpoint "attachment"
+    try {
+        if ($PSCmdlet.ShouldProcess("Attachment '$($Attachment.filename)'", "Create")) {
+            New-HaloPOSTRequest -Object $Attachment -Endpoint "attachment"
+        }
+    } catch {
+        Write-Error "Failed to create attachment with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

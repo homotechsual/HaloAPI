@@ -9,7 +9,7 @@ function Get-HaloStatus {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Status ID
@@ -65,7 +65,7 @@ function Get-HaloStatus {
             QSCollection = $QSCollection
             ResourceType = "statuses"
         }
-        $StatusResults = New-HaloRequest @RequestParams
+        $StatusResults = New-HaloGETRequest @RequestParams
         Return $StatusResults
     } catch {
         Write-Error "Failed to get statuses from the Halo API. You'll see more detail if using '-Verbose'"

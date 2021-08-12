@@ -8,13 +8,18 @@ Function New-HaloStatus {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to create a new status.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Status
+        [Object]$Status
     )
-    if ($PSCmdlet.ShouldProcess("Status", "Create")) {
-        Invoke-HaloUpdate -Object $Status -Endpoint "status"
+    try {
+        if ($PSCmdlet.ShouldProcess("Status '$($Status.name)'", "Create")) {
+            New-HaloPOSTRequest -Object $Status -Endpoint "status"
+        }
+    } catch {
+        Write-Error "Failed to create status with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

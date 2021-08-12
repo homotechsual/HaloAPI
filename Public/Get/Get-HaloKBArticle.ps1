@@ -9,7 +9,7 @@ function Get-HaloKBArticle {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Article ID
@@ -73,7 +73,7 @@ function Get-HaloKBArticle {
                 ResourceType = "articles"
             }
         }
-        $ItemResults = New-HaloRequest @RequestParams
+        $ItemResults = New-HaloGETRequest @RequestParams
         Return $ItemResults
     } catch {
         Write-Error "Failed to get knowledgebase articles from the Halo API. You'll see more detail if using '-Verbose'"

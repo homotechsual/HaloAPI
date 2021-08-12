@@ -8,13 +8,23 @@ Function Set-HaloItem {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing item.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Item
+        [Object]$Item
     )
-    if ($PSCmdlet.ShouldProcess("Asset", "Update")) {
-        Invoke-HaloUpdate -Object $Item -Endpoint "item" -Update
+    try {
+        $ObjectToUpdate = Get-HaloItem -ItemID $Item.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Item '$($ObjectToUpdate.name)'", "Update")) {
+                New-HaloPOSTRequest -Object $Item -Endpoint "item" -Update
+            }
+        } else {
+            Throw "Item was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update item with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

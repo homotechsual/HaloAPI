@@ -9,7 +9,7 @@ function Get-HaloService {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Service ID
@@ -96,7 +96,7 @@ function Get-HaloService {
                 ResourceType = "services"
             }
         }
-        $ServiceResults = New-HaloRequest @RequestParams
+        $ServiceResults = New-HaloGETRequest @RequestParams
         Return $ServiceResults
     } catch {
         Write-Error "Failed to get services from the Halo API. You'll see more detail if using '-Verbose'"

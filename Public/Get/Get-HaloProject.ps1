@@ -9,7 +9,7 @@ function Get-HaloProject {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Project ID
@@ -290,7 +290,7 @@ function Get-HaloProject {
                 ResourceType = "tickets"
             }
         }
-        $ProjectResults = New-HaloRequest @RequestParams
+        $ProjectResults = New-HaloGETRequest @RequestParams
         Return $ProjectResults
     } catch {
         Write-Error "Failed to get projects from the Halo API. You'll see more detail if using '-Verbose'"

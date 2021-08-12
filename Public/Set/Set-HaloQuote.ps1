@@ -8,13 +8,23 @@ Function Set-HaloQuote {
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing quotation.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Quote
+        [Object]$Quote
     )
-    if ($PSCmdlet.ShouldProcess("Quotation", "Update")) {
-        Invoke-HaloUpdate -Object $Quote -Endpoint "quotation" -Update
+    try {
+        $ObjectToUpdate = Get-HaloQuote -QuoteID $Quote.id
+        if ($ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess("Quotation '$($ObjectToUpdate.title)'", "Update")) {
+                New-HaloPOSTRequest -Object $Quote -Endpoint "quotation" -Update
+            }
+        } else {
+            Throw "Quotation was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update quotation with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

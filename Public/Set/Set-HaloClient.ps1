@@ -8,13 +8,23 @@ Function Set-HaloClient {
             Outputs an object containing the response from the web request.
     #> 
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing client.
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Client
+        [Object]$Client
     )
-    if ($PSCmdlet.ShouldProcess("Client", "Update")) {
-        Invoke-HaloUpdate -Object $Client -Endpoint "client" -Update
+    try {
+        $ObjectToUpdate = Get-HaloClient -ClientID $Client.id
+        if ($ObjectToUpdate) { 
+            if ($PSCmdlet.ShouldProcess("Client '$($ObjectToUpdate.name)'", "Update")) {
+                New-HaloPOSTRequest -Object $Client -Endpoint "client" -Update
+            }
+        } else {
+            Throw "Client was not found in Halo to update."
+        }
+    } catch {
+        Write-Error "Failed to update client with the Halo API. You'll see more detail if using '-Verbose'"
+        Write-Verbose "$_"
     }
 }

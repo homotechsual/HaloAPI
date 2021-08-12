@@ -9,7 +9,7 @@ function Get-HaloItem {
             A powershell object containing the response.
     #>
     [CmdletBinding( DefaultParameterSetName = "Multi" )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Item ID
@@ -97,7 +97,7 @@ function Get-HaloItem {
                 ResourceType = "items"
             }
         }
-        $ItemResults = New-HaloRequest @RequestParams
+        $ItemResults = New-HaloGETRequest @RequestParams
         Return $ItemResults
     } catch {
         Write-Error "Failed to get items from the Halo API. You'll see more detail if using '-Verbose'"
