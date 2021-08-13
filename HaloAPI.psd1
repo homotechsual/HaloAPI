@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.0.2'
+    ModuleVersion = '1.1.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -196,7 +196,7 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Fix a bug with `Get-HaloAsset` when supplying the `AssetID` parameter.'
+            ReleaseNotes = 'Change to output formats - now outputs the objects/results directly. No more `(Get-HaloAction).actions`. Add the first two `Remove-` commands. Leaner more efficient core.'
 
             # Prerelease string of this module
             # Prerelease = ''
