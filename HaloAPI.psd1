@@ -78,6 +78,7 @@
         'Get-HaloAttachment',
         'Get-HaloClient',
         'Get-HaloContract',
+        'Get-HaloCustomButton'
         'Get-HaloField',
         'Get-HaloInvoice',
         'Get-HaloItem',

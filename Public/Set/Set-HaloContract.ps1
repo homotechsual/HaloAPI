@@ -1,4 +1,4 @@
-Function New-HaloContract {
+Function Set-HaloContract {
     <#
         .SYNOPSIS
             Updates a contract via the Halo API.

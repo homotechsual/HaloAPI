@@ -1,0 +1,13 @@
+[
+    {
+      "id": 0,
+      "usage": 2,
+      "name": "Example",
+      "label": "Example",
+      "seq": 1,
+      "icon": "book",
+      "url": "https://demo.example.com/test?thingid={$ID}",
+      "newtab": "True",
+      "msid": 0
+    }
+  ]
