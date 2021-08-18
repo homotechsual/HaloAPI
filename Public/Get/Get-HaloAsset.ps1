@@ -76,6 +76,9 @@ function Get-HaloAsset {
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("contract_id")]
         [int64]$ContractID,
+        # Parameter to return the complete objects.
+        [Parameter( ParameterSetName = "Multi" )]
+        [switch]$FullObject,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails,
@@ -88,6 +91,10 @@ function Get-HaloAsset {
     # Workaround to prevent the query string processor from adding a 'assetid=' parameter by removing it from the set parameters.
     if ($AssetID) {
         $Parameters.Remove("AssetID") | Out-Null
+    }
+    # Similarly we don't want a `fulldetails=true` parameter
+    if ($FullObject) {
+        $Parameters.Remove("FullObject") | Out-Null
     }
     try {
         if ($AssetID) {
@@ -114,6 +121,14 @@ function Get-HaloAsset {
             }
         }    
         $AssetResults = New-HaloGETRequest @RequestParams
+
+        if ($FullObjects) {
+            $AllAssetResults = $AssetResults | ForEach-Object {             
+                Get-HaloAsset -AssetID $_.id
+            }
+            $AssetResults = $AllAssetResults
+        }
+
         Return $AssetResults
     } catch {
         Write-Error "Failed to get assets from the Halo API. You'll see more detail if using '-Verbose'"

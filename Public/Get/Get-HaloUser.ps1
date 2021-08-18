@@ -79,6 +79,9 @@ function Get-HaloUser {
         # The number of users to return if not using pagination.
         [Parameter( ParameterSetName = "Multi" )]
         [int32]$Count,
+        # Parameter to return the full objects.
+        [Parameter( ParameterSetName = "Multi" )]
+        [switch]$FullObjects,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails,
@@ -94,6 +97,10 @@ function Get-HaloUser {
     # Workaround to prevent the query string processor from adding a 'userid=' parameter by removing it from the set parameters.
     if ($UserID) {
         $Parameters.Remove("UserID") | Out-Null
+    }
+    # Similarly we don't want a `fulldetails=true` parameter
+    if ($FullObject) {
+        $Parameters.Remove("FullObjects") | Out-Null
     }
     try {
         if ($UserID) {
@@ -120,6 +127,14 @@ function Get-HaloUser {
             }
         }
         $UserResults = New-HaloGETRequest @RequestParams
+
+        if ($FullObjects) {
+            $AllUserResults = $UserResults | ForEach-Object {             
+                Get-HaloUser -UserID $_.id
+            }
+            $UserResults = $AllUserResults
+        }
+
         Return $UserResults
     } catch {
         Write-Error "Failed to get users from the Halo API. You'll see more detail if using '-Verbose'"

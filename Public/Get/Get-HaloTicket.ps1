@@ -253,6 +253,9 @@ function Get-HaloTicket {
         [Parameter( ParameterSetName = "Multi" )]
         [Alias("search_oppcompanyname")]
         [string]$SearchOppCompanyName,
+        # Parameter to return the complete objects.
+        [Parameter( ParameterSetName = "Multi" )]
+        [switch]$FullObject,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails,
@@ -265,6 +268,10 @@ function Get-HaloTicket {
     # Workaround to prevent the query string processor from adding a 'ticketid=' parameter by removing it from the set parameters.
     if ($TicketID) {
         $Parameters.Remove("TicketID") | Out-Null
+    }
+    # Similarly we don't want a `fulldetails=true` parameter
+    if ($FullObject) {
+        $Parameters.Remove("FullObject") | Out-Null
     }
     try {
         if ($TicketID) {
@@ -291,6 +298,15 @@ function Get-HaloTicket {
             }
         }
         $TicketResults = New-HaloGETRequest @RequestParams
+
+        # Fetch the complete details for each ticket
+        if ($FullObject) {
+            $AllTicketResults = $TicketResults | ForEach-Object {             
+                Get-HaloTicket -TicketID $_.id
+            }
+            $TicketResults = $AllTicketResults
+        }
+
         Return $TicketResults
     } catch {
         Write-Error "Failed to get tickets from the Halo API. You'll see more detail if using '-Verbose'"
