@@ -255,7 +255,7 @@ function Get-HaloTicket {
         [string]$SearchOppCompanyName,
         # Parameter to return the complete objects.
         [Parameter( ParameterSetName = "Multi" )]
-        [switch]$FullObject,
+        [switch]$FullObjects,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails,
