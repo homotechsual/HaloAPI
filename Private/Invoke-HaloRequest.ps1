@@ -17,6 +17,7 @@ function Invoke-HaloRequest {
         # Returns the Raw result. Useful for file downloads.
         [Switch]$RawResult
     )
+    $ProgressPreference = 'SilentlyContinue'
     if ($null -eq $Script:HAPIConnectionInformation) {
         Throw "Missing Halo connection information, please run 'Connect-HaloAPI' first."
     }

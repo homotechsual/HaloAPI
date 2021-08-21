@@ -49,6 +49,9 @@ function Get-HaloClient {
         # The number of clients to return if not using pagination.
         [Parameter( ParameterSetName = "Multi" )]
         [int32]$Count,
+        # Parameter to return the complete objects.
+        [Parameter( ParameterSetName = "Multi" )]
+        [switch]$FullObjects,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = "Single" )]
         [Switch]$IncludeDetails,
@@ -61,6 +64,10 @@ function Get-HaloClient {
     # Workaround to prevent the query string processor from adding a 'clientid=' parameter by removing it from the set parameters.
     if ($ClientID) {
         $Parameters.Remove("ClientID") | Out-Null
+    }
+    # Similarly we don't want a `fulldetails=true` parameter
+    if ($FullObject) {
+        $Parameters.Remove("FullObject") | Out-Null
     }
     try {
         if ($ClientID) {
@@ -87,6 +94,14 @@ function Get-HaloClient {
             }
         }
         $ClientResults = New-HaloGETRequest @RequestParams
+
+        if ($FullObjects) {
+            $AllClientResults = $ClientResults | ForEach-Object {             
+                Get-HaloClient -ClientID $_.id
+            }
+            $ClientResults = $AllClientResults
+        }
+
         Return $ClientResults
     } catch {
         Write-Error "Failed to get clients from the Halo API. You'll see more detail if using '-Verbose'"
