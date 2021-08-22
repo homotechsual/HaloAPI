@@ -14,17 +14,30 @@ Function Set-HaloAsset {
         [Parameter( Mandatory = $True )]
         [Object]$Asset
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloAsset -AssetID $Asset.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Asset '$($ObjectToUpdate.inventory_name)'", "Update")) {
-                New-HaloPOSTRequest -Object $Asset -Endpoint "asset" -Update
+            if ($PSCmdlet.ShouldProcess("Asset '$($ObjectToUpdate.inventory_name)'", 'Update')) {
+                New-HaloPOSTRequest -Object $Asset -Endpoint 'asset' -Update
             }
         } else {
-            Throw "Asset was not found in Halo to update."
+            Throw 'Asset was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update agent with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

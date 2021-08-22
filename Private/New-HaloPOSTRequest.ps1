@@ -21,31 +21,36 @@ function New-HaloPOSTRequest {
         [Parameter( Mandatory = $True )]
         [string]$Endpoint
     )
+    Invoke-HaloPreFlightChecks
     try {
         if ($Update) {
             if ($null -eq $Object.id) {
-                Throw "Updates must have an ID"
-            } else {
-                $Operation = "update"
-                Write-Verbose "Updating $($Endpoint)"
+                Throw 'Updates must have an ID'
             }
         } else {
             if ($null -ne $Object.id) {
-                Throw "Creates must not have an ID"
-            } else {
-                $Operation = "create"
-                Write-Verbose "Creating $($Endpoint)"
+                Throw 'Creates must not have an ID'
             }
         }
         $WebRequestParams = @{
-            Method = "POST"
+            Method = 'POST'
             Uri = "$($Script:HAPIConnectionInformation.URL)api/$Endpoint"
             Body = $Object | ConvertTo-Json -Depth 100 -AsArray
         }
         $UpdateResults = Invoke-HaloRequest -WebRequestParams $WebRequestParams
         Return $UpdateResults
     } catch {
-        Write-Error "Failed to $operation $Endpoint in the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $ErrorRecord = @{
+            ExceptionType = 'System.Net.Http.HttpRequestException'
+            ErrorMessage = 'POST request sent to the Halo API failed.'
+            InnerException = $_.Exception
+            ErrorID = 'HaloPOSTRequestFailed'
+            ErrorCategory = 'ProtocolError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $True
+        }
+        $RequestError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($RequestError)
     }
 }

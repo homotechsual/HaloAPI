@@ -14,17 +14,30 @@ Function Set-HaloCustomButton {
         [Parameter( Mandatory = $True )]
         [Object]$CustomButton
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloCustomButton -CustomButtonID $CustomButton.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Custom Button '$($ObjectToUpdate.name)'", "Update")) {
-                New-HaloPOSTRequest -Object $CustomButton -Endpoint "custombutton" -Update
+            if ($PSCmdlet.ShouldProcess("Custom Button '$($ObjectToUpdate.name)'", 'Update')) {
+                New-HaloPOSTRequest -Object $CustomButton -Endpoint 'custombutton' -Update
             }
         } else {
-            Throw "Custom button was not found in Halo to update."
+            Throw 'Custom button was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update custom button with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

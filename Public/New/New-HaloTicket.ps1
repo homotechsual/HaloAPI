@@ -14,12 +14,25 @@ Function New-HaloTicket {
         [Parameter( Mandatory = $True )]
         [Object]$Ticket
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
-        if ($PSCmdlet.ShouldProcess("Ticket '$($Ticket.summary)'", "Create")) {
-            New-HaloPOSTRequest -Object $Ticket -Endpoint "tickets"
+        if ($PSCmdlet.ShouldProcess("Ticket '$($Ticket.summary)'", 'Create')) {
+            New-HaloPOSTRequest -Object $Ticket -Endpoint 'tickets'
         }
     } catch {
-        Write-Error "Failed to create ticket with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

@@ -14,12 +14,25 @@ Function New-HaloClient {
         [Parameter( Mandatory = $True )]
         [Object]$Client
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
-        if ($PSCmdlet.ShouldProcess("Client '$($Client.name)", "Create")) {
-            New-HaloPOSTRequest -Object $Client -Endpoint "client"
+        if ($PSCmdlet.ShouldProcess("Client '$($Client.name)", 'Create')) {
+            New-HaloPOSTRequest -Object $Client -Endpoint 'client'
         }
     } catch {
-        Write-Error "Failed to create client with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

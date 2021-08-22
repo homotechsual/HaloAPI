@@ -14,17 +14,30 @@ Function Set-HaloQuote {
         [Parameter( Mandatory = $True )]
         [Object]$Quote
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloQuote -QuoteID $Quote.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Quotation '$($ObjectToUpdate.title)'", "Update")) {
-                New-HaloPOSTRequest -Object $Quote -Endpoint "quotation" -Update
+            if ($PSCmdlet.ShouldProcess("Quotation '$($ObjectToUpdate.title)'", 'Update')) {
+                New-HaloPOSTRequest -Object $Quote -Endpoint 'quotation' -Update
             }
         } else {
-            Throw "Quotation was not found in Halo to update."
+            Throw 'Quotation was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update quotation with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

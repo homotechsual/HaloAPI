@@ -96,7 +96,7 @@
         'Get-HaloStatus',
         'Get-HaloSupplier',
         'Get-HaloTeam',
-        'Get-HaloTemplate',
+        'Get-HaloObjectTemplate',
         'Get-HaloTicket',
         'Get-HaloTicketType',
         'Get-HaloTimesheet',

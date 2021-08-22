@@ -26,7 +26,7 @@ class HaloCustomButtonCompleter : IArgumentCompleter {
                 [CompletionResult]::new(
                     $_,
                     $_,
-                    "ParameterValue",
+                    'ParameterValue',
                     $_
                 )
             )

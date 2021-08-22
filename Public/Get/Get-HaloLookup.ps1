@@ -1,3 +1,6 @@
+using module ..\..\Classes\Completers\HaloLookupCompleter.psm1
+using module ..\..\Classes\Validators\HaloLookupValidator.psm1
+using module ..\..\Classes\HaloLookup.psm1
 #Requires -Version 7
 function Get-HaloLookup {
     <#
@@ -8,51 +11,74 @@ function Get-HaloLookup {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [CmdletBinding( DefaultParameterSetName = 'Multi' )]
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Lookup Item ID
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$ItemID,
+        # Lookup Type
+        [Parameter( ParameterSetName = 'Single' )]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [ArgumentCompleter([HaloLookupCompleter])]
+        [ValidateSet([HaloLookupValidator])]
+        [string]$Lookup,
         # Lookup ID
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
-        [Parameter( ParameterSetName = "Multi", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single' )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [int64]$LookupID,
         # Show all records
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ShowAll,
-        # Include extra objects in the result.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("exclude_zero")]
+        # Exclude default lookup options with ID 0.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('exclude_zero')]
         [Switch]$ExcludeZero
     )
+    Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'ItemID=' parameter by removing it from the set parameters.
     if ($ItemID) {
-        $Parameters.Remove("ItemID") | Out-Null
+        $Parameters.Remove('ItemID') | Out-Null
     }
-    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
+    if ($Lookup) {
+        $Parameters.Remove('Lookup') | Out-Null
+        $LookupID = [HaloLookup]::ToID($Lookup)
+        $QSCollection.Add('lookupid', $LookupID)
+    }
     try {
         if ($ItemID) {
             Write-Verbose "Running in single-lookup mode because '-ItemID' was provided."
             $Resource = "api/Lookup/$($ItemID)"
         } else {
-            Write-Verbose "Running in multi-lookup mode."
-            $Resource = "api/Lookup"
+            Write-Verbose 'Running in multi-lookup mode.'
+            $Resource = 'api/Lookup'
         }
         $RequestParams = @{
-            Method = "GET"
+            Method = 'GET'
             Resource = $Resource
             AutoPaginateOff = $True
             QSCollection = $QSCollection
-            ResourceType = "lookups"
+            ResourceType = 'lookups'
         }
         $LookupResults = New-HaloGETRequest @RequestParams
         Return $LookupResults
     } catch {
-        Write-Error "Failed to get lookups from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

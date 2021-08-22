@@ -8,87 +8,98 @@ function Get-HaloSite {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [CmdletBinding( DefaultParameterSetName = 'Multi' )]
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Site ID
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$SiteID,
         # Paginate results
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("pageinate")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('pageinate')]
         [switch]$Paginate,
         # Number of results per page.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("page_size")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('page_size')]
         [int32]$PageSize,
         # Which page to return.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("page_no")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('page_no')]
         [int32]$PageNo,
         # The field to order the results by.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Order,
         # Order results in descending order (respects the field choice in '-Order')
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$OrderDesc,
         # Return contracts matching the search term in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
         # Filter by the specified top level ID.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("toplevel_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('toplevel_id')]
         [int32]$TopLevelID,
         # Filter by the specified client ID.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("client_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('client_id')]
         [int32]$ClientID,
         # Include inactive sites in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeInactive,
         # Include active sites in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeActive,
         # The number of sites to return if not using pagination.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [int32]$Count
-
     )
+    Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'siteid=' parameter by removing it from the set parameters.
     if ($SiteID) {
-        $Parameters.Remove("SiteID") | Out-Null
+        $Parameters.Remove('SiteID') | Out-Null
     }
     try {
         if ($SiteID) {
             Write-Verbose "Running in single-site mode because '-SiteID' was provided."
-            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
             $Resource = "api/site/$($SiteID)"
             $RequestParams = @{
-                Method = "GET"
+                Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = "sites"
+                ResourceType = 'sites'
             }
         } else {
-            Write-Verbose "Running in multi-site mode."
-            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = "api/site"
+            Write-Verbose 'Running in multi-site mode.'
+            $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = 'api/site'
             $RequestParams = @{
-                Method = "GET"
+                Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
-                ResourceType = "sites"
+                ResourceType = 'sites'
             }
         }
         $SiteResults = New-HaloGETRequest @RequestParams
         Return $SiteResults
     } catch {
-        Write-Error "Failed to get sites from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

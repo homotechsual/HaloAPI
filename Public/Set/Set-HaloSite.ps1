@@ -14,17 +14,30 @@ Function Set-HaloSite {
         [Parameter( Mandatory = $True )]
         [Object]$Site
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloSite -SiteID $Site.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Site '$($ObjectToUpdate.name)'", "Update")) {
-                New-HaloPOSTRequest -Object $Site -Endpoint "site" -Update
+            if ($PSCmdlet.ShouldProcess("Site '$($ObjectToUpdate.name)'", 'Update')) {
+                New-HaloPOSTRequest -Object $Site -Endpoint 'site' -Update
             }
         } else {
-            Throw "Site was not found in Halo to update."
+            Throw 'Site was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update site with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

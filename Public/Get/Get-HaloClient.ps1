@@ -8,66 +8,67 @@ function Get-HaloClient {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [CmdletBinding( DefaultParameterSetName = 'Multi' )]
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Client ID
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$ClientID,
         # Paginate results
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("pageinate")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('pageinate')]
         [switch]$Paginate,
         # Number of results per page.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("page_size")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('page_size')]
         [int32]$PageSize,
         # Which page to return.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("page_no")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('page_no')]
         [int32]$PageNo,
         # Which field to order results based on.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Order,
         # Order results in descending order (respects the field choice in '-Order')
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$OrderDesc,
         # Return clients matching the search term in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
         # Filter by the specified top level ID.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("toplevel_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('toplevel_id')]
         [int32]$TopLevelID,
         # Include active clients in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeActive,
         # Include inactive clients in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeInactive,
         # The number of clients to return if not using pagination.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [int32]$Count,
         # Parameter to return the complete objects.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$FullObjects,
         # Include extra objects in the result.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [Switch]$IncludeDetails,
         # Include ticket activity in the result.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [Switch]$IncludeActivity
     )
+    Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'clientid=' parameter by removing it from the set parameters.
     if ($ClientID) {
-        $Parameters.Remove("ClientID") | Out-Null
+        $Parameters.Remove('ClientID') | Out-Null
     }
-    # Similarly we don't want a `fulldetails=true` parameter
-    if ($FullObject) {
-        $Parameters.Remove("FullObject") | Out-Null
+    # Similarly we don't want a `fullobjects=` parameter
+    if ($FullObjects) {
+        $Parameters.Remove('FullObjects') | Out-Null
     }
     try {
         if ($ClientID) {
@@ -75,36 +76,45 @@ function Get-HaloClient {
             $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
             $Resource = "api/client/$($ClientID)"
             $RequestParams = @{
-                Method = "GET"
+                Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = "clients"
+                ResourceType = 'clients'
             }
         } else {
-            Write-Verbose "Running in multi-client mode."
+            Write-Verbose 'Running in multi-client mode.'
             $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = "api/client"
+            $Resource = 'api/client'
             $RequestParams = @{
-                Method = "GET"
+                Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
-                ResourceType = "clients"
+                ResourceType = 'clients'
             }
         }
         $ClientResults = New-HaloGETRequest @RequestParams
-
         if ($FullObjects) {
             $AllClientResults = $ClientResults | ForEach-Object {             
                 Get-HaloClient -ClientID $_.id
             }
             $ClientResults = $AllClientResults
         }
-
         Return $ClientResults
     } catch {
-        Write-Error "Failed to get clients from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

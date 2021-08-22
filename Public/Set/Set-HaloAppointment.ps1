@@ -14,17 +14,30 @@ Function Set-HaloAppointment {
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$Appointment
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloAppointment -AppointmentID $Appointment.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Appointment '$($ObjectToUpdate.subject)'", "Update")) {
-                New-HaloPOSTRequest -Object $Appointment -Endpoint "appointment" -Update
+            if ($PSCmdlet.ShouldProcess("Appointment '$($ObjectToUpdate.subject)'", 'Update')) {
+                New-HaloPOSTRequest -Object $Appointment -Endpoint 'appointment' -Update
             }
         } else {
-            Throw "Appointment was not found in Halo to update."
+            Throw 'Appointment was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update appointment with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

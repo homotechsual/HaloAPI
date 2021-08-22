@@ -1,3 +1,6 @@
+using module ..\Classes\HaloLookup.psm1
+using module ..\Classes\Completers\HaloAuthScopesCompleter.psm1
+using module ..\Classes\Validators\HaloAuthScopesValidator.psm1
 #Requires -Version 7
 function Connect-HaloAPI {
     <#
@@ -38,56 +41,19 @@ function Connect-HaloAPI {
         [Parameter(
             ParameterSetName = 'Client Credentials'
         )]
-        [ValidateSet(
-            "all",
-            "admin",
-            "read:tickets",
-            "edit:tickets",
-            "read:calendar",
-            "edit:calendar",
-            "read:customers",
-            "edit:customers",
-            "read:contracts",
-            "edit:contracts",
-            "read:suppliers",
-            "edit:suppliers",
-            "read:items",
-            "edit:items",
-            "read:projects",
-            "edit:projects",
-            "read:sales",
-            "edit:sales",
-            "read:quotes",
-            "edit:quotes",
-            "read:sos",
-            "edit:sos",
-            "read:pos",
-            "edit:pos",
-            "read:invoices",
-            "edit:invoices",
-            "read:reporting",
-            "edit:reporting",
-            "read:timesheets",
-            "edit:timesheets",
-            "read:software",
-            "edit:software",
-            "read:kb",
-            "edit:kb",
-            "read:assets",
-            "edit:assets",
-            "access:chat",
-            "access:adpasswordreset"
-        )]
-        [String[]]$Scopes = "all",
+        [ArgumentCompleter([HaloAuthScopesCompleter])]
+        [ValidateSet([HaloAuthScopesValidator])]
+        [String[]]$Scopes = 'all',
         # The tenant name required for hosted Halo instances.
         [Parameter(
             ParameterSetName = 'Client Credentials'
         )]
         [String]$Tenant
     )
+    $CommandName = $MyInvocation.InvocationName
     # Convert scopes to space separated string if it's an array.
     if ($Scopes -is [system.array]) {
-        $AuthScopes = $Scopes -Join " "
+        $AuthScopes = $Scopes -Join ' '
     } else {
         $AuthScopes = $Scopes
     }
@@ -99,11 +65,11 @@ function Connect-HaloAPI {
         AuthScopes = $AuthScopes
         Tenant = $Tenant
     }
-    Set-Variable -Name "HAPIConnectionInformation" -Value $ConnectionInformation -Visibility Private -Scope Script -Force
+    Set-Variable -Name 'HAPIConnectionInformation' -Value $ConnectionInformation -Visibility Private -Scope Script -Force
     Write-Debug "Connection information set to: $($Script:HAPIConnectionInformation | Out-String)"
     # Halo authorisation request body.
     $AuthReqBody = @{
-        grant_type = "client_credentials"
+        grant_type = 'client_credentials'
         client_id = $Script:HAPIConnectionInformation.ClientID
         client_secret = $Script:HAPIConnectionInformation.ClientSecret
         scope = $Script:HAPIConnectionInformation.AuthScopes
@@ -117,9 +83,9 @@ function Connect-HaloAPI {
     # Build the WebRequest parameters.
     $WebRequestParams = @{
         Uri = $AuthURL
-        Method = "POST"
+        Method = 'POST'
         Body = $AuthReqBody
-        ContentType = "application/x-www-form-urlencoded"
+        ContentType = 'application/x-www-form-urlencoded'
     }
     try {
         $AuthReponse = Invoke-WebRequest @WebRequestParams
@@ -132,12 +98,30 @@ function Connect-HaloAPI {
             Refresh = $TokenPayload.refresh_token
             Id = $TokenPayload.id_token
         }
-        Set-Variable -Name "HAPIAuthToken" -Value $AuthToken -Visibility Private -Scope Script -Force
-        Write-Verbose "Got authentication token."
+        Set-Variable -Name 'HAPIAuthToken' -Value $AuthToken -Visibility Private -Scope Script -Force
+        Write-Verbose 'Got authentication token.'
         Write-Debug "Authentication token set to: $($Script:HAPIAuthToken | Out-String -Width 2048)"
+        Write-Debug 'Initialising the Halo Lookup class cache.'
+        $LookupTypes = Get-HaloLookup -LookupID 11
+        if ($LookupTypes) {
+            [HaloLookup]::LookupTypes = $LookupTypes
+        } else {
+            Write-Error 'Failed to retrieve Halo lookup types.'
+        }
+        Write-Success "Connected to the Halo API with tenant URL $($Script:HAPIConnectionInformation.URL)"
     } catch {
-        $ExceptionResponse = $_.Exception.Response
-        Write-Error "The Halo API request `($($ExceptionResponse.RequestMessage.Method) $($ExceptionResponse.RequestMessage.RequestUri)`) responded with $($ExceptionResponse.StatusCode.Value__): $($ExceptionResponse.ReasonPhrase). You'll see more detail if using '-Verbose'"
-        Write-Verbose $_
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Net.Http.HttpRequestException'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

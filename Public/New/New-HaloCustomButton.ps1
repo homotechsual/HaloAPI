@@ -14,12 +14,25 @@ Function New-HaloCustomButton {
         [Parameter( Mandatory = $True )]
         [Object]$CustomButton
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
-        if ($PSCmdlet.ShouldProcess("Custom Button '$($CustomButton.name)'", "Create")) {
-            New-HaloPOSTRequest -Object $CustomButton -Endpoint "custombutton"
+        if ($PSCmdlet.ShouldProcess("Custom Button '$($CustomButton.name)'", 'Create')) {
+            New-HaloPOSTRequest -Object $CustomButton -Endpoint 'custombutton'
         }
     } catch {
-        Write-Error "Failed to create custom button with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

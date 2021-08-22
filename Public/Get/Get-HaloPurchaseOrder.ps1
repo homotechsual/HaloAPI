@@ -8,98 +8,110 @@ function Get-HaloPurchaseOrder {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [CmdletBinding( DefaultParameterSetName = 'Multi' )]
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Purchase Order ID
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$PurchaseOrderID,
         # Number of records to return
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [int64]$Count,
         # Filters response based on the search string
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
         # Paginate results
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("pageinate")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('pageinate')]
         [switch]$Paginate,
         # Number of results per page.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("page_size")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('page_size')]
         [int32]$PageSize,
         # Which page to return.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("page_no")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('page_no')]
         [int32]$PageNo,
         # Include open purchase orders in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$Open,
         # Include closed purchase orders in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$Closed,
         # Include active purchase orders in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeActive,
         # Include inactive purchase orders in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeInactive,
         # Which field to order results based on.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Order,
         # Order results in descending order (respects the field choice in '-Order')
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$OrderDesc,
         # Filters by the specified client
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("client_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('client_id')]
         [int64]$ClientID,
         # Filters by the specified site
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("site_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('site_id')]
         [int64]$SiteID,
         # Include extra objects in the result.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [switch]$IncludeDetails,
         # Include billing details in the result.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [switch]$IncludeBillingInfo
     )
+    Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a PurchaseOrderID=' parameter by removing it from the set parameters.
     if ($PurchaseOrderID) {
-        $Parameters.Remove("PurchaseOrderID") | Out-Null
+        $Parameters.Remove('PurchaseOrderID') | Out-Null
     }
     try {
         if ($PurchaseOrderID) {
             Write-Verbose "Running in single-purchase order mode because '-PurchaseOrderID' was provided."
-            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
             $Resource = "api/purchaseorder/$($PurchaseOrderID)"
             $RequestParams = @{
-                Method = "GET"
+                Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = "purchaseorders"
+                ResourceType = 'purchaseorders'
             }
         } else {
-            Write-Verbose "Running in multi-purchase order mode."
-            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = "api/purchaseorder"
+            Write-Verbose 'Running in multi-purchase order mode.'
+            $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = 'api/purchaseorder'
             $RequestParams = @{
-                Method = "GET"
+                Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
-                ResourceType = "purchaseorders"
+                ResourceType = 'purchaseorders'
             }
         }
         $PurchaseOrderResults = New-HaloGETRequest @RequestParams
         Return $PurchaseOrderResults
     } catch {
-        Write-Error "Failed to get purchase orders from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

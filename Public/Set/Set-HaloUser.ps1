@@ -14,17 +14,30 @@ Function Set-HaloUser {
         [Parameter( Mandatory = $True )]
         [Object]$User
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloUser -UserID $User.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Users", "Update")) {
-                New-HaloPOSTRequest -Object $User -Endpoint "users" -Update
+            if ($PSCmdlet.ShouldProcess('Users', 'Update')) {
+                New-HaloPOSTRequest -Object $User -Endpoint 'users' -Update
             }
         } else {
-            Throw "User was not found in Halo to update."
+            Throw 'User was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update user with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

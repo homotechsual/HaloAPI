@@ -14,12 +14,25 @@ Function New-HaloAgent {
         [Parameter( Mandatory = $True )]
         [Object]$Agent
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
-        if ($PSCmdlet.ShouldProcess("Agent '$($Agent.name)'", "Create")) {
-            New-HaloPOSTRequest -Object $Agent -Endpoint "agent"
+        if ($PSCmdlet.ShouldProcess("Agent '$($Agent.name)'", 'Create')) {
+            New-HaloPOSTRequest -Object $Agent -Endpoint 'agent'
         }
     } catch {
-        Write-Error "Failed to create agent with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }
