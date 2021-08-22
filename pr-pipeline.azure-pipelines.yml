@@ -6,6 +6,17 @@ trigger:
 pool:
   vmImage: 'vs2017-win2016'
 
+variables:
+  - group: MSPsUK KeyVault
+  - name: HaloTestingURL
+    value: $(HaloTestingURL)
+  - name: HaloTestingClientID
+    value: $(HaloTestingClientID)
+  - name: HaloTestingClientSecret
+    value: $(HaloTestingClientSecret)
+  - name: HaloTestingTenant
+    value: $(HaloTestingTenant)
+
 stages:
   - stage: Setup
     jobs: 
