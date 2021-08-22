@@ -6,9 +6,6 @@ trigger:
 pool:
   vmImage: 'vs2017-win2016'
 
-variables:
-  - group: MSPsUK KeyVault
-
 stages:
   - stage: Setup
     jobs: 
@@ -31,11 +28,6 @@ stages:
   - stage: Test
     jobs:
       - job: TestandPublish
-        env:
-          HaloTestingURL: $(HaloTestingURL)
-          HaloTestingClientID: $(HaloTestingClientID)
-          HaloTestingClientSecret: $(HaloTestingClientSecret)
-          HaloTestingTenant: $(HaloTestingTenant)
         steps:
           - task: Pester@10
             inputs:
