@@ -8,14 +8,6 @@ pool:
 
 variables:
   - group: MSPsUK KeyVault
-  - name: HaloTestingURL
-    value: $(HaloTestingURL)
-  - name: HaloTestingClientID
-    value: $(HaloTestingClientID)
-  - name: HaloTestingClientSecret
-    value: $(HaloTestingClientSecret)
-  - name: HaloTestingTenant
-    value: $(HaloTestingTenant)
 
 stages:
   - stage: Setup
@@ -41,6 +33,11 @@ stages:
       - job: TestandPublish
         steps:
           - task: Pester@10
+            env:
+              HaloTestingURL: $(HaloTestingURL)
+              HaloTestingClientID: $(HaloTestingClientID)
+              HaloTestingClientSecret: $(HaloTestingClientSecret)
+              HaloTestingTenant: $(HaloTestingTenant)
             inputs:
               ScriptFolder: '$(System.DefaultWorkingDirectory)\*'
               ResultsFile: '$(Common.TestResultsDirectory)\Pester-Results.xml'
