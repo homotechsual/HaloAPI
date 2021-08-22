@@ -15,7 +15,7 @@ function Add-PRComment {
         [string]
         $Body
     )
-    Write-Verbose "Posting PR Comment via Azure DevOps REST API"
+    Write-Verbose 'Posting PR Comment via Azure DevOps REST API'
     # Post the comment to the pull request
     Try {
         $uri = "$($Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$Env:SYSTEM_TEAMPROJECTID/_apis/git/repositories/$($Env:BUILD_REPOSITORY_NAME)/pullRequests/$($Env:SYSTEM_PULLREQUEST_PULLREQUESTID)/threads?api-version=5.1"
@@ -24,7 +24,7 @@ function Add-PRComment {
         $response = Invoke-RestMethod -Uri $uri -Method POST -Headers @{Authorization = "Bearer $Env:SYSTEM_ACCESSTOKEN" } -Body $Body -ContentType application/json
 
         if ($null -eq $response) {
-            Write-Verbose "Rest API posted OK"
+            Write-Verbose 'Rest API posted OK'
         }
     } Catch {
         Write-Error $_
@@ -41,7 +41,7 @@ if ( $ScriptAnalyzerResult ) {
     # loop through each result and post to the azuredevops rest api
     foreach ($result in $ScriptAnalyzerResult) {
         # build the script path for the PR comment, drop the workdir from the path
-        $ScriptPath = $result.ScriptPath -replace [regex]::Escape($Env:SYSTEM_DEFAULTWORKINGDIRECTORY), ""
+        $ScriptPath = $result.ScriptPath -replace [regex]::Escape($Env:SYSTEM_DEFAULTWORKINGDIRECTORY), ''
         Write-Verbose "ScriptPath: $ScriptPath"
         Write-Verbose "Line Number: $($result.Line)"
         Write-Verbose "Message: $($result.Message)"
@@ -83,16 +83,16 @@ if ( $ScriptAnalyzerResult ) {
         Add-PRComment -Body $body
     }
 
-    throw "PSScriptAnalyzer found issues with your code"
+    throw 'PSScriptAnalyzer found issues with your code'
 
 } else {
-    Write-Output "All Script Analyzer tests passed"
+    Write-Output 'All Script Analyzer tests passed'
 
-    $markdownComment = @"
+    $markdownComment = @'
 :white_check_mark: Script Analyzer found no issues with your code! High Five! :hand:
-"@
+'@
 
-    Write-Verbose "Posting PR Comment via AzureDevOps REST API"
+    Write-Verbose 'Posting PR Comment via AzureDevOps REST API'
 
     $body = @"
 {
