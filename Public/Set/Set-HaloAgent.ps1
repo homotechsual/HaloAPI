@@ -14,17 +14,30 @@ Function Set-HaloAgent {
         [Parameter( Mandatory = $True )]
         [Object]$Agent
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloAgent -AgentId $Agent.id -IncludeDisabled
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Agent $($ObjectToUpdate.name)", "Update")) {
-                New-HaloPOSTRequest -Object $Agent -Endpoint "agent" -Update
+            if ($PSCmdlet.ShouldProcess("Agent $($ObjectToUpdate.name)", 'Update')) {
+                New-HaloPOSTRequest -Object $Agent -Endpoint 'agent' -Update
             }
         } else {
-            Throw "Agent was not found in Halo to update."
+            Throw 'Agent was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update agent with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

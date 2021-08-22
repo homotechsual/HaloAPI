@@ -17,15 +17,11 @@ function Invoke-HaloRequest {
         # Returns the Raw result. Useful for file downloads.
         [Switch]$RawResult
     )
-    if ($null -eq $Script:HAPIConnectionInformation) {
-        Throw "Missing Halo connection information, please run 'Connect-HaloAPI' first."
-    }
-    if (($null -eq $Script:HAPIAuthToken) -and ($null -eq $AllowAnonymous)) {
-        Throw "Missing Halo authentication tokens, please add '-AllowAnonymous' to the PowerShell command to return public data (if supported)."
-    }
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-HaloPreFlightChecks
     $Now = Get-Date
     if ($Script:HAPIAuthToken.Expires -le $Now) {
-        Write-Verbose "The auth token has expired, renewing."
+        Write-Verbose 'The auth token has expired, renewing.'
         $ReconnectParameters = @{
             URL = $Script:HAPIConnectionInformation.URL
             ClientId = $Script:HAPIConnectionInformation.ClientID
@@ -44,9 +40,7 @@ function Invoke-HaloRequest {
     }
     try {
         Write-Verbose "Making a $($WebRequestParams.Method) request to $($WebRequestParams.Uri)"
-        
-        $Response = Invoke-WebRequest @WebRequestParams -Headers $AuthHeaders -ContentType "application/json"
-        
+        $Response = Invoke-WebRequest @WebRequestParams -Headers $AuthHeaders -ContentType 'application/json'
         Write-Debug "Response headers: $($Response.Headers | Out-String)"
         if ($RawResult) {
             $Results = $Response
@@ -55,9 +49,17 @@ function Invoke-HaloRequest {
         }
         return $Results
     } catch {
-        $ExceptionResponse = $_.Exception.Response
-        Write-Verbose $ExceptionResponse | Out-String
-        Write-Error "The Halo API request `($($ExceptionResponse.Method) $($ExceptionResponse.ReponseUri)`) responded with $($ExceptionResponse.StatusCode.Value__): $($ExceptionResponse.StatusDescription). You'll see more detail if using '-Verbose'"
-        Write-Verbose $_
+        $ErrorRecord = @{
+            ExceptionType = 'System.Net.Http.HttpRequestException'
+            ErrorMessage = "Halo API request $($_.TargetObject.Method) $($_.TargetObject.RequestUri) failed."
+            InnerException = $_.Exception
+            ErrorID = 'HaloAPIRequestFailed'
+            ErrorCategory = 'ProtocolError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $True
+        }
+        $RequestError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($RequestError)
     }
 }

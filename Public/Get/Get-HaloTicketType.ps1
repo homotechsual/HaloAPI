@@ -8,65 +8,77 @@ function Get-HaloTicketType {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [CmdletBinding( DefaultParameterSetName = 'Multi' )]
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Ticket Type ID
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$TicketTypeID,
         # Show the count of tickets in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ShowCounts,
         # Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [ValidateSet(
-            "reqs",
-            "opps",
-            "prjs"
+            'reqs',
+            'opps',
+            'prjs'
         )]
         [string]$Domain,
         # Filter counts to a specific view ID.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("view_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('view_id')]
         [int32]$ViewID,
         # Include inactive ticket types in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ShowInactive,
         # Filter by a specific client id.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("client_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('client_id')]
         [int32]$ClientID,
         # Include extra objects in the result.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [Switch]$IncludeDetails
     )
+    Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'tickettypeid=' parameter by removing it from the set parameters.
     if ($TicketTypeID) {
-        $Parameters.Remove("TicketTypeID") | Out-Null
+        $Parameters.Remove('TicketTypeID') | Out-Null
     }
-    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
     try {
         if ($TicketTypeID) {
             Write-Verbose "Running in single-ticket-type mode because '-TicketTypeID' was provided."
             $Resource = "api/tickettype/$($TicketTypeID)"
         } else {
-            Write-Verbose "Running in multi-ticket-type mode."
-            $Resource = "api/tickettype"
+            Write-Verbose 'Running in multi-ticket-type mode.'
+            $Resource = 'api/tickettype'
         }
         $RequestParams = @{
-            Method = "GET"
+            Method = 'GET'
             Resource = $Resource
             AutoPaginateOff = $True
             QSCollection = $QSCollection
-            ResourceType = "tickettypes"
+            ResourceType = 'tickettypes'
         }
         $TicketTypeResults = New-HaloGETRequest @RequestParams
         Return $TicketTypeResults
     } catch {
-        Write-Error "Failed to get ticket types from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

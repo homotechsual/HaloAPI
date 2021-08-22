@@ -33,46 +33,28 @@ function New-HaloGETRequest {
         # The key for the results object.
         [String]$ResourceType
     )
-    
-    if (($null -ne $QSCollection) -and ($QSCollection.pageinate -eq 'true') -and (-not($AutoPaginateOff))) {
-        Write-Verbose "Automatically paginating."
-        $PageNum = $QSCollection.page_no
-        $PageSize = $QSCollection.page_size
-    } elseif ((-not $QSCollection.pageinate) -and ($QSCollection.page_size)) {
-        $QSCollection.Remove("page_size")
-    }
-    if ($QSCollection) {
-        Write-Debug "Query string in New-HaloGETRequest contains: $($QSCollection | Out-String)"
-        $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
-        Write-Verbose "Building [HttpQSCollection] for New-HaloGETRequest"
-        foreach ($Key in $QSCollection.Keys) {
-            $QueryStringCollection.Add($Key, $QSCollection.$Key)
+    Invoke-HaloPreFlightChecks
+    try {
+        if (($null -ne $QSCollection) -and ($QSCollection.pageinate -eq 'true') -and (-not($AutoPaginateOff))) {
+            Write-Verbose 'Automatically paginating.'
+            $PageNum = $QSCollection.page_no
+            $PageSize = $QSCollection.page_size
+        } elseif ((-not $QSCollection.pageinate) -and ($QSCollection.page_size)) {
+            $QSCollection.Remove('page_size')
         }
-    } else {
-        Write-Debug "Query string collection not present..."
-    }
-    $QSBuilder = [System.UriBuilder]::new()
-    if ($AutoPaginateOff) {
-        Write-Debug "Automatic pagination is off."
-        $QSBuilder.Query = $QueryStringCollection.ToString()
-        $Query = $QSBuilder.Query.ToString()
-        $WebRequestParams = @{
-            Method = $Method
-            Uri = "$($Script:HAPIConnectionInformation.URL)$($Resource)$($Query)"
-        }
-        Write-Debug "Building new HaloRequest with params: $($WebRequestParams | Out-String)"
-        $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
-        Write-Debug "Halo request returned $($Response | Out-String)"
-        if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
-            $Result = $Response.$ResourceType
+        if ($QSCollection) {
+            Write-Debug "Query string in New-HaloGETRequest contains: $($QSCollection | Out-String)"
+            $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
+            Write-Verbose 'Building [HttpQSCollection] for New-HaloGETRequest'
+            foreach ($Key in $QSCollection.Keys) {
+                $QueryStringCollection.Add($Key, $QSCollection.$Key)
+            }
         } else {
-            $Result = $Response
+            Write-Debug 'Query string collection not present...'
         }
-    } elseif ($PageNum) {
-        $Result = do {
-            Write-Verbose "Processing page $PageNum"
-            $QueryStringCollection.Remove('page_no')
-            $QueryStringCollection.Add('page_no', $PageNum)
+        $QSBuilder = [System.UriBuilder]::new()
+        if ($AutoPaginateOff) {
+            Write-Debug 'Automatic pagination is off.'
             $QSBuilder.Query = $QueryStringCollection.ToString()
             $Query = $QSBuilder.Query.ToString()
             $WebRequestParams = @{
@@ -82,15 +64,48 @@ function New-HaloGETRequest {
             Write-Debug "Building new HaloRequest with params: $($WebRequestParams | Out-String)"
             $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
             Write-Debug "Halo request returned $($Response | Out-String)"
-            $NumPages = [Math]::Ceiling($Response.record_count / $PageSize)
-            Write-Verbose "Total number of pages to process: $NumPages"
-            $PageNum++
             if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
-                $Response.$ResourceType
+                $Result = $Response.$ResourceType
             } else {
-                $Response
+                $Result = $Response
             }
-        } while ($PageNum -lt $NumPages)
+        } elseif ($PageNum) {
+            $Result = do {
+                Write-Verbose "Processing page $PageNum"
+                $QueryStringCollection.Remove('page_no')
+                $QueryStringCollection.Add('page_no', $PageNum)
+                $QSBuilder.Query = $QueryStringCollection.ToString()
+                $Query = $QSBuilder.Query.ToString()
+                $WebRequestParams = @{
+                    Method = $Method
+                    Uri = "$($Script:HAPIConnectionInformation.URL)$($Resource)$($Query)"
+                }
+                Write-Debug "Building new HaloRequest with params: $($WebRequestParams | Out-String)"
+                $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
+                Write-Debug "Halo request returned $($Response | Out-String)"
+                $NumPages = [Math]::Ceiling($Response.record_count / $PageSize)
+                Write-Verbose "Total number of pages to process: $NumPages"
+                $PageNum++
+                if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
+                    $Response.$ResourceType
+                } else {
+                    $Response
+                }
+            } while ($PageNum -lt $NumPages)
+        }
+        Return $Result
+    } catch {
+        $ErrorRecord = @{
+            ExceptionType = 'System.Net.Http.HttpRequestException'
+            ErrorMessage = 'GET request sent to the Halo API failed.'
+            InnerException = $_.Exception
+            ErrorID = 'HaloGETRequestFailed'
+            ErrorCategory = 'ProtocolError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $True
+        }
+        $RequestError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($RequestError)
     }
-    Return $Result
 }

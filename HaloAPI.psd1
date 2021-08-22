@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.1.0'
+    ModuleVersion = '1.2.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -78,6 +78,7 @@
         'Get-HaloAttachment',
         'Get-HaloClient',
         'Get-HaloContract',
+        'Get-HaloCustomButton'
         'Get-HaloField',
         'Get-HaloInvoice',
         'Get-HaloItem',
@@ -95,7 +96,7 @@
         'Get-HaloStatus',
         'Get-HaloSupplier',
         'Get-HaloTeam',
-        'Get-HaloTemplate',
+        'Get-HaloObjectTemplate',
         'Get-HaloTicket',
         'Get-HaloTicketType',
         'Get-HaloTimesheet',
@@ -196,7 +197,7 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Change to output formats - now outputs the objects/results directly. No more `(Get-HaloAction).actions`. Add the first two `Remove-` commands. Leaner more efficient core.'
+            ReleaseNotes = 'Changes to error handling for more descriptive and reliable error messages. Adds validation and dynamic completion classes for Lookups, Custom Button types and Scopes. Add Custom Buttons endpoint.'
 
             # Prerelease string of this module
             # Prerelease = ''

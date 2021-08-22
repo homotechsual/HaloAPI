@@ -8,48 +8,59 @@ function Get-HaloField {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [CmdletBinding( DefaultParameterSetName = 'Multi' )]
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Lookup Item ID
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$FieldID,
         # Kind
-        [Parameter( ParameterSetName = "Single")]
-        [Parameter( ParameterSetName = "Multi")]
+        [Parameter( ParameterSetName = 'Single')]
+        [Parameter( ParameterSetName = 'Multi')]
         [string]$Kind,
         # Include Details
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeDetails
     )
-
+    Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'FieldID=' parameter by removing it from the set parameters.
     if ($FieldID) {
-        $Parameters.Remove("FieldID") | Out-Null
+        $Parameters.Remove('FieldID') | Out-Null
     }
-    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
     try {
         if ($FieldID) {
             Write-Verbose "Running in single-field mode because '-FieldID' was provided."
             $Resource = "api/Field/$($FieldID)"
         } else {
-            Write-Verbose "Running in multi-field mode."
-            $Resource = "api/Field"
+            Write-Verbose 'Running in multi-field mode.'
+            $Resource = 'api/Field'
         }
         $RequestParams = @{
-            Method = "GET"
+            Method = 'GET'
             Resource = $Resource
             AutoPaginateOff = $True
             QSCollection = $QSCollection
-            ResourceType = "fields"
+            ResourceType = 'fields'
         }
         $FieldResults = New-HaloGETRequest @RequestParams
         Return $FieldResults
     } catch {
-        Write-Error "Failed to get fields from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

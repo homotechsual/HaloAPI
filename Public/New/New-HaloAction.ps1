@@ -14,12 +14,25 @@ Function New-HaloAction {
         [Parameter( Mandatory = $True )]
         [Object]$Action
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
-        if ($PSCmdlet.ShouldProcess("Action by '$($Action.who)'", "Create")) {
-            New-HaloPOSTRequest -Object $Action -Endpoint "actions"
+        if ($PSCmdlet.ShouldProcess("Action by '$($Action.who)'", 'Create')) {
+            New-HaloPOSTRequest -Object $Action -Endpoint 'actions'
         }
     } catch {
-        Write-Error "Failed to create action with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

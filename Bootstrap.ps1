@@ -2,8 +2,8 @@ using namespace Microsoft.PowerShell.Commands
 [CmdletBinding()]
 param(
     #
-    [ValidateSet("CurrentUser", "AllUsers")]
-    $Scope = "CurrentUser"
+    [ValidateSet('CurrentUser', 'AllUsers')]
+    $Scope = 'CurrentUser'
 )
 [ModuleSpecification[]]$RequiredModules = Import-LocalizedData -BaseDirectory $PSScriptRoot -FileName RequiredModules
 $Policy = (Get-PSRepository PSGallery).InstallationPolicy

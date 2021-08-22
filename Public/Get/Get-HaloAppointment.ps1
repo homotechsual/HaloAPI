@@ -8,85 +8,97 @@ function Get-HaloAppointment {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [CmdletBinding( DefaultParameterSetName = 'Multi' )]
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Appointment ID
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$AppointmentID,
         # Admin override to return all appointments
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ShowAll,
         # Return appointments with a start date greater than this value.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("start_date")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('start_date')]
         [string]$StartDate,
         # Return appointments with an end date greater than this value
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("end_date")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('end_date')]
         [string]$EndDate,
         # Comma separated list of agent IDs. Returns these agent's appointments
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Agents,
         # Include the appointment type 'holiday' in the response
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ShowHolidays,
         # Include projects in the response
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ShowProjects,
         # Include change requests in the response
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ShowChanges,
         # Include appointments in the response
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ShowAppointments,
         # Return appointments like this search string
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
         # Only return appointments in the response
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$AppointmentsOnly,
         # Only return tasks in the response
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$TasksOnly,
         # Exclude completed appointments from the response
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$HideCompleted,
         # Return appointments assigned to a particular ticket
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("ticket_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('ticket_id')]
         [int64]$TicketID,
         # Whether to include extra objects in the response
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [switch]$IncludeDetails
     )
+    Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'appointmentid=' parameter by removing it from the set parameters.
     if ($AppointmentID) {
-        $Parameters.Remove("AppointmentID") | Out-Null
+        $Parameters.Remove('AppointmentID') | Out-Null
     }
-    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
     try {
         if ($AppointmentID) {
             Write-Verbose "Running in single-appointment mode because '-AppointmentID' was provided."
             $Resource = "api/Appointment/$($AppointmentID)"
         } else {
-            Write-Verbose "Running in multi-appointment mode."
-            $Resource = "api/Appointment"
+            Write-Verbose 'Running in multi-appointment mode.'
+            $Resource = 'api/Appointment'
         }    
         $RequestParams = @{
-            Method = "GET"
+            Method = 'GET'
             Resource = $Resource
             AutoPaginateOff = $True
             QSCollection = $QSCollection
-            ResourceType = "appointments"
+            ResourceType = 'appointments'
         }
         $AppointmentResults = New-HaloGETRequest @RequestParams
         Return $AppointmentResults
     } catch {
-        Write-Error "Failed to get appointments from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

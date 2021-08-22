@@ -1,4 +1,4 @@
-function New-HaloQueryString {
+function New-HaloQuery {
     [CmdletBinding()]
     [OutputType([String], [Hashtable])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
@@ -24,7 +24,7 @@ function New-HaloQueryString {
             Continue
         }
         $ParameterVariable = Get-Variable -Name $Parameter.Name -ErrorAction SilentlyContinue
-        if (($Parameter.ParameterType.Name -eq "String") -or ($Parameter.ParameterType.Name -eq "String[]")) {
+        if (($Parameter.ParameterType.Name -eq 'String') -or ($Parameter.ParameterType.Name -eq 'String[]')) {
             Write-Debug "Found String or String Array param $($ParameterVariable.Name)"
             if ([String]::IsNullOrEmpty($ParameterVariable.Value)) {
                 Write-Debug "Skipping unset param $($ParameterVariable.Name)"
@@ -39,8 +39,8 @@ function New-HaloQueryString {
                 }
                 $Value = $ParameterVariable.Value
                 if (($Value -is [array]) -and ($CommaSeparatedArrays)) {
-                    Write-Debug "Building comma separated array string."
-                    $QueryValue = $Value -join ","
+                    Write-Debug 'Building comma separated array string.'
+                    $QueryValue = $Value -join ','
                     $QSCollection.Add($Query, $QueryValue)
                     Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
                 } elseif (($Value -is [array]) -and (-not $CommaSeparatedArrays)) {
@@ -54,7 +54,7 @@ function New-HaloQueryString {
                 }
             }
         }
-        if ($Parameter.ParameterType.Name -eq "SwitchParameter") {
+        if ($Parameter.ParameterType.Name -eq 'SwitchParameter') {
             Write-Debug "Found Switch param $($ParameterVariable.Name)"
             if ($ParameterVariable.Value -eq $False) {
                 Write-Debug "Skipping unset param $($ParameterVariable.Name)"
@@ -72,7 +72,7 @@ function New-HaloQueryString {
                 Write-Debug "Adding parameter $($Query) with value $($Value)"
             }
         }
-        if (($Parameter.ParameterType.Name -eq "Int32") -or ($Parameter.ParameterType.Name -eq "Int64") -or ($Parameter.ParameterType.Name -eq "Int32[]") -or ($Parameter.ParameterType.Name -eq "Int64[]")) {
+        if (($Parameter.ParameterType.Name -eq 'Int32') -or ($Parameter.ParameterType.Name -eq 'Int64') -or ($Parameter.ParameterType.Name -eq 'Int32[]') -or ($Parameter.ParameterType.Name -eq 'Int64[]')) {
             Write-Debug "Found Int or Int Array param $($ParameterVariable.Name)"
             if (($ParameterVariable.Value -eq 0) -or ($null -eq $ParameterVariable.Value)) {
                 Write-Debug "Skipping unset param $($ParameterVariable.Name)"
@@ -87,8 +87,8 @@ function New-HaloQueryString {
                 }
                 $Value = $ParameterVariable.Value
                 if (($Value -is [array]) -and ($CommaSeparatedArrays)) {
-                    Write-Debug "Building comma separated array string."
-                    $QueryValue = $Value -join ","
+                    Write-Debug 'Building comma separated array string.'
+                    $QueryValue = $Value -join ','
                     $QSCollection.Add($Query, $QueryValue)
                     Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
                 } elseif (($Value -is [array]) -and (-not $CommaSeparatedArrays)) {
@@ -103,10 +103,10 @@ function New-HaloQueryString {
             }
         }
     }
-    if ("count" -in $QSCollection) {
+    if ('count' -in $QSCollection.Keys) {
         Write-Warning "Halo recommend use of pagination with the '-Paginate' parameter instead of '-Count'."
     }
-    if ((('pageinate' -notin $QSCollection) -and ('count' -notin $QSCollection)) -and ($IsMulti)) {
+    if ((('pageinate' -notin $QSCollection.Keys) -and ('count' -notin $QSCollection.Keys)) -and ($IsMulti)) {
         Write-Warning "Running in 'multi' mode but neither '-Paginate' or '-Count' was specified. All results will be returned."
         $QSCollection.Add('pageinate', 'true')
         if (-not($QSCollection.page_size)) {
@@ -114,10 +114,10 @@ function New-HaloQueryString {
         }
         $QSCollection.Add('page_no', 1)
     }
-    if (('pageinate' -in $QSCollection) -and ('page_size' -notin $QSCollection) -and ($IsMulti)) {
+    if (('pageinate' -in $QSCollection.Keys) -and ('page_size' -notin $QSCollection.Keys) -and ($IsMulti)) {
         Write-Warning "Parameter '-PageSize' was not provided for a paginated request. Using default value of $($Script:HAPIDefaultPageSize)"
     }
-    if (('pageinate' -in $QSCollection) -and ('page_no' -notin $QSCollection) -and ($IsMulti)) {
+    if (('pageinate' -in $QSCollection.Keys) -and ('page_no' -notin $QSCollection.Keys) -and ($IsMulti)) {
         Write-Error "When using pagination you must specify an initial page number with '-PageNo'."
         Break
     }

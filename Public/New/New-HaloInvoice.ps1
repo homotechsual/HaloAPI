@@ -14,12 +14,25 @@ Function New-HaloInvoice {
         [Parameter( Mandatory = $True )]
         [Object]$Invoice
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
-        if ($PSCmdlet.ShouldProcess("Invoice '$($Invoice.invoicenumber)'", "Create")) {
-            New-HaloPOSTRequest -Object $Invoice -Endpoint "invoice"
+        if ($PSCmdlet.ShouldProcess("Invoice '$($Invoice.invoicenumber)'", 'Create')) {
+            New-HaloPOSTRequest -Object $Invoice -Endpoint 'invoice'
         }
     } catch {
-        Write-Error "Failed to create invoice with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

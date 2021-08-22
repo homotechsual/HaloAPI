@@ -14,17 +14,30 @@ Function Set-HaloTicket {
         [Parameter( Mandatory = $True )]
         [Object]$Ticket
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloTicket -TicketID $Ticket.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Ticket '$($Ticket.summary)'", "Update")) {
-                New-HaloPOSTRequest -Object $Ticket -Endpoint "tickets" -Update
+            if ($PSCmdlet.ShouldProcess("Ticket '$($Ticket.summary)'", 'Update')) {
+                New-HaloPOSTRequest -Object $Ticket -Endpoint 'tickets' -Update
             }
         } else {
-            Throw "Ticket was not found in Halo to update."
+            Throw 'Ticket was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update ticket with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

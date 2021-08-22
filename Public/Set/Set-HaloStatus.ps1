@@ -14,17 +14,30 @@ Function Set-HaloStatus {
         [Parameter( Mandatory = $True )]
         [Object]$Status
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloStatus -StatusID $Status.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Status '$($ObjectToUpdate.name)'", "Update")) {
-                New-HaloPOSTRequest -Object $Status -Endpoint "status" -Update
+            if ($PSCmdlet.ShouldProcess("Status '$($ObjectToUpdate.name)'", 'Update')) {
+                New-HaloPOSTRequest -Object $Status -Endpoint 'status' -Update
             }
         } else {
-            Throw "Status was not found in Halo to update."
+            Throw 'Status was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update status with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

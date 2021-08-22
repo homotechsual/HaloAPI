@@ -2,6 +2,8 @@
     .SYNOPSIS
         Core test suite for the HaloAPI module.
 #>
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '', Justification = 'Test file - parameters are used in separate scopes.')]
+param()
 
 BeforeAll {
     $ModulePath = Split-Path -Parent -Path (Split-Path -Parent -Path $PSCommandPath)
@@ -11,59 +13,46 @@ BeforeAll {
         Remove-Module $ModuleName -Force
     }
     Import-Module $ManifestPath -Verbose:$False
-    $Script:ModuleInformation = Import-Module -Name $ManifestPath -PassThru
-
 }
 
-# Test that the manifest is generally correct. Not a functional test.
-Describe 'Core' {
-    It 'Manifest is valid' {
-        {
-            Test-ModuleManifest -Path $ManifestPath -ErrorAction Stop -WarningAction SilentlyContinue
-        } | Should -Not -Throw
-    }
-
-    It 'Root module is correct' {
-        $Script:ModuleInformation.RootModule | Should -Be ".\$($ModuleName).psm1"
-    }
-
-    It 'Has a description' {
-        $Script:ModuleInformation.Description | Should -Not -BeNullOrEmpty
-    }
-
-    It 'GUID is correct' {
-        $Script:ModuleInformation.GUID | Should -Be '8bc83215-4735-4029-9f40-e05fe3e8f73b'
-    }
-
-    It 'Version is valid' {
-        $Script:ModuleInformation.Version -As [Version] | Should -Not -BeNullOrEmpty
-    }
-
-    It 'Copyright is present' {
-        $Script:ModuleInformation.Copyright | Should -Not -BeNullOrEmpty
-    }
-
-    It 'License URI is correct' {
-        $Script:ModuleInformation.LicenseUri | Should -Be 'https://haloapi.mit-license.org/'
-    }
-
-    It 'Project URI is correct' {
-        $Script:ModuleInformation.ProjectUri | Should -Be 'https://github.com/homotechsual/HaloAPI'
-    }
-
-    It 'PowerShell Gallery tags is not empty' {
-        $Script:ModuleInformation.Tags.count | Should -Not -BeNullOrEmpty 
-    }
-
-    It 'PowerShell Gallery tags do not contain spaces' {
-        foreach ($Tag in $Script:ModuleInformation.Tags) {
-            $Tag -NotMatch '\s' | Should -Be $True
+# Test that we can login to Halo, and that it does indeed fail as expected if the login information is incorrect.
+Describe 'Connect' {
+    BeforeAll {
+        $HaloCorrectConnectionParameters = @{
+            URL = $env:HaloTestingURL
+            ClientID = $env:HaloTestingClientID
+            ClientSecret = $env:HaloTestingClientSecret
+            Scopes = 'all'
+            Tenant = $env:HaloTestingTenant
+        }
+        $HaloIncorrectURLConnectionParameters = @{
+            URL = 'https://nx.halopsa.com'
+            ClientID = $env:HaloTestingClientID
+            ClientSecret = $env:HaloTestingClientSecret
+            Scopes = 'all'
+            Tenant = $env:HaloTestingTenan
+        }
+        $HaloIncorrectSecretConnectionParameters = @{
+            URL = $env:HaloTestingURL
+            ClientID = $env:HaloTestingClientID
+            ClientSecret = 'clearlyincorrect'
+            Scopes = 'all'
+            Tenant = $env:HaloTestingTenant
         }
     }
-}
-
-Describe 'Module HaloAPI loads' {
-    It 'Passed Module load' {
-        Get-Module -Name 'HaloAPI' | Should -Not -Be $null
+    Context 'with correct parameters' {
+        It 'connects successfully' {
+            Connect-HaloAPI @HaloCorrectConnectionParameters 6>&1 | Should -Be "Connected to the Halo API with tenant URL $($HaloCorrectConnectionParameters.URL)/"
+        }
+    }
+    Context 'with incorrect URL parameter' {
+        It 'fails with a HTTP 500 status code.' {
+            { Connect-HaloAPI @HaloIncorrectURLConnectionParameters } | Should -Throw -ExceptionType 'System.Net.Http.HttpRequestException' -ExpectedMessage 'Connect-HaloAPI failed. Halo''s API provided the status code 500: Internal Server Error. You can use "Get-Error" for detailed error information.'
+        }
+    }
+    Context 'with incorrect Client Secret parameter' {
+        It 'fails with a HTTP 401 status code.' {
+            { Connect-HaloAPI @HaloIncorrectSecretConnectionParameters } | Should -Throw -ExceptionType 'System.Net.Http.HttpRequestException' -ExpectedMessage 'Connect-HaloAPI failed. Halo''s API provided the status code 401: Unauthorized. You can use "Get-Error" for detailed error information.'
+        }
     }
 }

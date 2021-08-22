@@ -14,12 +14,25 @@ Function New-HaloQuote {
         [Parameter( Mandatory = $True )]
         [Object]$Quote
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
-        if ($PSCmdlet.ShouldProcess("Quote '$($Quote.title)'", "Create")) {
-            New-HaloPOSTRequest -Object $Quote -Endpoint "quotation"
+        if ($PSCmdlet.ShouldProcess("Quote '$($Quote.title)'", 'Create')) {
+            New-HaloPOSTRequest -Object $Quote -Endpoint 'quotation'
         }
     } catch {
-        Write-Error "Failed to create quote with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

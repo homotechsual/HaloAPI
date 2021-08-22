@@ -14,17 +14,30 @@ Function Set-HaloSupplier {
         [Parameter( Mandatory = $True )]
         [Object]$Supplier
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloSupplier -SupplierID $Supplier.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Supplier '$($ObjectToUpdate.name)'", "Update")) {
-                New-HaloPOSTRequest -Object $Supplier -Endpoint "supplier" -Update
+            if ($PSCmdlet.ShouldProcess("Supplier '$($ObjectToUpdate.name)'", 'Update')) {
+                New-HaloPOSTRequest -Object $Supplier -Endpoint 'supplier' -Update
             }
         } else {
-            Throw "Supplier was not found in Halo to update."
+            Throw 'Supplier was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update supplier with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

@@ -8,86 +8,98 @@ function Get-HaloAgent {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [CmdletBinding( DefaultParameterSetName = 'Multi' )]
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Get the agent object for the access token owner
-        [Parameter( ParameterSetName = "Me", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Me', Mandatory = $True )]
         [switch]$Me,
         # Agent ID.
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$AgentID,
         # Filter by the specified team name.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Team,
         # Filter by name, email address or telephone number using the specified search string.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
         # Filter by the specified team ID. ?ACT Query with Halo what this does!
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("section_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('section_id')]
         [int32]$SectionID,
         # Filter by the specified department ID.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("department_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('department_id')]
         [int32]$DepartmentID,
         # Filter by the specified client ID (agents who have access to this client).
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("client_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('client_id')]
         [int]$ClientID,
         # Filter by the specified role ID (requires int as string.)
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Role,
         # Include agents with enabled accounts (defaults to $True).
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeEnabled,
         # Include agents with disabled accounts.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeDisabled,
         # Include the system unassigned agent account.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeUnassigned,
         # Include the agent's roles list in the response.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeRoles,
         # Include extra detail objects (for example teams and roles) in the response.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [switch]$IncludeDetails
         
     )
+    Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding an 'agentid=' parameter by removing it from the set parameters.
     if ($AgentID) {
-        $Parameters.Remove("AgentID") | Out-Null
+        $Parameters.Remove('AgentID') | Out-Null
     }
     if ($Me) {
-        $Parameters.Remove("Me") | Out-Null
+        $Parameters.Remove('Me') | Out-Null
     }
-    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
     try {
         if ($AgentID) {
             Write-Verbose "Running in single-agent mode because '-AgentID' was provided."
             $Resource = "api/agent/$($AgentID)"
         } elseif ($Me) {
             Write-Verbose "Running in 'Me' mode."
-            $Resource = "api/agent/me"
+            $Resource = 'api/agent/me'
         } else {
-            Write-Verbose "Running in multi-agent mode."
-            $Resource = "api/agent"
+            Write-Verbose 'Running in multi-agent mode.'
+            $Resource = 'api/agent'
         }
         $RequestParams = @{
-            Method = "GET"
+            Method = 'GET'
             Resource = $Resource
             AutoPaginateOff = $True
             QSCollection = $QSCollection
-            ResourceType = "agents"
+            ResourceType = 'agents'
         }
         $AgentResults = New-HaloGETRequest @RequestParams
         Return $AgentResults
     } catch {
-        Write-Error "Failed to get agents from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

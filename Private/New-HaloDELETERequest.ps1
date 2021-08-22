@@ -16,15 +16,26 @@ function New-HaloDELETERequest {
         [Parameter( Mandatory = $True )]
         [string]$Resource
     )
+    Invoke-HaloPreFlightChecks
     try {
         $WebRequestParams = @{
-            Method = "DELETE"
+            Method = 'DELETE'
             Uri = "$($Script:HAPIConnectionInformation.URL)$($Resource)"
         }
         $DeleteResults = Invoke-HaloRequest -WebRequestParams $WebRequestParams
         Return $DeleteResults
     } catch {
-        Write-Error "Failed to Delete $Resource in the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $ErrorRecord = @{
+            ExceptionType = 'System.Net.Http.HttpRequestException'
+            ErrorMessage = 'DELETE request sent to the Halo API failed.'
+            InnerException = $_.Exception
+            ErrorID = 'HaloDELETERequestFailed'
+            ErrorCategory = 'ProtocolError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $True
+        }
+        $RequestError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($RequestError)
     }
 }

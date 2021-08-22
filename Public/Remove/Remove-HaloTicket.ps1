@@ -7,26 +7,39 @@ function Remove-HaloTicket {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [cmdletbinding( SupportsShouldProcess = $True, ConfirmImpact = "High" )]
+    [cmdletbinding( SupportsShouldProcess = $True, ConfirmImpact = 'High' )]
     [OutputType([Object])]
     Param(
         # The Ticket ID
         [Parameter( Mandatory = $True )]
         [int64]$TicketID
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToDelete = Get-HaloTicket -TicketID $TicketID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Ticket '$($ObjectToDelete.summary)')'", "Delete")) {
+            if ($PSCmdlet.ShouldProcess("Ticket '$($ObjectToDelete.summary)')'", 'Delete')) {
                 $Resource = "api/tickets/$($TicketID)"
                 $TicketResults = New-HaloDELETERequest -Resource $Resource
                 Return $TicketResults
             }
         } else {
-            Throw "Ticket was not found in Halo to delete."
+            Throw 'Ticket was not found in Halo to delete.'
         }
     } catch {
-        Write-Error "Failed to delete ticket from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

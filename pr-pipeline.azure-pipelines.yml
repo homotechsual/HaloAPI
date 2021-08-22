@@ -7,7 +7,7 @@ pool:
   vmImage: 'vs2017-win2016'
 
 variables:
-  - group: AKV
+  - group: MSPsUK KeyVault
 
 stages:
   - stage: Setup
@@ -33,6 +33,11 @@ stages:
       - job: TestandPublish
         steps:
           - task: Pester@10
+            env:
+              HaloTestingURL: $(HaloTestingURL)
+              HaloTestingClientID: $(HaloTestingClientID)
+              HaloTestingClientSecret: $(HaloTestingClientSecret)
+              HaloTestingTenant: $(HaloTestingTenant)
             inputs:
               ScriptFolder: '$(System.DefaultWorkingDirectory)\*'
               ResultsFile: '$(Common.TestResultsDirectory)\Pester-Results.xml'

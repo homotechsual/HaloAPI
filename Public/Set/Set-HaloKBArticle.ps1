@@ -14,17 +14,30 @@ Function Set-HaloKBArticle {
         [Parameter( Mandatory = $True )]
         [Object]$KBArticle
     )
+    Invoke-HaloPreFlightChecks
+    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloKBArticle -ArticleID $KBArticle.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Article '$($ObjectToUpdate.name)'", "Update")) {
-                New-HaloPOSTRequest -Object $KBArticle -Endpoint "kbarticle" -Update
+            if ($PSCmdlet.ShouldProcess("Article '$($ObjectToUpdate.name)'", 'Update')) {
+                New-HaloPOSTRequest -Object $KBArticle -Endpoint 'kbarticle' -Update
             }
         } else {
-            Throw "Article was not found in Halo to update."
+            Throw 'Article was not found in Halo to update.'
         }
     } catch {
-        Write-Error "Failed to update article with the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

@@ -23,6 +23,5 @@ function Get-HaloNullObject {
             $_.Value = Get-HaloNullObject -NullObject $_.Value
         }
     }
-
     return $NullObject
 }

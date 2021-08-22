@@ -8,85 +8,97 @@ function Get-HaloSupplier {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [CmdletBinding( DefaultParameterSetName = 'Multi' )]
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Supplier ID
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$SupplierID,
         # Paginate results
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("pageinate")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('pageinate')]
         [switch]$Paginate,
         # Number of results per page.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("page_size")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('page_size')]
         [int32]$PageSize,
         # Which page to return.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("page_no")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('page_no')]
         [int32]$PageNo,
         # Which field to order results based on.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Order,
         # Order results in descending order (respects the field choice in '-Order')
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$OrderDesc,
         # Return suppliers matching the search term in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
         # The number of suppliers to return if not using pagination.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [int32]$Count,
         # Filter by the specified top level ID.
-        [Parameter( ParameterSetName = "Multi" )]
-        [Alias("toplevel_id")]
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('toplevel_id')]
         [int32]$TopLevelID,
         # Include active suppliers in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeActive,
         # Include inactive suppliers in the results.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeInactive,
         # Include extra objects in the result.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [Switch]$IncludeDetails
     )
+    Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'SupplierID=' parameter by removing it from the set parameters.
     if ($SupplierID) {
-        $Parameters.Remove("SupplierID") | Out-Null
+        $Parameters.Remove('SupplierID') | Out-Null
     }
     try {
         if ($SupplierID) {
             Write-Verbose "Running in single-supplier mode because '-SupplierID' was provided."
-            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+            $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
             $Resource = "api/supplier/$($SupplierID)"
             $RequestParams = @{
-                Method = "GET"
+                Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = "suppliers"
+                ResourceType = 'suppliers'
             }
         } else {
-            Write-Verbose "Running in multi-supplier mode."
-            $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = "api/supplier"
+            Write-Verbose 'Running in multi-supplier mode.'
+            $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = 'api/supplier'
             $RequestParams = @{
-                Method = "GET"
+                Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
-                ResourceType = "suppliers"
+                ResourceType = 'suppliers'
             }
         }
         $SupplierResults = New-HaloGETRequest @RequestParams
         Return $SupplierResults
     } catch {
-        Write-Error "Failed to get suppliers from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

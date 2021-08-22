@@ -13,7 +13,7 @@ Set-StrictMode -Version Latest
 #region Task: Update the PowerShell Module Help Files.
 # Pre-requisites: PowerShell Module PlatyPS.
 task UpdateHelp {
-    Import-Module -Name "HaloAPI" -Force
+    Import-Module -Name 'HaloAPI' -Force
     Update-MarkdownHelp -Path "$($PSScriptRoot)\Docs\Markdown"
     New-ExternalHelp -Path "$($PSScriptRoot)\Docs\Markdown" -OutputPath "$($PSScriptRoot)\Docs\en_GB" -Force
 }
@@ -57,7 +57,7 @@ task UpdateManifest {
     # Find Latest Version in Change log.
     $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md"
     $MarkdownObject = [Markdown.MAML.Parser.MarkdownParser]::new()
-    [regex]$Regex = "\d\.\d\.\d"
+    [regex]$Regex = '\d\.\d\.\d'
     $Versions = $Regex.Matches($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) | ForEach-Object { $_.Value }
     ($Versions | Measure-Object -Maximum).Maximum
 
@@ -86,7 +86,7 @@ task PublishModule -if ($Configuration -eq 'Production') {
         $params = @{
             Path = ("$($PSScriptRoot)\Output\HaloAPI")
             NuGetApiKey = $env:PSGalleryAPIKey
-            ErrorAction = "Stop"
+            ErrorAction = 'Stop'
         }
         Publish-Module @params
         Write-Output -InputObject ("HaloAPI PowerShell Module version $($NewVersion) published to the PowerShell Gallery")

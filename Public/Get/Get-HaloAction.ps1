@@ -8,97 +8,109 @@ function Get-HaloAction {
         .OUTPUTS
             A powershell object containing the response.
     #>
-    [CmdletBinding( DefaultParameterSetName = "Multi" )]
+    [CmdletBinding( DefaultParameterSetName = 'Multi' )]
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
         # Action ID.
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$ActionID,
         # The number of actions to return.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [int64]$Count,
         # Get actions for a single ticket with the specified ID.
-        [Parameter( ParameterSetName = "Single", Mandatory = $True )]
-        [Parameter( ParameterSetName = "Multi", Mandatory = $True )]
-        [Alias("ticket_id")]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Multi', Mandatory = $True )]
+        [Alias('ticket_id')]
         [int32]$TicketID,
         # Exclude system-performed actions.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ExcludeSys,
         # Only get actions that are part of agent to end user conversations.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ConversationOnly,
         # Only get actions performed by agents.
-        [Parameter( ParameterSetName = "Single" )]
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Single' )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$AgentOnly,
         # Only get actions that involve suppliers.
-        [Parameter(ParameterSetName = "Multi" )]
+        [Parameter(ParameterSetName = 'Multi' )]
         [switch]$SupplierOnly,
         # Exclude private actions.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ExcludePrivate,
         # Include the action note HTML in the response.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeHTMLNote,
         # Include the action email HTML in the response.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeHTMLEmail,
         # Include attachment details in the response.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeAttachments,
         # Only get important actions.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ImportantOnly,
         # Only get SLA hold and release actions.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$SLAOnly,
         # Only get actions from child tickets.
-        [Parameter( ParameterSetName = "Multi" )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IsChildNotes,
         # Include the HTML and plain text email body in the response.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [switch]$IncludeEmail,
         # Include extra detail objects.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [switch]$IncludeDetails,
         # Ignore the '-ActionID' and get the most recent action for the '-TicketID'
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [switch]$MostRecent,
         # Only get email actions.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [switch]$EmailOnly,
         # Exclude system-performed actions.
-        [Parameter( ParameterSetName = "Single" )]
+        [Parameter( ParameterSetName = 'Single' )]
         [switch]$NonSystem
     )
+    Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding an 'actionid=' parameter by removing it from the set parameters.
     if ($ActionID) {
-        $Parameters.Remove("ActionID") | Out-Null
+        $Parameters.Remove('ActionID') | Out-Null
     }
-    $QSCollection = New-HaloQueryString -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
     try {
         if ($ActionID) {
             Write-Verbose "Running in single-action mode because '-ActionID' was provided."
             $Resource = "api/actions/$($ActionID)"
         } else {
-            Write-Verbose "Running in multi-action mode."
-            $Resource = "api/actions"
+            Write-Verbose 'Running in multi-action mode.'
+            $Resource = 'api/actions'
         }
         $RequestParams = @{
-            Method = "GET"
+            Method = 'GET'
             Resource = $Resource
             AutoPaginateOff = $True
             QSCollection = $QSCollection
-            ResourceType = "actions"
+            ResourceType = 'actions'
         }
         $ActionResults = New-HaloGETRequest @RequestParams
         Return $ActionResults
     } catch {
-        Write-Error "Failed to get actions from the Halo API. You'll see more detail if using '-Verbose'"
-        Write-Verbose "$_"
+        $Command = $CommandName -Replace '-', ''
+        $ErrorRecord = @{
+            ExceptionType = 'System.Exception'
+            ErrorMessage = "$($CommandName) failed."
+            InnerException = $_.Exception
+            ErrorID = "Halo$($Command)CommandFailed"
+            ErrorCategory = 'ReadError'
+            TargetObject = $_.TargetObject
+            ErrorDetails = $_.ErrorDetails
+            BubbleUpDetails = $False
+        }
+        $CommandError = New-HaloErrorRecord @ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($CommandError)
     }
 }

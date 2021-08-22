@@ -13,11 +13,10 @@
     IncludeRules = @(
         'PSAvoidDefaultValueSwitchParameter',
         'PSAvoidGlobalVars',
-        'PSAvoidGlobalVars',
         'PSAvoidUsingCmdletAliases',
         'PSAvoidUsingComputerNameHardcoded',
-        'PSAvoidUsingComputerNameHardcoded',
         'PSAvoidUsingConvertToSecureStringWithPlainText',
+        'PSAvoidUsingDoubleQuotesForConstantString',
         'PSAvoidUsingEmptyCatchBlock',
         'PSAvoidUsingInvokeExpression',
         'PSAvoidUsingPlainTextForPassword',
@@ -81,5 +80,10 @@
         PSUseCorrectCasing = @{
             Enable = $true
         }
+
+        PSAvoidUsingDoubleQuotesForConstantString = @{
+            Enable = $true
+        }
+
     }
 }
