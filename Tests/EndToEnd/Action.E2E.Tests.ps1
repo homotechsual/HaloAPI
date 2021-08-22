@@ -15,11 +15,11 @@ BeforeAll {
     Import-Module $ManifestPath -Verbose:$False
 
     $HaloConnectionParameters = @{
-        URL = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingURL' -AsPlainText
-        ClientID = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingClientID' -AsPlainText
-        ClientSecret = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingClientSecret' -AsPlainText
+        URL = $env:HaloTestingURL
+        ClientID = $env:HaloTestingClientID
+        ClientSecret = $env:HaloTestingClientSecret
         Scopes = 'all'
-        Tenant = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingTenant' -AsPlainText
+        Tenant = $env:HaloTestingTenant
     }
 
     $ActionID = 2

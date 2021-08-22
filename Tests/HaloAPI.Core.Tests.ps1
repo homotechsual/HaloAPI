@@ -19,25 +19,25 @@ BeforeAll {
 Describe 'Connect' {
     BeforeAll {
         $HaloCorrectConnectionParameters = @{
-            URL = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingURL' -AsPlainText
-            ClientID = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingClientID' -AsPlainText
-            ClientSecret = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingClientSecret' -AsPlainText
+            URL = $env:HaloTestingURL
+            ClientID = $env:HaloTestingClientID
+            ClientSecret = $env:HaloTestingClientSecret
             Scopes = 'all'
-            Tenant = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingTenant' -AsPlainText
+            Tenant = $env:HaloTestingTenant
         }
         $HaloIncorrectURLConnectionParameters = @{
             URL = 'https://nx.halopsa.com'
-            ClientID = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingClientID' -AsPlainText
-            ClientSecret = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingClientSecret' -AsPlainText
+            ClientID = $env:HaloTestingClientID
+            ClientSecret = $env:HaloTestingClientSecret
             Scopes = 'all'
-            Tenant = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingTenant' -AsPlainText
+            Tenant = $env:HaloTestingTenan
         }
         $HaloIncorrectSecretConnectionParameters = @{
-            URL = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingURL' -AsPlainText
-            ClientID = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingClientID' -AsPlainText
+            URL = $env:HaloTestingURL
+            ClientID = $env:HaloTestingClientID
             ClientSecret = 'clearlyincorrect'
             Scopes = 'all'
-            Tenant = Get-AzKeyVaultSecret -VaultName 'MSPsUK' -Name 'HaloTestingTenant' -AsPlainText
+            Tenant = $env:HaloTestingTenant
         }
     }
     Context 'with correct parameters' {
