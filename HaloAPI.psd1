@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.2.0'
+    ModuleVersion = '1.2.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -197,7 +197,7 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Changes to error handling for more descriptive and reliable error messages. Adds validation and dynamic completion classes for Lookups, Custom Button types and Scopes. Add Custom Buttons endpoint.'
+            ReleaseNotes = 'Remove the attempt to load the `HaloLookup` class in HaloAPI.psm1 as it''s not used.'
 
             # Prerelease string of this module
             # Prerelease = ''

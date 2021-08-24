@@ -1,4 +1,3 @@
-using module ./classes/HaloLookup.psm1
 #Requires -Version 7
 $Functions = @(Get-ChildItem -Path $PSScriptRoot\Public\ -Include *.ps1 -Recurse) + @(Get-ChildItem -Path $PSScriptRoot\Private\ -Include *.ps1 -Recurse)
 # Import functions.

@@ -1,5 +1,17 @@
 # Changelog
 
+* 2021-08-24
+
+  Version 1.2.2
+
+  Remove the attempt to load the `HaloLookup` class in HaloAPI.psm1 as it's not used.
+
+* 2021-08-23
+
+  Version 1.2.1
+
+  Adds missing classes which were erroneously excluded from the build script.
+
 * 2021-08-22
 
   Version 1.2.0
