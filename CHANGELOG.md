@@ -1,5 +1,11 @@
 # Changelog
 
+* 2021-08-26
+
+  Version 1.3.0-Beta3
+
+  Handle `-AuthURL` with or without a path.
+
 * 2021-08-25
 
   Version 1.3.0-Beta2

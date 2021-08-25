@@ -76,13 +76,20 @@ function Connect-HaloAPI {
         $AuthURIBuilder = [System.UriBuilder]::New($AuthURL)
         # Assume here that they are using a URL that uses a different style.
         Write-Verbose "'-AuthURL' specified - building custom authentication using `-AuthURL`."
-        if ($Tenant) {
-            $AuthURIBuilder.Path = $AuthPath
-            $AuthURIBuilder.Query = "tenant=$($Tenant)"
+        if ($AuthURIBuilder.Path) {
+            if ($Tenant) {
+                $AuthURIBuilder.Query = "tenant=$($Tenant)"
+            } else {
+                $AuthURIBuilder.Query = $null
+            }
         } else {
-            $AuthURIBuilder.Path = $AuthPath
-            $AuthURIBuilder.Query = $null
-            
+            Write-Verbose "Path present on the URL passed to '-AuthURL' - adding standard authentication path."
+            if ($Tenant) {
+                $AuthURIBuilder.Path = 'auth/token'
+                $AuthURIBuilder.Query = "tenant=$($Tenant)"
+            } else {
+                $AuthURIBuilder.Path = 'auth/token'
+            }
         }
     }
     $AuthenticationURI = $AuthURIBuilder.ToString()
