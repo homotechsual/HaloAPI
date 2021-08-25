@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.2.2'
+    ModuleVersion = '1.3.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -197,10 +197,10 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Remove the attempt to load the `HaloLookup` class in HaloAPI.psm1 as it''s not used.'
+            ReleaseNotes = 'Add an `-AuthPath` parameter to Connect-HaloAPI for non-standard authentication routes.'
 
             # Prerelease string of this module
-            # Prerelease = ''
+            Prerelease = '-Beta1'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenseAcceptance = $false

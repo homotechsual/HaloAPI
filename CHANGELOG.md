@@ -1,5 +1,17 @@
 # Changelog
 
+* 2021-08-25
+
+  Version 1.3.0-Beta1
+
+  Add an `-AuthPath` parameter to Connect-HaloAPI for non-standard authentication routes.
+
+* 2021-08-24
+
+  Version 1.2.3
+
+  Fix misnamed function invocation in `Get-HaloClient`.
+
 * 2021-08-24
 
   Version 1.2.2
