@@ -25,6 +25,11 @@ function Connect-HaloAPI {
             Mandatory = $True
         )]
         [URI]$URL,
+        # The Auth path for your instance.
+        [Parameter(
+            ParameterSetName = 'Client Credentials'
+        )]
+        [String]$AuthPath,
         # The Client ID for the application configured in Halo.
         [Parameter(
             ParameterSetName = 'Client Credentials',
@@ -57,9 +62,36 @@ function Connect-HaloAPI {
     } else {
         $AuthScopes = $Scopes
     }
+    # Build the authentication and base URLs.
+    $URIBuilder = [System.UriBuilder]::New($URL)
+    if (-Not $AuthPath) {
+        Write-Verbose "No '-AuthPath' specified - building standard authentication URL."
+        if ($Tenant) {
+            $URIBuilder.Path = 'auth/token'
+            $URIBuilder.Query = "tenant=$($Tenant)"
+            $AuthURL = $URIBuilder.ToString()
+        } else {
+            $URIBuilder.Path = 'auth/token'
+            $AuthURL = $URIBuilder.ToString()
+        }
+    } else {
+        # Assume here that they are using a URL that uses a different style.
+        Write-Verbose "'-AuthPath' was provided - building custom authentication URL."
+        if ($Tenant) {
+            $URIBuilder.Path = $AuthPath
+            $URIBuilder.Query = "tenant=$($Tenant)"
+            $AuthURL = $URIBuilder.ToString()
+        }
+    }
+    # Reset URI to a base URI.
+    if ($URIBuilder.Path) {
+        $URIBuilder.Path = $null
+        $URIBUilder.Query = $null
+        $BaseURL = $URIBuilder.ToString()
+    }
     # Build a script-scoped variable to hold the connection information.
     $ConnectionInformation = @{
-        URL = $URL
+        URL = $BaseURL
         ClientID = $ClientID
         ClientSecret = $ClientSecret
         AuthScopes = $AuthScopes
@@ -73,12 +105,6 @@ function Connect-HaloAPI {
         client_id = $Script:HAPIConnectionInformation.ClientID
         client_secret = $Script:HAPIConnectionInformation.ClientSecret
         scope = $Script:HAPIConnectionInformation.AuthScopes
-    }
-    # Build the authentication URL.
-    if ($Tenant) {
-        $AuthURL = "$($URL)auth/token?tenant=$($Tenant)"
-    } else {
-        $AuthURL = "$($URL)auth/token"
     }
     # Build the WebRequest parameters.
     $WebRequestParams = @{
