@@ -144,6 +144,7 @@
         'Set-HaloTicketType',
         'Set-HaloUser',
         'Remove-HaloAction',
+        'Remove-HaloClient',
         'Remove-HaloTicket'
     )
 
