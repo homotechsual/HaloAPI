@@ -25,11 +25,11 @@ function Connect-HaloAPI {
             Mandatory = $True
         )]
         [URI]$URL,
-        # The Auth path for your instance.
+        # Specify an AuthURL on a different domain/base to your main Halo install.
         [Parameter(
             ParameterSetName = 'Client Credentials'
         )]
-        [String]$AuthPath,
+        [URI]$AuthURL,
         # The Client ID for the application configured in Halo.
         [Parameter(
             ParameterSetName = 'Client Credentials',
@@ -63,35 +63,39 @@ function Connect-HaloAPI {
         $AuthScopes = $Scopes
     }
     # Build the authentication and base URLs.
-    $URIBuilder = [System.UriBuilder]::New($URL)
-    if (-Not $AuthPath) {
-        Write-Verbose "No '-AuthPath' specified - building standard authentication URL."
+    if (-Not $AuthURL) {
+        $AuthURIBuilder = [System.UriBuilder]::New($URL)
+        Write-Verbose "No '-AuthURL' specified - building standard authentication using `-URL`."
         if ($Tenant) {
-            $URIBuilder.Path = 'auth/token'
-            $URIBuilder.Query = "tenant=$($Tenant)"
-            $AuthURL = $URIBuilder.ToString()
+            $AuthURIBuilder.Path = 'auth/token'
+            $AuthURIBuilder.Query = "tenant=$($Tenant)"
         } else {
-            $URIBuilder.Path = 'auth/token'
-            $AuthURL = $URIBuilder.ToString()
+            $AuthURIBuilder.Path = 'auth/token'
         }
     } else {
+        $AuthURIBuilder = [System.UriBuilder]::New($AuthURL)
         # Assume here that they are using a URL that uses a different style.
-        Write-Verbose "'-AuthPath' was provided - building custom authentication URL."
+        Write-Verbose "'-AuthURL' specified - building custom authentication using `-AuthURL`."
         if ($Tenant) {
-            $URIBuilder.Path = $AuthPath
-            $URIBuilder.Query = "tenant=$($Tenant)"
-            $AuthURL = $URIBuilder.ToString()
+            $AuthURIBuilder.Path = $AuthPath
+            $AuthURIBuilder.Query = "tenant=$($Tenant)"
+        } else {
+            $AuthURIBuilder.Path = $AuthPath
+            $AuthURIBuilder.Query = $null
+            
         }
     }
-    # Reset URI to a base URI.
-    if ($URIBuilder.Path) {
-        $URIBuilder.Path = $null
-        $URIBUilder.Query = $null
-        $BaseURL = $URIBuilder.ToString()
+    $AuthenticationURI = $AuthURIBuilder.ToString()
+    # Make sure URL is a base URI.
+    $BaseURIBuilder = [System.UriBuilder]::New($URL)
+    if ($BaseURIBuilder.Path) {
+        $BaseURIBuilder.Path = $null
+        $BaseURIBuilder.Query = $null
+        $BaseURI = $BaseURIBuilder.ToString()
     }
     # Build a script-scoped variable to hold the connection information.
     $ConnectionInformation = @{
-        URL = $BaseURL
+        URL = $BaseURI
         ClientID = $ClientID
         ClientSecret = $ClientSecret
         AuthScopes = $AuthScopes
@@ -108,7 +112,7 @@ function Connect-HaloAPI {
     }
     # Build the WebRequest parameters.
     $WebRequestParams = @{
-        Uri = $AuthURL
+        Uri = $AuthenticationURI
         Method = 'POST'
         Body = $AuthReqBody
         ContentType = 'application/x-www-form-urlencoded'

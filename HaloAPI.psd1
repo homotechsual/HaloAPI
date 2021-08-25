@@ -197,10 +197,10 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Add an `-AuthPath` parameter to Connect-HaloAPI for non-standard authentication routes.'
+            ReleaseNotes = 'Switch from using `-AuthPath` to `-AuthURL` to fix the actual issue in GitHub #1'
 
             # Prerelease string of this module
-            Prerelease = '-Beta1'
+            Prerelease = '-Beta2'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenseAcceptance = $false

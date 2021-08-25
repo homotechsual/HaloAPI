@@ -2,6 +2,12 @@
 
 * 2021-08-25
 
+  Version 1.3.0-Beta2
+
+  Switch from using `-AuthPath` to `-AuthURL` to fix the actual issue in GitHub #1
+
+* 2021-08-25
+
   Version 1.3.0-Beta1
 
   Add an `-AuthPath` parameter to Connect-HaloAPI for non-standard authentication routes.
