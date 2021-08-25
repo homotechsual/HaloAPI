@@ -25,11 +25,6 @@ function Connect-HaloAPI {
             Mandatory = $True
         )]
         [URI]$URL,
-        # Specify an AuthURL on a different domain/base to your main Halo install.
-        [Parameter(
-            ParameterSetName = 'Client Credentials'
-        )]
-        [URI]$AuthURL,
         # The Client ID for the application configured in Halo.
         [Parameter(
             ParameterSetName = 'Client Credentials',
@@ -63,36 +58,31 @@ function Connect-HaloAPI {
         $AuthScopes = $Scopes
     }
     # Build the authentication and base URLs.
-    if (-Not $AuthURL) {
+    $AuthInfoURIBuilder = [System.UriBuilder]::New($URL)
+    Write-Verbose "Looking up auth endpoint using the 'api/authinfo' endpoint."
+    $AuthInfoURIBuilder.Path = 'api/authinfo'
+    $AuthInfoResponse = Invoke-WebRequest -Uri $AuthInfoURIBuilder.ToString() -Method 'GET'
+    if ($AuthInfoResponse.content) {
+        $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
+        $AuthURIBuilder = [System.UriBuilder]::New($AuthInfo.auth_url)
+        $AuthURIBuilder.Path = $AuthURIBuilder.Path + '/token'
+        if ($Tenant) {
+            $AuthURIBuilder.Query = "tenant=$($Tenant)"
+        } elseif ($AuthInfo.tenant_id) {
+            $AuthURIBuilder.Query = "tenant=$($AuthInfo.tenant_id)"
+        }
+    } else {
         $AuthURIBuilder = [System.UriBuilder]::New($URL)
-        Write-Verbose "No '-AuthURL' specified - building standard authentication using `-URL`."
+        Write-Warning 'Could not retrieve authentication URL from Halo falling back to default.'
         if ($Tenant) {
             $AuthURIBuilder.Path = 'auth/token'
             $AuthURIBuilder.Query = "tenant=$($Tenant)"
         } else {
             $AuthURIBuilder.Path = 'auth/token'
         }
-    } else {
-        $AuthURIBuilder = [System.UriBuilder]::New($AuthURL)
-        # Assume here that they are using a URL that uses a different style.
-        Write-Verbose "'-AuthURL' specified - building custom authentication using `-AuthURL`."
-        if ($AuthURIBuilder.Path) {
-            if ($Tenant) {
-                $AuthURIBuilder.Query = "tenant=$($Tenant)"
-            } else {
-                $AuthURIBuilder.Query = $null
-            }
-        } else {
-            Write-Verbose "Path present on the URL passed to '-AuthURL' - adding standard authentication path."
-            if ($Tenant) {
-                $AuthURIBuilder.Path = 'auth/token'
-                $AuthURIBuilder.Query = "tenant=$($Tenant)"
-            } else {
-                $AuthURIBuilder.Path = 'auth/token'
-            }
-        }
     }
     $AuthenticationURI = $AuthURIBuilder.ToString()
+    Write-Verbose "Using authentication URL: $($AuthenticationURI)"
     # Make sure URL is a base URI.
     $BaseURIBuilder = [System.UriBuilder]::New($URL)
     if ($BaseURIBuilder.Path) {

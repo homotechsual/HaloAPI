@@ -1,6 +1,12 @@
 # Changelog
 
-* 2021-08-26
+* 2021-08-25
+
+  Version 1.3.0-Beta4
+
+  Uses the `api/authinfo` endpoint to dynamically populate the Authentication URL for all requests now.
+
+* 2021-08-25
 
   Version 1.3.0-Beta3
 

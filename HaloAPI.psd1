@@ -197,10 +197,10 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Handle `-AuthURL` with or without a path.'
+            ReleaseNotes = 'Uses the `api/authinfo` endpoint to dynamically populate the Authentication URL for all requests now.'
 
             # Prerelease string of this module
-            Prerelease = '-Beta3'
+            Prerelease = '-Beta4'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenseAcceptance = $false
