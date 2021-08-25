@@ -19,7 +19,11 @@ function New-HaloErrorRecord {
     $ExceptionMessage = [list[string]]::New()
     $ExceptionMessage.Add($ErrorMessage)
     if ($ErrorDetails.Message) {
-        $HaloError = $_.ErrorDetails.Message | ConvertFrom-Json
+        if ($ErrorDetails.Message | Test-Json -ErrorAction Ignore) {
+            $HaloError = $ErrorDetails.Message | ConvertFrom-Json -Depth 5
+        } else {
+            $HaloError = $ErrorDetails.Message
+        }
         if ($HaloError.Message) {
             $ExceptionMessage.Add("Halo's API said $($HaloError.ClassName): $($HaloError.Message).")
         }
