@@ -18,22 +18,23 @@ BeforeAll {
 # Test that we can login to Halo, and that it does indeed fail as expected if the login information is incorrect.
 Describe 'Connect' {
     BeforeAll {
+        $TestingURL = [System.UriBuilder]$env:HaloTestingURL
         $HaloCorrectConnectionParameters = @{
-            URL = $env:HaloTestingURL
+            URL = $TestingURL
             ClientID = $env:HaloTestingClientID
             ClientSecret = $env:HaloTestingClientSecret
             Scopes = 'all'
             Tenant = $env:HaloTestingTenant
         }
         $HaloIncorrectURLConnectionParameters = @{
-            URL = 'https://nx.halopsa.com'
+            URL = 'https://nx.halopsa.com:443/'
             ClientID = $env:HaloTestingClientID
             ClientSecret = $env:HaloTestingClientSecret
             Scopes = 'all'
             Tenant = $env:HaloTestingTenan
         }
         $HaloIncorrectSecretConnectionParameters = @{
-            URL = $env:HaloTestingURL
+            URL = $TestingURL
             ClientID = $env:HaloTestingClientID
             ClientSecret = 'clearlyincorrect'
             Scopes = 'all'
