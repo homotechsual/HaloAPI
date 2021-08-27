@@ -1,57 +1,76 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: HaloAPI
+Module Name: haloapi
 online version:
 schema: 2.0.0
 ---
 
-# Get-HaloTemplate
+# Remove-HaloTicket
 
 ## SYNOPSIS
-Gets a template object for the Halo API.
+Removes a ticket from the Halo API.
 
 ## SYNTAX
 
 ```
-Get-HaloTemplate [-Type] <String> [-NullVariables] [<CommonParameters>]
+Remove-HaloTicket [-TicketID] <Int64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Provides an example object for use in provisioning items in the Halo API
+Deletes a specific ticket from Halo.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -NullVariables
-Return with null values
+### -TicketID
+The Ticket ID
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Type
-Type of object to get template for
-
-```yaml
-Type: String
+Type: Int64
 Parameter Sets: (All)
 Aliases:
 
 Required: True
 Position: 1
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

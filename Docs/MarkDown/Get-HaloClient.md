@@ -1,6 +1,6 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: HaloAPI
+Module Name: haloapi
 online version:
 schema: 2.0.0
 ---
@@ -15,7 +15,7 @@ Gets clients from the Halo API.
 ### Multi (Default)
 ```
 Get-HaloClient [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>] [-Order <String>] [-OrderDesc]
- [-Search <String>] [-TopLevelID <Int32>] [-IncludeActive] [-IncludeInactive] [-Count <Int32>]
+ [-Search <String>] [-TopLevelID <Int32>] [-IncludeActive] [-IncludeInactive] [-Count <Int32>] [-FullObjects]
  [<CommonParameters>]
 ```
 
@@ -61,6 +61,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FullObjects
+Parameter to return the complete objects.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

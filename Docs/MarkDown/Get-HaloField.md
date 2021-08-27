@@ -5,65 +5,74 @@ online version:
 schema: 2.0.0
 ---
 
-# New-HaloAppointment
+# Get-HaloField
 
 ## SYNOPSIS
-Creates an appointment via the Halo API.
+Gets field information from the Halo API.
 
 ## SYNTAX
 
+### Multi (Default)
 ```
-New-HaloAppointment [-Appointment] <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-HaloField [-Kind <String>] [-IncludeDetails] [<CommonParameters>]
+```
+
+### Single
+```
+Get-HaloField -FieldID <Int64> [-Kind <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Function to send an appointment creation request to the Halo API
+Retrieves field types from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -Appointment
-{{ Fill Appointment Description }}
+### -FieldID
+Lookup Item ID
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
+Type: Int64
+Parameter Sets: Single
 Aliases:
 
 Required: True
-Position: 1
-Default value: None
+Position: Named
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
+### -IncludeDetails
+Include Details
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
+Parameter Sets: Multi
+Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+### -Kind
+Kind
 
 ```yaml
-Type: SwitchParameter
+Type: String
 Parameter Sets: (All)
-Aliases: wi
+Aliases:
 
 Required: False
 Position: Named
@@ -79,7 +88,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Outputs an object containing the response from the web request.
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

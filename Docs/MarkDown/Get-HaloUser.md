@@ -1,6 +1,6 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: HaloAPI
+Module Name: haloapi
 online version:
 schema: 2.0.0
 ---
@@ -17,7 +17,7 @@ Gets users from the Halo API.
 Get-HaloUser [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>] [-Order <String>] [-OrderDesc]
  [-Search <String>] [-SearchPhoneNumbers] [-TopLevelID <Int32>] [-ClientID <Int32>] [-SiteID <Int32>]
  [-OrganisationID <Int32>] [-DepartmentID <Int32>] [-AssetID <Int32>] [-IncludeActive] [-IncludeInactive]
- [-ApproversOnly] [-ExcludeAgents] [-Count <Int32>] [<CommonParameters>]
+ [-ApproversOnly] [-ExcludeAgents] [-Count <Int32>] [-FullObjects] [<CommonParameters>]
 ```
 
 ### Single
@@ -113,6 +113,21 @@ Accept wildcard characters: False
 
 ### -ExcludeAgents
 Exclude users linked to agent accounts from the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FullObjects
+Parameter to return the full objects.
 
 ```yaml
 Type: SwitchParameter
