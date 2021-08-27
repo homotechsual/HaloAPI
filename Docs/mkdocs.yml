@@ -6,7 +6,7 @@ docs_dir: MarkDown/
 repo_name: 'homotechsual/haloapi'
 repo_url: 'https://github.com/homotechsual/haloapi'
 nav:
-    - Home: ..\README.md
+    - Home: index.md
     - Overview: HaloAPI.md
     - Connect: Connect-HaloAPI.md
     - Get:
