@@ -18,7 +18,7 @@ BeforeAll {
 # Test that we can login to Halo, and that it does indeed fail as expected if the login information is incorrect.
 Describe 'Connect' {
     BeforeAll {
-        $TestingURL = [System.UriBuilder]$env:HaloTestingURL
+        $TestingURL = ([System.UriBuilder]$env:HaloTestingURL).ToString()
         $HaloCorrectConnectionParameters = @{
             URL = $TestingURL
             ClientID = $env:HaloTestingClientID
