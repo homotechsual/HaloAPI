@@ -2,7 +2,7 @@ site_url: ''
 site_name: Halo API
 site_description: 'HaloAPI provides a PowerShell wrapper around the Halo API. The module can retrieve and send information to the Halo API.'
 site_author: 'Mikey O''Toole'
-docs_dir: markdown/
+docs_dir: MarkDown/
 repo_name: 'homotechsual/haloapi'
 repo_url: 'https://github.com/homotechsual/haloapi'
 nav:
@@ -13,7 +13,7 @@ nav:
       - Agent: Get-HaloAgent.md
       - Appointment: Get-HaloAppointment.md
       - Asset: Get-HaloAsset.md
-      - Attachment: Get-haloAttachment.md
+      - Attachment: Get-HaloAttachment.md
       - Client: Get-HaloClient.md
       - Contract: Get-HaloContract.md
       - Custom Button: Get-HaloCustomButton.md
@@ -44,7 +44,7 @@ nav:
       - Agent: New-HaloAgent.md
       - Appointment: New-HaloAppointment.md
       - Asset: New-HaloAsset.md
-      - Attachment: New-haloAttachment.md
+      - Attachment: New-HaloAttachment.md
       - Client: New-HaloClient.md
       - Contract: New-HaloContract.md
       - Invoice: New-HaloInvoice.md
@@ -70,7 +70,7 @@ nav:
       - Agent: Set-HaloAgent.md
       - Appointment: Set-HaloAppointment.md
       - Asset: Set-HaloAsset.md
-      - Attachment: Set-haloAttachment.md
+      - Attachment: Set-HaloAttachment.md
       - Client: Set-HaloClient.md
       - Contract: Set-HaloContract.md
       - Invoice: Set-HaloInvoice.md
