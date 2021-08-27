@@ -1,7 +1,8 @@
+site_url: ''
 site_name: Halo API
 site_description: 'HaloAPI provides a PowerShell wrapper around the Halo API. The module can retrieve and send information to the Halo API.'
 site_author: 'Mikey O''Toole'
-docs_dir: docs/markdown
+docs_dir: markdown/
 repo_name: 'homotechsual/haloapi'
 repo_url: 'https://github.com/homotechsual/haloapi'
 nav:
