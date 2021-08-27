@@ -8,22 +8,26 @@ schema: 2.0.0
 # Get-HaloContract
 
 ## SYNOPSIS
+
 Gets contracts from the Halo API.
 
 ## SYNTAX
 
 ### Multi (Default)
-```
+
+```powershell
 Get-HaloContract [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>] [-Order <String>] [-OrderDesc]
  [-Search <String>] [-Count <Int32>] [-ClientID <Int32>] [<CommonParameters>]
 ```
 
 ### Single
-```
+
+```powershell
 Get-HaloContract -ContractID <Int64> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Retrieves contracts from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
@@ -35,6 +39,7 @@ Thought of a useful example? Tell us or submit a PR.
 ## PARAMETERS
 
 ### -ClientID
+
 Filter by the specified client ID.
 
 ```yaml
@@ -50,6 +55,7 @@ Accept wildcard characters: False
 ```
 
 ### -ContractID
+
 Contract ID
 
 ```yaml
@@ -65,6 +71,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
+
 The number of contracts to return if not using pagination.
 
 ```yaml
@@ -80,6 +87,7 @@ Accept wildcard characters: False
 ```
 
 ### -Order
+
 Which field to order results based on.
 
 ```yaml
@@ -95,6 +103,7 @@ Accept wildcard characters: False
 ```
 
 ### -OrderDesc
+
 Order results in descending order (respects the field choice in '-Order')
 
 ```yaml
@@ -110,6 +119,7 @@ Accept wildcard characters: False
 ```
 
 ### -PageNo
+
 Which page to return.
 
 ```yaml
@@ -125,6 +135,7 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
+
 Number of results per page.
 
 ```yaml
@@ -140,6 +151,7 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
+
 Paginate results
 
 ```yaml
@@ -155,6 +167,7 @@ Accept wildcard characters: False
 ```
 
 ### -Search
+
 Return contracts matching the search term in the results.
 
 ```yaml
@@ -170,13 +183,15 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### A powershell object containing the response.
+### A powershell object containing the response
+
 ## NOTES
 
 ## RELATED LINKS

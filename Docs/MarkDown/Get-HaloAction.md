@@ -14,14 +14,16 @@ Gets actions from the Halo API.
 ## SYNTAX
 
 ### Multi (Default)
-```
+
+```powershell
 Get-HaloAction [-Count <Int64>] -TicketID <Int32> [-ExcludeSys] [-ConversationOnly] [-AgentOnly]
  [-SupplierOnly] [-ExcludePrivate] [-IncludeHTMLNote] [-IncludeHTMLEmail] [-IncludeAttachments]
  [-ImportantOnly] [-SLAOnly] [-IsChildNotes] [<CommonParameters>]
 ```
 
 ### Single
-```
+
+```powershell
 Get-HaloAction -ActionID <Int64> -TicketID <Int32> [-AgentOnly] [-IncludeEmail] [-IncludeDetails] [-MostRecent]
  [-EmailOnly] [-NonSystem] [<CommonParameters>]
 ```
@@ -37,6 +39,7 @@ Thought of a useful example? Tell us or submit a PR.
 ## PARAMETERS
 
 ### -ActionID
+
 Action ID.
 
 ```yaml
@@ -52,6 +55,7 @@ Accept wildcard characters: False
 ```
 
 ### -AgentOnly
+
 Only get actions performed by agents.
 
 ```yaml
@@ -67,6 +71,7 @@ Accept wildcard characters: False
 ```
 
 ### -ConversationOnly
+
 Only get actions that are part of agent to end user conversations.
 
 ```yaml
@@ -82,6 +87,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
+
 The number of actions to return.
 
 ```yaml
@@ -97,6 +103,7 @@ Accept wildcard characters: False
 ```
 
 ### -EmailOnly
+
 Only get email actions.
 
 ```yaml
@@ -112,6 +119,7 @@ Accept wildcard characters: False
 ```
 
 ### -ExcludePrivate
+
 Exclude private actions.
 
 ```yaml
@@ -127,6 +135,7 @@ Accept wildcard characters: False
 ```
 
 ### -ExcludeSys
+
 Exclude system-performed actions.
 
 ```yaml
@@ -142,6 +151,7 @@ Accept wildcard characters: False
 ```
 
 ### -ImportantOnly
+
 Only get important actions.
 
 ```yaml
@@ -157,6 +167,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeAttachments
+
 Include attachment details in the response.
 
 ```yaml
@@ -172,6 +183,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
+
 Include extra detail objects.
 
 ```yaml
@@ -187,6 +199,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeEmail
+
 Include the HTML and plain text email body in the response.
 
 ```yaml
@@ -202,6 +215,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeHTMLEmail
+
 Include the action email HTML in the response.
 
 ```yaml
@@ -217,6 +231,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeHTMLNote
+
 Include the action note HTML in the response.
 
 ```yaml
@@ -232,6 +247,7 @@ Accept wildcard characters: False
 ```
 
 ### -IsChildNotes
+
 Only get actions from child tickets.
 
 ```yaml
@@ -247,6 +263,7 @@ Accept wildcard characters: False
 ```
 
 ### -MostRecent
+
 Ignore the '-ActionID' and get the most recent action for the '-TicketID'
 
 ```yaml
@@ -262,6 +279,7 @@ Accept wildcard characters: False
 ```
 
 ### -NonSystem
+
 Exclude system-performed actions.
 
 ```yaml
@@ -277,6 +295,7 @@ Accept wildcard characters: False
 ```
 
 ### -SLAOnly
+
 Only get SLA hold and release actions.
 
 ```yaml
@@ -292,6 +311,7 @@ Accept wildcard characters: False
 ```
 
 ### -SupplierOnly
+
 Only get actions that involve suppliers.
 
 ```yaml
@@ -307,6 +327,7 @@ Accept wildcard characters: False
 ```
 
 ### -TicketID
+
 Get actions for a single ticket with the specified ID.
 ?ACT Query with Halo why this is required.
 
@@ -323,13 +344,15 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### A powershell object containing the response.
+### A powershell object containing the response
+
 ## NOTES
 
 ## RELATED LINKS

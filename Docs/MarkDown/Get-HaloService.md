@@ -8,23 +8,27 @@ schema: 2.0.0
 # Get-HaloService
 
 ## SYNOPSIS
+
 Gets services from the Halo API.
 
 ## SYNTAX
 
 ### Multi (Default)
-```
+
+```powershell
 Get-HaloService [-Count <Int64>] [-Search <String>] [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>]
  [-Order <String>] [-OrderDesc] [-UserID <Int32>] [-ServiceStatusIDs <Int32[]>] [-ServiceCatalogueType <Int32>]
  [-ServiceCategoryIDs <Int32[]>] [-ITILTicketType <Int32>] [-IncludeStatusInfo] [<CommonParameters>]
 ```
 
 ### Single
-```
+
+```powershell
 Get-HaloService -ServiceID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Retrieves services from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
@@ -36,6 +40,7 @@ Thought of a useful example? Tell us or submit a PR.
 ## PARAMETERS
 
 ### -Count
+
 Number of records to return
 
 ```yaml
@@ -51,6 +56,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
+
 Include extra objects in the result.
 
 ```yaml
@@ -66,6 +72,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeStatusInfo
+
 Include service status information in the result.
 
 ```yaml
@@ -81,6 +88,7 @@ Accept wildcard characters: False
 ```
 
 ### -ITILTicketType
+
 Filters by the specified ITIL ticket type ID.
 
 ```yaml
@@ -96,6 +104,7 @@ Accept wildcard characters: False
 ```
 
 ### -Order
+
 Which field to order results based on.
 
 ```yaml
@@ -111,6 +120,7 @@ Accept wildcard characters: False
 ```
 
 ### -OrderDesc
+
 Order results in descending order (respects the field choice in '-Order')
 
 ```yaml
@@ -126,6 +136,7 @@ Accept wildcard characters: False
 ```
 
 ### -PageNo
+
 Which page to return.
 
 ```yaml
@@ -141,6 +152,7 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
+
 Number of results per page.
 
 ```yaml
@@ -156,6 +168,7 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
+
 Paginate results
 
 ```yaml
@@ -171,6 +184,7 @@ Accept wildcard characters: False
 ```
 
 ### -Search
+
 Filters response based on the search string
 
 ```yaml
@@ -186,6 +200,7 @@ Accept wildcard characters: False
 ```
 
 ### -ServiceCatalogueType
+
 Filters by the specified service catalogue.
 
 ```yaml
@@ -201,6 +216,7 @@ Accept wildcard characters: False
 ```
 
 ### -ServiceCategoryIDs
+
 Filters by the specified array of service category IDs.
 
 ```yaml
@@ -216,6 +232,7 @@ Accept wildcard characters: False
 ```
 
 ### -ServiceID
+
 Service ID
 
 ```yaml
@@ -231,6 +248,7 @@ Accept wildcard characters: False
 ```
 
 ### -ServiceStatusIDs
+
 Filters by the specified array of operational status IDs.
 
 ```yaml
@@ -246,6 +264,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserID
+
 Filters by services accessible to the specified user.
 
 ```yaml
@@ -261,13 +280,15 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### A powershell object containing the response.
+### A powershell object containing the response
+
 ## NOTES
 
 ## RELATED LINKS

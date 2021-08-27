@@ -8,22 +8,26 @@ schema: 2.0.0
 # Get-HaloRelease
 
 ## SYNOPSIS
+
 Gets software releases from the Halo API.
 
 ## SYNTAX
 
 ### Multi (Default)
-```
+
+```powershell
 Get-HaloRelease [-Count <Int64>] [-Search <String>] [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>]
  [-Order <String>] [-OrderDesc] [-IncludeNoteCount] [-ProductID <Int32>] [<CommonParameters>]
 ```
 
 ### Single
-```
+
+```powershell
 Get-HaloRelease -ReleaseID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Retrieves software releases from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
@@ -35,6 +39,7 @@ Thought of a useful example? Tell us or submit a PR.
 ## PARAMETERS
 
 ### -Count
+
 Number of records to return
 
 ```yaml
@@ -50,6 +55,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
+
 Include extra objects in the result.
 
 ```yaml
@@ -65,6 +71,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeNoteCount
+
 Include release note count in the result.
 
 ```yaml
@@ -80,6 +87,7 @@ Accept wildcard characters: False
 ```
 
 ### -Order
+
 Which field to order results based on.
 
 ```yaml
@@ -95,6 +103,7 @@ Accept wildcard characters: False
 ```
 
 ### -OrderDesc
+
 Order results in descending order (respects the field choice in '-Order')
 
 ```yaml
@@ -110,6 +119,7 @@ Accept wildcard characters: False
 ```
 
 ### -PageNo
+
 Which page to return.
 
 ```yaml
@@ -125,6 +135,7 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
+
 Number of results per page.
 
 ```yaml
@@ -140,6 +151,7 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
+
 Paginate results
 
 ```yaml
@@ -155,6 +167,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProductID
+
 Filter by specified product ID.
 
 ```yaml
@@ -170,6 +183,7 @@ Accept wildcard characters: False
 ```
 
 ### -ReleaseID
+
 Software Release ID
 
 ```yaml
@@ -185,6 +199,7 @@ Accept wildcard characters: False
 ```
 
 ### -Search
+
 Filters response based on the search string
 
 ```yaml
@@ -200,13 +215,15 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### A powershell object containing the response.
+### A powershell object containing the response
+
 ## NOTES
 
 ## RELATED LINKS

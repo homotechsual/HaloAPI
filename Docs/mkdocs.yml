@@ -6,7 +6,8 @@ docs_dir: MarkDown/
 repo_name: 'homotechsual/haloapi'
 repo_url: 'https://github.com/homotechsual/haloapi'
 nav:
-    - Home: HaloAPI.md
+    - Home: index.md
+    - Overview: HaloAPI.md
     - Connect: Connect-HaloAPI.md
     - Get:
       - Action: Get-HaloAction.md
@@ -89,3 +90,40 @@ nav:
       - User: Set-HaloUser.md
 theme:
   name: 'material'
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep orange
+      accent: green
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep orange
+      accent: green
+      toggle:
+        icon: material/lightbulb
+        name: Switch to light mode
+  logo: img/HaloAPIIcon.png
+  favicon: img/HaloAPIIcon.png
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.top
+    - toc.integrate
+  icon:
+    repo: fontawesome/brands/github
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.highlight: 
+      linenums: true
+  - pymdownx.superfences
+extra:
+  social:
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/homotechsual
+    - icon: fontawesome/brands/github
+      link: https://github.com/homotechsual/haloapi
+copyright: Copyright &copy; 2021 Mikey O'Toole &amp; Luke Whitelock

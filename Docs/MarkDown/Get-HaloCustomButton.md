@@ -8,35 +8,37 @@ schema: 2.0.0
 # Get-HaloCustomButton
 
 ## SYNOPSIS
+
 Gets custom buttons from the Halo API.
 
 ## SYNTAX
 
 ### Multi (Default)
-```
+
+```powershell
 Get-HaloCustomButton [-Type <String>] [-TypeID <Int64>] [-IsButtonSetup] [-IncludeDetails] [<CommonParameters>]
 ```
 
 ### Single
-```
+
+```powershell
 Get-HaloCustomButton -CustomButtonID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Retrieves custom buttons from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
-```
+### No Examples
 
-{{ Add example description here }}
+Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
 ### -CustomButtonID
+
 Custom Button ID.
 
 ```yaml
@@ -52,6 +54,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
+
 Include extra detail objects in the response.
 
 ```yaml
@@ -67,6 +70,7 @@ Accept wildcard characters: False
 ```
 
 ### -IsButtonSetup
+
 Include custom buttons which are setup (defaults to $True).
 
 ```yaml
@@ -82,6 +86,7 @@ Accept wildcard characters: False
 ```
 
 ### -Type
+
 Filter by the specified type.
 
 ```yaml
@@ -97,6 +102,7 @@ Accept wildcard characters: False
 ```
 
 ### -TypeID
+
 Filter by the specified type ID.
 
 ```yaml
@@ -112,13 +118,15 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### A powershell object containing the response.
+### A powershell object containing the response
+
 ## NOTES
 
 ## RELATED LINKS

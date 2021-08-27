@@ -8,21 +8,25 @@ schema: 2.0.0
 # Get-HaloLookup
 
 ## SYNOPSIS
+
 Gets lookup information from the Halo API.
 
 ## SYNTAX
 
 ### Multi (Default)
-```
+
+```powershell
 Get-HaloLookup [-Lookup <String>] [-LookupID <Int64>] [-ShowAll] [-ExcludeZero] [<CommonParameters>]
 ```
 
 ### Single
-```
+
+```powershell
 Get-HaloLookup -ItemID <Int64> [-Lookup <String>] [-LookupID <Int64>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Retrieves lookup types from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
@@ -34,6 +38,7 @@ Thought of a useful example? Tell us or submit a PR.
 ## PARAMETERS
 
 ### -ExcludeZero
+
 Include extra objects in the result.
 
 ```yaml
@@ -49,6 +54,7 @@ Accept wildcard characters: False
 ```
 
 ### -ItemID
+
 Lookup Item ID
 
 ```yaml
@@ -64,6 +70,7 @@ Accept wildcard characters: False
 ```
 
 ### -Lookup
+
 Lookup Type
 
 ```yaml
@@ -79,6 +86,7 @@ Accept wildcard characters: False
 ```
 
 ### -LookupID
+
 Lookup ID
 
 ```yaml
@@ -94,6 +102,7 @@ Accept wildcard characters: False
 ```
 
 ### -ShowAll
+
 Show all records
 
 ```yaml
@@ -109,13 +118,15 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### A powershell object containing the response.
+### A powershell object containing the response
+
 ## NOTES
 
 ## RELATED LINKS

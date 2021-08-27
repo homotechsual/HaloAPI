@@ -8,29 +8,29 @@ schema: 2.0.0
 # Set-HaloContract
 
 ## SYNOPSIS
+
 Updates a contract via the Halo API.
 
 ## SYNTAX
 
-```
+```powershell
 Set-HaloContract [-Contract] <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Function to send a contract update request to the Halo API
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
-```
+### No Examples
 
-{{ Add example description here }}
+Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
 ### -Contract
+
 Object containing properties and values used to update an existing contract.
 
 ```yaml
@@ -46,6 +46,7 @@ Accept wildcard characters: False
 ```
 
 ### -Confirm
+
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
@@ -61,6 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
+
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
@@ -77,13 +79,15 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### Outputs an object containing the response from the web request.
+### Outputs an object containing the response from the web request
+
 ## NOTES
 
 ## RELATED LINKS
