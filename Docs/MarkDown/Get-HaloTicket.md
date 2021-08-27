@@ -1,6 +1,6 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: HaloAPI
+Module Name: haloapi
 online version:
 schema: 2.0.0
 ---
@@ -28,7 +28,7 @@ Get-HaloTicket [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>] [-Order <String
  [-SearchSummary <String>] [-SearchDetails <String>] [-SearchReportedBy <String>] [-SearchVersion <String>]
  [-SearchRelease1 <String>] [-SearchRelease2 <String>] [-SearchRelease3 <String>] [-SearchReleaseNote <String>]
  [-SearchInventoryNumber <String>] [-SearchOppContactName <String>] [-SearchOppCompanyName <String>]
- [<CommonParameters>]
+ [-FullObjects] [<CommonParameters>]
 ```
 
 ### Single
@@ -268,6 +268,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FullObjects
+Parameter to return the complete objects.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

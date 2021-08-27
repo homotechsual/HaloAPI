@@ -1,6 +1,6 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: HaloAPI
+Module Name: haloapi
 online version:
 schema: 2.0.0
 ---
@@ -15,7 +15,7 @@ Gets actions from the Halo API.
 
 ### Multi (Default)
 ```
-Get-HaloAction [-Count <Int64>] [-TicketID <Int32>] [-ExcludeSys] [-ConversationOnly] [-AgentOnly]
+Get-HaloAction [-Count <Int64>] -TicketID <Int32> [-ExcludeSys] [-ConversationOnly] [-AgentOnly]
  [-SupplierOnly] [-ExcludePrivate] [-IncludeHTMLNote] [-IncludeHTMLEmail] [-IncludeAttachments]
  [-ImportantOnly] [-SLAOnly] [-IsChildNotes] [<CommonParameters>]
 ```
@@ -312,19 +312,7 @@ Get actions for a single ticket with the specified ID.
 
 ```yaml
 Type: Int32
-Parameter Sets: Multi
-Aliases: ticket_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-```yaml
-Type: Int32
-Parameter Sets: Single
+Parameter Sets: (All)
 Aliases: ticket_id
 
 Required: True

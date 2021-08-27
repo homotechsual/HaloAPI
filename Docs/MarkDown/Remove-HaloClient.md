@@ -5,39 +5,42 @@ online version:
 schema: 2.0.0
 ---
 
-# New-HaloAppointment
+# Remove-HaloClient
 
 ## SYNOPSIS
-Creates an appointment via the Halo API.
+Removes a client from the Halo API.
 
 ## SYNTAX
 
 ```
-New-HaloAppointment [-Appointment] <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-HaloClient [-ClientID] <Int64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Function to send an appointment creation request to the Halo API
+Deletes a specific client from Halo.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -Appointment
-{{ Fill Appointment Description }}
+### -ClientID
+The client ID
 
 ```yaml
-Type: Object
+Type: Int64
 Parameter Sets: (All)
 Aliases:
 
 Required: True
 Position: 1
-Default value: None
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -58,7 +61,8 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
@@ -79,7 +83,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Outputs an object containing the response from the web request.
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

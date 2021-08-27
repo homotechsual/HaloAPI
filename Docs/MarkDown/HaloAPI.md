@@ -1,14 +1,14 @@
 ---
 Module Name: HaloAPI
 Module Guid: 8bc83215-4735-4029-9f40-e05fe3e8f73b
-Download Help Link: {{ Update Download Link }}
+Download Help Link: https://haloapi.
 Help Version: 1.0.1
 Locale: en_GB
 ---
 
 # HaloAPI Module
 ## Description
-{{ Fill in the Description }}
+HaloAPI provides a PowerShell wrapper around the Halo API, tested extensively against HaloPSA instances only (please test against HaloISM or HaloServiceDesk instances and let us know how it works). The module can retrieve and send information to the Halo API.
 
 ## HaloAPI Cmdlets
 ### [Connect-HaloAPI](Connect-HaloAPI.md)
@@ -35,6 +35,12 @@ Gets clients from the Halo API.
 ### [Get-HaloContract](Get-HaloContract.md)
 Gets contracts from the Halo API.
 
+### [Get-HaloCustomButton](Get-HaloCustomButton.md)
+Gets custom buttons from the Halo API.
+
+### [Get-HaloField](Get-HaloField.md)
+Gets field information from the Halo API.
+
 ### [Get-HaloInvoice](Get-HaloInvoice.md)
 Gets invoices from the Halo API.
 
@@ -46,6 +52,9 @@ Gets knowledgebase articles from the Halo API.
 
 ### [Get-HaloLookup](Get-HaloLookup.md)
 Gets lookup information from the Halo API.
+
+### [Get-HaloObjectTemplate](Get-HaloObjectTemplate.md)
+Gets an object template for the Halo API.
 
 ### [Get-HaloOpportunity](Get-HaloOpportunity.md)
 Gets opportunities from the Halo API.
@@ -82,9 +91,6 @@ Gets suppliers from the Halo API.
 
 ### [Get-HaloTeam](Get-HaloTeam.md)
 Gets teams from the Halo API.
-
-### [Get-HaloTemplate](Get-HaloTemplate.md)
-Gets a template object for the Halo API.
 
 ### [Get-HaloTicket](Get-HaloTicket.md)
 Gets tickets from the Halo API.
@@ -161,6 +167,15 @@ Creates a ticket type via the Halo API.
 ### [New-HaloUser](New-HaloUser.md)
 Creates a user via the Halo API.
 
+### [Remove-HaloAction](Remove-HaloAction.md)
+Removes an action from the Halo API.
+
+### [Remove-HaloClient](Remove-HaloClient.md)
+Removes a client from the Halo API.
+
+### [Remove-HaloTicket](Remove-HaloTicket.md)
+Removes a ticket from the Halo API.
+
 ### [Set-HaloAction](Set-HaloAction.md)
 Updates an action via the Halo API.
 
@@ -178,6 +193,9 @@ Updates an attachment via the Halo API.
 
 ### [Set-HaloClient](Set-HaloClient.md)
 Updates a client via the Halo API.
+
+### [Set-HaloContract](Set-HaloContract.md)
+Updates a contract via the Halo API.
 
 ### [Set-HaloInvoice](Set-HaloInvoice.md)
 Updates an invoice via the Halo API.

@@ -1,5 +1,47 @@
 # Changelog
 
+* 2021-08-25
+
+  Version 1.3.0-Beta4
+
+  Uses the `api/authinfo` endpoint to dynamically populate the Authentication URL for all requests now.
+
+* 2021-08-25
+
+  Version 1.3.0-Beta3
+
+  Handle `-AuthURL` with or without a path.
+
+* 2021-08-25
+
+  Version 1.3.0-Beta2
+
+  Switch from using `-AuthPath` to `-AuthURL` to fix the actual issue in GitHub #1
+
+* 2021-08-25
+
+  Version 1.3.0-Beta1
+
+  Add an `-AuthPath` parameter to Connect-HaloAPI for non-standard authentication routes.
+
+* 2021-08-24
+
+  Version 1.2.3
+
+  Fix misnamed function invocation in `Get-HaloClient`.
+
+* 2021-08-24
+
+  Version 1.2.2
+
+  Remove the attempt to load the `HaloLookup` class in HaloAPI.psm1 as it's not used.
+
+* 2021-08-23
+
+  Version 1.2.1
+
+  Adds missing classes which were erroneously excluded from the build script.
+
 * 2021-08-22
 
   Version 1.2.0

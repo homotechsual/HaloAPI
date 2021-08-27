@@ -12,7 +12,8 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.2.0'
+
+    ModuleVersion = '1.3.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -144,6 +145,7 @@
         'Set-HaloTicketType',
         'Set-HaloUser',
         'Remove-HaloAction',
+        'Remove-HaloClient',
         'Remove-HaloTicket'
     )
 
@@ -197,10 +199,10 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Changes to error handling for more descriptive and reliable error messages. Adds validation and dynamic completion classes for Lookups, Custom Button types and Scopes. Add Custom Buttons endpoint.'
+            ReleaseNotes = 'Uses the `api/authinfo` endpoint to dynamically populate the Authentication URL for all requests now.'
 
             # Prerelease string of this module
-            # Prerelease = ''
+            Prerelease = '-Beta4'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenseAcceptance = $false

@@ -25,6 +25,7 @@ task CopyModuleFiles {
     if (-not (Test-Path "$($PSScriptRoot)\Output\HaloAPI")) {
         New-Item -Path "$($PSScriptRoot)\Output\HaloAPI" -ItemType Directory | Out-Null
     }
+    Copy-Item -Path "$($PSScriptRoot)\Classes\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\HaloAPI" -Force
     Copy-Item -Path "$($PSScriptRoot)\Data\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\HaloAPI" -Force
     Copy-Item -Path "$($PSScriptRoot)\Private\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\HaloAPI" -Force
     Copy-Item -Path "$($PSScriptRoot)\Public\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\HaloAPI" -Force
