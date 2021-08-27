@@ -43,7 +43,7 @@ Describe 'Connect' {
     }
     Context 'with correct parameters' {
         It 'connects successfully' {
-            Connect-HaloAPI @HaloCorrectConnectionParameters 6>&1 | Should -Be "Connected to the Halo API with tenant URL $($HaloCorrectConnectionParameters.URL)/"
+            Connect-HaloAPI @HaloCorrectConnectionParameters 6>&1 | Should -Be "Connected to the Halo API with tenant URL $($HaloCorrectConnectionParameters.URL)"
         }
     }
     Context 'with incorrect URL parameter' {
