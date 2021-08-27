@@ -5,68 +5,56 @@ online version:
 schema: 2.0.0
 ---
 
-# New-HaloAppointment
+# Get-HaloObjectTemplate
 
 ## SYNOPSIS
-Creates an appointment via the Halo API.
+Gets an object template for the Halo API.
 
 ## SYNTAX
 
 ```
-New-HaloAppointment [-Appointment] <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-HaloObjectTemplate [-Type] <String> [-NullVariables] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Function to send an appointment creation request to the Halo API
+Provides an example object for use in provisioning items in the Halo API
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -Appointment
-{{ Fill Appointment Description }}
+### -NullVariables
+Return with null values
 
 ```yaml
-Type: Object
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Type
+Type of object to get template for
+
+```yaml
+Type: String
 Parameter Sets: (All)
 Aliases:
 
 Required: True
 Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: wi
-
-Required: False
-Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -79,7 +67,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Outputs an object containing the response from the web request.
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

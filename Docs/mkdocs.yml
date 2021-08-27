@@ -1,0 +1,91 @@
+site_url: ''
+site_name: Halo API
+site_description: 'HaloAPI provides a PowerShell wrapper around the Halo API. The module can retrieve and send information to the Halo API.'
+site_author: 'Mikey O''Toole'
+docs_dir: MarkDown/
+repo_name: 'homotechsual/haloapi'
+repo_url: 'https://github.com/homotechsual/haloapi'
+nav:
+    - Home: HaloAPI.md
+    - Connect: Connect-HaloAPI.md
+    - Get:
+      - Action: Get-HaloAction.md
+      - Agent: Get-HaloAgent.md
+      - Appointment: Get-HaloAppointment.md
+      - Asset: Get-HaloAsset.md
+      - Attachment: Get-HaloAttachment.md
+      - Client: Get-HaloClient.md
+      - Contract: Get-HaloContract.md
+      - Custom Button: Get-HaloCustomButton.md
+      - Field: Get-HaloField.md
+      - Invoice: Get-HaloInvoice.md
+      - Item: Get-HaloItem.md
+      - KB Article: Get-HaloKBArticle.md
+      - Lookup: Get-HaloLookup.md
+      - Object Template: Get-HaloObjectTemplate.md
+      - Opportunity: Get-HaloOpportunity.md
+      - Project: Get-HaloProject.md
+      - Purchase Order: Get-HaloPurchaseOrder.md
+      - Quote: Get-HaloQuote.md
+      - Release: Get-HaloRelease.md
+      - Report: Get-HaloReport.md
+      - Sales Order: Get-HaloSalesOrder.md
+      - Service: Get-HaloService.md
+      - Site: Get-HaloSite.md
+      - Status: Get-HaloStatus.md
+      - Supplier: Get-HaloSupplier.md
+      - Team: Get-HaloTeam.md
+      - Ticket: Get-HaloTicket.md
+      - Ticket Type: Get-HaloTicketType.md
+      - Timesheet: Get-HaloTimesheet.md
+      - User: Get-HaloUser.md
+    - New:
+      - Action: New-HaloAction.md
+      - Agent: New-HaloAgent.md
+      - Appointment: New-HaloAppointment.md
+      - Asset: New-HaloAsset.md
+      - Attachment: New-HaloAttachment.md
+      - Client: New-HaloClient.md
+      - Contract: New-HaloContract.md
+      - Invoice: New-HaloInvoice.md
+      - Item: New-HaloItem.md
+      - KB Article: New-HaloKBArticle.md
+      - Opportunity: New-HaloOpportunity.md
+      - Project: New-HaloProject.md
+      - Quote: New-HaloQuote.md
+      - Report: New-HaloReport.md
+      - Site: New-HaloSite.md
+      - Status: New-HaloStatus.md
+      - Supplier: New-HaloSupplier.md
+      - Team: New-HaloTeam.md
+      - Ticket: New-HaloTicket.md
+      - Ticket Type: New-HaloTicketType.md
+      - User: New-HaloUser.md
+    - Remove:
+      - Action: Remove-HaloAction.md
+      - Client: Remove-HaloClient.md
+      - Ticket: Remove-HaloTicket.md
+    - Set:
+      - Action: Set-HaloAction.md
+      - Agent: Set-HaloAgent.md
+      - Appointment: Set-HaloAppointment.md
+      - Asset: Set-HaloAsset.md
+      - Attachment: Set-HaloAttachment.md
+      - Client: Set-HaloClient.md
+      - Contract: Set-HaloContract.md
+      - Invoice: Set-HaloInvoice.md
+      - Item: Set-HaloItem.md
+      - KB Article: Set-HaloKBArticle.md
+      - Opportunity: Set-HaloOpportunity.md
+      - Project: Set-HaloProject.md
+      - Quote: Set-HaloQuote.md
+      - Report: Set-HaloReport.md
+      - Site: Set-HaloSite.md
+      - Status: Set-HaloStatus.md
+      - Supplier: Set-HaloSupplier.md
+      - Team: Set-HaloTeam.md
+      - Ticket: Set-HaloTicket.md
+      - Ticket Type: Set-HaloTicketType.md
+      - User: Set-HaloUser.md
+theme:
+  name: 'material'

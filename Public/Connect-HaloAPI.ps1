@@ -57,9 +57,42 @@ function Connect-HaloAPI {
     } else {
         $AuthScopes = $Scopes
     }
+    # Build the authentication and base URLs.
+    $AuthInfoURIBuilder = [System.UriBuilder]::New($URL)
+    Write-Verbose "Looking up auth endpoint using the 'api/authinfo' endpoint."
+    $AuthInfoURIBuilder.Path = 'api/authinfo'
+    $AuthInfoResponse = Invoke-WebRequest -Uri $AuthInfoURIBuilder.ToString() -Method 'GET'
+    if ($AuthInfoResponse.content) {
+        $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
+        $AuthURIBuilder = [System.UriBuilder]::New($AuthInfo.auth_url)
+        $AuthURIBuilder.Path = $AuthURIBuilder.Path + '/token'
+        if ($Tenant) {
+            $AuthURIBuilder.Query = "tenant=$($Tenant)"
+        } elseif ($AuthInfo.tenant_id) {
+            $AuthURIBuilder.Query = "tenant=$($AuthInfo.tenant_id)"
+        }
+    } else {
+        $AuthURIBuilder = [System.UriBuilder]::New($URL)
+        Write-Warning 'Could not retrieve authentication URL from Halo falling back to default.'
+        if ($Tenant) {
+            $AuthURIBuilder.Path = 'auth/token'
+            $AuthURIBuilder.Query = "tenant=$($Tenant)"
+        } else {
+            $AuthURIBuilder.Path = 'auth/token'
+        }
+    }
+    $AuthenticationURI = $AuthURIBuilder.ToString()
+    Write-Verbose "Using authentication URL: $($AuthenticationURI)"
+    # Make sure URL is a base URI.
+    $BaseURIBuilder = [System.UriBuilder]::New($URL)
+    if ($BaseURIBuilder.Path) {
+        $BaseURIBuilder.Path = $null
+        $BaseURIBuilder.Query = $null
+        $BaseURI = $BaseURIBuilder.ToString()
+    }
     # Build a script-scoped variable to hold the connection information.
     $ConnectionInformation = @{
-        URL = $URL
+        URL = $BaseURI
         ClientID = $ClientID
         ClientSecret = $ClientSecret
         AuthScopes = $AuthScopes
@@ -74,15 +107,9 @@ function Connect-HaloAPI {
         client_secret = $Script:HAPIConnectionInformation.ClientSecret
         scope = $Script:HAPIConnectionInformation.AuthScopes
     }
-    # Build the authentication URL.
-    if ($Tenant) {
-        $AuthURL = "$($URL)auth/token?tenant=$($Tenant)"
-    } else {
-        $AuthURL = "$($URL)auth/token"
-    }
     # Build the WebRequest parameters.
     $WebRequestParams = @{
-        Uri = $AuthURL
+        Uri = $AuthenticationURI
         Method = 'POST'
         Body = $AuthReqBody
         ContentType = 'application/x-www-form-urlencoded'

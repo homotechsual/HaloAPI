@@ -5,51 +5,39 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-HaloLookup
+# Get-HaloCustomButton
 
 ## SYNOPSIS
-Gets lookup information from the Halo API.
+Gets custom buttons from the Halo API.
 
 ## SYNTAX
 
 ### Multi (Default)
 ```
-Get-HaloLookup [-Lookup <String>] [-LookupID <Int64>] [-ShowAll] [-ExcludeZero] [<CommonParameters>]
+Get-HaloCustomButton [-Type <String>] [-TypeID <Int64>] [-IsButtonSetup] [-IncludeDetails] [<CommonParameters>]
 ```
 
 ### Single
 ```
-Get-HaloLookup -ItemID <Int64> [-Lookup <String>] [-LookupID <Int64>] [<CommonParameters>]
+Get-HaloCustomButton -CustomButtonID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieves lookup types from the Halo API - supports a variety of filtering parameters.
+Retrieves custom buttons from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -ExcludeZero
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: exclude_zero
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ItemID
-Lookup Item ID
+### -CustomButtonID
+Custom Button ID.
 
 ```yaml
 Type: Int64
@@ -63,38 +51,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Lookup
-Lookup Type
+### -IncludeDetails
+Include extra detail objects in the response.
 
 ```yaml
-Type: String
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -LookupID
-Lookup ID
-
-```yaml
-Type: Int64
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ShowAll
-Show all records
+### -IsButtonSetup
+Include custom buttons which are setup (defaults to $True).
 
 ```yaml
 Type: SwitchParameter
@@ -104,6 +77,36 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Type
+Filter by the specified type.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TypeID
+Filter by the specified type ID.
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

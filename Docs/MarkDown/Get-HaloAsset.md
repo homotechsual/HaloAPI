@@ -1,6 +1,6 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: HaloAPI
+Module Name: haloapi
 online version:
 schema: 2.0.0
 ---
@@ -16,7 +16,7 @@ Gets assets from the Halo API.
 ```
 Get-HaloAsset [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>] [-Order <String>] [-OrderDesc]
  [-Search <String>] [-TicketID <Int64>] [-ClientID <Int64>] [-SiteID <Int64>] [-Username <String>]
- [-AssetGroupID <Int64>] [-AssetTypeID <Int64>] [-LinkedToID <Int64>] [-ContractID <Int64>]
+ [-AssetGroupID <Int64>] [-AssetTypeID <Int64>] [-LinkedToID <Int64>] [-ContractID <Int64>] [-FullObjects]
  [<CommonParameters>]
 ```
 
@@ -108,6 +108,21 @@ Aliases: contract_id
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FullObjects
+Parameter to return the complete objects.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -5,30 +5,33 @@ online version:
 schema: 2.0.0
 ---
 
-# New-HaloAppointment
+# Set-HaloContract
 
 ## SYNOPSIS
-Creates an appointment via the Halo API.
+Updates a contract via the Halo API.
 
 ## SYNTAX
 
 ```
-New-HaloAppointment [-Appointment] <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-HaloContract [-Contract] <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Function to send an appointment creation request to the Halo API
+Function to send a contract update request to the Halo API
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -Appointment
-{{ Fill Appointment Description }}
+### -Contract
+Object containing properties and values used to update an existing contract.
 
 ```yaml
 Type: Object
@@ -58,7 +61,8 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter

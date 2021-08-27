@@ -1,6 +1,6 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: HaloAPI
+Module Name: haloapi
 online version:
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Gets attachments from the Halo API.
 
 ### Multi (Default)
 ```
-Get-HaloAttachment [-TicketID <Int64>] [-ActionID <Int64>] [-Type <Int64>] [-UniqueID <Int64>]
+Get-HaloAttachment -TicketID <Int64> [-ActionID <Int64>] [-Type <Int64>] [-UniqueID <Int64>]
  [<CommonParameters>]
 ```
 
@@ -127,7 +127,7 @@ Type: Int64
 Parameter Sets: Multi
 Aliases: ticket_id
 
-Required: False
+Required: True
 Position: Named
 Default value: 0
 Accept pipeline input: False
