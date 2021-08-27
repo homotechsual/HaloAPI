@@ -77,6 +77,7 @@
         'Get-HaloAppointment',
         'Get-HaloAsset',
         'Get-HaloAttachment',
+        'Get-HaloBillingTemplate',
         'Get-HaloClient',
         'Get-HaloContract',
         'Get-HaloCustomButton'
@@ -107,6 +108,7 @@
         'New-HaloAppointment',
         'New-HaloAsset',
         'New-HaloAttachment',
+        'New-HaloBillingTemplate',
         'New-HaloClient',
         'New-HaloContract',
         'New-HaloInvoice',
@@ -128,6 +130,7 @@
         'Set-HaloAppointment',
         'Set-HaloAsset',
         'Set-HaloAttachment',
+        'Set-HaloBillingTemplate',
         'Set-HaloClient',
         'Set-HaloContract',
         'Set-HaloInvoice',

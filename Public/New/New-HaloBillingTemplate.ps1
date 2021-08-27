@@ -1,31 +1,24 @@
-function Remove-HaloClient {
+Function New-HaloBillingTemplate {
     <#
         .SYNOPSIS
-           Removes a client from the Halo API.
+            Creates a billing template via the Halo API.
         .DESCRIPTION
-            Deletes a specific client from Halo.
+            Function to send a billing template creation request to the Halo API.
         .OUTPUTS
-            A powershell object containing the response.
+            Outputs an object containing the response from the web request.
     #>
-    [cmdletbinding( SupportsShouldProcess = $True, ConfirmImpact = 'High' )]
+    [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object])]
-    Param(
-        # The client ID
+    Param (
+        # Object containing properties and values used to create a new billing template.
         [Parameter( Mandatory = $True )]
-        [int64]$ClientID
+        [Object]$Template
     )
     Invoke-HaloPreFlightChecks
     $CommandName = $MyInvocation.InvocationName
     try {
-        $ObjectToDelete = Get-HaloClient -ClientID $ClientID
-        if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Client '$($ObjectToDelete.name)')'", 'Delete')) {
-                $Resource = "api/client/$($ClientID)"
-                $ClientResults = New-HaloDELETERequest -Resource $Resource
-                Return $ClientResults
-            }
-        } else {
-            Throw 'Client was not found in Halo to delete.'
+        if ($PSCmdlet.ShouldProcess("Billing Template '$($Template.name)", 'Create')) {
+            New-HaloPOSTRequest -Object $Template -Endpoint 'billingtemplate'
         }
     } catch {
         $Command = $CommandName -Replace '-', ''
