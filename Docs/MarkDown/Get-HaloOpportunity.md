@@ -8,12 +8,14 @@ schema: 2.0.0
 # Get-HaloOpportunity
 
 ## SYNOPSIS
+
 Gets opportunities from the Halo API.
 
 ## SYNTAX
 
 ### Multi (Default)
-```
+
+```powershell
 Get-HaloOpportunity [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>] [-Order <String>] [-OrderDesc]
  [-TicketIDOnly] [-ViewID <Int32>] [-ColumnsID <Int32>] [-IncludeColumns] [-IncludeSLAActionDate]
  [-IncludeSLATimer] [-IncludeTimeTaken] [-IncludeSupplier] [-IncludeRelease1] [-IncludeRelease2]
@@ -32,12 +34,14 @@ Get-HaloOpportunity [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>] [-Order <S
 ```
 
 ### Single
-```
+
+```powershell
 Get-HaloOpportunity -OpportunityID <Int64> [-TicketIDOnly] [-IncludeDetails] [-IncludeLastAction]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Retrieves opportunities from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
@@ -49,6 +53,7 @@ Thought of a useful example? Tell us or submit a PR.
 ## PARAMETERS
 
 ### -Agent
+
 Filter by the specified array of agent IDs.
 
 ```yaml
@@ -64,6 +69,7 @@ Accept wildcard characters: False
 ```
 
 ### -AgentID
+
 Filter by the specified agent.
 
 ```yaml
@@ -79,6 +85,7 @@ Accept wildcard characters: False
 ```
 
 ### -AssetID
+
 Filter by the specified asset.
 
 ```yaml
@@ -94,6 +101,7 @@ Accept wildcard characters: False
 ```
 
 ### -Category1
+
 Filter by the specified array of category 1 IDs.
 
 ```yaml
@@ -109,6 +117,7 @@ Accept wildcard characters: False
 ```
 
 ### -Category2
+
 Filter by the specified array of category 2 IDs.
 
 ```yaml
@@ -124,6 +133,7 @@ Accept wildcard characters: False
 ```
 
 ### -Category3
+
 Filter by the specified array of category 3 IDs.
 
 ```yaml
@@ -139,6 +149,7 @@ Accept wildcard characters: False
 ```
 
 ### -Category4
+
 Filter by the specified array of category 4 IDs.
 
 ```yaml
@@ -154,6 +165,7 @@ Accept wildcard characters: False
 ```
 
 ### -ClientID
+
 Filter by the specified client.
 
 ```yaml
@@ -169,6 +181,7 @@ Accept wildcard characters: False
 ```
 
 ### -ClosedOnly
+
 Return only closed tickets in the results.
 
 ```yaml
@@ -184,6 +197,7 @@ Accept wildcard characters: False
 ```
 
 ### -ColumnsID
+
 The ID of the column profile to use to control data returned in the results.
 
 ```yaml
@@ -199,6 +213,7 @@ Accept wildcard characters: False
 ```
 
 ### -ContractID
+
 Filter by the specified contract ID.
 
 ```yaml
@@ -214,6 +229,7 @@ Accept wildcard characters: False
 ```
 
 ### -DateSearch
+
 Which date field to search against.
 
 ```yaml
@@ -229,6 +245,7 @@ Accept wildcard characters: False
 ```
 
 ### -EndDate
+
 End date for use with the '-datesearch' parameter.
 
 ```yaml
@@ -244,6 +261,7 @@ Accept wildcard characters: False
 ```
 
 ### -ExcludeThese
+
 Exclude the specified array of ticket IDs.
 
 ```yaml
@@ -259,6 +277,7 @@ Accept wildcard characters: False
 ```
 
 ### -Flagged
+
 Filter by the specified array of flagged ticket IDs.
 
 ```yaml
@@ -274,6 +293,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeChildIDs
+
 Include child ticket IDs in the results.
 
 ```yaml
@@ -289,6 +309,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeColumns
+
 Include column details in the the results.
 
 ```yaml
@@ -304,6 +325,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
+
 Include extra objects in the result.
 
 ```yaml
@@ -319,6 +341,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeLastAction
+
 Include the last action in the result.
 
 ```yaml
@@ -334,6 +357,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeNextActivityDate
+
 Include next activity date in the results.
 
 ```yaml
@@ -349,6 +373,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeRelease1
+
 Include release 1 details in the results.
 
 ```yaml
@@ -364,6 +389,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeRelease2
+
 Include release 2 details in the results.
 
 ```yaml
@@ -379,6 +405,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeRelease3
+
 Include release 3 details in the results.
 
 ```yaml
@@ -394,6 +421,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeSLAActionDate
+
 Include SLA action date in the results.
 
 ```yaml
@@ -409,6 +437,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeSLATimer
+
 Include SLA timer in the results.
 
 ```yaml
@@ -424,6 +453,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeSupplier
+
 Include supplier details in the results.
 
 ```yaml
@@ -439,6 +469,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeTimeTaken
+
 Include time taken in the results.
 
 ```yaml
@@ -454,6 +485,7 @@ Accept wildcard characters: False
 ```
 
 ### -ITILRequestType
+
 Filter by the specified array of ITIL request type IDs.
 
 ```yaml
@@ -469,6 +501,7 @@ Accept wildcard characters: False
 ```
 
 ### -ITILRequestTypeID
+
 Filter by the specified ITIL request type.
 
 ```yaml
@@ -484,6 +517,7 @@ Accept wildcard characters: False
 ```
 
 ### -ListID
+
 Filter by the specified list.
 
 ```yaml
@@ -499,6 +533,7 @@ Accept wildcard characters: False
 ```
 
 ### -OpenOnly
+
 Return only open tickets in the results.
 
 ```yaml
@@ -514,6 +549,7 @@ Accept wildcard characters: False
 ```
 
 ### -OpportunityID
+
 Opportunity ID
 
 ```yaml
@@ -529,6 +565,7 @@ Accept wildcard characters: False
 ```
 
 ### -Order
+
 Which field to order results based on.
 
 ```yaml
@@ -544,6 +581,7 @@ Accept wildcard characters: False
 ```
 
 ### -OrderDesc
+
 Order results in descending order (respects the field choice in '-Order')
 
 ```yaml
@@ -559,6 +597,7 @@ Accept wildcard characters: False
 ```
 
 ### -PageNo
+
 Which page to return.
 
 ```yaml
@@ -574,6 +613,7 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
+
 Number of results per page.
 
 ```yaml
@@ -589,6 +629,7 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
+
 Paginate results
 
 ```yaml
@@ -604,6 +645,7 @@ Accept wildcard characters: False
 ```
 
 ### -Priority
+
 Filter by the specified array of priority IDs.
 
 ```yaml
@@ -619,6 +661,7 @@ Accept wildcard characters: False
 ```
 
 ### -Products
+
 Filter by the specified array of product IDs.
 
 ```yaml
@@ -634,6 +677,7 @@ Accept wildcard characters: False
 ```
 
 ### -ReleaseID
+
 Filter by the specified release.
 
 ```yaml
@@ -649,6 +693,7 @@ Accept wildcard characters: False
 ```
 
 ### -RequestType
+
 Filter by the specified array of request type IDs.
 
 ```yaml
@@ -664,6 +709,7 @@ Accept wildcard characters: False
 ```
 
 ### -RequestTypeID
+
 Filter by the specified request type.
 
 ```yaml
@@ -679,6 +725,7 @@ Accept wildcard characters: False
 ```
 
 ### -Search
+
 Return tickets matching the search term in the results.
 
 ```yaml
@@ -694,6 +741,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchActions
+
 Include actions when searching.
 
 ```yaml
@@ -709,6 +757,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchDetails
+
 Return tickets where the details matches the search term.
 
 ```yaml
@@ -724,6 +773,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchInventoryNumber
+
 Return tickets where the asset tag matches the search term.
 
 ```yaml
@@ -739,6 +789,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchOppCompanyName
+
 Return tickets where the opportunity company name matches the search term.
 
 ```yaml
@@ -754,6 +805,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchOppContactName
+
 Return tickets where the opportunity contact name matches the search term.
 
 ```yaml
@@ -769,6 +821,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchRelease1
+
 Return tickets where release 1 matches the search term.
 
 ```yaml
@@ -784,6 +837,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchRelease2
+
 Return tickets where release 2 matches the search term.
 
 ```yaml
@@ -799,6 +853,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchRelease3
+
 Return tickets where release 3 matches the search term.
 
 ```yaml
@@ -814,6 +869,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchReleaseNote
+
 Return tickets where the release note matches the search term.
 
 ```yaml
@@ -829,6 +885,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchReportedBy
+
 Return tickets where the reported by matches the search term.
 
 ```yaml
@@ -844,6 +901,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchSummary
+
 Return tickets where the summary matches the search term.
 
 ```yaml
@@ -859,6 +917,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchUserName
+
 Return tickets where the user name matches the search term.
 
 ```yaml
@@ -874,6 +933,7 @@ Accept wildcard characters: False
 ```
 
 ### -SearchVersion
+
 Return tickets where the software version matches the search term.
 
 ```yaml
@@ -889,6 +949,7 @@ Accept wildcard characters: False
 ```
 
 ### -Site
+
 Filter by the specified site.
 
 ```yaml
@@ -904,6 +965,7 @@ Accept wildcard characters: False
 ```
 
 ### -SLA
+
 Filter by the specified array of SLA IDs.
 
 ```yaml
@@ -919,6 +981,7 @@ Accept wildcard characters: False
 ```
 
 ### -StartDate
+
 Start date for use with the '-datesearch' parameter.
 
 ```yaml
@@ -934,6 +997,7 @@ Accept wildcard characters: False
 ```
 
 ### -Status
+
 Filter by the specified array of status IDs.
 
 ```yaml
@@ -949,6 +1013,7 @@ Accept wildcard characters: False
 ```
 
 ### -StatusID
+
 Filter by the specified status.
 
 ```yaml
@@ -964,6 +1029,7 @@ Accept wildcard characters: False
 ```
 
 ### -SupplierID
+
 Filter by the specified supplier.
 
 ```yaml
@@ -979,6 +1045,7 @@ Accept wildcard characters: False
 ```
 
 ### -Team
+
 Filter by the specified array of team IDs.
 
 ```yaml
@@ -994,6 +1061,7 @@ Accept wildcard characters: False
 ```
 
 ### -TicketIDOnly
+
 Return only the 'ID' fields (Ticket ID, SLA ID, Status ID, Client ID, Client Name and Last Incoming Email date)
 
 ```yaml
@@ -1009,6 +1077,7 @@ Accept wildcard characters: False
 ```
 
 ### -UnlinkedOnly
+
 Return only unlinked tickets in the results.
 
 ```yaml
@@ -1024,6 +1093,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserID
+
 Filter by the specified user ID.
 
 ```yaml
@@ -1039,6 +1109,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
+
 Filter by the specified user name.
 
 ```yaml
@@ -1054,6 +1125,7 @@ Accept wildcard characters: False
 ```
 
 ### -ViewID
+
 The ID of the filter profile to use to filter results.
 
 ```yaml
@@ -1069,6 +1141,7 @@ Accept wildcard characters: False
 ```
 
 ### -WithAttachments
+
 Return only tickets with attachments in the results.
 
 ```yaml
@@ -1084,13 +1157,15 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### A powershell object containing the response.
+### A powershell object containing the response
+
 ## NOTES
 
 ## RELATED LINKS

@@ -8,15 +8,17 @@ schema: 2.0.0
 # New-HaloProject
 
 ## SYNOPSIS
+
 Creates a project via the Halo API.
 
 ## SYNTAX
 
-```
+```powershell
 New-HaloProject [-Project] <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 Function to send a project creation request to the Halo API
 
 ## EXAMPLES
@@ -28,7 +30,8 @@ Thought of a useful example? Tell us or submit a PR.
 ## PARAMETERS
 
 ### -Project
-{{ Fill Project Description }}
+
+Object containing properties and values used to create a new project.
 
 ```yaml
 Type: Object
@@ -43,6 +46,7 @@ Accept wildcard characters: False
 ```
 
 ### -Confirm
+
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
@@ -58,6 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
+
 Shows what would happen if the cmdlet runs. The cmdlet is not run.
 
 ```yaml
@@ -73,13 +78,15 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### Outputs an object containing the response from the web request.
+### Outputs an object containing the response from the web request
+
 ## NOTES
 
 ## RELATED LINKS
