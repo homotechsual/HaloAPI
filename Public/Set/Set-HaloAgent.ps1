@@ -11,10 +11,10 @@ Function Set-HaloAgent {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing agent.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Agent
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloAgent -AgentId $Agent.id -IncludeDisabled
