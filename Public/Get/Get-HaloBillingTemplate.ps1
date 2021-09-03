@@ -50,13 +50,13 @@ function Get-HaloBillingTemplate {
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
-                AutoPaginateOff = $Paginate
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
                 ResourceType = 'billingtemplate'
             }
         }
-        $InvoiceResults = New-HaloGETRequest @RequestParams
-        Return $InvoiceResults
+        $TemplateResults = New-HaloGETRequest @RequestParams
+        Return $TemplateResults
     } catch {
         $Command = $CommandName -Replace '-', ''
         $ErrorRecord = @{
