@@ -14,7 +14,7 @@ Function New-HaloAsset {
         [Parameter( Mandatory = $True )]
         [Object]$Asset
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Asset $($Asset.inventory_number)", 'Create')) {

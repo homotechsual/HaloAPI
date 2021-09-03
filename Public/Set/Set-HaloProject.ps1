@@ -11,10 +11,10 @@ Function Set-HaloProject {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing project.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Project
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloProject -ProjectID $Project.id

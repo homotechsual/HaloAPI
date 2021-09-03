@@ -14,7 +14,7 @@ Function New-HaloInvoice {
         [Parameter( Mandatory = $True )]
         [Object]$Invoice
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Invoice '$($Invoice.invoicenumber)'", 'Create')) {

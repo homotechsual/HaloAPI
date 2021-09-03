@@ -14,7 +14,7 @@ Function New-HaloAgent {
         [Parameter( Mandatory = $True )]
         [Object]$Agent
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Agent '$($Agent.name)'", 'Create')) {

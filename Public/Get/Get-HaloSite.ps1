@@ -54,7 +54,7 @@ function Get-HaloSite {
         [Parameter( ParameterSetName = 'Multi' )]
         [int32]$Count
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'siteid=' parameter by removing it from the set parameters.

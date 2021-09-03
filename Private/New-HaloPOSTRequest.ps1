@@ -21,7 +21,7 @@ function New-HaloPOSTRequest {
         [Parameter( Mandatory = $True )]
         [string]$Endpoint
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     try {
         if ($Update) {
             if ($null -eq $Object.id) {

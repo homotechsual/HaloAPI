@@ -14,7 +14,7 @@ Function New-HaloQuote {
         [Parameter( Mandatory = $True )]
         [Object]$Quote
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Quote '$($Quote.title)'", 'Create')) {

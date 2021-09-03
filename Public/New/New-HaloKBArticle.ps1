@@ -14,7 +14,7 @@ Function New-HaloKBArticle {
         [Parameter( Mandatory = $True )]
         [Object]$KBArticle
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Article '$($Article.name)'", 'Create')) {

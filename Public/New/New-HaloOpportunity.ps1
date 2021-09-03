@@ -14,7 +14,7 @@ Function New-HaloOpportunity {
         [Parameter( Mandatory = $True )]
         [Object]$Opportunity
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Opportunity '$($Opportunity.summary)'", 'Create')) {

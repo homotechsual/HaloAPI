@@ -1,3 +1,4 @@
+using module ..\..\Classes\Transformations\HaloPipelineIDArgumentTransformation.psm1
 #Requires -Version 7
 function Get-HaloTicket {
     <#
@@ -263,7 +264,7 @@ function Get-HaloTicket {
         [Parameter( ParameterSetName = 'Single' )]
         [Switch]$IncludeLastAction
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'ticketid=' parameter by removing it from the set parameters.
@@ -299,7 +300,6 @@ function Get-HaloTicket {
             }
         }
         $TicketResults = New-HaloGETRequest @RequestParams
-
         # Fetch the complete details for each ticket
         if ($FullObjects) {
             $AllTicketResults = $TicketResults | ForEach-Object {             
@@ -307,7 +307,6 @@ function Get-HaloTicket {
             }
             $TicketResults = $AllTicketResults
         }
-
         Return $TicketResults
     } catch {
         $Command = $CommandName -Replace '-', ''

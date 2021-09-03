@@ -16,7 +16,7 @@ function New-HaloDELETERequest {
         [Parameter( Mandatory = $True )]
         [string]$Resource
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     try {
         $WebRequestParams = @{
             Method = 'DELETE'

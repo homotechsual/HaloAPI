@@ -11,10 +11,10 @@ Function Set-HaloUser {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing user.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$User
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloUser -UserID $User.id

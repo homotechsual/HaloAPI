@@ -14,7 +14,7 @@ Function New-HaloTeam {
         [Parameter( Mandatory = $True )]
         [Object]$Team
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Team '$($Team.name)'", 'Create')) {

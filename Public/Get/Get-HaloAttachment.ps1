@@ -42,7 +42,7 @@ function Get-HaloAttachment {
         [Parameter( ParameterSetName = 'SinglePath', Mandatory = $True )]
         [String]$OutPath
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'attachmentid=' parameter by removing it from the set parameters.

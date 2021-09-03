@@ -11,10 +11,10 @@ Function Set-HaloClient {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing client.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Client
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloClient -ClientID $Client.id

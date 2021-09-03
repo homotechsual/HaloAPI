@@ -14,7 +14,7 @@ Function New-HaloReport {
         [Parameter( Mandatory = $True )]
         [Object]$Report
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Report '$($Report.name)'", 'Create')) {

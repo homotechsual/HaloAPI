@@ -14,7 +14,7 @@ Function New-HaloTicketType {
         [Parameter( Mandatory = $True )]
         [Object]$TicketType
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Ticket Type '$($TicketType.name)'", 'Create')) {

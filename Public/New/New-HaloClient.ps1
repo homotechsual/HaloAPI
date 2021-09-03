@@ -14,7 +14,7 @@ Function New-HaloClient {
         [Parameter( Mandatory = $True )]
         [Object]$Client
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Client '$($Client.name)", 'Create')) {

@@ -11,10 +11,10 @@ Function Set-HaloTicketType {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing ticket type.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$TicketType
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloTicketType -TicketTypeID $TicketType.id

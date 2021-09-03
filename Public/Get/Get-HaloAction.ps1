@@ -1,3 +1,4 @@
+using module ..\..\Classes\Transformations\HaloPipelineIDArgumentTransformation.psm1
 #Requires -Version 7
 function Get-HaloAction {
     <#
@@ -19,10 +20,11 @@ function Get-HaloAction {
         [Parameter( ParameterSetName = 'Multi' )]
         [int64]$Count,
         # Get actions for a single ticket with the specified ID.
-        [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
-        [Parameter( ParameterSetName = 'Multi', Mandatory = $True )]
+        [Parameter( ParameterSetName = 'Single', Mandatory = $True, ValueFromPipeline )]
+        [Parameter( ParameterSetName = 'Multi', Mandatory = $True, ValueFromPipeline )]
+        [HaloPipelineIDArgumentTransformation()]
         [Alias('ticket_id')]
-        [int32]$TicketID,
+        [int]$TicketID,
         # Exclude system-performed actions.
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ExcludeSys,
@@ -73,7 +75,7 @@ function Get-HaloAction {
         [Parameter( ParameterSetName = 'Single' )]
         [switch]$NonSystem
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding an 'actionid=' parameter by removing it from the set parameters.

@@ -1,4 +1,4 @@
-function Invoke-HaloPreFlightChecks {
+function Invoke-HaloPreFlightCheck {
     if ($null -eq $Script:HAPIConnectionInformation) {
         $ErrorRecord = @{
             ExceptionType = 'System.Security.Authentication.AuthenticationException'

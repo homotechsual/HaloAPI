@@ -14,7 +14,7 @@ Function New-HaloProject {
         [Parameter( Mandatory = $True )]
         [Object]$Project
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Project '$($Project.summary)'", 'Create')) {

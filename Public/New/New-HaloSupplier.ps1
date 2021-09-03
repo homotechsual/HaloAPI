@@ -14,7 +14,7 @@ Function New-HaloSupplier {
         [Parameter( Mandatory = $True )]
         [Object]$Supplier
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Supplier '$($Supplier.name)'", 'Create')) {

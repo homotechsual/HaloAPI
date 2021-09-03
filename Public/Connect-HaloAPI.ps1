@@ -65,7 +65,7 @@ function Connect-HaloAPI {
     if ($AuthInfoResponse.content) {
         $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
         $AuthURIBuilder = [System.UriBuilder]::New($AuthInfo.auth_url)
-        $AuthURIBuilder.Path = $AuthURIBuilder.Path + '/token'
+        $AuthURIBuilder.Path = $AuthURIBuilder.Path + 'token'
         if ($Tenant) {
             $AuthURIBuilder.Query = "tenant=$($Tenant)"
         } elseif ($AuthInfo.tenant_id) {

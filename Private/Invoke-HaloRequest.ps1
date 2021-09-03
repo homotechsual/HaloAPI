@@ -18,7 +18,7 @@ function Invoke-HaloRequest {
         [Switch]$RawResult
     )
     $ProgressPreference = 'SilentlyContinue'
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $Now = Get-Date
     if ($Script:HAPIAuthToken.Expires -le $Now) {
         Write-Verbose 'The auth token has expired, renewing.'

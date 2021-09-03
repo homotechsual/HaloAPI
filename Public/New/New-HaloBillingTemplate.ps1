@@ -14,7 +14,7 @@ Function New-HaloBillingTemplate {
         [Parameter( Mandatory = $True )]
         [Object]$Template
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Billing Template '$($Template.name)", 'Create')) {

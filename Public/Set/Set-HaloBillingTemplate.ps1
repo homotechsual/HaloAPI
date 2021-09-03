@@ -11,10 +11,10 @@ Function Set-HaloBillingTemplate {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing billing template.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Template
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloBillingTemplate -TemplateID $Template.id

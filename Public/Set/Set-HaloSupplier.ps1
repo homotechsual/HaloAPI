@@ -11,10 +11,10 @@ Function Set-HaloSupplier {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing supplier.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Supplier
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloSupplier -SupplierID $Supplier.id

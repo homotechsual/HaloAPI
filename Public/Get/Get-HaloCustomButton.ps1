@@ -34,7 +34,7 @@ function Get-HaloCustomButton {
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeDetails
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding an 'custombuttonid=' parameter by removing it from the set parameters.

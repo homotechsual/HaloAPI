@@ -24,7 +24,7 @@ function Get-HaloBillingTemplate {
         [switch]$IncludeDetails
 
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'TemplateID=' parameter by removing it from the set parameters.

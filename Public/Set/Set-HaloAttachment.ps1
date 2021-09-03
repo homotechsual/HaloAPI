@@ -11,10 +11,10 @@ Function Set-HaloAttachment {
     [OutputType([PSCustomObject])]
     Param (
         # Object containing properties and values used to update an existing attachment.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [PSCustomObject]$Attachment
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloAttachment -TicketID $Attachment.ticket_id -AttachmentID $Attachment.id
