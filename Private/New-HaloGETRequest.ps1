@@ -91,7 +91,7 @@ function New-HaloGETRequest {
                 } else {
                     $Response
                 }
-            } while ($PageNum -lt $NumPages)
+            } while ($PageNum -le $NumPages)
         }
         Return $Result
     } catch {
