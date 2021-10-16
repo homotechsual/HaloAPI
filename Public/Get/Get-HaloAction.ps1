@@ -1,4 +1,4 @@
-using module ..\..\Classes\Transformations\HaloPipelineIDArgumentTransformation.psm1
+#using module ..\..\Classes\Transformations\HaloPipelineIDArgumentTransformation.psm1
 #Requires -Version 7
 function Get-HaloAction {
     <#
@@ -22,7 +22,7 @@ function Get-HaloAction {
         # Get actions for a single ticket with the specified ID.
         [Parameter( ParameterSetName = 'Single', Mandatory = $True, ValueFromPipeline )]
         [Parameter( ParameterSetName = 'Multi', Mandatory = $True, ValueFromPipeline )]
-        [HaloPipelineIDArgumentTransformation()]
+        #[HaloPipelineIDArgumentTransformation()]
         [Alias('ticket_id')]
         [int]$TicketID,
         # Exclude system-performed actions.

@@ -1,6 +1,6 @@
 using namespace System.Management.Automation
 class HaloPipelineIDArgumentTransformation : ArgumentTransformationAttribute {
-    [Object] Transform([EngineIntrinsics]$EngineIntrinsics, [Object]$InputData) {
+    [Object] Transform([EngineIntrinsics]$EngineIntrinsics, [Object]$InputData) {   
         # If the input is an integer - pass it through to the command.
         if ($InputData -is [int]) {
             Write-Debug 'Returning integer from inputdata.'

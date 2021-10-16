@@ -39,6 +39,12 @@ function Get-HaloContract {
         # The number of contracts to return if not using pagination.
         [Parameter( ParameterSetName = 'Multi' )]
         [int32]$Count,
+        # Parameter to return the complete objects.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$FullObjects,
+        # Include invoice Details
+        [Parameter( ParameterSetName = 'Single' )]
+        [switch]$includeDetails,
         # Filter by the specified client ID.
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('client_id')]
@@ -50,6 +56,10 @@ function Get-HaloContract {
     # Workaround to prevent the query string processor from adding a 'contractid=' parameter by removing it from the set parameters.
     if ($ContractID) {
         $Parameters.Remove('ContractID') | Out-Null
+    }
+    # Similarly we don't want a `fullobjects=` parameter
+    if ($FullObjects) {
+        $Parameters.Remove('FullObject') | Out-Null
     }
     try {
         if ($ContractID) {
@@ -76,6 +86,13 @@ function Get-HaloContract {
             }
         }
         $ContractResults = New-HaloGETRequest @RequestParams
+        # Fetch the complete details for each ticket
+        if ($FullObjects) {
+            $AllContractResults = $ContractResults | ForEach-Object {             
+                Get-HaloContract -ContractID $_.id
+            }
+            $ContractResults = $AllContractResults
+        }
         Return $ContractResults
     } catch {
         $Command = $CommandName -Replace '-', ''

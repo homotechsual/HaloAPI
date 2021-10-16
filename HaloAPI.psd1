@@ -13,7 +13,7 @@
 
     # Version number of this module.
 
-    ModuleVersion = '1.3.0'
+    ModuleVersion = '1.3.1'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -90,6 +90,7 @@
         'Get-HaloProject',
         'Get-HaloPurchaseOrder',
         'Get-HaloQuote',
+        'Get-HaloRecurringInvoice',
         'Get-HaloRelease',
         'Get-HaloReport',
         'Get-HaloSalesOrder',
@@ -117,6 +118,7 @@
         'New-HaloOpportunity',
         'New-HaloProject',
         'New-HaloQuote',
+        'New-HaloRecurringInvoice',
         'New-HaloReport',
         'New-HaloSite',
         'New-HaloStatus',
@@ -139,6 +141,7 @@
         'Set-HaloOpportunity',
         'Set-HaloProject', 
         'Set-HaloQuote',
+        'Set-HaloRecurringInvoice',
         'Set-HaloReport',
         'Set-HaloSite',
         'Set-HaloStatus',
