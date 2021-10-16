@@ -142,6 +142,7 @@
         'Set-HaloProject', 
         'Set-HaloQuote',
         'Set-HaloRecurringInvoice',
+        'Set-HaloRecurringTemplate',
         'Set-HaloReport',
         'Set-HaloSite',
         'Set-HaloStatus',
