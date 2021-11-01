@@ -122,6 +122,7 @@ function Connect-HaloAPI {
     try {
         $AuthReponse = Invoke-WebRequest @WebRequestParams
         $TokenPayload = ConvertFrom-Json -InputObject $AuthReponse.Content
+        Write-Debug "Raw Token Payload: $($TokenPayload | Out-String)"
         # Build a script-scoped variable to hold the authentication information.
         $AuthToken = @{
             Type = $TokenPayload.token_type

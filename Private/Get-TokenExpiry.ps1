@@ -19,7 +19,7 @@ function Get-TokenExpiry {
     )
     $Now = Get-Date
     $TimeZone = Get-TimeZone
-    $UTCTime = $Now.AddMilliseconds($ExpiresIn)
+    $UTCTime = $Now.AddSeconds($ExpiresIn)
     $UTCOffset = $TimeZone.GetUtcOffset($(Get-Date)).TotalMinutes
     $ExpiryDateTime = $UTCTime.AddMinutes($UTCOffset)
     Write-Verbose "Calcuated token expiry as $($ExpiryDateTime.ToString())"
