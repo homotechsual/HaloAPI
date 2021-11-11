@@ -206,10 +206,10 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Fixes the authentication flow for trial instances. Starts adding pipeline support (Tickets/Actions currently).'
+            ReleaseNotes = 'Added recurring invoice functions and some bug fixes.'
 
             # Prerelease string of this module
-            Prerelease = '-Beta5'
+            #Prerelease = '-Beta5'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenseAcceptance = $false
