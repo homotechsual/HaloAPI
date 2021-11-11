@@ -64,13 +64,13 @@ function Get-HaloAsset {
         [Alias('linkedto_id')]
         [int64]$LinkedToID,
         # Include inactive Assets in the response
-        [Parameter( ParameterSetName = 'Single' )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [Switch]$includeinactive,
         # Include active Assets in the response
-        [Parameter( ParameterSetName = 'Single' )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [Switch]$includeactive,
         # Include child Assets in the response
-        [Parameter( ParameterSetName = 'Single' )]
+        [Parameter( ParameterSetName = 'Multi' )]
         [Switch]$includechildren,
         # Filter by Assets linked to a particular Asset
         [Parameter( ParameterSetName = 'Multi' )]
