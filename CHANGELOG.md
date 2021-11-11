@@ -1,6 +1,8 @@
 # Changelog
 * 2021-11-11
+
   Version 1.4
+  
   Fixed: Bug in Get-HaloAsset where some parameters were in the incorrect set
   Fixed: Bug in the token expiry calculation causing too many reconnects
   Fixed: Bug in authentication to trial instances.
