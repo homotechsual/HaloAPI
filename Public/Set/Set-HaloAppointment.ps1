@@ -11,10 +11,10 @@ Function Set-HaloAppointment {
     [OutputType([PSCustomObject])]
     Param (
         # Object containing properties and values used to update an existing appointment.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [PSCustomObject]$Appointment
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloAppointment -AppointmentID $Appointment.id

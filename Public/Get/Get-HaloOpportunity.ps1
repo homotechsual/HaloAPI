@@ -257,7 +257,7 @@ function Get-HaloOpportunity {
         [Parameter( ParameterSetName = 'Single' )]
         [Switch]$IncludeLastAction
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'OpportunityID=' parameter by removing it from the set parameters.

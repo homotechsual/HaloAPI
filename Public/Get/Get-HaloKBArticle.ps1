@@ -43,7 +43,7 @@ function Get-HaloKBArticle {
         [Parameter( ParameterSetName = 'Single' )]
         [switch]$IncludeDetails
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'KBArticleid=' parameter by removing it from the set parameters.

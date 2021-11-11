@@ -1,10 +1,10 @@
 #Requires -Version 7
-function Get-HaloQuote {
+function Get-HaloRecurringInvoice {
     <#
         .SYNOPSIS
-            Gets quotes from the Halo API.
+            Gets recurring invoices from the Halo API.
         .DESCRIPTION
-            Retrieves quotes from the Halo API - supports a variety of filtering parameters.
+            Retrieves recurring invoices from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
@@ -12,13 +12,13 @@ function Get-HaloQuote {
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
-        # Quote ID
+        # Invoice ID
         [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
-        [int64]$QuoteID,
-        # Number of records to return
+        [int64]$RecurringInvoiceID,
+        # The number of invoices to return if not using pagination.
         [Parameter( ParameterSetName = 'Multi' )]
-        [int64]$Count,
-        # Filters response based on the search string
+        [int32]$Count,
+        # Return contracts matching the search term in the results.
         [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
         # Paginate results
@@ -33,89 +33,115 @@ function Get-HaloQuote {
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('page_no')]
         [int32]$PageNo,
-        # The name of the first field to order by
+        # First field to order the results by.
         [Parameter( ParameterSetName = 'Multi' )]
         [string]$OrderBy,
-        # Whether to order ascending or descending
+        # Order results for the first field in descending order (respects the field choice in '-OrderBy')
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$OrderByDesc,
-        # The name of the second field to order by
+        # Second field to order the results by.
         [Parameter( ParameterSetName = 'Multi' )]
         [string]$OrderBy2,
-        # Whether to order ascending or descending
+        # Order results for the second field in descending order (respects the field choice in '-OrderBy2')
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$OrderByDesc2,
-        # The name of the third field to order by
+        # Third field to order the results by.
         [Parameter( ParameterSetName = 'Multi' )]
         [string]$OrderBy3,
-        # Whether to order ascending or descending
+        # Order results for the third field in descending order (respects the field choice in '-OrderBy3')
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$OrderByDesc3,
-        # The name of the fourth field to order by
+        # Fourth field to order the results by.
         [Parameter( ParameterSetName = 'Multi' )]
         [string]$OrderBy4,
-        # Whether to order ascending or descending
+        # Order results for the fourth field in descending order (respects the field choice in '-OrderBy4')
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$OrderByDesc4,
-        # The name of the fifth field to order by
+        # Fifth field to order the results by.
         [Parameter( ParameterSetName = 'Multi' )]
         [string]$OrderBy5,
-        # Whether to order ascending or descending
+        # Order results for the fifth field in descending order (respects the field choice in '-OrderBy5')
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$OrderByDesc5,
-        # Filters by the specified ticket
+        # Include inactive records
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$includeinactive,
+        # Include invoices
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$includeinvoices,
+        # Include credit notes
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$includecredits,
+        # Include invoice lines
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$includeLines,
+        # Include invoice Details
+        [Parameter( ParameterSetName = 'Single' )]
+        [switch]$includeDetails,
+        # Filter by the specified ticket ID.
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('ticket_id')]
-        [int64]$TicketID,
-        # Filters by the specified client
+        [int32]$TicketID,
+        # Filter by the specified client ID.
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('client_id')]
-        [int64]$ClientID,
-        # Filters by the specified site
+        [int32]$ClientID,
+        # Filter by the specified site ID.
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('site_id')]
-        [int64]$SiteID,
-        # Filters by the specified user
+        [int32]$SiteID,
+        # Filter by the specified user ID.
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('user_id')]
-        [int64]$UserID,
-        # Include extra objects in the result.
-        [Parameter( ParameterSetName = 'Single' )]
-        [switch]$IncludeDetails
+        [int32]$UserID,
+        # Parameter to return the complete objects.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$FullObjects
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'QuoteID=' parameter by removing it from the set parameters.
-    if ($QuoteID) {
-        $Parameters.Remove('QuoteID') | Out-Null
+    # Workaround to prevent the query string processor from adding a 'recurringinvoiceid=' parameter by removing it from the set parameters.
+    if ($RecurringInvoiceID) {
+        $Parameters.Remove('RecurringInvoiceID') | Out-Null
+    }
+    # Similarly we don't want a `fullobjects=` parameter
+    if ($FullObjects) {
+        $Parameters.Remove('FullObject') | Out-Null
     }
     try {
-        if ($QuoteID) {
-            Write-Verbose "Running in single-quote mode because '-QuoteID' was provided."
+        if ($RecurringInvoiceID) {
+            Write-Verbose "Running in single-invoice mode because '-RecurringInvoiceID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/quotation/$($QuoteID)"
+            $Resource = "api/RecurringInvoice/$($RecurringInvoiceID)"
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = 'quotes'
+                ResourceType = 'invoices'
             }
         } else {
-            Write-Verbose 'Running in multi-quote mode.'
+            Write-Verbose 'Running in multi-invoice mode.'
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = 'api/quotation'
+            $Resource = 'api/RecurringInvoice'
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
-                ResourceType = 'quotes'
+                ResourceType = 'invoices'
             }
         }
-        $QuoteResults = New-HaloGETRequest @RequestParams
-        Return $QuoteResults
+        $InvoiceResults = New-HaloGETRequest @RequestParams
+        # Fetch the complete details for each ticket
+        if ($FullObjects) {
+            $AllTicketResults = $InvoiceResults | ForEach-Object {             
+                Get-HaloRecurringInvoice -RecurringInvoiceID $_.id
+            }
+            $InvoiceResults = $AllTicketResults
+        }
+        Return $InvoiceResults
     } catch {
         $Command = $CommandName -Replace '-', ''
         $ErrorRecord = @{

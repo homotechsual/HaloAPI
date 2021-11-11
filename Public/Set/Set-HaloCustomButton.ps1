@@ -11,10 +11,10 @@ Function Set-HaloCustomButton {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing contract.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$CustomButton
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloCustomButton -CustomButtonID $CustomButton.id

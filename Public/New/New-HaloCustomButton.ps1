@@ -14,7 +14,7 @@ Function New-HaloCustomButton {
         [Parameter( Mandatory = $True )]
         [Object]$CustomButton
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Custom Button '$($CustomButton.name)'", 'Create')) {

@@ -24,7 +24,7 @@ function Get-HaloBillingTemplate {
         [switch]$IncludeDetails
 
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'TemplateID=' parameter by removing it from the set parameters.
@@ -50,13 +50,13 @@ function Get-HaloBillingTemplate {
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
-                AutoPaginateOff = $Paginate
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection
                 ResourceType = 'billingtemplate'
             }
         }
-        $InvoiceResults = New-HaloGETRequest @RequestParams
-        Return $InvoiceResults
+        $TemplateResults = New-HaloGETRequest @RequestParams
+        Return $TemplateResults
     } catch {
         $Command = $CommandName -Replace '-', ''
         $ErrorRecord = @{

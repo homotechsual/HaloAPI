@@ -14,7 +14,7 @@ Function New-HaloUser {
         [Parameter( Mandatory = $True )]
         [Object]$User
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("User '$($User.name)'", 'Create')) {

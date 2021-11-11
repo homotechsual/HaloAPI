@@ -11,10 +11,10 @@ Function Set-HaloInvoice {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing invoice.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Invoice
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloInvoice -InvoiceID $Invoice.id

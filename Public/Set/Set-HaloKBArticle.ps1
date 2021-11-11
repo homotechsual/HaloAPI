@@ -11,10 +11,10 @@ Function Set-HaloKBArticle {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing knowedgebase article.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$KBArticle
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloKBArticle -ArticleID $KBArticle.id

@@ -11,10 +11,10 @@ Function Set-HaloAsset {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing asset.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Asset
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloAsset -AssetID $Asset.id

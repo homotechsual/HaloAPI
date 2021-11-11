@@ -42,7 +42,7 @@ function Get-HaloTimesheet {
         [Parameter( ParameterSetName = 'Multi' )]
         [int32]$UTCOffset
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     try {

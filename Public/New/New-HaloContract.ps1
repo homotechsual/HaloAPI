@@ -14,7 +14,7 @@ Function New-HaloContract {
         [Parameter( Mandatory = $True )]
         [Object]$Contract
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Contract '$($Contract.ref)'", 'Create')) {

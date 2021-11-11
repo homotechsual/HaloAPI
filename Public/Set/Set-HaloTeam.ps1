@@ -11,10 +11,10 @@ Function Set-HaloTeam {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing team.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Team
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloTeam -TeamID $Team.id

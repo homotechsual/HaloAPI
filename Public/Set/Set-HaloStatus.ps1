@@ -11,10 +11,10 @@ Function Set-HaloStatus {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing status.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Status
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloStatus -StatusID $Status.id

@@ -14,7 +14,7 @@ Function New-HaloAction {
         [Parameter( Mandatory = $True )]
         [Object]$Action
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Action by '$($Action.who)'", 'Create')) {

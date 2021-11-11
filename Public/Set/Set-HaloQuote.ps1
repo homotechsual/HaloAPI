@@ -11,10 +11,10 @@ Function Set-HaloQuote {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing quotation.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Quote
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloQuote -QuoteID $Quote.id

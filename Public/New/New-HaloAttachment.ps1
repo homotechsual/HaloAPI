@@ -14,7 +14,7 @@ Function New-HaloAttachment {
         [Parameter( Mandatory = $True )]
         [Object]$Attachment
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Attachment '$($Attachment.filename)'", 'Create')) {

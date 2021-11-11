@@ -104,10 +104,10 @@ function New-HaloQuery {
         }
     }
     if ('count' -in $QSCollection.Keys) {
-        Write-Warning "Halo recommend use of pagination with the '-Paginate' parameter instead of '-Count'."
+        Write-Verbose "Halo recommend use of pagination with the '-Paginate' parameter instead of '-Count'."
     }
     if ((('pageinate' -notin $QSCollection.Keys) -and ('count' -notin $QSCollection.Keys)) -and ($IsMulti)) {
-        Write-Warning "Running in 'multi' mode but neither '-Paginate' or '-Count' was specified. All results will be returned."
+        Write-Verbose "Running in 'multi' mode but neither '-Paginate' or '-Count' was specified. All results will be returned."
         $QSCollection.Add('pageinate', 'true')
         if (-not($QSCollection.page_size)) {
             $QSCollection.Add('page_size', $Script:HAPIDefaultPageSize)
@@ -115,7 +115,7 @@ function New-HaloQuery {
         $QSCollection.Add('page_no', 1)
     }
     if (('pageinate' -in $QSCollection.Keys) -and ('page_size' -notin $QSCollection.Keys) -and ($IsMulti)) {
-        Write-Warning "Parameter '-PageSize' was not provided for a paginated request. Using default value of $($Script:HAPIDefaultPageSize)"
+        Write-Verbose "Parameter '-PageSize' was not provided for a paginated request. Using default value of $($Script:HAPIDefaultPageSize)"
     }
     if (('pageinate' -in $QSCollection.Keys) -and ('page_no' -notin $QSCollection.Keys) -and ($IsMulti)) {
         Write-Error "When using pagination you must specify an initial page number with '-PageNo'."

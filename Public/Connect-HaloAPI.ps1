@@ -65,7 +65,12 @@ function Connect-HaloAPI {
     if ($AuthInfoResponse.content) {
         $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
         $AuthURIBuilder = [System.UriBuilder]::New($AuthInfo.auth_url)
-        $AuthURIBuilder.Path = $AuthURIBuilder.Path + '/token'
+        if ($AuthURIBuilder.Path) {
+            $AuthURIBuilder.Path = $AuthURIBuilder.Path + '/token'
+        } else {
+            $AuthURIBuilder.Path = 'token'
+        }
+        
         if ($Tenant) {
             $AuthURIBuilder.Query = "tenant=$($Tenant)"
         } elseif ($AuthInfo.tenant_id) {
@@ -117,6 +122,7 @@ function Connect-HaloAPI {
     try {
         $AuthReponse = Invoke-WebRequest @WebRequestParams
         $TokenPayload = ConvertFrom-Json -InputObject $AuthReponse.Content
+        Write-Debug "Raw Token Payload: $($TokenPayload | Out-String)"
         # Build a script-scoped variable to hold the authentication information.
         $AuthToken = @{
             Type = $TokenPayload.token_type

@@ -14,7 +14,7 @@ Function New-HaloAppointment {
         [Parameter( Mandatory = $True )]
         [Object]$Appointment
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Appointment '$($Appointment.subject)'", 'Create')) {

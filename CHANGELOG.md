@@ -1,5 +1,11 @@
 # Changelog
 
+* 2021-09-03
+
+  Version 1.3.0-Beta5
+
+  Fixes the authentication flow for trial instances. Starts adding pipeline support (Tickets/Actions currently).
+
 * 2021-08-25
 
   Version 1.3.0-Beta4

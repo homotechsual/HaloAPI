@@ -11,13 +11,17 @@ Function Set-HaloAction {
     [OutputType([PSCustomObject])]
     Param (
         # Object containing properties and values used to update an existing action.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline = $True )]
         [PSCustomObject]$Action
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
-        $ObjectToUpdate = Get-HaloAction -ActionID $Action.id -TicketID $Action.ticket_id
+        $HaloActionParams = @{
+            ActionID = $Action.id
+            TicketID = [int]$Action.ticket_id
+        }
+        $ObjectToUpdate = Get-HaloAction @HaloActionParams
         if ($ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess("Action $($ObjectToUpdate.id) by $($ObjectToUpdate.who)", 'Update')) {
                 New-HaloPOSTRequest -Object $Action -Endpoint 'actions' -Update

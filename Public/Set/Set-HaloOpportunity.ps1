@@ -11,10 +11,10 @@ Function Set-HaloOpportunity {
     [OutputType([Object])]
     Param (
         # Object containing properties and values used to update an existing opportunity.
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object]$Opportunity
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToUpdate = Get-HaloOpportunity -OpportunityID $Opportunity.id

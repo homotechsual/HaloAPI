@@ -36,7 +36,7 @@ function Get-HaloLookup {
         [Alias('exclude_zero')]
         [Switch]$ExcludeZero
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'ItemID=' parameter by removing it from the set parameters.

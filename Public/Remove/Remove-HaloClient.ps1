@@ -14,7 +14,7 @@ function Remove-HaloClient {
         [Parameter( Mandatory = $True )]
         [int64]$ClientID
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToDelete = Get-HaloClient -ClientID $ClientID

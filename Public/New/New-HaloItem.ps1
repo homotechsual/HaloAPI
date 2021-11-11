@@ -14,7 +14,7 @@ Function New-HaloItem {
         [Parameter( Mandatory = $True )]
         [Object]$Item
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Item '$($Item.name)'", 'Create')) {

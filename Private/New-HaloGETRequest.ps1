@@ -33,7 +33,7 @@ function New-HaloGETRequest {
         # The key for the results object.
         [String]$ResourceType
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     try {
         if (($null -ne $QSCollection) -and ($QSCollection.pageinate -eq 'true') -and (-not($AutoPaginateOff))) {
             Write-Verbose 'Automatically paginating.'
@@ -91,7 +91,7 @@ function New-HaloGETRequest {
                 } else {
                     $Response
                 }
-            } while ($PageNum -lt $NumPages)
+            } while ($PageNum -le $NumPages)
         }
         Return $Result
     } catch {

@@ -14,7 +14,7 @@ Function New-HaloSite {
         [Parameter( Mandatory = $True )]
         [Object]$Site
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Site '$($Site.name)'", 'Create')) {

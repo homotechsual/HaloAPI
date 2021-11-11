@@ -14,7 +14,7 @@ Function New-HaloStatus {
         [Parameter( Mandatory = $True )]
         [Object]$Status
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Status '$($Status.name)'", 'Create')) {

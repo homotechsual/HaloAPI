@@ -17,7 +17,7 @@ function Remove-HaloAction {
         [Parameter( Mandatory = $True )]
         [int64]$TicketID
     )
-    Invoke-HaloPreFlightChecks
+    Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToDelete = Get-HaloAction -ActionID $ActionID -TicketID $TicketID
