@@ -1,4 +1,21 @@
 # Changelog
+* 2022-01-04
+
+  Version 1.5.0
+  ```
+  New Feature: Added Workday functions
+  ```
+
+* 2021-11-11
+
+  Version 1.4
+  ```
+  Fixed: Bug in Get-HaloAsset where some parameters were in the incorrect set
+  Fixed: Bug in the token expiry calculation causing too many reconnects
+  Fixed: Bug in authentication to trial instances.
+  Fixed: Bug in billing templates.
+  New Feature: Added Recurring invoice functions
+  ```
 
 * 2021-09-03
 
