@@ -13,7 +13,7 @@
 
     # Version number of this module.
 
-    ModuleVersion = '1.4'
+    ModuleVersion = '1.5.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -104,6 +104,7 @@
         'Get-HaloTicketType',
         'Get-HaloTimesheet',
         'Get-HaloUser',
+        'Get-HaloWorkday',
         'New-HaloAction',
         'New-HaloAgent',
         'New-HaloAppointment',
@@ -127,6 +128,7 @@
         'New-HaloTicket',
         'New-HaloTicketType',
         'New-HaloUser',
+        'New-HaloWorkday',
         'Set-HaloAction',
         'Set-HaloAgent',
         'Set-HaloAppointment',
@@ -151,6 +153,7 @@
         'Set-HaloTicket',
         'Set-HaloTicketType',
         'Set-HaloUser',
+        'Set-HaloWorkday',
         'Remove-HaloAction',
         'Remove-HaloClient',
         'Remove-HaloTicket'

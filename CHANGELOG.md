@@ -1,4 +1,11 @@
 # Changelog
+* 2022-01-04
+
+  Version 1.5.0
+  ```
+  New Feature: Added Workday functions
+  ```
+
 * 2021-11-11
 
   Version 1.4
