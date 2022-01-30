@@ -13,7 +13,7 @@
 
     # Version number of this module.
 
-    ModuleVersion = '1.5.0'
+    ModuleVersion = '1.6.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -80,7 +80,8 @@
         'Get-HaloBillingTemplate',
         'Get-HaloClient',
         'Get-HaloContract',
-        'Get-HaloCustomButton'
+        'Get-HaloCustomButton',
+        'Get-HaloFAQList',
         'Get-HaloField',
         'Get-HaloInvoice',
         'Get-HaloItem',
@@ -113,6 +114,7 @@
         'New-HaloBillingTemplate',
         'New-HaloClient',
         'New-HaloContract',
+        'New-HaloFAQList',
         'New-HaloInvoice',
         'New-HaloItem',
         'New-HaloKBArticle',
@@ -137,6 +139,7 @@
         'Set-HaloBillingTemplate',
         'Set-HaloClient',
         'Set-HaloContract',
+        'Set-HaloFAQList',
         'Set-HaloInvoice',
         'Set-HaloItem',
         'Set-HaloKBArticle',

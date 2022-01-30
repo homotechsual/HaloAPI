@@ -21,6 +21,10 @@ function Get-HaloKBArticle {
         # Filters response based on the search string
         [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
+        # Advanced Search
+        [Parameter( ParameterSetName = 'Multi')]
+        [Alias('advanced_search')]
+        [string]$AdvancedSearch,
         # Paginate results
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('pageinate')]
