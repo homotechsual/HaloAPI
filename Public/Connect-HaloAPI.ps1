@@ -66,7 +66,7 @@ function Connect-HaloAPI {
         $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
         $AuthURIBuilder = [System.UriBuilder]::New($AuthInfo.auth_url)
         if ($AuthURIBuilder.Path) {
-            $AuthURIBuilder.Path = $AuthURIBuilder.Path + 'token'
+            $AuthURIBuilder.Path = $AuthURIBuilder.Path.TrimEnd('/') + '/token'
         } else {
             $AuthURIBuilder.Path = 'token'
         }
