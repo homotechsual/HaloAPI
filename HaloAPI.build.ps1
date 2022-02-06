@@ -91,11 +91,14 @@ task PublishModule -if ($Configuration -eq 'Production') {
         # Build a splat containing the required details and make sure to Stop for errors which will trigger the catch
         $params = @{
             Path = ("$($PSScriptRoot)\Output\HaloAPI")
-            NuGetApiKey = $env:PSGalleryAPIKey
+            NuGetApiKey = $env:PSGalleryAPI
             ErrorAction = 'Stop'
         }
+        $ManifestPath = "$($PSScriptRoot)\HaloAPI.psd1"
+        $Manifest = Test-ModuleManifest -Path $ManifestPath
+        [System.Version]$Version = $Manifest.Version
         Publish-Module @params
-        Write-Output -InputObject ("HaloAPI PowerShell Module version $($NewVersion) published to the PowerShell Gallery")
+        Write-Output -InputObject ("HaloAPI PowerShell Module version $($Version) published to the PowerShell Gallery")
     } Catch {
         Throw $_
     }
