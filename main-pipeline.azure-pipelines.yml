@@ -29,4 +29,4 @@ stages:
           - powershell: Invoke-Build -Configuration 'Production' -Task PublishModule
             displayName: 'Publish PowerShell Module'
             env:
-              PSGalleryAPIKey: $(PSGalleryAPIKey)
+              PSGalleryAPIKey: $(PSGalleryAPI)
