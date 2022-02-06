@@ -2,9 +2,10 @@
 name: $(Build.DefinitionName)-$(Date:yyyyMMdd)
 trigger:
   - main
+  - develop
 
 pool:
-  vmImage: 'vs2017-win2016'
+  vmImage: 'windows-latest'
 
 variables:
   - group: MSPsUK KeyVault
@@ -26,11 +27,10 @@ stages:
               TargetType: filePath
               PWSH: true
               FilePath: '$(System.DefaultWorkingDirectory)\Tests\Test-WithPSScriptAnalyzer.ps1'
-              Arguments: '-ScriptDirectory $(System.DefaultWorkingDirectory)'
-  
+              Arguments: '-ScriptDirectory $(System.DefaultWorkingDirectory)' 
   - stage: Test
     jobs:
-      - job: TestandPublish
+      - job: TestandPublishResults
         steps:
           - task: Pester@10
             env:

@@ -4,10 +4,10 @@ trigger:
   - main
 
 pool:
-  vmImage: 'vs2017-win2016'
+  vmImage: 'windows-latest'
 
 variables:
-  - group: AKV
+  - group: MSPsUK KeyVault
 
 stages:
   - stage: Setup
@@ -24,12 +24,9 @@ stages:
         steps:
           - powershell: Invoke-Build -Configuration 'Production' -Task Clean, CopyModuleFiles
             displayName: 'Build PowerShell Module'
-            env:
-              PSGalleryAPIKey: $(PSGalleryAPIKey)
       - job: Release
         steps:
           - powershell: Invoke-Build -Configuration 'Production' -Task PublishModule
             displayName: 'Publish PowerShell Module'
             env:
               PSGalleryAPIKey: $(PSGalleryAPIKey)
-        
