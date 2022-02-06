@@ -49,17 +49,6 @@ function Invoke-HaloRequest {
         }
         return $Results
     } catch {
-        $ErrorRecord = @{
-            ExceptionType = 'System.Net.Http.HttpRequestException'
-            ErrorMessage = "Halo API request $($_.TargetObject.Method) $($_.TargetObject.RequestUri) failed."
-            InnerException = $_.Exception
-            ErrorID = 'HaloAPIRequestFailed'
-            ErrorCategory = 'ProtocolError'
-            TargetObject = $_.TargetObject
-            ErrorDetails = $_.ErrorDetails
-            BubbleUpDetails = $True
-        }
-        $RequestError = New-HaloErrorRecord @ErrorRecord
-        $PSCmdlet.ThrowTerminatingError($RequestError)
+        throw $_
     }
 }

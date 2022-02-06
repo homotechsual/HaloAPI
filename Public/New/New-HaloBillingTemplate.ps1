@@ -15,24 +15,11 @@ Function New-HaloBillingTemplate {
         [Object]$Template
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("Billing Template '$($Template.name)", 'Create')) {
             New-HaloPOSTRequest -Object $Template -Endpoint 'billingtemplate'
         }
     } catch {
-        $Command = $CommandName -Replace '-', ''
-        $ErrorRecord = @{
-            ExceptionType = 'System.Exception'
-            ErrorMessage = "$($CommandName) failed."
-            InnerException = $_.Exception
-            ErrorID = "Halo$($Command)CommandFailed"
-            ErrorCategory = 'ReadError'
-            TargetObject = $_.TargetObject
-            ErrorDetails = $_.ErrorDetails
-            BubbleUpDetails = $False
-        }
-        $CommandError = New-HaloErrorRecord @ErrorRecord
-        $PSCmdlet.ThrowTerminatingError($CommandError)
+        New-HaloError -ErrorRecord $_
     }
 }

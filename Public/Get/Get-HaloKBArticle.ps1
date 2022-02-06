@@ -21,6 +21,10 @@ function Get-HaloKBArticle {
         # Filters response based on the search string
         [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
+        # Advanced Search
+        [Parameter( ParameterSetName = 'Multi')]
+        [Alias('advanced_search')]
+        [string]$AdvancedSearch,
         # Paginate results
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('pageinate')]
@@ -77,18 +81,6 @@ function Get-HaloKBArticle {
         $ItemResults = New-HaloGETRequest @RequestParams
         Return $ItemResults
     } catch {
-        $Command = $CommandName -Replace '-', ''
-        $ErrorRecord = @{
-            ExceptionType = 'System.Exception'
-            ErrorMessage = "$($CommandName) failed."
-            InnerException = $_.Exception
-            ErrorID = "Halo$($Command)CommandFailed"
-            ErrorCategory = 'ReadError'
-            TargetObject = $_.TargetObject
-            ErrorDetails = $_.ErrorDetails
-            BubbleUpDetails = $False
-        }
-        $CommandError = New-HaloErrorRecord @ErrorRecord
-        $PSCmdlet.ThrowTerminatingError($CommandError)
+        New-HaloError -ErrorRecord $_
     }
 }

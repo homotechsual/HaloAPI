@@ -60,15 +60,20 @@ task UpdateManifest {
     $MarkdownObject = [Markdown.MAML.Parser.MarkdownParser]::new()
     [regex]$Regex = '\d\.\d\.\d'
     $Versions = $Regex.Matches($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) | ForEach-Object { $_.Value }
-    ($Versions | Measure-Object -Maximum).Maximum
+    $ChangeLogVersion = ($Versions | Measure-Object -Maximum).Maximum
 
     $ManifestPath = "$($PSScriptRoot)\HaloAPI.psd1"
 
     # Start by importing the manifest to determine the version, then add 1 to the Build
     $Manifest = Test-ModuleManifest -Path $ManifestPath
     [System.Version]$Version = $Manifest.Version
-    [String]$NewVersion = New-Object -TypeName System.Version -ArgumentList ($Version.Major, $Version.Minor, ($Version.Build + 1))
-    Write-Output -InputObject ("New Module version: $($NewVersion)")
+
+    if ($ChangeLogVersion -eq $Version) {
+        Throw 'No new version found in CHANGELOG.md'
+    }
+
+    Write-Output -InputObject ("Current Module Version: $($Version)")
+    Write-Output -InputObject ("New Module version: $($ChangeLogVersion)")
 
     # Update Manifest file with Release Notes
     $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md"
@@ -76,7 +81,7 @@ task UpdateManifest {
     $ReleaseNotes = ((($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) -Match '\d\.\d\.\d') -Split ' - ')[1]
 
     #Update Module with new version
-    Update-ModuleManifest -ModuleVersion $NewVersion -Path "$($PSScriptRoot)\HaloAPI.psd1" -ReleaseNotes $ReleaseNotes
+    Update-ModuleManifest -ModuleVersion $ChangeLogVersion -Path "$($PSScriptRoot)\HaloAPI.psd1" -ReleaseNotes $ReleaseNotes
 }
 #endregion
 

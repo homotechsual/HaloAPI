@@ -1,10 +1,10 @@
 #Requires -Version 7
-function Get-HaloField {
+function Get-HaloFAQList {
     <#
         .SYNOPSIS
-            Gets field information from the Halo API.
+            Gets FAQ List information from the Halo API.
         .DESCRIPTION
-            Retrieves field types from the Halo API - supports a variety of filtering parameters.
+            Retrieves FAQ Lists from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
@@ -14,37 +14,39 @@ function Get-HaloField {
     Param(
         # Lookup Item ID
         [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
-        [int64]$FieldID,
-        # Kind
-        [Parameter( ParameterSetName = 'Single')]
+        [int64]$FAQListID,
+        # Type
         [Parameter( ParameterSetName = 'Multi')]
-        [string]$Kind,
+        [string]$Type,
+        # Show All
+        [Parameter( ParameterSetName = 'Multi')]
+        [string]$ShowAll,
         # Include Details
-        [Parameter( ParameterSetName = 'Multi' )]
+        [Parameter( ParameterSetName = 'Single' )]
         [switch]$IncludeDetails
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'FieldID=' parameter by removing it from the set parameters.
-    if ($FieldID) {
-        $Parameters.Remove('FieldID') | Out-Null
+    # Workaround to prevent the query string processor from adding a 'FAQListID=' parameter by removing it from the set parameters.
+    if ($FAQListID) {
+        $Parameters.Remove('FAQListID') | Out-Null
     }
     $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
     try {
-        if ($FieldID) {
-            Write-Verbose "Running in single-field mode because '-FieldID' was provided."
-            $Resource = "api/Field/$($FieldID)"
+        if ($FAQListID) {
+            Write-Verbose "Running in single-field mode because 'FAQListID' was provided."
+            $Resource = "api/FAQLists/$($FAQListID)"
         } else {
             Write-Verbose 'Running in multi-field mode.'
-            $Resource = 'api/Field'
+            $Resource = 'api/FAQLists'
         }
         $RequestParams = @{
             Method = 'GET'
             Resource = $Resource
             AutoPaginateOff = $True
             QSCollection = $QSCollection
-            ResourceType = 'fields'
+            ResourceType = 'FAQLists'
         }
         $FieldResults = New-HaloGETRequest @RequestParams
         Return $FieldResults

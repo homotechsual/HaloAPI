@@ -72,10 +72,10 @@ Describe 'Action' {
             $ActionResult.id | Should -Be $ActionID
         }
         It 'fails with a missing ticket id property' {
-            { New-HaloAction -Action $InvalidActionMissingTicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'New-HaloAction failed. Halo''s API provided the status code 400: Bad Request. You can use "Get-Error" for detailed error information.'
+            { New-HaloAction -Action $InvalidActionMissingTicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Response status code does not indicate success: 400 (Bad Request).'
         }
         It 'fails with a missing outcome property.' {
-            { New-HaloAction -Action $InvalidActionMissingOutcome } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'New-HaloAction failed. Halo''s API said System.Exception: An Outcome must be entered for this Action. Halo''s API provided the status code 400: Bad Request. You can use "Get-Error" for detailed error information.'
+            { New-HaloAction -Action $InvalidActionMissingOutcome } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Response status code does not indicate success: 400 (Bad Request).'
         }
     }
 
@@ -91,7 +91,7 @@ Describe 'Action' {
         }
         It 'fails to get a non existent action' {
             $ActionID = 3
-            { Get-HaloAction -ActionID $ActionID -TicketID $TicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Get-HaloAction failed. Halo''s API provided the status code 404: Not Found. You can use "Get-Error" for detailed error information.'
+            { Get-HaloAction -ActionID $ActionID -TicketID $TicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Response status code does not indicate success: 404 (Not Found).'
         }
     }
     
@@ -120,7 +120,7 @@ Describe 'Action' {
             $ActionResult.id | Should -Be $ActionID
         }
         It 'can no longer get deleted action.' {
-            { Get-HaloAction -ActionID $ActionID -TicketID $TicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Get-HaloAction failed. Halo''s API provided the status code 404: Not Found. You can use "Get-Error" for detailed error information.'
+            { Get-HaloAction -ActionID $ActionID -TicketID $TicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Response status code does not indicate success: 404 (Not Found).'
         }
     }
 }

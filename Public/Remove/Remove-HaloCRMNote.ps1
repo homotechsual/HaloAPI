@@ -1,18 +1,18 @@
-function Remove-HaloAction {
+function Remove-HaloCRMNote {
     <#
         .SYNOPSIS
-           Removes an action from the Halo API.
+           Removes a CRM note from the Halo API.
         .DESCRIPTION
-            Deletes a specific action from Halo.
+            Deletes a specific CRM note from Halo.
         .OUTPUTS
             A powershell object containing the response.
     #>
     [cmdletbinding( SupportsShouldProcess = $True, ConfirmImpact = 'High' )]
     [OutputType([Object])]
     Param(
-        # The Action ID
+        # The CRN note ID
         [Parameter( Mandatory = $True )]
-        [int64]$ActionID,
+        [int64]$CRMNoteID,
         # The Ticket ID
         [Parameter( Mandatory = $True )]
         [int64]$TicketID

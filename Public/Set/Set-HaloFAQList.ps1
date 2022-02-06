@@ -1,9 +1,9 @@
-Function Set-HaloKBArticle {
+Function Set-HaloFAQList {
     <#
         .SYNOPSIS
-            Updates a knowledgebase article via the Halo API.
+            Updates a FAQ List via the Halo API.
         .DESCRIPTION
-            Function to send an knowledgebase article update request to the Halo API
+            Function to send an FAQ List update request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
@@ -12,17 +12,17 @@ Function Set-HaloKBArticle {
     Param (
         # Object containing properties and values used to update an existing knowedgebase article.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$KBArticle
+        [Object]$FAQList
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloKBArticle -ArticleID $KBArticle.id
+        $ObjectToUpdate = Get-HaloFAQList -FAQListID $FAQList.id
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Article '$($ObjectToUpdate.name)'", 'Update')) {
-                New-HaloPOSTRequest -Object $KBArticle -Endpoint 'kbarticle' -Update
+            if ($PSCmdlet.ShouldProcess("FAQ List '$($ObjectToUpdate.name)'", 'Update')) {
+                New-HaloPOSTRequest -Object $FAQList -Endpoint 'FAQLists' -Update
             }
         } else {
-            Throw 'Article was not found in Halo to update.'
+            Throw 'FAQ List was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

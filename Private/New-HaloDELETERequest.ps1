@@ -24,18 +24,9 @@ function New-HaloDELETERequest {
         }
         $DeleteResults = Invoke-HaloRequest -WebRequestParams $WebRequestParams
         Return $DeleteResults
+    } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+        throw $_
     } catch {
-        $ErrorRecord = @{
-            ExceptionType = 'System.Net.Http.HttpRequestException'
-            ErrorMessage = 'DELETE request sent to the Halo API failed.'
-            InnerException = $_.Exception
-            ErrorID = 'HaloDELETERequestFailed'
-            ErrorCategory = 'ProtocolError'
-            TargetObject = $_.TargetObject
-            ErrorDetails = $_.ErrorDetails
-            BubbleUpDetails = $True
-        }
-        $RequestError = New-HaloErrorRecord @ErrorRecord
-        $PSCmdlet.ThrowTerminatingError($RequestError)
+        New-HaloError -ErrorRecord $_
     }
 }

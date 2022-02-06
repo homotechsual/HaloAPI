@@ -39,18 +39,9 @@ function New-HaloPOSTRequest {
         }
         $UpdateResults = Invoke-HaloRequest -WebRequestParams $WebRequestParams
         Return $UpdateResults
+    } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+        throw $_
     } catch {
-        $ErrorRecord = @{
-            ExceptionType = 'System.Net.Http.HttpRequestException'
-            ErrorMessage = 'POST request sent to the Halo API failed.'
-            InnerException = $_.Exception
-            ErrorID = 'HaloPOSTRequestFailed'
-            ErrorCategory = 'ProtocolError'
-            TargetObject = $_.TargetObject
-            ErrorDetails = $_.ErrorDetails
-            BubbleUpDetails = $True
-        }
-        $RequestError = New-HaloErrorRecord @ErrorRecord
-        $PSCmdlet.ThrowTerminatingError($RequestError)
+        New-HaloError -ErrorRecord $_
     }
 }
