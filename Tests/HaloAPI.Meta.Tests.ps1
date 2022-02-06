@@ -46,7 +46,7 @@ Describe 'Meta' {
     }
 
     It 'License URI is correct' {
-        $Script:ModuleInformation.LicenseUri | Should -Be 'https://haloapi.mit-license.org/'
+        $Script:ModuleInformation.LicenseUri | Should -Be 'https://mit.license.homotechsual.dev/'
     }
 
     It 'Project URI is correct' {

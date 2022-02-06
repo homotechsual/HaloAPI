@@ -15,24 +15,11 @@ Function New-HaloCRMNote {
         [Object]$CRMNote
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.InvocationName
     try {
         if ($PSCmdlet.ShouldProcess("CRM Note by '$($CRMNote.who_agentid)'", 'Create')) {
             New-HaloPOSTRequest -Object $CRMNote -Endpoint 'crmnote'
         }
     } catch {
-        $Command = $CommandName -Replace '-', ''
-        $ErrorRecord = @{
-            ExceptionType = 'System.Exception'
-            ErrorMessage = "$($CommandName) failed."
-            InnerException = $_.Exception
-            ErrorID = "Halo$($Command)CommandFailed"
-            ErrorCategory = 'ReadError'
-            TargetObject = $_.TargetObject
-            ErrorDetails = $_.ErrorDetails
-            BubbleUpDetails = $False
-        }
-        $CommandError = New-HaloErrorRecord @ErrorRecord
-        $PSCmdlet.ThrowTerminatingError($CommandError)
+        New-HaloError -ErrorRecord $_
     }
 }

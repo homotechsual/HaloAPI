@@ -13,7 +13,7 @@
 
     # Version number of this module.
 
-    ModuleVersion = '1.6.0'
+    ModuleVersion = '1.7.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -22,13 +22,13 @@
     GUID = '8bc83215-4735-4029-9f40-e05fe3e8f73b'
 
     # Author of this module
-    Author = 'Mikey O''Toole / Luke Whitelock'
+    Author = "Mikey O'Toole / Luke Whitelock"
 
     # Company or vendor of this module
     CompanyName = 'Unknown'
 
     # Copyright statement for this module
-    Copyright = '(c) 2021 Mikey O''Toole & Luke Whitelock. All rights reserved.'
+    Copyright = "(c) 2021 Mikey O'Toole & Luke Whitelock. All rights reserved."
 
     # Description of the functionality provided by this module
     Description = 'This module provides an interface to the Halo API.'
@@ -203,7 +203,7 @@
             )
 
             # A URL to the license for this module.
-            LicenseUri = 'https://haloapi.mit-license.org/'
+            LicenseUri = 'https://mit.license.homotechsual.dev'
 
             # A URL to the main website for this project.
             ProjectUri = 'https://github.com/homotechsual/HaloAPI'
@@ -212,10 +212,10 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Added recurring invoice functions and some bug fixes.'
+            ReleaseNotes = 'Refactor error handling.'
 
             # Prerelease string of this module
-            #Prerelease = '-Beta5'
+            Prerelease = '-Beta2'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenseAcceptance = $false

@@ -18,7 +18,6 @@ function Remove-HaloAction {
         [int64]$TicketID
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.InvocationName
     try {
         $ObjectToDelete = Get-HaloAction -ActionID $ActionID -TicketID $TicketID
         if ($ObjectToDelete) {
@@ -31,18 +30,6 @@ function Remove-HaloAction {
             Throw 'Action was not found in Halo to delete.'
         }
     } catch {
-        $Command = $CommandName -Replace '-', ''
-        $ErrorRecord = @{
-            ExceptionType = 'System.Exception'
-            ErrorMessage = "$($CommandName) failed."
-            InnerException = $_.Exception
-            ErrorID = "Halo$($Command)CommandFailed"
-            ErrorCategory = 'ReadError'
-            TargetObject = $_.TargetObject
-            ErrorDetails = $_.ErrorDetails
-            BubbleUpDetails = $False
-        }
-        $CommandError = New-HaloErrorRecord @ErrorRecord
-        $PSCmdlet.ThrowTerminatingError($CommandError)
-    }         
+        New-HaloError -ErrorRecord $_
+    }
 }

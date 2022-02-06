@@ -94,18 +94,9 @@ function New-HaloGETRequest {
             } while ($PageNum -le $NumPages)
         }
         Return $Result
+    } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+        throw $_
     } catch {
-        $ErrorRecord = @{
-            ExceptionType = 'System.Net.Http.HttpRequestException'
-            ErrorMessage = 'GET request sent to the Halo API failed.'
-            InnerException = $_.Exception
-            ErrorID = 'HaloGETRequestFailed'
-            ErrorCategory = 'ProtocolError'
-            TargetObject = $_.TargetObject
-            ErrorDetails = $_.ErrorDetails
-            BubbleUpDetails = $True
-        }
-        $RequestError = New-HaloErrorRecord @ErrorRecord
-        $PSCmdlet.ThrowTerminatingError($RequestError)
+        New-HaloError -ErrorRecord $_
     }
 }

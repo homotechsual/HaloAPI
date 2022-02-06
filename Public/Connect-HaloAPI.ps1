@@ -50,7 +50,6 @@ function Connect-HaloAPI {
         )]
         [String]$Tenant
     )
-    $CommandName = $MyInvocation.InvocationName
     # Convert scopes to space separated string if it's an array.
     if ($Scopes -is [system.array]) {
         $AuthScopes = $Scopes -Join ' '
@@ -64,7 +63,9 @@ function Connect-HaloAPI {
     $AuthInfoResponse = Invoke-WebRequest -Uri $AuthInfoURIBuilder.ToString() -Method 'GET'
     if ($AuthInfoResponse.content) {
         $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
+        Write-Debug "Auth info response: $AuthInfo"
         $AuthURIBuilder = [System.UriBuilder]::New($AuthInfo.auth_url)
+        Write-Verbose "Auth info found, using the '$($AuthInfo.auth_url)' endpoint."
         if ($AuthURIBuilder.Path) {
             $AuthURIBuilder.Path = $AuthURIBuilder.Path.TrimEnd('/') + '/token'
         } else {
@@ -143,18 +144,6 @@ function Connect-HaloAPI {
         }
         Write-Success "Connected to the Halo API with tenant URL $($Script:HAPIConnectionInformation.URL)"
     } catch {
-        $Command = $CommandName -Replace '-', ''
-        $ErrorRecord = @{
-            ExceptionType = 'System.Net.Http.HttpRequestException'
-            ErrorMessage = "$($CommandName) failed."
-            InnerException = $_.Exception
-            ErrorID = "Halo$($Command)CommandFailed"
-            ErrorCategory = 'ReadError'
-            TargetObject = $_.TargetObject
-            ErrorDetails = $_.ErrorDetails
-            BubbleUpDetails = $False
-        }
-        $CommandError = New-HaloErrorRecord @ErrorRecord
-        $PSCmdlet.ThrowTerminatingError($CommandError)
+        New-HaloError $_ -HasResponse
     }
 }
