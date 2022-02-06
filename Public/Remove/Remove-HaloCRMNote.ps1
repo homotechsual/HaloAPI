@@ -1,4 +1,4 @@
-function Remove-HaloAction {
+function Remove-HaloCRMNote {
     <#
         .SYNOPSIS
            Removes a CRM note from the Halo API.

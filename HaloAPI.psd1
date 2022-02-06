@@ -71,7 +71,7 @@
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = 'Connect-HaloAPI', 'Get-HaloAction', 'Get-HaloAgent', 
     'Get-HaloAppointment', 'Get-HaloAsset', 'Get-HaloAttachment', 
-    'Get-HaloBillingTemplate', 'Get-HaloClient', 'Get-HaloContract', 
+    'Get-HaloBillingTemplate', 'Get-HaloClient', 'Get-HaloContract', 'Get-HaloCRMNote',
     'Get-HaloCustomButton', 'Get-HaloFAQList', 'Get-HaloField', 
     'Get-HaloInvoice', 'Get-HaloItem', 'Get-HaloKBArticle', 
     'Get-HaloLookup', 'Get-HaloOpportunity', 'Get-HaloProject', 
@@ -90,14 +90,14 @@
     'New-HaloTicket', 'New-HaloTicketType', 'New-HaloUser', 
     'New-HaloWorkday', 'Set-HaloAction', 'Set-HaloAgent', 
     'Set-HaloAppointment', 'Set-HaloAsset', 'Set-HaloAttachment', 
-    'Set-HaloBillingTemplate', 'Set-HaloClient', 'Set-HaloContract', 
+    'Set-HaloBillingTemplate', 'Set-HaloClient', 'Set-HaloContract', 'Set-HaloCRMNote',
     'Set-HaloFAQList', 'Set-HaloInvoice', 'Set-HaloItem', 
     'Set-HaloKBArticle', 'Set-HaloOpportunity', 'Set-HaloProject', 
     'Set-HaloQuote', 'Set-HaloRecurringInvoice', 
     'Set-HaloRecurringTemplate', 'Set-HaloReport', 'Set-HaloSite', 
     'Set-HaloStatus', 'Set-HaloSupplier', 'Set-HaloTeam', 'Set-HaloTicket', 
     'Set-HaloTicketType', 'Set-HaloUser', 'Set-HaloWorkday', 
-    'Remove-HaloAction', 'Remove-HaloClient', 'Remove-HaloTicket'
+    'Remove-HaloAction', 'Remove-HaloClient', 'Remove-HaloCRMNote', 'Remove-HaloTicket'
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = @()
