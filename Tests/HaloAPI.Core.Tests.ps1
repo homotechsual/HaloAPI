@@ -48,12 +48,12 @@ Describe 'Connect' {
     }
     Context 'with incorrect URL parameter' {
         It 'fails with a HTTP 500 status code.' {
-            { Connect-HaloAPI @HaloIncorrectURLConnectionParameters } | Should -Throw -ExceptionType 'System.Net.Http.HttpRequestException' -ExpectedMessage 'Connect-HaloAPI failed. Halo''s API provided the status code 500: Internal Server Error. You can use "Get-Error" for detailed error information.'
+            { Connect-HaloAPI @HaloIncorrectURLConnectionParameters } | Should -Throw -ExceptionType 'System.Net.Http.HttpRequestException' -ExpectedMessage 'Response status code does not indicate success: 500 (Internal Server Error).'
         }
     }
     Context 'with incorrect Client Secret parameter' {
         It 'fails with a HTTP 401 status code.' {
-            { Connect-HaloAPI @HaloIncorrectSecretConnectionParameters } | Should -Throw -ExceptionType 'System.Net.Http.HttpRequestException' -ExpectedMessage 'Connect-HaloAPI failed. Halo''s API provided the status code 401: Unauthorized. You can use "Get-Error" for detailed error information.'
+            { Connect-HaloAPI @HaloIncorrectSecretConnectionParameters } | Should -Throw -ExceptionType 'System.Net.Http.HttpRequestException' -ExpectedMessage 'Response status code does not indicate success: 401 (Unauthorized).'
         }
     }
 }
