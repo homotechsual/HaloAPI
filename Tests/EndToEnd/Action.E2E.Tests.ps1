@@ -120,7 +120,7 @@ Describe 'Action' {
             $ActionResult.id | Should -Be $ActionID
         }
         It 'can no longer get deleted action.' {
-            { Get-HaloAction -ActionID $ActionID -TicketID $TicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Get-HaloAction failed. Halo''s API provided the status code 404: Not Found. You can use "Get-Error" for detailed error information.'
+            { Get-HaloAction -ActionID $ActionID -TicketID $TicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Response status code does not indicate success: 404 (Not Found).'
         }
     }
 }
