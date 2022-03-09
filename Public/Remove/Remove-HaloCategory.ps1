@@ -12,14 +12,14 @@ function Remove-HaloCategory {
     Param(
         # The Category ID
         [Parameter( Mandatory = $True )]
-        [alias]
-        [int64]$CategoryID,
+        [alias('category_id')]
+        [int64]$CategoryID
     )
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToDelete = Get-HaloCategory -CategoryID $CategoryID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Category '$($ObjectToDelete.id)' by '$($ObjectToDelete.who)'", 'Delete')) {
+            if ($PSCmdlet.ShouldProcess("Category '$($ObjectToDelete.value)'", 'Delete')) {
                 $Resource = "api/Category/$($CategoryID)"
                 $ActionResults = New-HaloDELETERequest -Resource $Resource
                 Return $ActionResults

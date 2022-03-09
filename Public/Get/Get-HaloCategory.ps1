@@ -32,7 +32,7 @@ function Get-HaloCategory {
     }
     $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
     try {
-        if ($FieldID) {
+        if ($CategoryID) {
             Write-Verbose "Running in single-field mode because '-CategoryID' was provided."
             $Resource = "api/Category/$($CategoryID)"
         } else {
