@@ -14,15 +14,13 @@ Gets knowledgebase articles from the Halo API.
 ## SYNTAX
 
 ### Multi (Default)
-
-```powershell
-Get-HaloKBArticle [-Count <Int64>] [-Search <String>] [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>]
- [-Order <String>] [-OrderDesc] [<CommonParameters>]
+```
+Get-HaloKBArticle [-Count <Int64>] [-Search <String>] [-AdvancedSearch <String>] [-Paginate]
+ [-PageSize <Int32>] [-PageNo <Int32>] [-Order <String>] [-OrderDesc] [<CommonParameters>]
 ```
 
 ### Single
-
-```powershell
+```
 Get-HaloKBArticle -KBArticleID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
@@ -37,6 +35,22 @@ Retrieves knowledgebase articles from the Halo API - supports a variety of filte
 Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
+
+### -KBArticleID
+
+Article ID
+
+```yaml
+Type: Int64
+Parameter Sets: Single
+Aliases:
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -Count
 
@@ -54,14 +68,45 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeDetails
+### -Search
 
-Include extra objects in the result.
+Filters response based on the search string
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AdvancedSearch
+Advanced Search
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases: advanced_search
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+
+Paginate results
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
+Parameter Sets: Multi
+Aliases: pageinate
 
 Required: False
 Position: Named
@@ -70,16 +115,32 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -KBArticleID
+### -PageSize
 
-Article ID
+Number of results per page.
 
 ```yaml
-Type: Int64
-Parameter Sets: Single
-Aliases:
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
 
-Required: True
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageNo
+
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
 Position: Named
 Default value: 0
 Accept pipeline input: False
@@ -118,46 +179,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageNo
+### -IncludeDetails
 
-Which page to return.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageSize
-
-Number of results per page.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_size
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-
-Paginate results
+Include extra objects in the result.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: pageinate
+Parameter Sets: Single
+Aliases:
 
 Required: False
 Position: Named
@@ -166,24 +195,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Search
-
-Filters response based on the search string
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
-
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

@@ -14,15 +14,13 @@ Gets software releases from the Halo API.
 ## SYNTAX
 
 ### Multi (Default)
-
-```powershell
+```
 Get-HaloRelease [-Count <Int64>] [-Search <String>] [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>]
  [-Order <String>] [-OrderDesc] [-IncludeNoteCount] [-ProductID <Int32>] [<CommonParameters>]
 ```
 
 ### Single
-
-```powershell
+```
 Get-HaloRelease -ReleaseID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
@@ -37,6 +35,22 @@ Retrieves software releases from the Halo API - supports a variety of filtering 
 Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
+
+### -ReleaseID
+
+Software Release ID
+
+```yaml
+Type: Int64
+Parameter Sets: Single
+Aliases:
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -Count
 
@@ -54,14 +68,30 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeDetails
+### -Search
 
-Include extra objects in the result.
+Filters response based on the search string
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+
+Paginate results
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
+Parameter Sets: Multi
+Aliases: pageinate
 
 Required: False
 Position: Named
@@ -70,18 +100,34 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeNoteCount
+### -PageSize
 
-Include release note count in the result.
+Number of results per page.
 
 ```yaml
-Type: SwitchParameter
+Type: Int32
 Parameter Sets: Multi
-Aliases:
+Aliases: page_size
 
 Required: False
 Position: Named
-Default value: False
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageNo
+
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
+Position: Named
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -118,46 +164,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageNo
+### -IncludeNoteCount
 
-Which page to return.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageSize
-
-Number of results per page.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_size
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-
-Paginate results
+Include release note count in the result.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: Multi
-Aliases: pageinate
+Aliases:
 
 Required: False
 Position: Named
@@ -182,40 +196,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ReleaseID
+### -IncludeDetails
 
-Software Release ID
+Include extra objects in the result.
 
 ```yaml
-Type: Int64
+Type: SwitchParameter
 Parameter Sets: Single
-Aliases:
-
-Required: True
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Search
-
-Filters response based on the search string
-
-```yaml
-Type: String
-Parameter Sets: Multi
 Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### CommonParameters
-
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

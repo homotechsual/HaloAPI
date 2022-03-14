@@ -95,7 +95,7 @@ Describe 'Action' {
             $ActionResult | ForEach-Object {
                 $ActionResult.actionby_application_id | Should -Be 'AzureDevops Testing App'
                 $ActionResult.note | Should -BeLike 'This is an action created by a Pester automated test.*'
-                $ActionResult.id | Should -Be $ArrayActionID + 1
+                $ActionResult.id | Should -Be ($ArrayActionID + 1)
                 $ArrayActionID++
             }
         }
@@ -167,7 +167,7 @@ Describe 'Action' {
     }
 
     AfterAll {
-        Remove-HaloAction -ActionID $ActionID + 1 -TicketID $TicketID -Confirm:$False
-        Remove-HaloAction -ActionID $ActionID + 2 -TicketID $TicketID -Confirm:$False
+        Remove-HaloAction -ActionID ($ActionID + 1) -TicketID $TicketID -Confirm:$False
+        Remove-HaloAction -ActionID ($ActionID + 2) -TicketID $TicketID -Confirm:$False
     }
 }

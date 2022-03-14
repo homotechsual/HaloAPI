@@ -1,6 +1,6 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: haloapi
+Module Name: HaloAPI
 online version:
 schema: 2.0.0
 ---
@@ -14,27 +14,23 @@ Gets attachments from the Halo API.
 ## SYNTAX
 
 ### Multi (Default)
-
-```powershell
+```
 Get-HaloAttachment -TicketID <Int64> [-ActionID <Int64>] [-Type <Int64>] [-UniqueID <Int64>]
  [<CommonParameters>]
 ```
 
 ### SinglePath
-
-```powershell
+```
 Get-HaloAttachment -AttachmentID <Int64> -OutPath <String> [<CommonParameters>]
 ```
 
 ### SingleFile
-
-```powershell
+```
 Get-HaloAttachment -AttachmentID <Int64> -OutFile <String> [<CommonParameters>]
 ```
 
 ### Single
-
-```powershell
+```
 Get-HaloAttachment -AttachmentID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
@@ -49,6 +45,38 @@ Retrieves attachments from the Halo API - supports a variety of filtering parame
 Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
+
+### -AttachmentID
+
+Attachment ID
+
+```yaml
+Type: Int64
+Parameter Sets: SinglePath, SingleFile, Single
+Aliases:
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TicketID
+
+Returns attachments from the ticket ID specified
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases: ticket_id
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -ActionID
 
@@ -66,16 +94,32 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -AttachmentID
+### -Type
 
-Attachment ID
+Returns attachments of the specified type
 
 ```yaml
 Type: Int64
-Parameter Sets: SinglePath, SingleFile, Single
+Parameter Sets: Multi
 Aliases:
 
-Required: True
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UniqueID
+
+Returns an attachment with the unique ID specified
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases: unique_id
+
+Required: False
 Position: Named
 Default value: 0
 Accept pipeline input: False
@@ -130,56 +174,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TicketID
-
-Returns attachments from the ticket ID specified
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases: ticket_id
-
-Required: True
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Type
-
-Returns attachments of the specified type
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -UniqueID
-
-Returns an attachment with the unique ID specified
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases: unique_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
-
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

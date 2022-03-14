@@ -1,6 +1,6 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: haloapi
+Module Name: HaloAPI
 online version:
 schema: 2.0.0
 ---
@@ -14,14 +14,12 @@ Gets lookup information from the Halo API.
 ## SYNTAX
 
 ### Multi (Default)
-
-```powershell
+```
 Get-HaloLookup [-Lookup <String>] [-LookupID <Int64>] [-ShowAll] [-ExcludeZero] [<CommonParameters>]
 ```
 
 ### Single
-
-```powershell
+```
 Get-HaloLookup -ItemID <Int64> [-Lookup <String>] [-LookupID <Int64>] [<CommonParameters>]
 ```
 
@@ -36,22 +34,6 @@ Retrieves lookup types from the Halo API - supports a variety of filtering param
 Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
-
-### -ExcludeZero
-
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: exclude_zero
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -ItemID
 
@@ -117,8 +99,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### CommonParameters
+### -ExcludeZero
 
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: exclude_zero
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

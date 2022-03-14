@@ -1,6 +1,6 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: haloapi
+Module Name: HaloAPI
 online version:
 schema: 2.0.0
 ---
@@ -14,16 +14,14 @@ Gets clients from the Halo API.
 ## SYNTAX
 
 ### Multi (Default)
-
-```powershell
+```
 Get-HaloClient [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>] [-Order <String>] [-OrderDesc]
  [-Search <String>] [-TopLevelID <Int32>] [-IncludeActive] [-IncludeInactive] [-Count <Int32>] [-FullObjects]
  [<CommonParameters>]
 ```
 
 ### Single
-
-```powershell
+```
 Get-HaloClient -ClientID <Int64> [-IncludeDetails] [-IncludeActivity] [<CommonParameters>]
 ```
 
@@ -55,14 +53,30 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Count
+### -Paginate
 
-The number of clients to return if not using pagination.
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+
+Number of results per page.
 
 ```yaml
 Type: Int32
 Parameter Sets: Multi
-Aliases:
+Aliases: page_size
 
 Required: False
 Position: Named
@@ -71,82 +85,18 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -FullObjects
+### -PageNo
 
-Parameter to return the complete objects.
+Which page to return.
 
 ```yaml
-Type: SwitchParameter
+Type: Int32
 Parameter Sets: Multi
-Aliases:
+Aliases: page_no
 
 Required: False
 Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeActive
-
-Include active clients in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeActivity
-
-Include ticket activity in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeInactive
-
-Include inactive clients in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -175,54 +125,6 @@ Order results in descending order (respects the field choice in '-Order')
 Type: SwitchParameter
 Parameter Sets: Multi
 Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageNo
-
-Which page to return.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageSize
-
-Number of results per page.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_size
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-
-Paginate results
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: pageinate
 
 Required: False
 Position: Named
@@ -263,8 +165,103 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### CommonParameters
+### -IncludeActive
 
+Include active clients in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeInactive
+
+Include inactive clients in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Count
+
+The number of clients to return if not using pagination.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FullObjects
+
+Parameter to return the complete objects.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDetails
+
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeActivity
+
+Include ticket activity in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

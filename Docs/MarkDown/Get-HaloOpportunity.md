@@ -14,8 +14,7 @@ Gets opportunities from the Halo API.
 ## SYNTAX
 
 ### Multi (Default)
-
-```powershell
+```
 Get-HaloOpportunity [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>] [-Order <String>] [-OrderDesc]
  [-TicketIDOnly] [-ViewID <Int32>] [-ColumnsID <Int32>] [-IncludeColumns] [-IncludeSLAActionDate]
  [-IncludeSLATimer] [-IncludeTimeTaken] [-IncludeSupplier] [-IncludeRelease1] [-IncludeRelease2]
@@ -34,8 +33,7 @@ Get-HaloOpportunity [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>] [-Order <S
 ```
 
 ### Single
-
-```powershell
+```
 Get-HaloOpportunity -OpportunityID <Int64> [-TicketIDOnly] [-IncludeDetails] [-IncludeLastAction]
  [<CommonParameters>]
 ```
@@ -52,18 +50,322 @@ Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
-### -Agent
+### -OpportunityID
 
-Filter by the specified array of agent IDs.
+Opportunity ID
 
 ```yaml
-Type: Int32[]
+Type: Int64
+Parameter Sets: Single
+Aliases:
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+
+Number of results per page.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageNo
+
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Order
+
+Which field to order results based on.
+
+```yaml
+Type: String
 Parameter Sets: Multi
 Aliases:
 
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderDesc
+
+Order results in descending order (respects the field choice in '-Order')
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TicketIDOnly
+
+Return only the 'ID' fields (Ticket ID, SLA ID, Status ID, Client ID, Client Name and Last Incoming Email date)
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ViewID
+
+The ID of the filter profile to use to filter results.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: view_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ColumnsID
+
+The ID of the column profile to use to control data returned in the results.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: columns_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeColumns
+
+Include column details in the the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeSLAActionDate
+
+Include SLA action date in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeSLATimer
+
+Include SLA timer in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeTimeTaken
+
+Include time taken in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeSupplier
+
+Include supplier details in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeRelease1
+
+Include release 1 details in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeRelease2
+
+Include release 2 details in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeRelease3
+
+Include release 3 details in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeChildIDs
+
+Include child ticket IDs in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeNextActivityDate
+
+Include next activity date in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ListID
+
+Filter by the specified list.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: list_id
+
+Required: False
+Position: Named
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -84,6 +386,134 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -StatusID
+
+Filter by the specified status.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: status_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RequestTypeID
+
+Filter by the specified request type.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: requesttype_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SupplierID
+
+Filter by the specified supplier.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: supplier_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ClientID
+
+Filter by the specified client.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: client_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Site
+
+Filter by the specified site.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UserName
+
+Filter by the specified user name.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UserID
+
+Filter by the specified user ID.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: user_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ReleaseID
+
+Filter by the specified release.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: release_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -AssetID
 
 Filter by the specified asset.
@@ -96,6 +526,182 @@ Aliases: asset_id
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ITILRequestTypeID
+
+Filter by the specified ITIL request type.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: itil_requesttype_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OpenOnly
+
+Return only open tickets in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: open_only
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ClosedOnly
+
+Return only closed tickets in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: closed_only
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UnlinkedOnly
+
+Return only unlinked tickets in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: unlinked_only
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ContractID
+
+Filter by the specified contract ID.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: contract_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WithAttachments
+
+Return only tickets with attachments in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Team
+
+Filter by the specified array of team IDs.
+
+```yaml
+Type: Int32[]
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Agent
+
+Filter by the specified array of agent IDs.
+
+```yaml
+Type: Int32[]
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Status
+
+Filter by the specified array of status IDs.
+
+```yaml
+Type: Int32[]
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RequestType
+
+Filter by the specified array of request type IDs.
+
+```yaml
+Type: Int32[]
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ITILRequestType
+
+Filter by the specified array of ITIL request type IDs.
+
+```yaml
+Type: Int32[]
+Parameter Sets: Multi
+Aliases: itil_requesttype
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -164,105 +770,9 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ClientID
+### -SLA
 
-Filter by the specified client.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: client_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ClosedOnly
-
-Return only closed tickets in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: closed_only
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ColumnsID
-
-The ID of the column profile to use to control data returned in the results.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: columns_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ContractID
-
-Filter by the specified contract ID.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: contract_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DateSearch
-
-Which date field to search against.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -EndDate
-
-End date for use with the '-datesearch' parameter.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludeThese
-
-Exclude the specified array of ticket IDs.
+Filter by the specified array of SLA IDs.
 
 ```yaml
 Type: Int32[]
@@ -272,374 +782,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Flagged
-
-Filter by the specified array of flagged ticket IDs.
-
-```yaml
-Type: Int32[]
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeChildIDs
-
-Include child ticket IDs in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeColumns
-
-Include column details in the the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeLastAction
-
-Include the last action in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeNextActivityDate
-
-Include next activity date in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeRelease1
-
-Include release 1 details in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeRelease2
-
-Include release 2 details in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeRelease3
-
-Include release 3 details in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeSLAActionDate
-
-Include SLA action date in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeSLATimer
-
-Include SLA timer in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeSupplier
-
-Include supplier details in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeTimeTaken
-
-Include time taken in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ITILRequestType
-
-Filter by the specified array of ITIL request type IDs.
-
-```yaml
-Type: Int32[]
-Parameter Sets: Multi
-Aliases: itil_requesttype
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ITILRequestTypeID
-
-Filter by the specified ITIL request type.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: itil_requesttype_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ListID
-
-Filter by the specified list.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: list_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OpenOnly
-
-Return only open tickets in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: open_only
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OpportunityID
-
-Opportunity ID
-
-```yaml
-Type: Int64
-Parameter Sets: Single
-Aliases:
-
-Required: True
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Order
-
-Which field to order results based on.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderDesc
-
-Order results in descending order (respects the field choice in '-Order')
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageNo
-
-Which page to return.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageSize
-
-Number of results per page.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_size
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-
-Paginate results
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: pageinate
-
-Required: False
-Position: Named
-Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -676,25 +818,9 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ReleaseID
+### -Flagged
 
-Filter by the specified release.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: release_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -RequestType
-
-Filter by the specified array of request type IDs.
+Filter by the specified array of flagged ticket IDs.
 
 ```yaml
 Type: Int32[]
@@ -708,18 +834,18 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -RequestTypeID
+### -ExcludeThese
 
-Filter by the specified request type.
+Exclude the specified array of ticket IDs.
 
 ```yaml
-Type: Int32
+Type: Int32[]
 Parameter Sets: Multi
-Aliases: requesttype_id
+Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -756,6 +882,86 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -DateSearch
+
+Which date field to search against.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -StartDate
+
+Start date for use with the '-datesearch' parameter.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EndDate
+
+End date for use with the '-datesearch' parameter.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SearchUserName
+
+Return tickets where the user name matches the search term.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases: search_user_name
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SearchSummary
+
+Return tickets where the summary matches the search term.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases: search_summary
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -SearchDetails
 
 Return tickets where the details matches the search term.
@@ -772,14 +978,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SearchInventoryNumber
+### -SearchReportedBy
 
-Return tickets where the asset tag matches the search term.
+Return tickets where the reported by matches the search term.
 
 ```yaml
 Type: String
 Parameter Sets: Multi
-Aliases: search_invenotry_number
+Aliases: search_reportedby
 
 Required: False
 Position: Named
@@ -788,30 +994,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SearchOppCompanyName
+### -SearchVersion
 
-Return tickets where the opportunity company name matches the search term.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases: search_oppcompanyname
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SearchOppContactName
-
-Return tickets where the opportunity contact name matches the search term.
+Return tickets where the software version matches the search term.
 
 ```yaml
 Type: String
 Parameter Sets: Multi
-Aliases: search_oppcontactname
+Aliases: search_version
 
 Required: False
 Position: Named
@@ -884,30 +1074,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SearchReportedBy
+### -SearchInventoryNumber
 
-Return tickets where the reported by matches the search term.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases: search_reportedby
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SearchSummary
-
-Return tickets where the summary matches the search term.
+Return tickets where the asset tag matches the search term.
 
 ```yaml
 Type: String
 Parameter Sets: Multi
-Aliases: search_summary
+Aliases: search_invenotry_number
 
 Required: False
 Position: Named
@@ -916,14 +1090,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SearchUserName
+### -SearchOppContactName
 
-Return tickets where the user name matches the search term.
+Return tickets where the opportunity contact name matches the search term.
 
 ```yaml
 Type: String
 Parameter Sets: Multi
-Aliases: search_user_name
+Aliases: search_oppcontactname
 
 Required: False
 Position: Named
@@ -932,14 +1106,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SearchVersion
+### -SearchOppCompanyName
 
-Return tickets where the software version matches the search term.
+Return tickets where the opportunity company name matches the search term.
 
 ```yaml
 Type: String
 Parameter Sets: Multi
-Aliases: search_version
+Aliases: search_oppcompanyname
 
 Required: False
 Position: Named
@@ -948,125 +1122,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Site
+### -IncludeDetails
 
-Filter by the specified site.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SLA
-
-Filter by the specified array of SLA IDs.
-
-```yaml
-Type: Int32[]
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -StartDate
-
-Start date for use with the '-datesearch' parameter.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Status
-
-Filter by the specified array of status IDs.
-
-```yaml
-Type: Int32[]
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -StatusID
-
-Filter by the specified status.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: status_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SupplierID
-
-Filter by the specified supplier.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: supplier_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Team
-
-Filter by the specified array of team IDs.
-
-```yaml
-Type: Int32[]
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TicketIDOnly
-
-Return only the 'ID' fields (Ticket ID, SLA ID, Status ID, Client ID, Client Name and Last Incoming Email date)
+Include extra objects in the result.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: Single
 Aliases:
 
 Required: False
@@ -1076,77 +1138,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UnlinkedOnly
+### -IncludeLastAction
 
-Return only unlinked tickets in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: unlinked_only
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -UserID
-
-Filter by the specified user ID.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: user_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -UserName
-
-Filter by the specified user name.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ViewID
-
-The ID of the filter profile to use to filter results.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: view_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -WithAttachments
-
-Return only tickets with attachments in the results.
+Include the last action in the result.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Multi
+Parameter Sets: Single
 Aliases:
 
 Required: False
@@ -1157,7 +1155,6 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

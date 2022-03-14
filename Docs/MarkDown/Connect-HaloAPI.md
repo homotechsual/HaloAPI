@@ -13,7 +13,7 @@ Creates a new connection to a Halo instance.
 
 ## SYNTAX
 
-```powershell
+```
 Connect-HaloAPI -URL <Uri> -ClientID <String> -ClientSecret <String> [-Scopes <String[]>] [-Tenant <String>]
  [<CommonParameters>]
 ```
@@ -33,6 +33,22 @@ Connect-HaloAPI -ClientID "a1234567-bcd8-9e01-2f34-56g7hijk89lm" -Tenant "demo" 
 This logs into Halo using the Client Credentials authorisation flow with all available permissions.
 
 ## PARAMETERS
+
+### -URL
+
+The URL of the Halo instance to connect to.
+
+```yaml
+Type: Uri
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -ClientID
 
@@ -100,24 +116,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -URL
-
-The URL of the Halo instance to connect to.
-
-```yaml
-Type: Uri
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
-
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

@@ -13,7 +13,7 @@ Gets timesheets from the Halo API.
 
 ## SYNTAX
 
-```powershell
+```
 Get-HaloTimesheet [-SelectedTeam <Int32>] [-ShowHolidays] [-SelectedAgents <Int32[]>]
  [-SelectedTypes <Int32[]>] [-StartDate <DateTime>] [-EndDate <DateTime>] [-ShowAllDates]
  [-IncludeTimesheetFields] [-UTCOffset <Int32>] [<CommonParameters>]
@@ -31,25 +31,25 @@ Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
-### -EndDate
+### -SelectedTeam
 
-Timesheet end date/time.
+Return the timesheet for the specified team.
 
 ```yaml
-Type: DateTime
+Type: Int32
 Parameter Sets: (All)
-Aliases: end_date
+Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeTimesheetFields
+### -ShowHolidays
 
-Include all timesheet fields in the result.
+Include holidays in the result.
 
 ```yaml
 Type: SwitchParameter
@@ -79,22 +79,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SelectedTeam
-
-Return the timesheet for the specified team.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -SelectedTypes
 
 Return the selected types.
@@ -107,6 +91,38 @@ Aliases:
 Required: False
 Position: Named
 Default value: @(0,1,2,3)
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -StartDate
+
+Timesheet start date/time.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases: start_date
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EndDate
+
+Timesheet end date/time.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases: end_date
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -127,9 +143,9 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ShowHolidays
+### -IncludeTimesheetFields
 
-Include holidays in the result.
+Include all timesheet fields in the result.
 
 ```yaml
 Type: SwitchParameter
@@ -139,22 +155,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -StartDate
-
-Timesheet start date/time.
-
-```yaml
-Type: DateTime
-Parameter Sets: (All)
-Aliases: start_date
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -176,7 +176,6 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

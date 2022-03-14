@@ -14,8 +14,7 @@ Gets quotes from the Halo API.
 ## SYNTAX
 
 ### Multi (Default)
-
-```powershell
+```
 Get-HaloQuote [-Count <Int64>] [-Search <String>] [-Paginate] [-PageSize <Int32>] [-PageNo <Int32>]
  [-OrderBy <String>] [-OrderByDesc] [-OrderBy2 <String>] [-OrderByDesc2] [-OrderBy3 <String>] [-OrderByDesc3]
  [-OrderBy4 <String>] [-OrderByDesc4] [-OrderBy5 <String>] [-OrderByDesc5] [-TicketID <Int64>]
@@ -23,8 +22,7 @@ Get-HaloQuote [-Count <Int64>] [-Search <String>] [-Paginate] [-PageSize <Int32>
 ```
 
 ### Single
-
-```powershell
+```
 Get-HaloQuote -QuoteID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
@@ -40,16 +38,16 @@ Thought of a useful example? Tell us or submit a PR.
 
 ## PARAMETERS
 
-### -ClientID
+### -QuoteID
 
-Filters by the specified client
+Quote ID
 
 ```yaml
 Type: Int64
-Parameter Sets: Multi
-Aliases: client_id
+Parameter Sets: Single
+Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: 0
 Accept pipeline input: False
@@ -72,14 +70,30 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeDetails
+### -Search
 
-Include extra objects in the result.
+Filters response based on the search string
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+
+Paginate results
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
+Parameter Sets: Multi
+Aliases: pageinate
 
 Required: False
 Position: Named
@@ -88,73 +102,41 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -PageSize
+
+Number of results per page.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageNo
+
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -OrderBy
 
 The name of the first field to order by
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderBy2
-
-The name of the second field to order by
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderBy3
-
-The name of the third field to order by
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderBy4
-
-The name of the fourth field to order by
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderBy5
-
-The name of the fifth field to order by
 
 ```yaml
 Type: String
@@ -184,6 +166,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -OrderBy2
+
+The name of the second field to order by
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -OrderByDesc2
 
 Whether to order ascending or descending
@@ -196,6 +194,22 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderBy3
+
+The name of the third field to order by
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -216,6 +230,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -OrderBy4
+
+The name of the fourth field to order by
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -OrderByDesc4
 
 Whether to order ascending or descending
@@ -228,6 +258,22 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderBy5
+
+The name of the fifth field to order by
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -248,82 +294,34 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageNo
+### -TicketID
 
-Which page to return.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageSize
-
-Number of results per page.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_size
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-
-Paginate results
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: pageinate
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -QuoteID
-
-Quote ID
+Filters by the specified ticket
 
 ```yaml
 Type: Int64
-Parameter Sets: Single
-Aliases:
+Parameter Sets: Multi
+Aliases: ticket_id
 
-Required: True
+Required: False
 Position: Named
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Search
+### -ClientID
 
-Filters response based on the search string
+Filters by the specified client
 
 ```yaml
-Type: String
+Type: Int64
 Parameter Sets: Multi
-Aliases:
+Aliases: client_id
 
 Required: False
 Position: Named
-Default value: None
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -336,22 +334,6 @@ Filters by the specified site
 Type: Int64
 Parameter Sets: Multi
 Aliases: site_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TicketID
-
-Filters by the specified ticket
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases: ticket_id
 
 Required: False
 Position: Named
@@ -376,8 +358,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### CommonParameters
+### -IncludeDetails
 
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
