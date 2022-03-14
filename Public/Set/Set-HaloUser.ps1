@@ -1,28 +1,37 @@
 Function Set-HaloUser {
     <#
         .SYNOPSIS
-            Updates a user via the Halo API.
+            Updates one or more users via the Halo API.
         .DESCRIPTION
             Function to send a user update request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to update an existing user.
+        # Object or array of objects containing properties and values used to update one or more existing users.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$User
+        [Object[]]$User
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloUser -UserID $User.id
+        $ObjectToUpdate = $False
+        ForEach-Object -InputObject $User {
+            $HaloUserParams = @{
+                UserId = $_.id
+            }
+            $UserExists = Get-HaloUser @HaloUserParams
+            if ($UserExists) {
+                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+            }
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess('Users', 'Update')) {
+            if ($PSCmdlet.ShouldProcess($User -is [Array] ? 'Users' : 'User', 'Update')) {
                 New-HaloPOSTRequest -Object $User -Endpoint 'users' -Update
             }
         } else {
-            Throw 'User was not found in Halo to update.'
+            Throw 'One or more users was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

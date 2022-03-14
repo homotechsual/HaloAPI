@@ -1,22 +1,22 @@
 Function New-HaloReport {
     <#
         .SYNOPSIS
-            Creates a report via the Halo API.
+            Creates one or more reports via the Halo API.
         .DESCRIPTION
             Function to send a report creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new report.
+        # Object or array of objects containing properties and values used to create one or more new reports.
         [Parameter( Mandatory = $True )]
-        [Object]$Report
+        [Object[]]$Report
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Report '$($Report.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Reports -is [Array] ? 'Reports' : 'Report', 'Create')) {
             New-HaloPOSTRequest -Object $Report -Endpoint 'report'
         }
     } catch {

@@ -1,28 +1,38 @@
 Function Set-HaloQuote {
     <#
         .SYNOPSIS
-            Updates a quote via the Halo API.
+            Updates one or more quotes via the Halo API.
         .DESCRIPTION
             Function to send a quote creation update to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to update an existing quotation.
+        # Object or array of objects containing properties and values used to update one or more existing quotations.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Quote
+        [Object[]]$Quote
     )
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = Get-HaloQuote -QuoteID $Quote.id
+        $ObjectToUpdate = $False
+        ForEach-Object -InputObject $Quote {
+            $HaloQuoteParams = @{
+                QuoteId = $_.id
+            }
+            $QuoteExists = Get-HaloQuote @HaloQuoteParams
+            if ($QuoteExists) {
+                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+            }
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Quotation '$($ObjectToUpdate.title)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess($Quote -is [Array] ? 'Quotations' : 'Quotation', 'Update')) {
                 New-HaloPOSTRequest -Object $Quote -Endpoint 'quotation' -Update
             }
         } else {
-            Throw 'Quotation was not found in Halo to update.'
+            Throw 'One or more quotations was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

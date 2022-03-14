@@ -1,22 +1,22 @@
 Function New-HaloTicketType {
     <#
         .SYNOPSIS
-            Creates a ticket type via the Halo API.
+            Creates one or more ticket types via the Halo API.
         .DESCRIPTION
             Function to send a ticket type creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new ticket type.
+        # Object or array of objects containing properties and values used to create one or more new ticket types.
         [Parameter( Mandatory = $True )]
-        [Object]$TicketType
+        [Object[]]$TicketType
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Ticket Type '$($TicketType.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($TicketType -is [Array] ? 'Ticket Types' : 'Ticket Type', 'Create')) {
             New-HaloPOSTRequest -Object $TicketType -Endpoint 'tickettype'
         }
     } catch {

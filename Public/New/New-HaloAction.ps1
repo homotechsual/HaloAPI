@@ -1,22 +1,22 @@
 Function New-HaloAction {
     <#
         .SYNOPSIS
-            Creates an action via the Halo API.
+            Creates one or more actions via the Halo API.
         .DESCRIPTION
             Function to send an action creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new action.
+        # Object or array of objects containing properties and values used to create one or more new actions.
         [Parameter( Mandatory = $True )]
-        [Object]$Action
+        [Object[]]$Action
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Action by '$($Action.who)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Action -is [Array] ? 'Actions' : 'Action', 'Create')) {
             New-HaloPOSTRequest -Object $Action -Endpoint 'actions'
         }
     } catch {

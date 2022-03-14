@@ -1,22 +1,22 @@
 Function New-HaloProject {
     <#
         .SYNOPSIS
-            Creates a project via the Halo API.
+            Creates one or more projects via the Halo API.
         .DESCRIPTION
             Function to send a project creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new project.
+        # Object or array of objects containing properties and values used to create one or more new projects.
         [Parameter( Mandatory = $True )]
-        [Object]$Project
+        [Object[]]$Project
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Project '$($Project.summary)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Project -is [Array] ? 'Projects' : 'Project', 'Create')) {
             New-HaloPOSTRequest -Object $Project -Endpoint 'projects'
         }
     } catch {

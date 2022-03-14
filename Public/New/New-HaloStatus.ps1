@@ -1,22 +1,22 @@
 Function New-HaloStatus {
     <#
         .SYNOPSIS
-            Creates a status via the Halo API.
+            Creates one or more statuses via the Halo API.
         .DESCRIPTION
             Function to send a status creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new status.
+        # Object or array of objects containing properties and values used to create one or more new statuses.
         [Parameter( Mandatory = $True )]
-        [Object]$Status
+        [Object[]]$Status
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Status '$($Status.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Status -is [Array] ? 'Statuses' : 'Status', 'Create')) {
             New-HaloPOSTRequest -Object $Status -Endpoint 'status'
         }
     } catch {

@@ -1,28 +1,37 @@
 Function Set-HaloReport {
     <#
         .SYNOPSIS
-            Updates a report via the Halo API.
+            Updates one or more reports via the Halo API.
         .DESCRIPTION
             Function to send a report creation update to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to update an existing report.
+        # Object or array of objects containing properties and values used to update one or more existing report.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Report
+        [Object[]]$Report
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloReport -ReportID $Report.id
+        $ObjectToUpdate = $False
+        ForEach-Object -InputObject $Report {
+            $HaloReportParams = @{
+                ReportId = $_.id
+            }
+            $ReportExists = Get-HaloReport @HaloReportParams
+            if ($ReportExists) {
+                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+            }
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Report '$($ObjectToUpdate.name)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess($Report -is [Array] ? 'Reports' : 'Report', 'Update')) {
                 New-HaloPOSTRequest -Object $Report -Endpoint 'report' -Update
             }
         } else {
-            Throw 'Report was not found in Halo to update.'
+            Throw 'One or more reports was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

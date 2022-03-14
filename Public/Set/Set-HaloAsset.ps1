@@ -1,7 +1,7 @@
 Function Set-HaloAsset {
     <#
         .SYNOPSIS
-            Updates an asset via the Halo API.
+            Updates one or more assets via the Halo API.
         .DESCRIPTION
             Function to send an asset update request to the Halo API
         .OUTPUTS
@@ -10,19 +10,28 @@ Function Set-HaloAsset {
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object])]
     Param (
-        # Object containing properties and values used to update an existing asset.
+        # Object or array of objects containing properties and values used to update one or more existing assets.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Asset
+        [Object[]]$Asset
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloAsset -AssetID $Asset.id
+        $ObjectToUpdate = $False
+        ForEach-Object -InputObject $Asset {
+            $HaloAssetParams = @{
+                AssetId = $_.id
+            }
+            $AssetExists = Get-HaloAsset @HaloAssetParams
+            if ($AssetExists) {
+                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+            }
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Asset '$($ObjectToUpdate.inventory_name)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess($Asset -is [Array] ? 'Assets' : 'Asset', 'Update')) {
                 New-HaloPOSTRequest -Object $Asset -Endpoint 'asset' -Update
             }
         } else {
-            Throw 'Asset was not found in Halo to update.'
+            Throw 'One or more assets was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

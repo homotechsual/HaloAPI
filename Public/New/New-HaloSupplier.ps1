@@ -1,22 +1,22 @@
 Function New-HaloSupplier {
     <#
         .SYNOPSIS
-            Creates a supplier via the Halo API.
+            Creates one or more suppliers via the Halo API.
         .DESCRIPTION
             Function to send a supplier creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new supplier.
+        # Object or array of objects containing properties and values used to create one or more new suppliers.
         [Parameter( Mandatory = $True )]
-        [Object]$Supplier
+        [Object[]]$Supplier
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Supplier '$($Supplier.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Supplier -is [Array] ? 'Suppliers' : 'Supplier', 'Create')) {
             New-HaloPOSTRequest -Object $Supplier -Endpoint 'supplier'
         }
     } catch {

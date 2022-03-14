@@ -1,22 +1,22 @@
 Function New-HaloItem {
     <#
         .SYNOPSIS
-            Creates an item via the Halo API.
+            Creates one or more items via the Halo API.
         .DESCRIPTION
             Function to send an item creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new item.
+        # Object or array of objects containing properties and values used to create one or more new items.
         [Parameter( Mandatory = $True )]
-        [Object]$Item
+        [Object[]]$Item
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Item '$($Item.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Item -is [Array] ? 'Items' : 'Item', 'Create')) {
             New-HaloPOSTRequest -Object $Item -Endpoint 'item'
         }
     } catch {
