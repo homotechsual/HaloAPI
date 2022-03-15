@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-        E22 action entity test suite for the HaloAPI module.
+        E2E action entity test suite for the HaloAPI module.
 #>
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '', Justification = 'Test file - parameters are used in separate scopes.')]
 param()
