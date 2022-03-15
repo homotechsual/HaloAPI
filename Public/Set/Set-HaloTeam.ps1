@@ -16,17 +16,18 @@ Function Set-HaloTeam {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Team {
+        $ObjectToUpdate = ForEach-Object -InputObject $Team {
             $HaloTeamParams = @{
                 TeamId = $_.id
             }
             $TeamExists = Get-HaloTeam @HaloTeamParams
             if ($TeamExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Team -is [Array] ? 'Teams' : 'Team', 'Update')) {
                 New-HaloPOSTRequest -Object $Team -Endpoint 'team' -Update
             }

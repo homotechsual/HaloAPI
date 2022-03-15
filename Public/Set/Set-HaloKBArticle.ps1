@@ -16,17 +16,18 @@ Function Set-HaloKBArticle {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $KBArticle {
+        $ObjectToUpdate = ForEach-Object -InputObject $KBArticle {
             $HaloKBArticleParams = @{
                 ArticleId = $_.id
             }
             $KBArticleExists = Get-HaloArticle @HaloKBArticleParams
             if ($KBArticleExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($KBArticle -is [Array] ? 'Knowledgebase Articles' : 'Knowledgebase Article', 'Update')) {
                 New-HaloPOSTRequest -Object $KBArticle -Endpoint 'kbarticle' -Update
             }

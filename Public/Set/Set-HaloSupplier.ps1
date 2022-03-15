@@ -16,17 +16,18 @@ Function Set-HaloSupplier {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Supplier {
+        $ObjectToUpdate = ForEach-Object -InputObject $Supplier {
             $HaloSupplierParams = @{
                 SupplierId = $_.id
             }
             $SupplierExists = Get-HaloSupplier @HaloSupplierParams
             if ($SupplierExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Supplier -is [Array] ? 'Suppliers' : 'Supplier', 'Update')) {
                 New-HaloPOSTRequest -Object $Supplier -Endpoint 'supplier' -Update
             }

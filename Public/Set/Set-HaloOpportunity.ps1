@@ -16,17 +16,18 @@ Function Set-HaloOpportunity {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Opportunity {
+        $ObjectToUpdate = ForEach-Object -InputObject $Opportunity {
             $HaloOpportunityParams = @{
                 OpportunityId = $_.id
             }
             $OpportunityExists = Get-HaloOpportunity @HaloOpportunityParams
             if ($OpportunityExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Opportunity -is [Array] ? 'Opportunities' : 'Opportunity', 'Update')) {
                 New-HaloPOSTRequest -Object $Opportunity -Endpoint 'opportunities' -Update
             }

@@ -16,18 +16,19 @@ Function Set-HaloAgent {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Agent {
+        $ObjectToUpdate = ForEach-Object -InputObject $Agent {
             $HaloAgentParams = @{
-                AgentId         = $_.id
+                AgentId = ($_.id)
                 IncludeDisabled = $True
             }
             $AgentExists = Get-HaloAgent @HaloAgentParams
             if ($AgentExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Agent -is [Array] ? 'Agents' : 'Agent', 'Update')) {
                 New-HaloPOSTRequest -Object $Agent -Endpoint 'agent' -Update
             }

@@ -16,17 +16,18 @@ Function Set-HaloSite {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Site {
+        $ObjectToUpdate = ForEach-Object -InputObject $Site {
             $HaloSiteParams = @{
                 SiteId = $_.id
             }
             $SiteExists = Get-HaloSite @HaloSiteParams
             if ($SiteExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Site -is [Array] ? 'Sites' : 'Site', 'Update')) {
                 New-HaloPOSTRequest -Object $Site -Endpoint 'site' -Update
             }

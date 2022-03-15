@@ -16,17 +16,18 @@ Function Set-HaloClient {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Client {
+        $ObjectToUpdate = ForEach-Object -InputObject $Client {
             $HaloClientParams = @{
-                ClientId = $_.id
+                ClientId = ($_.id)
             }
             $ClientExists = Get-HaloClient @HaloClientParams
             if ($ClientExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) { 
+        if ($False -notin $ObjectToUpdate) { 
             if ($PSCmdlet.ShouldProcess($Client -is [Array] ? 'Clients' : 'Client', 'Update')) {
                 New-HaloPOSTRequest -Object $Client -Endpoint 'client' -Update
             }

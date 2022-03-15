@@ -9,29 +9,18 @@ function New-HaloPOSTRequest {
         Outputs an object containing the response from the web request.
     #>
     [CmdletBinding()]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     Param(
-        # If Updating
-        [switch]$Update,
         # Object to Update / Create
         [Parameter( Mandatory = $True )]
-        [PSCustomObject]$Object,
+        [Object[]]$Object,
         # Endpoint to use
         [Parameter( Mandatory = $True )]
         [string]$Endpoint
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($Update) {
-            if ($null -eq $Object.id) {
-                Throw 'Updates must have an ID'
-            }
-        } else {
-            if ($null -ne $Object.id) {
-                Throw 'Creates must not have an ID'
-            }
-        }
         $WebRequestParams = @{
             Method = 'POST'
             Uri = "$($Script:HAPIConnectionInformation.URL)api/$Endpoint"

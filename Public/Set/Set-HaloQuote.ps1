@@ -16,18 +16,18 @@ Function Set-HaloQuote {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloQuote -QuoteID $Quote.id
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Quote {
+        $ObjectToUpdate = ForEach-Object -InputObject $Quote {
             $HaloQuoteParams = @{
                 QuoteId = $_.id
             }
             $QuoteExists = Get-HaloQuote @HaloQuoteParams
             if ($QuoteExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Quote -is [Array] ? 'Quotations' : 'Quotation', 'Update')) {
                 New-HaloPOSTRequest -Object $Quote -Endpoint 'quotation' -Update
             }

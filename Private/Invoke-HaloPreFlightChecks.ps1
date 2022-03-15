@@ -5,12 +5,12 @@ function Invoke-HaloPreFlightCheck {
         $NoConnectionInformationException = [System.Exception]::New("Missing Halo connection information, please run 'Connect-HaloAPI' first.")
         $ErrorRecord = [ErrorRecord]::New($NoConnectionInformationException, 'NoConnectionInformation', 'AuthenticationError', 'HaloPreFlightCheck')
         
-        New-HaloError -ErrorRecord $ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($ErrorRecord)
     }
     if (($null -eq $Script:HAPIAuthToken) -and ($null -eq $AllowAnonymous)) {
         $NoAuthTokenException = [System.Exception]::New("Missing Halo authentication token, please run 'Connect-HaloAPI' first.")
         $ErrorRecord = [ErrorRecord]::New($NoAuthTokenException, 'NoAuthToken', 'AuthenticationError', 'HaloPreFlightCheck')
 
-        New-HaloError -ErrorRecord $ErrorRecord
+        $PSCmdlet.ThrowTerminatingError($ErrorRecord)
     }
 }

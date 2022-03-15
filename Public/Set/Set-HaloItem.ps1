@@ -16,17 +16,18 @@ Function Set-HaloItem {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Item {
+        $ObjectToUpdate = ForEach-Object -InputObject $Item {
             $HaloItemParams = @{
                 ItemId = $_.id
             }
             $ItemExists = Get-HaloItem @HaloItemParams
             if ($ItemExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Item -is [Array] ? 'Items' : 'Item', 'Update')) {
                 New-HaloPOSTRequest -Object $Item -Endpoint 'item' -Update
             }

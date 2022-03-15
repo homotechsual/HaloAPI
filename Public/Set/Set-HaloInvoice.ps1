@@ -16,17 +16,18 @@ Function Set-HaloInvoice {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Invoice {
+        $ObjectToUpdate = ForEach-Object -InputObject $Invoice {
             $HaloInvoiceParams = @{
-                InvoiceId = $_.id
+                InvoiceId = ($_.id)
             }
             $InvoiceExists = Get-HaloInvoice @HaloInvoiceParams
             if ($InvoiceExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Invoice -is [Array] ? 'Invoices' : 'Invoice', 'Update')) {
                 New-HaloPOSTRequest -Object $Invoice -Endpoint 'invoice' -Update
             }

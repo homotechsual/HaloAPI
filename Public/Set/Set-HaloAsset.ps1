@@ -16,17 +16,18 @@ Function Set-HaloAsset {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Asset {
+        $ObjectToUpdate = ForEach-Object -InputObject $Asset {
             $HaloAssetParams = @{
-                AssetId = $_.id
+                AssetId = ($_.id)
             }
             $AssetExists = Get-HaloAsset @HaloAssetParams
             if ($AssetExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Asset -is [Array] ? 'Assets' : 'Asset', 'Update')) {
                 New-HaloPOSTRequest -Object $Asset -Endpoint 'asset' -Update
             }

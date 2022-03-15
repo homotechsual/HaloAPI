@@ -16,17 +16,18 @@ Function Set-HaloContract {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Contract {
+        $ObjectToUpdate = ForEach-Object -InputObject $Contract {
             $HaloContractParams = @{
-                ContractId = $_.id
+                ContractId = ($_.id)
             }
             $ContractExists = Get-HaloContract @HaloContractParams
             if ($ContractExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Contract -is [Array] ? 'Contracts' : 'Contract', 'Update')) {
                 New-HaloPOSTRequest -Object $Contract -Endpoint 'clientcontract' -Update
             }

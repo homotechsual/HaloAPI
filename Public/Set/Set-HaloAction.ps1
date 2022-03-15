@@ -16,20 +16,21 @@ Function Set-HaloAction {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Action {
+        $ObjectsToUpdate = ForEach-Object -InputObject $Action {
             $HaloActionParams = @{
-                ActionID = $_.id
-                TicketID = [int]$_.ticket_id
+                ActionID = ($_.id)
+                TicketID = ($_.ticket_id)
             }
             $ActionExists = Get-HaloAction @HaloActionParams
             if ($ActionExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectsToUpdate) {
             if ($PSCmdlet.ShouldProcess($Action -is [Array] ? 'Actions' : 'Action', 'Update')) {
-                New-HaloPOSTRequest -Object $Action -Endpoint 'actions' -Update
+                New-HaloPOSTRequest -Object $Action -Endpoint 'actions'
             }
         } else {
             Throw 'One or more actions was not found in Halo to update.'

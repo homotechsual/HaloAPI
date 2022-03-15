@@ -16,17 +16,18 @@ Function Set-HaloAppointment {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Appointment {
+        $ObjectToUpdate = ForEach-Object -InputObject $Appointment {
             $HaloAppointmentParams = @{
-                AppointmentId = $_.id
+                AppointmentId = ($_.id)
             }
             $AppointmentExists = Get-HaloAppointment @HaloAppointmentParams
             if ($AppointmentExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Appointment -is [Array] ? 'Appointments' : 'Appointment', 'Update')) {
                 New-HaloPOSTRequest -Object $Appointment -Endpoint 'appointment' -Update
             }

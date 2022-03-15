@@ -16,17 +16,18 @@ Function Set-HaloReport {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Report {
+        $ObjectToUpdate = ForEach-Object -InputObject $Report {
             $HaloReportParams = @{
                 ReportId = $_.id
             }
             $ReportExists = Get-HaloReport @HaloReportParams
             if ($ReportExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Report -is [Array] ? 'Reports' : 'Report', 'Update')) {
                 New-HaloPOSTRequest -Object $Report -Endpoint 'report' -Update
             }

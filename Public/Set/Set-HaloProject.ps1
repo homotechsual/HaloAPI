@@ -16,17 +16,18 @@ Function Set-HaloProject {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Project {
+        $ObjectToUpdate = ForEach-Object -InputObject $Project {
             $HaloProjectParams = @{
                 ProjectId = $_.id
             }
             $ProjectExists = Get-HaloProject @HaloProjectParams
             if ($ProjectExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Project -is [Array] ? 'Projects' : 'Project', 'Update')) {
                 New-HaloPOSTRequest -Object $Project -Endpoint 'projects' -Update
             }

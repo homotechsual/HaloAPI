@@ -16,17 +16,18 @@ Function Set-HaloTicket {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $Ticket {
+        $ObjectToUpdate = ForEach-Object -InputObject $Ticket {
             $HaloTicketParams = @{
                 TicketId = $_.id
             }
             $TicketExists = Get-HaloTicket @HaloTicketParams
             if ($TicketExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Ticket -is [Array] ? 'Tickets' : 'Ticket', 'Update')) {
                 New-HaloPOSTRequest -Object $Ticket -Endpoint 'tickets' -Update
             }

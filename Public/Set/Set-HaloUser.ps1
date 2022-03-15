@@ -16,17 +16,18 @@ Function Set-HaloUser {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = $False
-        ForEach-Object -InputObject $User {
+        $ObjectToUpdate = ForEach-Object -InputObject $User {
             $HaloUserParams = @{
                 UserId = $_.id
             }
             $UserExists = Get-HaloUser @HaloUserParams
             if ($UserExists) {
-                Set-Variable -Scope 1 -Name 'ObjectToUpdate' -Value $True
+                Return $True
+            } else {
+                Return $False
             }
         }
-        if ($ObjectToUpdate) {
+        if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($User -is [Array] ? 'Users' : 'User', 'Update')) {
                 New-HaloPOSTRequest -Object $User -Endpoint 'users' -Update
             }
