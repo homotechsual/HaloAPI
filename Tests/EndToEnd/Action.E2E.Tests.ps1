@@ -22,9 +22,7 @@ BeforeAll {
     }
     Connect-HaloAPI @HaloConnectionParameters *> $null
     $TicketID = 2200
-    Write-Host "Ticket ID: $TicketID"
     $ActionID = (Get-HaloAction -TicketID $TicketID -Count 1 | Select-Object -First 1 | Select-Object -ExpandProperty ID)
-    Write-Host "Action ID: $ActionID"
 }
 
 # Test that we can create an action, fetch it, update it and then delete it.
@@ -121,7 +119,6 @@ Describe 'Action' {
             $ActionAfterCreate.id = ($ActionId + 1)
             $ActionAfterCreate.note = 'This action has been updated by a Pester automated test.'
             $ActionAfterCreate.note_html = '<p>This action has been updated by a Pester automated test.</p>'
-            Write-Host ($ActionAfterCreate | Out-String)
             $ActionResult = Set-HaloAction -Action $ActionAfterCreate
             $ActionResult.note | Should -BeLike 'This action has been updated by a Pester automated test.*'
         }
