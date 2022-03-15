@@ -1,22 +1,22 @@
 Function New-HaloContract {
     <#
         .SYNOPSIS
-            Creates a contract via the Halo API.
+            Creates one or more contracts via the Halo API.
         .DESCRIPTION
             Function to send a contract creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new contract.
+        # Object or array of objects containing properties and values used to create one or more new contracts.
         [Parameter( Mandatory = $True )]
-        [Object]$Contract
+        [Object[]]$Contract
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Contract '$($Contract.ref)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Contract -is [Array] ? 'Contracts' : 'Contract', 'Create')) {
             New-HaloPOSTRequest -Object $Contract -Endpoint 'clientcontract'
         }
     } catch {

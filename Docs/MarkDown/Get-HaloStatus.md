@@ -8,118 +8,36 @@ schema: 2.0.0
 # Get-HaloStatus
 
 ## SYNOPSIS
-
 Gets statuses from the Halo API.
 
 ## SYNTAX
 
 ### Multi (Default)
-
-```powershell
+```
 Get-HaloStatus [-Type <String>] [-ShowCounts] [-Domain <String>] [-ViewID <Int32>] [-ExcludePending]
  [-ExcludeClosed] [<CommonParameters>]
 ```
 
 ### Single
-
-```powershell
+```
 Get-HaloStatus -StatusID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Retrieves statuses types from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -Domain
-
-Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludeClosed
-
-Exclude the closed status from the response
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludePending
-
-Exclude the pending closure status from the response
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ShowCounts
-
-Show the count of tickets in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -StatusID
-
 Status ID
 
 ```yaml
@@ -135,7 +53,6 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-
 Filter by Status type e.g.
 'ticket' returns all ticket statuses
 
@@ -151,8 +68,37 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ViewID
+### -ShowCounts
+Show the count of tickets in the results.
 
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Domain
+Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ViewID
 Filter counts to a specific view ID.
 
 ```yaml
@@ -167,16 +113,59 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### CommonParameters
+### -ExcludePending
+Exclude the pending closure status from the response
 
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeClosed
+Exclude the closed status from the response
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDetails
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

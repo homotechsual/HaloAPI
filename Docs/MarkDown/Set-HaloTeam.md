@@ -1,6 +1,6 @@
 ---
 external help file: HaloAPI-help.xml
-Module Name: haloapi
+Module Name: HaloAPI
 online version:
 schema: 2.0.0
 ---
@@ -8,45 +8,60 @@ schema: 2.0.0
 # Set-HaloTeam
 
 ## SYNOPSIS
-
-Updates a team via the Halo API.
+Updates one or more teams via the Halo API.
 
 ## SYNTAX
 
-```powershell
-Set-HaloTeam [-Team] <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+Set-HaloTeam [-Team] <Object[]> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Function to send a team update request to the Halo API
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -Team
-
-Object containing properties and values used to update an existing team.
+Object or array of objects containing properties and values used to update one or more existing teams.
 
 ```yaml
-Type: Object
+Type: Object[]
 Parameter Sets: (All)
 Aliases:
 
 Required: True
 Position: 1
 Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Confirm
-
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
@@ -61,32 +76,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -WhatIf
-
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
-
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### Outputs an object containing the response from the web request
-
+### Outputs an object containing the response from the web request.
 ## NOTES
 
 ## RELATED LINKS

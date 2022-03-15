@@ -1,22 +1,22 @@
 Function New-HaloClient {
     <#
         .SYNOPSIS
-            Creates a client via the Halo API.
+            Creates one or more clients via the Halo API.
         .DESCRIPTION
             Function to send a client creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new client.
+        # Object or array of objects containing properties and values used to create one or more new clients.
         [Parameter( Mandatory = $True )]
-        [Object]$Client
+        [Object[]]$Client
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Client '$($Client.name)", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Client -is [Array] ? 'Clients' : 'Client', 'Create')) {
             New-HaloPOSTRequest -Object $Client -Endpoint 'client'
         }
     } catch {

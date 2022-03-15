@@ -1,32 +1,39 @@
 Function Set-HaloAction {
     <#
         .SYNOPSIS
-            Updates an action via the Halo API.
+            Updates one or more actions via the Halo API.
         .DESCRIPTION
             Function to send a action update request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([PSCustomObject])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to update an existing action.
+        # Object or array of objects containing properties and values used to update one or more existing actions.
         [Parameter( Mandatory = $True, ValueFromPipeline = $True )]
-        [PSCustomObject]$Action
+        [Object[]]$Action
     )
     Invoke-HaloPreFlightCheck
     try {
-        $HaloActionParams = @{
-            ActionID = $Action.id
-            TicketID = [int]$Action.ticket_id
+        $ObjectsToUpdate = $Action | ForEach-Object {
+            $HaloActionParams = @{
+                ActionID = ($_.id)
+                TicketID = ($_.ticket_id)
+            }
+            $ActionExists = Get-HaloAction @HaloActionParams
+            if ($ActionExists) {
+                Return $True
+            } else {
+                Return $False
+            }
         }
-        $ObjectToUpdate = Get-HaloAction @HaloActionParams
-        if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Action $($ObjectToUpdate.id) by $($ObjectToUpdate.who)", 'Update')) {
-                New-HaloPOSTRequest -Object $Action -Endpoint 'actions' -Update
+        if ($False -notin $ObjectsToUpdate) {
+            if ($PSCmdlet.ShouldProcess($Action -is [Array] ? 'Actions' : 'Action', 'Update')) {
+                New-HaloPOSTRequest -Object $Action -Endpoint 'actions'
             }
         } else {
-            Throw 'Action was not found in Halo to update.'
+            Throw 'One or more actions was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

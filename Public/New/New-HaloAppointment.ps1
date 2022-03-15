@@ -1,22 +1,22 @@
 Function New-HaloAppointment {
     <#
         .SYNOPSIS
-            Creates an appointment via the Halo API.
+            Creates one or more appointments via the Halo API.
         .DESCRIPTION
             Function to send an appointment creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new appointment.
+        # Object or array of objects containing properties and values used to create one or more new appointments.
         [Parameter( Mandatory = $True )]
-        [Object]$Appointment
+        [Object[]]$Appointment
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Appointment '$($Appointment.subject)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Appointment -is [Array] ? 'Appointments' : 'Appointment', 'Create')) {
             New-HaloPOSTRequest -Object $Appointment -Endpoint 'appointment'
         }
     } catch {

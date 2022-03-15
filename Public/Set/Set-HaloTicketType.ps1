@@ -1,28 +1,38 @@
 Function Set-HaloTicketType {
     <#
         .SYNOPSIS
-            Updates a ticket type via the Halo API.
+            Updates one or more ticket types via the Halo API.
         .DESCRIPTION
             Function to send a ticket type update request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to update an existing ticket type.
+        # Object or array of objects containing properties and values used to update one or more existing ticket types.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$TicketType
+        [Object[]]$TicketType
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloTicketType -TicketTypeID $TicketType.id
-        if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Ticket Type '$($TicketType.name)'", 'Update')) {
+        $ObjectToUpdate = $TicketType | ForEach-Object {
+            $HaloTicketTypeParams = @{
+                TicketTypeId = $_.id
+            }
+            $TicketTypeExists = Get-HaloTicketType @HaloTicketTypeParams
+            if ($TicketTypeExists) {
+                Return $True
+            } else {
+                Return $False
+            }
+        }
+        if ($False -notin $ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess($TicketType -is [Array] ? 'Ticket Types' : 'Ticket Type', 'Update')) {
                 New-HaloPOSTRequest -Object $TicketType -Endpoint 'tickettype' -Update
             }
         } else {
-            Throw 'Ticket Type not found in Halo to update.'
+            Throw 'One or more ticket types not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

@@ -1,28 +1,38 @@
 Function Set-HaloSupplier {
     <#
         .SYNOPSIS
-            Updates a supplier via the Halo API.
+            Updates one or more suppliers via the Halo API.
         .DESCRIPTION
             Function to send a supplier update request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to update an existing supplier.
+        # Object or array of objects containing properties and values used to update one or more existing suppliers.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Supplier
+        [Object[]]$Supplier
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloSupplier -SupplierID $Supplier.id
-        if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Supplier '$($ObjectToUpdate.name)'", 'Update')) {
+        $ObjectToUpdate = $Supplier | ForEach-Object {
+            $HaloSupplierParams = @{
+                SupplierId = $_.id
+            }
+            $SupplierExists = Get-HaloSupplier @HaloSupplierParams
+            if ($SupplierExists) {
+                Return $True
+            } else {
+                Return $False
+            }
+        }
+        if ($False -notin $ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess($Supplier -is [Array] ? 'Suppliers' : 'Supplier', 'Update')) {
                 New-HaloPOSTRequest -Object $Supplier -Endpoint 'supplier' -Update
             }
         } else {
-            Throw 'Supplier was not found in Halo to update.'
+            Throw 'One or more suppliers was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

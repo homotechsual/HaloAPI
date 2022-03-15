@@ -1,22 +1,22 @@
 Function New-HaloKBArticle {
     <#
         .SYNOPSIS
-            Creates a knowledgebase article via the Halo API.
+            Creates one or more knowledgebase articles via the Halo API.
         .DESCRIPTION
             Function to send a knowledgebase article creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new knowledgebase article.
+        # Object or array of objects containing properties and values used to create one or more new knowledgebase articles.
         [Parameter( Mandatory = $True )]
-        [Object]$KBArticle
+        [Object[]]$KBArticle
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Article '$($KBArticle.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($KBArticle -is [Array] ? 'Knowledgebase Articles' : 'Knowledgebase Article', 'Create')) {
             New-HaloPOSTRequest -Object $KBArticle -Endpoint 'kbarticle'
         }
     } catch {

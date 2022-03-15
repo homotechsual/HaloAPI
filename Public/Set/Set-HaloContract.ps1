@@ -1,28 +1,38 @@
 Function Set-HaloContract {
     <#
         .SYNOPSIS
-            Updates a contract via the Halo API.
+            Updates one or more contracts via the Halo API.
         .DESCRIPTION
             Function to send a contract update request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to update an existing contract.
+        # Object or array of objects containing properties and values used to update one or more existing contracts.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Contract
+        [Object[]]$Contract
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloContract -ContractID $Contract.id
-        if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Contract '$($ObjectToUpdate.ref)'", 'Update')) {
+        $ObjectToUpdate = $Contract | ForEach-Object {
+            $HaloContractParams = @{
+                ContractId = ($_.id)
+            }
+            $ContractExists = Get-HaloContract @HaloContractParams
+            if ($ContractExists) {
+                Return $True
+            } else {
+                Return $False
+            }
+        }
+        if ($False -notin $ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess($Contract -is [Array] ? 'Contracts' : 'Contract', 'Update')) {
                 New-HaloPOSTRequest -Object $Contract -Endpoint 'clientcontract' -Update
             }
         } else {
-            Throw 'Contract was not found in Halo to update.'
+            Throw 'One or more contracts was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

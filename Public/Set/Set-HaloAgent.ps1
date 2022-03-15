@@ -1,28 +1,39 @@
 Function Set-HaloAgent {
     <#
         .SYNOPSIS
-            Updates an agent via the Halo API.
+            Updates one or more agents via the Halo API.
         .DESCRIPTION
             Function to send an agent update request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to update an existing agent.
+        # Object or array of objects containing properties and values used to update one or more existing agents.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Agent
+        [Object[]]$Agent
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloAgent -AgentId $Agent.id -IncludeDisabled
-        if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Agent $($ObjectToUpdate.name)", 'Update')) {
+        $ObjectToUpdate = $Agent | ForEach-Object {
+            $HaloAgentParams = @{
+                AgentId = ($_.id)
+                IncludeDisabled = $True
+            }
+            $AgentExists = Get-HaloAgent @HaloAgentParams
+            if ($AgentExists) {
+                Return $True
+            } else {
+                Return $False
+            }
+        }
+        if ($False -notin $ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess($Agent -is [Array] ? 'Agents' : 'Agent', 'Update')) {
                 New-HaloPOSTRequest -Object $Agent -Endpoint 'agent' -Update
             }
         } else {
-            Throw 'Agent was not found in Halo to update.'
+            Throw 'One or more agents was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

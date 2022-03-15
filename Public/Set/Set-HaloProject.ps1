@@ -1,28 +1,38 @@
 Function Set-HaloProject {
     <#
         .SYNOPSIS
-            Updates a project via the Halo API.
+            Updates one or more projects via the Halo API.
         .DESCRIPTION
             Function to send a project creation update to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to update an existing project.
+        # Object or array of objects containing properties and values used to update one or more existing projects.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Project
+        [Object[]]$Project
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloProject -ProjectID $Project.id
-        if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Project '$($ObjectToUpdate.summary)'", 'Update')) {
+        $ObjectToUpdate = $Project | ForEach-Object {
+            $HaloProjectParams = @{
+                ProjectId = $_.id
+            }
+            $ProjectExists = Get-HaloProject @HaloProjectParams
+            if ($ProjectExists) {
+                Return $True
+            } else {
+                Return $False
+            }
+        }
+        if ($False -notin $ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess($Project -is [Array] ? 'Projects' : 'Project', 'Update')) {
                 New-HaloPOSTRequest -Object $Project -Endpoint 'projects' -Update
             }
         } else {
-            Throw 'Project was not found in Halo to update.'
+            Throw 'One or more projects was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

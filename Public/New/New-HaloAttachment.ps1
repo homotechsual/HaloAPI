@@ -1,22 +1,22 @@
 Function New-HaloAttachment {
     <#
         .SYNOPSIS
-            Creates an attachment via the Halo API.
+            Creates one or more attachments via the Halo API.
         .DESCRIPTION
             Function to send an attachment creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new attachment.
+        # Object or array of objects containing properties and values used to create one or more new attachments.
         [Parameter( Mandatory = $True )]
-        [Object]$Attachment
+        [Object[]]$Attachment
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Attachment '$($Attachment.filename)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Attachment -is [Array] ? 'Attachments' : 'Attachment', 'Create')) {
             New-HaloPOSTRequest -Object $Attachment -Endpoint 'attachment'
         }
     } catch {

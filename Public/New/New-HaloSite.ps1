@@ -1,22 +1,22 @@
 Function New-HaloSite {
     <#
         .SYNOPSIS
-            Creates a site via the Halo API.
+            Creates one or more sites via the Halo API.
         .DESCRIPTION
             Function to send a site creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new site.
+        # Object or array of objects containing properties and values used to create one or more new sites.
         [Parameter( Mandatory = $True )]
-        [Object]$Site
+        [Object[]]$Site
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Site '$($Site.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Site -is [Array] ? 'Sites' : 'Site', 'Create')) {
             New-HaloPOSTRequest -Object $Site -Endpoint 'site'
         }
     } catch {

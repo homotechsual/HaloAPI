@@ -42,6 +42,7 @@ function Invoke-HaloRequest {
         Write-Verbose "Making a $($WebRequestParams.Method) request to $($WebRequestParams.Uri)"
         $Response = Invoke-WebRequest @WebRequestParams -Headers $AuthHeaders -ContentType 'application/json'
         Write-Debug "Response headers: $($Response.Headers | Out-String)"
+        Write-Debug "Raw Response: $Response"
         if ($RawResult) {
             $Results = $Response
         } else {

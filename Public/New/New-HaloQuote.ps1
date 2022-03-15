@@ -1,22 +1,22 @@
 Function New-HaloQuote {
     <#
         .SYNOPSIS
-            Creates a quote via the Halo API.
+            Creates one or more quotes via the Halo API.
         .DESCRIPTION
             Function to send a quote creation request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to create a new quotation.
+        # Object or array of objects containing properties and values used to create one or more new quotations.
         [Parameter( Mandatory = $True )]
-        [Object]$Quote
+        [Object[]]$Quote
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Quote '$($Quote.title)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess($Quote -is [Array] ? 'Quotes' : 'Quote', 'Create')) {
             New-HaloPOSTRequest -Object $Quote -Endpoint 'quotation'
         }
     } catch {

@@ -1,28 +1,38 @@
 Function Set-HaloInvoice {
     <#
         .SYNOPSIS
-            Updates an invoice via the Halo API.
+            Updates one or more invoices via the Halo API.
         .DESCRIPTION
             Function to send an invoice update request to the Halo API
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
-    [OutputType([Object])]
+    [OutputType([Object[]])]
     Param (
-        # Object containing properties and values used to update an existing invoice.
+        # Object or array of objects containing properties and values used to update one or more existing invoices.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Invoice
+        [Object[]]$Invoice
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = Get-HaloInvoice -InvoiceID $Invoice.id
-        if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Invoice '$($ObjectToUpdate.invoicenumber)'", 'Update')) {
+        $ObjectToUpdate = $Invoice | ForEach-Object {
+            $HaloInvoiceParams = @{
+                InvoiceId = ($_.id)
+            }
+            $InvoiceExists = Get-HaloInvoice @HaloInvoiceParams
+            if ($InvoiceExists) {
+                Return $True
+            } else {
+                Return $False
+            }
+        }
+        if ($False -notin $ObjectToUpdate) {
+            if ($PSCmdlet.ShouldProcess($Invoice -is [Array] ? 'Invoices' : 'Invoice', 'Update')) {
                 New-HaloPOSTRequest -Object $Invoice -Endpoint 'invoice' -Update
             }
         } else {
-            Throw 'Invoice was not found in Halo to update.'
+            Throw 'One or more invoices was not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_
