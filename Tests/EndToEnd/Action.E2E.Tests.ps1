@@ -23,7 +23,7 @@ BeforeAll {
     }
 
     $TicketID = 2200
-    $ActionID = Get-HaloAction -TicketID $TicketID -Count 1 | Select-Object -First 1 | Select-Object -ExpandProperty ID
+    $ActionID = (Get-HaloAction -TicketID $TicketID -Count 1 | Select-Object -First 1 | Select-Object -ExpandProperty ID)
 }
 
 # Test that we can create an action, fetch it, update it and then delete it.
