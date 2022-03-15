@@ -16,7 +16,7 @@ Function Set-HaloItem {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Item {
+        $ObjectToUpdate = $Item | ForEach-Object {
             $HaloItemParams = @{
                 ItemId = $_.id
             }

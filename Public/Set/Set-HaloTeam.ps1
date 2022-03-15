@@ -16,7 +16,7 @@ Function Set-HaloTeam {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Team {
+        $ObjectToUpdate = $Team | ForEach-Object {
             $HaloTeamParams = @{
                 TeamId = $_.id
             }

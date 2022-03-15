@@ -16,7 +16,7 @@ Function Set-HaloOpportunity {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Opportunity {
+        $ObjectToUpdate = $Opportunity | ForEach-Object {
             $HaloOpportunityParams = @{
                 OpportunityId = $_.id
             }

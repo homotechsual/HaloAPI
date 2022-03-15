@@ -67,6 +67,10 @@ function New-HaloError {
         $Exception
     )
     $UniqueExceptions = $ExceptionMessage | Get-Unique
-    $HaloError.ErrorDetails = [String]::Join("`r`n", $UniqueExceptions)
+    if ($UniqueExceptions.Count -gt 1) {
+        $HaloError.ErrorDetails = [String]::Join("`r`n", $UniqueExceptions)
+    } else {
+        $HaloError.ErrorDetails = $UniqueExceptions
+    }
     $PSCmdlet.ThrowTerminatingError($HaloError)
 }

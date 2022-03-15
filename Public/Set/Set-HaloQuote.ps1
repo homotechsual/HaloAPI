@@ -16,7 +16,7 @@ Function Set-HaloQuote {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Quote {
+        $ObjectToUpdate = $Quote | ForEach-Object {
             $HaloQuoteParams = @{
                 QuoteId = $_.id
             }

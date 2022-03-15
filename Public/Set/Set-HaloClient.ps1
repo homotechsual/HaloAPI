@@ -16,7 +16,7 @@ Function Set-HaloClient {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Client {
+        $ObjectToUpdate = $Client | ForEach-Object {
             $HaloClientParams = @{
                 ClientId = ($_.id)
             }

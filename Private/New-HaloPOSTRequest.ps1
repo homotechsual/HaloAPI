@@ -26,8 +26,8 @@ function New-HaloPOSTRequest {
             Uri = "$($Script:HAPIConnectionInformation.URL)api/$Endpoint"
             Body = $Object | ConvertTo-Json -Depth 100 -AsArray
         }
-        $UpdateResults = Invoke-HaloRequest -WebRequestParams $WebRequestParams
-        Return $UpdateResults
+        $Results = Invoke-HaloRequest -WebRequestParams $WebRequestParams
+        Return $Results
     } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
         throw $_
     } catch {

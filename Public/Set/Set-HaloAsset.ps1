@@ -16,7 +16,7 @@ Function Set-HaloAsset {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Asset {
+        $ObjectToUpdate = $Asset | ForEach-Object {
             $HaloAssetParams = @{
                 AssetId = ($_.id)
             }

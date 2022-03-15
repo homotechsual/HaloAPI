@@ -16,7 +16,7 @@ Function Set-HaloReport {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Report {
+        $ObjectToUpdate = $Report | ForEach-Object {
             $HaloReportParams = @{
                 ReportId = $_.id
             }

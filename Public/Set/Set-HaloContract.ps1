@@ -16,7 +16,7 @@ Function Set-HaloContract {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Contract {
+        $ObjectToUpdate = $Contract | ForEach-Object {
             $HaloContractParams = @{
                 ContractId = ($_.id)
             }

@@ -16,7 +16,7 @@ Function Set-HaloInvoice {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Invoice {
+        $ObjectToUpdate = $Invoice | ForEach-Object {
             $HaloInvoiceParams = @{
                 InvoiceId = ($_.id)
             }

@@ -16,7 +16,7 @@ Function Set-HaloAppointment {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Appointment {
+        $ObjectToUpdate = $Appointment | ForEach-Object {
             $HaloAppointmentParams = @{
                 AppointmentId = ($_.id)
             }

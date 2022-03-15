@@ -16,7 +16,7 @@ Function Set-HaloAgent {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Agent {
+        $ObjectToUpdate = $Agent | ForEach-Object {
             $HaloAgentParams = @{
                 AgentId = ($_.id)
                 IncludeDisabled = $True

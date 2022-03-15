@@ -16,7 +16,7 @@ Function Set-HaloStatus {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Status {
+        $ObjectToUpdate = $Status | ForEach-Object {
             $HaloStatusParams = @{
                 StatusId = $_.id
             }

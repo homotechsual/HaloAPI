@@ -16,7 +16,7 @@ Function Set-HaloSupplier {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Supplier {
+        $ObjectToUpdate = $Supplier | ForEach-Object {
             $HaloSupplierParams = @{
                 SupplierId = $_.id
             }

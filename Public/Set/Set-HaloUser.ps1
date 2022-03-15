@@ -16,7 +16,7 @@ Function Set-HaloUser {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $User {
+        $ObjectToUpdate = $User | ForEach-Object {
             $HaloUserParams = @{
                 UserId = $_.id
             }

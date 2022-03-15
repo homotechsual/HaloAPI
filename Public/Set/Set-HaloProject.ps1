@@ -16,7 +16,7 @@ Function Set-HaloProject {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Project {
+        $ObjectToUpdate = $Project | ForEach-Object {
             $HaloProjectParams = @{
                 ProjectId = $_.id
             }

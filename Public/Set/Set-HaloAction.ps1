@@ -16,7 +16,7 @@ Function Set-HaloAction {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectsToUpdate = ForEach-Object -InputObject $Action {
+        $ObjectsToUpdate = $Action | ForEach-Object {
             $HaloActionParams = @{
                 ActionID = ($_.id)
                 TicketID = ($_.ticket_id)

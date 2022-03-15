@@ -16,7 +16,7 @@ Function Set-HaloKBArticle {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $KBArticle {
+        $ObjectToUpdate = $KBArticle | ForEach-Object {
             $HaloKBArticleParams = @{
                 ArticleId = $_.id
             }

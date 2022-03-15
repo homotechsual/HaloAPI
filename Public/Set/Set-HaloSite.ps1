@@ -16,7 +16,7 @@ Function Set-HaloSite {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $ObjectToUpdate = ForEach-Object -InputObject $Site {
+        $ObjectToUpdate = $Site | ForEach-Object {
             $HaloSiteParams = @{
                 SiteId = $_.id
             }
