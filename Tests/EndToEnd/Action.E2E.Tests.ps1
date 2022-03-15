@@ -22,6 +22,8 @@ BeforeAll {
         Tenant = $env:HaloTestingTenant
     }
 
+    Connect-HaloAPI @HaloConnectionParameters *> $null
+
     $TicketID = 2200
     $ActionID = (Get-HaloAction -TicketID $TicketID -Count 1 | Select-Object -First 1 | Select-Object -ExpandProperty ID)
 }
@@ -80,9 +82,6 @@ Describe 'Action' {
         )
     }
     Context 'Create' {
-        BeforeAll {
-            Connect-HaloAPI @HaloConnectionParameters *> $null
-        }
         It 'succeeds with a valid Action object.' {
             $ActionResult = New-HaloAction -Action $ValidAction
             $ActionResult.actionby_application_id | Should -Be 'AzureDevops Testing App'
