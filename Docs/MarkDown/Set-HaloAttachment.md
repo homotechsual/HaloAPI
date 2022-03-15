@@ -8,7 +8,6 @@ schema: 2.0.0
 # Set-HaloAttachment
 
 ## SYNOPSIS
-
 Updates an attachment via the Halo API.
 
 ## SYNTAX
@@ -18,19 +17,20 @@ Set-HaloAttachment [-Attachment] <PSObject> [-WhatIf] [-Confirm] [<CommonParamet
 ```
 
 ## DESCRIPTION
-
 Function to send an attachment update request to the Halo API
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -Attachment
-
 Object containing properties and values used to update an existing attachment.
 
 ```yaml
@@ -46,8 +46,8 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
@@ -62,7 +62,6 @@ Accept wildcard characters: False
 ```
 
 ### -Confirm
-
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
@@ -84,8 +83,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Outputs an object containing the response from the web request
-
+### Outputs an object containing the response from the web request.
 ## NOTES
 
 ## RELATED LINKS

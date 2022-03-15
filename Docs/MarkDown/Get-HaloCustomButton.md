@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloCustomButton
 
 ## SYNOPSIS
-
 Gets custom buttons from the Halo API.
 
 ## SYNTAX
@@ -24,19 +23,20 @@ Get-HaloCustomButton -CustomButtonID <Int64> [-IncludeDetails] [<CommonParameter
 ```
 
 ## DESCRIPTION
-
 Retrieves custom buttons from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -CustomButtonID
-
 Custom Button ID.
 
 ```yaml
@@ -52,7 +52,6 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-
 Filter by the specified type.
 
 ```yaml
@@ -68,7 +67,6 @@ Accept wildcard characters: False
 ```
 
 ### -TypeID
-
 Filter by the specified type ID.
 
 ```yaml
@@ -84,7 +82,6 @@ Accept wildcard characters: False
 ```
 
 ### -IsButtonSetup
-
 Include custom buttons which are setup (defaults to $True).
 
 ```yaml
@@ -100,7 +97,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Include extra detail objects in the response.
 
 ```yaml
@@ -122,8 +118,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

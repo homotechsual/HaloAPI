@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloObjectTemplate
 
 ## SYNOPSIS
-
 Gets an object template for the Halo API.
 
 ## SYNTAX
@@ -18,19 +17,20 @@ Get-HaloObjectTemplate [-Type] <String> [-NullVariables] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Provides an example object for use in provisioning items in the Halo API
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -Type
-
 Type of object to get template for
 
 ```yaml
@@ -46,7 +46,6 @@ Accept wildcard characters: False
 ```
 
 ### -NullVariables
-
 Return with null values
 
 ```yaml
@@ -68,8 +67,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

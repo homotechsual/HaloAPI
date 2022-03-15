@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloField
 
 ## SYNOPSIS
-
 Gets field information from the Halo API.
 
 ## SYNTAX
@@ -24,19 +23,20 @@ Get-HaloField -FieldID <Int64> [-Kind <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Retrieves field types from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -FieldID
-
 Lookup Item ID
 
 ```yaml
@@ -52,7 +52,6 @@ Accept wildcard characters: False
 ```
 
 ### -Kind
-
 Kind
 
 ```yaml
@@ -68,7 +67,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Include Details
 
 ```yaml
@@ -90,8 +88,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

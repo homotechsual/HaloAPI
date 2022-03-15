@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloLookup
 
 ## SYNOPSIS
-
 Gets lookup information from the Halo API.
 
 ## SYNTAX
@@ -24,19 +23,20 @@ Get-HaloLookup -ItemID <Int64> [-Lookup <String>] [-LookupID <Int64>] [<CommonPa
 ```
 
 ## DESCRIPTION
-
 Retrieves lookup types from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -ItemID
-
 Lookup Item ID
 
 ```yaml
@@ -52,7 +52,6 @@ Accept wildcard characters: False
 ```
 
 ### -Lookup
-
 Lookup Type
 
 ```yaml
@@ -68,7 +67,6 @@ Accept wildcard characters: False
 ```
 
 ### -LookupID
-
 Lookup ID
 
 ```yaml
@@ -84,7 +82,6 @@ Accept wildcard characters: False
 ```
 
 ### -ShowAll
-
 Show all records
 
 ```yaml
@@ -100,8 +97,7 @@ Accept wildcard characters: False
 ```
 
 ### -ExcludeZero
-
-Include extra objects in the result.
+Exclude default lookup options with ID 0.
 
 ```yaml
 Type: SwitchParameter
@@ -122,8 +118,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

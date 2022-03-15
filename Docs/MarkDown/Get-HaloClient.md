@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloClient
 
 ## SYNOPSIS
-
 Gets clients from the Halo API.
 
 ## SYNTAX
@@ -26,19 +25,20 @@ Get-HaloClient -ClientID <Int64> [-IncludeDetails] [-IncludeActivity] [<CommonPa
 ```
 
 ## DESCRIPTION
-
 Retrieves clients from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -ClientID
-
 Client ID
 
 ```yaml
@@ -54,7 +54,6 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
-
 Paginate results
 
 ```yaml
@@ -70,7 +69,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
-
 Number of results per page.
 
 ```yaml
@@ -86,7 +84,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageNo
-
 Which page to return.
 
 ```yaml
@@ -102,7 +99,6 @@ Accept wildcard characters: False
 ```
 
 ### -Order
-
 Which field to order results based on.
 
 ```yaml
@@ -118,7 +114,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderDesc
-
 Order results in descending order (respects the field choice in '-Order')
 
 ```yaml
@@ -134,7 +129,6 @@ Accept wildcard characters: False
 ```
 
 ### -Search
-
 Return clients matching the search term in the results.
 
 ```yaml
@@ -150,7 +144,6 @@ Accept wildcard characters: False
 ```
 
 ### -TopLevelID
-
 Filter by the specified top level ID.
 
 ```yaml
@@ -166,7 +159,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeActive
-
 Include active clients in the results.
 
 ```yaml
@@ -182,7 +174,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeInactive
-
 Include inactive clients in the results.
 
 ```yaml
@@ -198,7 +189,6 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-
 The number of clients to return if not using pagination.
 
 ```yaml
@@ -214,7 +204,6 @@ Accept wildcard characters: False
 ```
 
 ### -FullObjects
-
 Parameter to return the complete objects.
 
 ```yaml
@@ -230,7 +219,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Include extra objects in the result.
 
 ```yaml
@@ -246,7 +234,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeActivity
-
 Include ticket activity in the result.
 
 ```yaml
@@ -268,8 +255,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

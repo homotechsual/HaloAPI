@@ -86,11 +86,11 @@ Describe 'Action' {
             $ActionResult = New-HaloAction -Action $ValidAction
             $ActionResult.actionby_application_id | Should -Be 'AzureDevops Testing App'
             $ActionResult.note | Should -BeLike 'This is an action created by a Pester automated test.*'
-            $ActionResult.id | Should -Be $ActionID
+            $ActionResult.id | Should -Be ($ActionID + 1)
         }
         It 'succeeds with an array of valid Action objects.' {
             $ActionResult = New-HaloAction -Action @($ValidAction, $ValidAction)
-            $ArrayActionID = $ActionID
+            $ArrayActionID = ($ActionID + 1)
             $ActionResult | ForEach-Object {
                 $ActionResult.actionby_application_id | Should -Be 'AzureDevops Testing App'
                 $ActionResult.note | Should -BeLike 'This is an action created by a Pester automated test.*'

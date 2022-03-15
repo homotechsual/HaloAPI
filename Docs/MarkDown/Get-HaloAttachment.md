@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloAttachment
 
 ## SYNOPSIS
-
 Gets attachments from the Halo API.
 
 ## SYNTAX
@@ -35,19 +34,20 @@ Get-HaloAttachment -AttachmentID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Retrieves attachments from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -AttachmentID
-
 Attachment ID
 
 ```yaml
@@ -63,7 +63,6 @@ Accept wildcard characters: False
 ```
 
 ### -TicketID
-
 Returns attachments from the ticket ID specified
 
 ```yaml
@@ -79,7 +78,6 @@ Accept wildcard characters: False
 ```
 
 ### -ActionID
-
 Returns attachments from the action ID specified (requires ticket_id)
 
 ```yaml
@@ -95,7 +93,6 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-
 Returns attachments of the specified type
 
 ```yaml
@@ -111,7 +108,6 @@ Accept wildcard characters: False
 ```
 
 ### -UniqueID
-
 Returns an attachment with the unique ID specified
 
 ```yaml
@@ -127,7 +123,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Include extra objects in the result.
 
 ```yaml
@@ -143,7 +138,6 @@ Accept wildcard characters: False
 ```
 
 ### -OutFile
-
 Allow Writing Directly to File, using the specified path and file name eg c:\temp\myfile.txt
 
 ```yaml
@@ -159,7 +153,6 @@ Accept wildcard characters: False
 ```
 
 ### -OutPath
-
 Allow Writing Directly to File, using the specified path and the original file name eg c:\temp\
 
 ```yaml
@@ -181,8 +174,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

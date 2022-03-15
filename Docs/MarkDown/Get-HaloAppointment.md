@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloAppointment
 
 ## SYNOPSIS
-
 Gets appointments from the Halo API.
 
 ## SYNTAX
@@ -26,19 +25,20 @@ Get-HaloAppointment -AppointmentID <Int64> [-IncludeDetails] [<CommonParameters>
 ```
 
 ## DESCRIPTION
-
 Retrieves appointments from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -AppointmentID
-
 Appointment ID
 
 ```yaml
@@ -54,7 +54,6 @@ Accept wildcard characters: False
 ```
 
 ### -ShowAll
-
 Admin override to return all appointments
 
 ```yaml
@@ -70,7 +69,6 @@ Accept wildcard characters: False
 ```
 
 ### -StartDate
-
 Return appointments with a start date greater than this value.
 
 ```yaml
@@ -86,7 +84,6 @@ Accept wildcard characters: False
 ```
 
 ### -EndDate
-
 Return appointments with an end date greater than this value
 
 ```yaml
@@ -102,7 +99,6 @@ Accept wildcard characters: False
 ```
 
 ### -Agents
-
 Comma separated list of agent IDs.
 Returns these agent's appointments
 
@@ -119,7 +115,6 @@ Accept wildcard characters: False
 ```
 
 ### -ShowHolidays
-
 Include the appointment type 'holiday' in the response
 
 ```yaml
@@ -135,7 +130,6 @@ Accept wildcard characters: False
 ```
 
 ### -ShowProjects
-
 Include projects in the response
 
 ```yaml
@@ -151,7 +145,6 @@ Accept wildcard characters: False
 ```
 
 ### -ShowChanges
-
 Include change requests in the response
 
 ```yaml
@@ -167,7 +160,6 @@ Accept wildcard characters: False
 ```
 
 ### -ShowAppointments
-
 Include appointments in the response
 
 ```yaml
@@ -183,7 +175,6 @@ Accept wildcard characters: False
 ```
 
 ### -Search
-
 Return appointments like this search string
 
 ```yaml
@@ -199,7 +190,6 @@ Accept wildcard characters: False
 ```
 
 ### -AppointmentsOnly
-
 Only return appointments in the response
 
 ```yaml
@@ -215,7 +205,6 @@ Accept wildcard characters: False
 ```
 
 ### -TasksOnly
-
 Only return tasks in the response
 
 ```yaml
@@ -231,7 +220,6 @@ Accept wildcard characters: False
 ```
 
 ### -HideCompleted
-
 Exclude completed appointments from the response
 
 ```yaml
@@ -247,7 +235,6 @@ Accept wildcard characters: False
 ```
 
 ### -TicketID
-
 Return appointments assigned to a particular ticket
 
 ```yaml
@@ -263,7 +250,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Whether to include extra objects in the response
 
 ```yaml
@@ -285,8 +271,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

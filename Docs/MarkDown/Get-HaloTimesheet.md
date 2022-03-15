@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloTimesheet
 
 ## SYNOPSIS
-
 Gets timesheets from the Halo API.
 
 ## SYNTAX
@@ -20,19 +19,20 @@ Get-HaloTimesheet [-SelectedTeam <Int32>] [-ShowHolidays] [-SelectedAgents <Int3
 ```
 
 ## DESCRIPTION
-
 Retrieves timesheets from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -SelectedTeam
-
 Return the timesheet for the specified team.
 
 ```yaml
@@ -48,7 +48,6 @@ Accept wildcard characters: False
 ```
 
 ### -ShowHolidays
-
 Include holidays in the result.
 
 ```yaml
@@ -64,7 +63,6 @@ Accept wildcard characters: False
 ```
 
 ### -SelectedAgents
-
 Return the timesheet for the selected agents.
 
 ```yaml
@@ -80,7 +78,6 @@ Accept wildcard characters: False
 ```
 
 ### -SelectedTypes
-
 Return the selected types.
 
 ```yaml
@@ -90,13 +87,12 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: @(0,1,2,3)
+Default value: @(0, 1 , 2, 3)
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -StartDate
-
 Timesheet start date/time.
 
 ```yaml
@@ -112,7 +108,6 @@ Accept wildcard characters: False
 ```
 
 ### -EndDate
-
 Timesheet end date/time.
 
 ```yaml
@@ -128,7 +123,6 @@ Accept wildcard characters: False
 ```
 
 ### -ShowAllDates
-
 Include all days in the result.
 
 ```yaml
@@ -144,7 +138,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeTimesheetFields
-
 Include all timesheet fields in the result.
 
 ```yaml
@@ -160,7 +153,6 @@ Accept wildcard characters: False
 ```
 
 ### -UTCOffset
-
 The UTC offset.
 
 ```yaml
@@ -182,8 +174,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

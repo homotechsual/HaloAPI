@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloSite
 
 ## SYNOPSIS
-
 Gets sites from the Halo API.
 
 ## SYNTAX
@@ -26,19 +25,20 @@ Get-HaloSite -SiteID <Int64> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Retrieves sites from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -SiteID
-
 Site ID
 
 ```yaml
@@ -54,7 +54,6 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
-
 Paginate results
 
 ```yaml
@@ -70,7 +69,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
-
 Number of results per page.
 
 ```yaml
@@ -86,7 +84,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageNo
-
 Which page to return.
 
 ```yaml
@@ -102,7 +99,6 @@ Accept wildcard characters: False
 ```
 
 ### -Order
-
 The field to order the results by.
 
 ```yaml
@@ -118,7 +114,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderDesc
-
 Order results in descending order (respects the field choice in '-Order')
 
 ```yaml
@@ -134,7 +129,6 @@ Accept wildcard characters: False
 ```
 
 ### -Search
-
 Return contracts matching the search term in the results.
 
 ```yaml
@@ -150,7 +144,6 @@ Accept wildcard characters: False
 ```
 
 ### -TopLevelID
-
 Filter by the specified top level ID.
 
 ```yaml
@@ -166,7 +159,6 @@ Accept wildcard characters: False
 ```
 
 ### -ClientID
-
 Filter by the specified client ID.
 
 ```yaml
@@ -182,7 +174,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeInactive
-
 Include inactive sites in the results.
 
 ```yaml
@@ -198,7 +189,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeActive
-
 Include active sites in the results.
 
 ```yaml
@@ -214,7 +204,6 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-
 The number of sites to return if not using pagination.
 
 ```yaml
@@ -236,8 +225,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

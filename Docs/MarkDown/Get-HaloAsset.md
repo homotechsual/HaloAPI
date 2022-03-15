@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloAsset
 
 ## SYNOPSIS
-
 Gets assets from the Halo API.
 
 ## SYNTAX
@@ -27,19 +26,20 @@ Get-HaloAsset -AssetID <Int64> [-IncludeDetails] [-IncludeDiagramDetails] [<Comm
 ```
 
 ## DESCRIPTION
-
 Retrieves assets from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -AssetID
-
 Asset ID
 
 ```yaml
@@ -55,7 +55,6 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
-
 Paginate results
 
 ```yaml
@@ -71,7 +70,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
-
 Number of results per page.
 
 ```yaml
@@ -81,13 +79,12 @@ Aliases: page_size
 
 Required: False
 Position: Named
-Default value: 0
+Default value: $Script:HAPIDefaultPageSize
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -PageNo
-
 Which page to return.
 
 ```yaml
@@ -103,7 +100,6 @@ Accept wildcard characters: False
 ```
 
 ### -Order
-
 Which field to order results based on.
 
 ```yaml
@@ -119,7 +115,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderDesc
-
 Order results in descending order (respects the field choice in '-Order')
 
 ```yaml
@@ -135,7 +130,6 @@ Accept wildcard characters: False
 ```
 
 ### -Search
-
 Filter by Assets with an asset field like your search
 
 ```yaml
@@ -151,7 +145,6 @@ Accept wildcard characters: False
 ```
 
 ### -TicketID
-
 Filter by Assets belonging to a particular ticket
 
 ```yaml
@@ -167,7 +160,6 @@ Accept wildcard characters: False
 ```
 
 ### -ClientID
-
 Filter by Assets belonging to a particular client
 
 ```yaml
@@ -183,7 +175,6 @@ Accept wildcard characters: False
 ```
 
 ### -SiteID
-
 Filter by Assets belonging to a particular site
 
 ```yaml
@@ -199,7 +190,6 @@ Accept wildcard characters: False
 ```
 
 ### -Username
-
 Filter by Assets belonging to a particular user
 
 ```yaml
@@ -215,7 +205,6 @@ Accept wildcard characters: False
 ```
 
 ### -AssetGroupID
-
 Filter by Assets belonging to a particular Asset group
 
 ```yaml
@@ -231,7 +220,6 @@ Accept wildcard characters: False
 ```
 
 ### -AssetTypeID
-
 Filter by Assets belonging to a particular Asset type
 
 ```yaml
@@ -247,7 +235,6 @@ Accept wildcard characters: False
 ```
 
 ### -LinkedToID
-
 Filter by Assets linked to a particular Asset
 
 ```yaml
@@ -263,7 +250,6 @@ Accept wildcard characters: False
 ```
 
 ### -includeinactive
-
 Include inactive Assets in the response
 
 ```yaml
@@ -279,7 +265,6 @@ Accept wildcard characters: False
 ```
 
 ### -includeactive
-
 Include active Assets in the response
 
 ```yaml
@@ -295,7 +280,6 @@ Accept wildcard characters: False
 ```
 
 ### -includechildren
-
 Include child Assets in the response
 
 ```yaml
@@ -311,7 +295,6 @@ Accept wildcard characters: False
 ```
 
 ### -ContractID
-
 Filter by Assets linked to a particular Asset
 
 ```yaml
@@ -327,7 +310,6 @@ Accept wildcard characters: False
 ```
 
 ### -FullObjects
-
 Parameter to return the complete objects.
 
 ```yaml
@@ -343,7 +325,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Include extra objects in the result.
 
 ```yaml
@@ -359,7 +340,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDiagramDetails
-
 Include the last action in the result.
 
 ```yaml
@@ -381,8 +361,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

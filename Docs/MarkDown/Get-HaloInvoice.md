@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloInvoice
 
 ## SYNOPSIS
-
 Gets invoices from the Halo API.
 
 ## SYNTAX
@@ -27,19 +26,20 @@ Get-HaloInvoice -InvoiceID <Int64> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Retrieves invoices from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -InvoiceID
-
 Invoice ID
 
 ```yaml
@@ -55,7 +55,6 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-
 The number of invoices to return if not using pagination.
 
 ```yaml
@@ -71,7 +70,6 @@ Accept wildcard characters: False
 ```
 
 ### -Search
-
 Return contracts matching the search term in the results.
 
 ```yaml
@@ -87,7 +85,6 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
-
 Paginate results
 
 ```yaml
@@ -103,7 +100,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
-
 Number of results per page.
 
 ```yaml
@@ -119,7 +115,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageNo
-
 Which page to return.
 
 ```yaml
@@ -135,7 +130,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy
-
 First field to order the results by.
 
 ```yaml
@@ -151,7 +145,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderByDesc
-
 Order results for the first field in descending order (respects the field choice in '-OrderBy')
 
 ```yaml
@@ -167,7 +160,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy2
-
 Second field to order the results by.
 
 ```yaml
@@ -183,7 +175,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderByDesc2
-
 Order results for the second field in descending order (respects the field choice in '-OrderBy2')
 
 ```yaml
@@ -199,7 +190,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy3
-
 Third field to order the results by.
 
 ```yaml
@@ -215,7 +205,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderByDesc3
-
 Order results for the third field in descending order (respects the field choice in '-OrderBy3')
 
 ```yaml
@@ -231,7 +220,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy4
-
 Fourth field to order the results by.
 
 ```yaml
@@ -247,7 +235,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderByDesc4
-
 Order results for the fourth field in descending order (respects the field choice in '-OrderBy4')
 
 ```yaml
@@ -263,7 +250,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy5
-
 Fifth field to order the results by.
 
 ```yaml
@@ -279,7 +265,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderByDesc5
-
 Order results for the fifth field in descending order (respects the field choice in '-OrderBy5')
 
 ```yaml
@@ -295,7 +280,6 @@ Accept wildcard characters: False
 ```
 
 ### -TicketID
-
 Filter by the specified ticket ID.
 
 ```yaml
@@ -311,7 +295,6 @@ Accept wildcard characters: False
 ```
 
 ### -ClientID
-
 Filter by the specified client ID.
 
 ```yaml
@@ -327,7 +310,6 @@ Accept wildcard characters: False
 ```
 
 ### -SiteID
-
 Filter by the specified site ID.
 
 ```yaml
@@ -343,7 +325,6 @@ Accept wildcard characters: False
 ```
 
 ### -UserID
-
 Filter by the specified user ID.
 
 ```yaml
@@ -365,8 +346,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

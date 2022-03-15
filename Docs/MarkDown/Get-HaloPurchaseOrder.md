@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloPurchaseOrder
 
 ## SYNOPSIS
-
 Gets purchase orders from the Halo API.
 
 ## SYNTAX
@@ -26,19 +25,20 @@ Get-HaloPurchaseOrder -PurchaseOrderID <Int64> [-IncludeDetails] [-IncludeBillin
 ```
 
 ## DESCRIPTION
-
 Retrieves purchase orders from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -PurchaseOrderID
-
 Purchase Order ID
 
 ```yaml
@@ -54,7 +54,6 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-
 Number of records to return
 
 ```yaml
@@ -70,7 +69,6 @@ Accept wildcard characters: False
 ```
 
 ### -Search
-
 Filters response based on the search string
 
 ```yaml
@@ -86,7 +84,6 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
-
 Paginate results
 
 ```yaml
@@ -102,7 +99,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
-
 Number of results per page.
 
 ```yaml
@@ -118,7 +114,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageNo
-
 Which page to return.
 
 ```yaml
@@ -134,7 +129,6 @@ Accept wildcard characters: False
 ```
 
 ### -Open
-
 Include open purchase orders in the results.
 
 ```yaml
@@ -150,7 +144,6 @@ Accept wildcard characters: False
 ```
 
 ### -Closed
-
 Include closed purchase orders in the results.
 
 ```yaml
@@ -166,7 +159,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeActive
-
 Include active purchase orders in the results.
 
 ```yaml
@@ -182,7 +174,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeInactive
-
 Include inactive purchase orders in the results.
 
 ```yaml
@@ -198,7 +189,6 @@ Accept wildcard characters: False
 ```
 
 ### -Order
-
 Which field to order results based on.
 
 ```yaml
@@ -214,7 +204,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderDesc
-
 Order results in descending order (respects the field choice in '-Order')
 
 ```yaml
@@ -230,7 +219,6 @@ Accept wildcard characters: False
 ```
 
 ### -ClientID
-
 Filters by the specified client
 
 ```yaml
@@ -246,7 +234,6 @@ Accept wildcard characters: False
 ```
 
 ### -SiteID
-
 Filters by the specified site
 
 ```yaml
@@ -262,7 +249,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Include extra objects in the result.
 
 ```yaml
@@ -278,7 +264,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeBillingInfo
-
 Include billing details in the result.
 
 ```yaml
@@ -300,8 +285,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

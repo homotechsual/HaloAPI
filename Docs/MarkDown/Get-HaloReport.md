@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloReport
 
 ## SYNOPSIS
-
 Gets reports from the Halo API.
 
 ## SYNTAX
@@ -28,19 +27,20 @@ Get-HaloReport -ReportID <Int64> [-IncludeDetails] [-LoadReport] [<CommonParamet
 ```
 
 ## DESCRIPTION
-
 Retrieves reports from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -ReportID
-
 Report ID
 
 ```yaml
@@ -56,7 +56,6 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-
 Number of records to return
 
 ```yaml
@@ -72,7 +71,6 @@ Accept wildcard characters: False
 ```
 
 ### -Search
-
 Filters response based on the search string
 
 ```yaml
@@ -88,7 +86,6 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
-
 Paginate results
 
 ```yaml
@@ -104,7 +101,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
-
 Number of results per page.
 
 ```yaml
@@ -120,7 +116,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageNo
-
 Which page to return.
 
 ```yaml
@@ -136,7 +131,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy
-
 The name of the first field to order by
 
 ```yaml
@@ -152,7 +146,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderByDesc
-
 Whether to order ascending or descending
 
 ```yaml
@@ -168,7 +161,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy2
-
 The name of the second field to order by
 
 ```yaml
@@ -184,7 +176,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderByDesc2
-
 Whether to order ascending or descending
 
 ```yaml
@@ -200,7 +191,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy3
-
 The name of the third field to order by
 
 ```yaml
@@ -216,7 +206,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderByDesc3
-
 Whether to order ascending or descending
 
 ```yaml
@@ -232,7 +221,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy4
-
 The name of the fourth field to order by
 
 ```yaml
@@ -248,7 +236,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderByDesc4
-
 Whether to order ascending or descending
 
 ```yaml
@@ -264,7 +251,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy5
-
 The name of the fifth field to order by
 
 ```yaml
@@ -280,7 +266,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderByDesc5
-
 Whether to order ascending or descending
 
 ```yaml
@@ -296,7 +281,6 @@ Accept wildcard characters: False
 ```
 
 ### -TicketID
-
 Filters by the specified ticket
 
 ```yaml
@@ -312,7 +296,6 @@ Accept wildcard characters: False
 ```
 
 ### -ClientID
-
 Filters by the specified client
 
 ```yaml
@@ -328,7 +311,6 @@ Accept wildcard characters: False
 ```
 
 ### -SiteID
-
 Filters by the specified site
 
 ```yaml
@@ -344,7 +326,6 @@ Accept wildcard characters: False
 ```
 
 ### -UserID
-
 Filters by the specified user
 
 ```yaml
@@ -360,7 +341,6 @@ Accept wildcard characters: False
 ```
 
 ### -ReportGroupID
-
 Filters by the specified report group
 
 ```yaml
@@ -376,7 +356,6 @@ Accept wildcard characters: False
 ```
 
 ### -ChartOnly
-
 Whether to return only records for reports that include graphs
 
 ```yaml
@@ -392,7 +371,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Include extra objects in the result.
 
 ```yaml
@@ -408,7 +386,6 @@ Accept wildcard characters: False
 ```
 
 ### -LoadReport
-
 Whether to include the report data in the response
 
 ```yaml
@@ -430,8 +407,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

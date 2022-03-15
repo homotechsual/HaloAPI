@@ -8,7 +8,6 @@ schema: 2.0.0
 # Remove-HaloAction
 
 ## SYNOPSIS
-
 Removes an action from the Halo API.
 
 ## SYNTAX
@@ -18,19 +17,20 @@ Remove-HaloAction [-ActionID] <Int64> [-TicketID] <Int64> [-WhatIf] [-Confirm] [
 ```
 
 ## DESCRIPTION
-
 Deletes a specific action from Halo.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -ActionID
-
 The Action ID
 
 ```yaml
@@ -46,7 +46,6 @@ Accept wildcard characters: False
 ```
 
 ### -TicketID
-
 The Ticket ID
 
 ```yaml
@@ -62,7 +61,6 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
@@ -79,7 +77,6 @@ Accept wildcard characters: False
 ```
 
 ### -Confirm
-
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
@@ -101,8 +98,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

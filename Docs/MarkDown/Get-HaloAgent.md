@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloAgent
 
 ## SYNOPSIS
-
 Gets agents from the Halo API.
 
 ## SYNTAX
@@ -31,19 +30,20 @@ Get-HaloAgent -AgentID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Retrieves agents from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -Me
-
 Get the agent object for the access token owner
 
 ```yaml
@@ -59,7 +59,6 @@ Accept wildcard characters: False
 ```
 
 ### -AgentID
-
 Agent ID.
 
 ```yaml
@@ -75,7 +74,6 @@ Accept wildcard characters: False
 ```
 
 ### -Team
-
 Filter by the specified team name.
 
 ```yaml
@@ -91,7 +89,6 @@ Accept wildcard characters: False
 ```
 
 ### -Search
-
 Filter by name, email address or telephone number using the specified search string.
 
 ```yaml
@@ -107,7 +104,6 @@ Accept wildcard characters: False
 ```
 
 ### -SectionID
-
 Filter by the specified team ID.
 ?ACT Query with Halo what this does!
 
@@ -124,7 +120,6 @@ Accept wildcard characters: False
 ```
 
 ### -DepartmentID
-
 Filter by the specified department ID.
 
 ```yaml
@@ -140,7 +135,6 @@ Accept wildcard characters: False
 ```
 
 ### -ClientID
-
 Filter by the specified client ID (agents who have access to this client).
 
 ```yaml
@@ -156,7 +150,6 @@ Accept wildcard characters: False
 ```
 
 ### -Role
-
 Filter by the specified role ID (requires int as string.)
 
 ```yaml
@@ -172,7 +165,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeEnabled
-
 Include agents with enabled accounts (defaults to $True).
 
 ```yaml
@@ -188,7 +180,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDisabled
-
 Include agents with disabled accounts.
 
 ```yaml
@@ -204,7 +195,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeUnassigned
-
 Include the system unassigned agent account.
 
 ```yaml
@@ -220,7 +210,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeRoles
-
 Include the agent's roles list in the response.
 
 ```yaml
@@ -236,7 +225,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Include extra detail objects (for example teams and roles) in the response.
 
 ```yaml
@@ -258,8 +246,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloTicketType
 
 ## SYNOPSIS
-
 Gets ticket types from the Halo API.
 
 ## SYNTAX
@@ -25,19 +24,20 @@ Get-HaloTicketType -TicketTypeID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Retrieves ticket types from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -TicketTypeID
-
 Ticket Type ID
 
 ```yaml
@@ -53,7 +53,6 @@ Accept wildcard characters: False
 ```
 
 ### -ShowCounts
-
 Show the count of tickets in the results.
 
 ```yaml
@@ -69,7 +68,6 @@ Accept wildcard characters: False
 ```
 
 ### -Domain
-
 Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
 
 ```yaml
@@ -85,7 +83,6 @@ Accept wildcard characters: False
 ```
 
 ### -ViewID
-
 Filter counts to a specific view ID.
 
 ```yaml
@@ -101,7 +98,6 @@ Accept wildcard characters: False
 ```
 
 ### -ShowInactive
-
 Include inactive ticket types in the results.
 
 ```yaml
@@ -117,7 +113,6 @@ Accept wildcard characters: False
 ```
 
 ### -ClientID
-
 Filter by a specific client id.
 
 ```yaml
@@ -133,7 +128,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Include extra objects in the result.
 
 ```yaml
@@ -155,8 +149,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS

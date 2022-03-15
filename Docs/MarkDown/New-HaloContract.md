@@ -8,8 +8,7 @@ schema: 2.0.0
 # New-HaloContract
 
 ## SYNOPSIS
-
-Updates a contract via the Halo API.
+Creates one or more contracts via the Halo API.
 
 ## SYNTAX
 
@@ -18,20 +17,21 @@ New-HaloContract [-Contract] <Object[]> [-WhatIf] [-Confirm] [<CommonParameters>
 ```
 
 ## DESCRIPTION
-
-Object containing properties and values used to create a new contract.
+Function to send a contract creation request to the Halo API
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -Contract
-
-An object representing a Halo contract.
+Object or array of objects containing properties and values used to create one or more new contracts.
 
 ```yaml
 Type: Object[]
@@ -46,8 +46,8 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
@@ -62,7 +62,6 @@ Accept wildcard characters: False
 ```
 
 ### -Confirm
-
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
@@ -84,8 +83,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Outputs an object containing the response from the web request
-
+### Outputs an object containing the response from the web request.
 ## NOTES
 
 ## RELATED LINKS

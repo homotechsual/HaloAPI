@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-HaloKBArticle
 
 ## SYNOPSIS
-
 Gets knowledgebase articles from the Halo API.
 
 ## SYNTAX
@@ -25,19 +24,20 @@ Get-HaloKBArticle -KBArticleID <Int64> [-IncludeDetails] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Retrieves knowledgebase articles from the Halo API - supports a variety of filtering parameters.
 
 ## EXAMPLES
 
-### No Examples
+### Example 1
+```powershell
+PS C:\> {{ Add example code here }}
+```
 
-Thought of a useful example? Tell us or submit a PR.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -KBArticleID
-
 Article ID
 
 ```yaml
@@ -53,7 +53,6 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-
 Number of records to return
 
 ```yaml
@@ -69,7 +68,6 @@ Accept wildcard characters: False
 ```
 
 ### -Search
-
 Filters response based on the search string
 
 ```yaml
@@ -100,7 +98,6 @@ Accept wildcard characters: False
 ```
 
 ### -Paginate
-
 Paginate results
 
 ```yaml
@@ -116,7 +113,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
-
 Number of results per page.
 
 ```yaml
@@ -132,7 +128,6 @@ Accept wildcard characters: False
 ```
 
 ### -PageNo
-
 Which page to return.
 
 ```yaml
@@ -148,7 +143,6 @@ Accept wildcard characters: False
 ```
 
 ### -Order
-
 The name of the first field to order by
 
 ```yaml
@@ -164,7 +158,6 @@ Accept wildcard characters: False
 ```
 
 ### -OrderDesc
-
 Whether to order ascending or descending
 
 ```yaml
@@ -180,7 +173,6 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeDetails
-
 Include extra objects in the result.
 
 ```yaml
@@ -202,8 +194,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### A powershell object containing the response
-
+### A powershell object containing the response.
 ## NOTES
 
 ## RELATED LINKS
