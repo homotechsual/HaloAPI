@@ -12,7 +12,7 @@
     RootModule        = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.9.0'
+    ModuleVersion     = '1.8.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -140,7 +140,7 @@
             ReleaseNotes = 'Handle arrays of objects for many New/Set commands.'
 
             # Prerelease string of this module
-            Prerelease = 'beta1'
+            # Prerelease = ''
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenseAcceptance = $false
