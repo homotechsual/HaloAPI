@@ -12,7 +12,7 @@
     RootModule        = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.9.0'
+    ModuleVersion     = '1.8.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -97,9 +97,9 @@
     'Set-HaloRecurringTemplate', 'Set-HaloReport', 'Set-HaloSite', 
     'Set-HaloStatus', 'Set-HaloSupplier', 'Set-HaloTeam', 'Set-HaloTicket', 
     'Set-HaloTicketType', 'Set-HaloUser', 'Set-HaloWorkday', 
-    'Remove-HaloAction', 'Remove-HaloClient', 'Remove-HaloCRMNote', 
+    'Remove-HaloAction', 'Remove-HaloClient', 'Remove-HaloCRMNote',
     'Remove-HaloTicket', 'Get-HaloCategory', 'Set-HaloCategory', 'New-HaloCategory', 
-    'Remove-HaloCategory'
+    'Remove-HaloCategory', 'Get-HaloSoftwareLicence', 'Set-HaloSoftwareLicence', 'New-HaloSoftwareLicence'
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = @()
@@ -127,8 +127,8 @@
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags         = 'HaloPSA', 'PSA', 'Halo', 'API', 'HaloServiceSolutions', 'HaloITSM', 'HaloServiceDesk', 'ITSM', 'Service', 'Desk', 'REST', 'MSP', 'Automation'
 
-            # A URL to the license for this module.
-            LicenseUri   = 'https://mit.license.homotechsual.dev'
+            # A URL to the Licence for this module.
+            LicenceUri   = 'https://mit.Licence.homotechsual.dev'
 
             # A URL to the main website for this project.
             ProjectUri   = 'https://github.com/homotechsual/HaloAPI'
@@ -137,13 +137,13 @@
             IconUri      = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Handle arrays of objects for many New/Set commands.'
+            ReleaseNotes = 'Added Software Licences'
 
             # Prerelease string of this module
-            Prerelease = 'beta1'
+            # Prerelease = ''
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
-            # RequireLicenseAcceptance = $false
+            # RequireLicenceAcceptance = $false
 
             # External dependent modules of this module
             # ExternalModuleDependencies = @()
