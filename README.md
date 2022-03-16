@@ -17,14 +17,14 @@ We are Mikey O'Toole ([@homotechsual](https://github.com/homotechsual)) and Luke
 This is the code for a [PowerShell](https://microsoft.com/powershell) module for the [Halo Service Solutions](https://haloservicesolutions.com/) series of software, including:
 
 * [HaloPSA](https://halopsa.com)
-* [HaloISTM](https://haloitsm.com/)
+* [HaloITSM](https://haloitsm.com/)
 * [HaloServiceDesk](https://haloservicedesk.com/)
 
 The module is written for [PowerShell 7](https://docs.microsoft.com/en-us/powershell/scripting/whats-new/what-s-new-in-powershell-71?view=powershell-7.1). **It is not compatible with Windows PowerShell 5.1 and never will be.**. This module is licensed under the [MIT](https://haloapi.mit-license.org/) license.
 
 ## What does it do?
 
-HaloAPI provides a PowerShell wrapper around the Halo API, tested extensively against HaloPSA instances only (please test against HaloISM or HaloServiceDesk instances and let us know how it works). The module can retrieve and send information to the Halo API.
+HaloAPI provides a PowerShell wrapper around the Halo API, tested extensively against HaloPSA instances only (please test against HaloITSM or HaloServiceDesk instances and let us know how it works). The module can retrieve and send information to the Halo API.
 
 ## Installing
 
@@ -63,7 +63,7 @@ For example *HaloAPI PS Module*.
 1. Select the **Permissions** tab.
 
 1. Grant the application the permissions required for your purposes.  
-*Generally speaking you want to limit the API to only the permissions it needs to do the job you're scripting for.*
+*Generally speaking you want to limit the API to only the permissions it needs, to do the job you're scripting for.*
 
 ### Connecting the PowerShell module to the API
 
