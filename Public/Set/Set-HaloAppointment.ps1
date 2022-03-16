@@ -17,6 +17,9 @@ Function Set-HaloAppointment {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Appointment | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Appointment ID is required.'
+            }
             $HaloAppointmentParams = @{
                 AppointmentId = ($_.id)
             }
@@ -29,7 +32,7 @@ Function Set-HaloAppointment {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Appointment -is [Array] ? 'Appointments' : 'Appointment', 'Update')) {
-                New-HaloPOSTRequest -Object $Appointment -Endpoint 'appointment' -Update
+                New-HaloPOSTRequest -Object $Appointment -Endpoint 'appointment'
             }
         } else {
             Throw 'One or more appointments was not found in Halo to update.'

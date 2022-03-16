@@ -17,6 +17,9 @@ Function Set-HaloOpportunity {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Opportunity | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Opportunity ID is required.'
+            }
             $HaloOpportunityParams = @{
                 OpportunityId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloOpportunity {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Opportunity -is [Array] ? 'Opportunities' : 'Opportunity', 'Update')) {
-                New-HaloPOSTRequest -Object $Opportunity -Endpoint 'opportunities' -Update
+                New-HaloPOSTRequest -Object $Opportunity -Endpoint 'opportunities'
             }
         } else {
             Throw 'One or more opportunities was not found in Halo to update.'

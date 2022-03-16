@@ -17,6 +17,9 @@ Function Set-HaloItem {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Item | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Item ID is required.'
+            }
             $HaloItemParams = @{
                 ItemId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloItem {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Item -is [Array] ? 'Items' : 'Item', 'Update')) {
-                New-HaloPOSTRequest -Object $Item -Endpoint 'item' -Update
+                New-HaloPOSTRequest -Object $Item -Endpoint 'item'
             }
         } else {
             Throw 'One or more items was not found in Halo to update.'

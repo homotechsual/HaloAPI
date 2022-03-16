@@ -17,6 +17,9 @@ Function Set-HaloKBArticle {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $KBArticle | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'KB article ID is required.'
+            }
             $HaloKBArticleParams = @{
                 ArticleId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloKBArticle {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($KBArticle -is [Array] ? 'Knowledgebase Articles' : 'Knowledgebase Article', 'Update')) {
-                New-HaloPOSTRequest -Object $KBArticle -Endpoint 'kbarticle' -Update
+                New-HaloPOSTRequest -Object $KBArticle -Endpoint 'kbarticle'
             }
         } else {
             Throw 'One or more knowledgebase articles was not found in Halo to update.'

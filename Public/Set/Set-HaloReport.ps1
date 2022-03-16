@@ -17,6 +17,9 @@ Function Set-HaloReport {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Report | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Report ID is required.'
+            }
             $HaloReportParams = @{
                 ReportId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloReport {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Report -is [Array] ? 'Reports' : 'Report', 'Update')) {
-                New-HaloPOSTRequest -Object $Report -Endpoint 'report' -Update
+                New-HaloPOSTRequest -Object $Report -Endpoint 'report'
             }
         } else {
             Throw 'One or more reports was not found in Halo to update.'

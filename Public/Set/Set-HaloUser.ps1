@@ -17,6 +17,9 @@ Function Set-HaloUser {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $User | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'User ID is required.'
+            }
             $HaloUserParams = @{
                 UserId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloUser {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($User -is [Array] ? 'Users' : 'User', 'Update')) {
-                New-HaloPOSTRequest -Object $User -Endpoint 'users' -Update
+                New-HaloPOSTRequest -Object $User -Endpoint 'users'
             }
         } else {
             Throw 'One or more users was not found in Halo to update.'

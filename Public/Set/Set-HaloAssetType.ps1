@@ -16,6 +16,9 @@ Function Set-HaloAssetType {
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($null -eq $AssetType.id) {
+            throw 'Asset type ID is required.'
+        }
         $ObjectToUpdate = Get-HaloAssetType -AssetTypeID $AssetType.id
         if ($ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess("Asset Type '$($ObjectToUpdate.name)'", 'Update')) {

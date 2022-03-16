@@ -16,10 +16,13 @@ Function Set-HaloFAQList {
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($null -eq $FAQList.id) {
+            throw 'FAQ list ID is required.'
+        }
         $ObjectToUpdate = Get-HaloFAQList -FAQListID $FAQList.id
         if ($ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess("FAQ List '$($ObjectToUpdate.name)'", 'Update')) {
-                New-HaloPOSTRequest -Object $FAQList -Endpoint 'FAQLists' -Update
+                New-HaloPOSTRequest -Object $FAQList -Endpoint 'FAQLists'
             }
         } else {
             Throw 'FAQ List was not found in Halo to update.'

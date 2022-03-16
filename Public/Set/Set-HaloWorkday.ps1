@@ -16,10 +16,13 @@ Function Set-HaloWorkday {
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($null -eq $Workday.id) {
+            throw 'Workday ID is required.'
+        }
         $ObjectToUpdate = Get-HaloWorkday -WorkdayID $Workday.id
         if ($ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess("Workday '$($ObjectToUpdate.name)'", 'Update')) {
-                New-HaloPOSTRequest -Object $Workday -Endpoint 'workday' -Update
+                New-HaloPOSTRequest -Object $Workday -Endpoint 'workday'
             }
         } else {
             Throw 'Workday was not found in Halo to update.'

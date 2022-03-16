@@ -17,9 +17,11 @@ Function Set-HaloAgent {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Agent | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Agent ID is required.'
+            }
             $HaloAgentParams = @{
-                AgentId = ($_.id)
-                IncludeDisabled = $True
+                AgentId = $_.id
             }
             $AgentExists = Get-HaloAgent @HaloAgentParams
             if ($AgentExists) {
@@ -30,7 +32,7 @@ Function Set-HaloAgent {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Agent -is [Array] ? 'Agents' : 'Agent', 'Update')) {
-                New-HaloPOSTRequest -Object $Agent -Endpoint 'agent' -Update
+                New-HaloPOSTRequest -Object $Agent -Endpoint 'agent'
             }
         } else {
             Throw 'One or more agents was not found in Halo to update.'

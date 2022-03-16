@@ -17,6 +17,9 @@ Function Set-HaloSupplier {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Supplier | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Supplier ID is required.'
+            }
             $HaloSupplierParams = @{
                 SupplierId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloSupplier {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Supplier -is [Array] ? 'Suppliers' : 'Supplier', 'Update')) {
-                New-HaloPOSTRequest -Object $Supplier -Endpoint 'supplier' -Update
+                New-HaloPOSTRequest -Object $Supplier -Endpoint 'supplier'
             }
         } else {
             Throw 'One or more suppliers was not found in Halo to update.'

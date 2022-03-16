@@ -17,6 +17,9 @@ Function Set-HaloTicket {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Ticket | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Ticket ID is required.'
+            }
             $HaloTicketParams = @{
                 TicketId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloTicket {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Ticket -is [Array] ? 'Tickets' : 'Ticket', 'Update')) {
-                New-HaloPOSTRequest -Object $Ticket -Endpoint 'tickets' -Update
+                New-HaloPOSTRequest -Object $Ticket -Endpoint 'tickets'
             }
         } else {
             Throw 'One or more tickets was not found in Halo to update.'

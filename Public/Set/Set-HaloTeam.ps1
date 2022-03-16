@@ -17,6 +17,9 @@ Function Set-HaloTeam {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Team | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Team ID is required.'
+            }
             $HaloTeamParams = @{
                 TeamId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloTeam {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Team -is [Array] ? 'Teams' : 'Team', 'Update')) {
-                New-HaloPOSTRequest -Object $Team -Endpoint 'team' -Update
+                New-HaloPOSTRequest -Object $Team -Endpoint 'team'
             }
         } else {
             Throw 'One or more teams was not found in Halo to update.'

@@ -16,10 +16,13 @@ Function Set-HaloRecurringInvoice {
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($null -eq $RecurringInvoice.id) {
+            throw 'Recurring invoice ID is required.'
+        }
         $ObjectToUpdate = Get-HaloRecurringInvoice -RecurringInvoiceID $RecurringInvoice.id
         if ($ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess("Invoice '$($ObjectToUpdate.id)'", 'Update')) {
-                New-HaloPOSTRequest -Object $RecurringInvoice -Endpoint 'recurringinvoice' -Update
+                New-HaloPOSTRequest -Object $RecurringInvoice -Endpoint 'recurringinvoice'
             }
         } else {
             Throw 'Recurring Invoice was not found in Halo to update.'

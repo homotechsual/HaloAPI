@@ -17,6 +17,9 @@ Function Set-HaloSite {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Site | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Site ID is required.'
+            }
             $HaloSiteParams = @{
                 SiteId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloSite {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Site -is [Array] ? 'Sites' : 'Site', 'Update')) {
-                New-HaloPOSTRequest -Object $Site -Endpoint 'site' -Update
+                New-HaloPOSTRequest -Object $Site -Endpoint 'site'
             }
         } else {
             Throw 'One or more sites was not found in Halo to update.'

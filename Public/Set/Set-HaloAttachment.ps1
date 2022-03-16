@@ -16,10 +16,16 @@ Function Set-HaloAttachment {
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($null -eq $Attachment.id) {
+            throw 'Attachment ID is required.'
+        }
+        if ($null -eq $Attachment.ticket_id) {
+            throw 'Ticket ID is required.'
+        }
         $ObjectToUpdate = Get-HaloAttachment -TicketID $Attachment.ticket_id -AttachmentID $Attachment.id
         if ($ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess("Attachment '$($ObjectToUpdate.filename)'", 'Update')) {
-                New-HaloPOSTRequest -Object $Attachment -Endpoint 'attachment' -Update
+                New-HaloPOSTRequest -Object $Attachment -Endpoint 'attachment'
             }
         } else {
             Throw 'Attachment was not found in Halo to update.'

@@ -70,7 +70,7 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = 'Connect-HaloAPI', 'Get-HaloAction', 'Get-HaloAgent', 
-    'Get-HaloAppointment', 'Get-HaloAsset', 'Get-HaloAttachment', 
+    'Get-HaloAppointment', 'Get-HaloAsset', 'Get-HaloAssetType', 'Get-HaloAttachment', 
     'Get-HaloBillingTemplate', 'Get-HaloClient', 'Get-HaloContract', 
     'Get-HaloCRMNote', 'Get-HaloCustomButton', 'Get-HaloFAQList', 
     'Get-HaloField', 'Get-HaloInvoice', 'Get-HaloItem', 'Get-HaloKBArticle', 
@@ -81,7 +81,7 @@
     'Get-HaloTeam', 'Get-HaloObjectTemplate', 'Get-HaloTicket', 
     'Get-HaloTicketType', 'Get-HaloTimesheet', 'Get-HaloUser', 
     'Get-HaloWorkday', 'New-HaloAction', 'New-HaloAgent', 
-    'New-HaloAppointment', 'New-HaloAsset', 'New-HaloAttachment', 
+    'New-HaloAppointment', 'New-HaloAsset', 'New-HaloAssetType', 'New-HaloAttachment', 
     'New-HaloBillingTemplate', 'New-HaloClient', 'New-HaloContract', 
     'New-HaloFAQList', 'New-HaloInvoice', 'New-HaloItem', 
     'New-HaloKBArticle', 'New-HaloOpportunity', 'New-HaloProject', 
@@ -89,7 +89,7 @@
     'New-HaloSite', 'New-HaloStatus', 'New-HaloSupplier', 'New-HaloTeam', 
     'New-HaloTicket', 'New-HaloTicketType', 'New-HaloUser', 
     'New-HaloWorkday', 'Set-HaloAction', 'Set-HaloAgent', 
-    'Set-HaloAppointment', 'Set-HaloAsset', 'Set-HaloAttachment', 
+    'Set-HaloAppointment', 'Set-HaloAsset', 'Set-HaloAssetType', 'Set-HaloAttachment', 
     'Set-HaloBillingTemplate', 'Set-HaloClient', 'Set-HaloContract', 
     'Set-HaloCRMNote', 'Set-HaloFAQList', 'Set-HaloInvoice', 'Set-HaloItem', 
     'Set-HaloKBArticle', 'Set-HaloOpportunity', 'Set-HaloProject', 
@@ -97,7 +97,7 @@
     'Set-HaloRecurringTemplate', 'Set-HaloReport', 'Set-HaloSite', 
     'Set-HaloStatus', 'Set-HaloSupplier', 'Set-HaloTeam', 'Set-HaloTicket', 
     'Set-HaloTicketType', 'Set-HaloUser', 'Set-HaloWorkday', 
-    'Remove-HaloAction', 'Remove-HaloClient', 'Remove-HaloCRMNote',
+    'Remove-HaloAction', 'Remove-HaloAgent', 'Remove-HaloAssetType', 'Remove-HaloClient', 'Remove-HaloCRMNote',
     'Remove-HaloTicket', 'Get-HaloCategory', 'Set-HaloCategory', 'New-HaloCategory', 
     'Remove-HaloCategory', 'Get-HaloSoftwareLicence', 'Set-HaloSoftwareLicence', 'New-HaloSoftwareLicence'
 
