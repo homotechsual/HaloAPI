@@ -107,7 +107,7 @@ function Get-HaloRecurringInvoice {
     }
     # Similarly we don't want a `fullobjects=` parameter
     if ($FullObjects) {
-        $Parameters.Remove('FullObject') | Out-Null
+        $Parameters.Remove('FullObjects') | Out-Null
     }
     try {
         if ($RecurringInvoiceID) {
