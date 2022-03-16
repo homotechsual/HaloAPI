@@ -17,6 +17,9 @@ Function Set-HaloTicketType {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $TicketType | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Ticket type ID is required.'
+            }
             $HaloTicketTypeParams = @{
                 TicketTypeId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloTicketType {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($TicketType -is [Array] ? 'Ticket Types' : 'Ticket Type', 'Update')) {
-                New-HaloPOSTRequest -Object $TicketType -Endpoint 'tickettype' -Update
+                New-HaloPOSTRequest -Object $TicketType -Endpoint 'tickettype'
             }
         } else {
             Throw 'One or more ticket types not found in Halo to update.'

@@ -17,6 +17,9 @@ Function Set-HaloClient {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Client | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Client ID is required.'
+            }
             $HaloClientParams = @{
                 ClientId = ($_.id)
             }
@@ -29,7 +32,7 @@ Function Set-HaloClient {
         }
         if ($False -notin $ObjectToUpdate) { 
             if ($PSCmdlet.ShouldProcess($Client -is [Array] ? 'Clients' : 'Client', 'Update')) {
-                New-HaloPOSTRequest -Object $Client -Endpoint 'client' -Update
+                New-HaloPOSTRequest -Object $Client -Endpoint 'client'
             }
         } else {
             Throw 'One or more clients was not found in Halo to update.'

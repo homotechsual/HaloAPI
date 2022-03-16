@@ -83,7 +83,11 @@ function New-HaloGETRequest {
                 Write-Debug "Building new HaloRequest with params: $($WebRequestParams | Out-String)"
                 $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
                 Write-Debug "Halo request returned $($Response | Out-String)"
-                $NumPages = [Math]::Ceiling($Response.record_count / $PageSize)
+                if ($NumPages) {
+                    $NumPages = [Math]::Ceiling($Response.record_count / $PageSize)
+                } else {
+                    $NumPages = 1
+                }
                 Write-Verbose "Total number of pages to process: $NumPages"
                 $PageNum++
                 if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {

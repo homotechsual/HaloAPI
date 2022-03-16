@@ -17,6 +17,9 @@ Function Set-HaloStatus {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Status | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Status ID is required.'
+            }
             $HaloStatusParams = @{
                 StatusId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloStatus {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Status -is [Array] ? 'Statuses' : 'Status', 'Update')) {
-                New-HaloPOSTRequest -Object $Status -Endpoint 'status' -Update
+                New-HaloPOSTRequest -Object $Status -Endpoint 'status'
             }
         } else {
             Throw 'One or more status was not found in Halo to update.'

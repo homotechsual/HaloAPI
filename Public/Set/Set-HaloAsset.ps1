@@ -17,6 +17,9 @@ Function Set-HaloAsset {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Asset | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Asset ID is required.'
+            }
             $HaloAssetParams = @{
                 AssetId = ($_.id)
             }
@@ -29,7 +32,7 @@ Function Set-HaloAsset {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Asset -is [Array] ? 'Assets' : 'Asset', 'Update')) {
-                New-HaloPOSTRequest -Object $Asset -Endpoint 'asset' -Update
+                New-HaloPOSTRequest -Object $Asset -Endpoint 'asset'
             }
         } else {
             Throw 'One or more assets was not found in Halo to update.'

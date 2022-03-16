@@ -25,6 +25,9 @@ function New-HaloError {
                 if (($null -ne $ErrorDetails.resultCode) -and ($null -ne $ErrorDetails.errorMessage)) {
                     Write-Verbose 'ErrorDetails contains resultCode and errorMessage.'
                     $ExceptionMessage.Add("The Halo API said $($ErrorDetails.resultCode): $($ErrorDetails.errorMessage).") | Out-Null
+                } elseif (($null -ne $ErrorDetails.ClassName) -and ($null -ne $ErrorDetails.Message)) {
+                    Write-Verbose 'ErrorDetails contains ClassName and Message.'
+                    $ExceptionMessage.Add("The Halo API said $($ErrorDetails.ClassName): $($ErrorDetails.Message)") | Out-Null
                 } elseif ($null -ne $ErrorDetails.error) {
                     Write-Verbose 'ErrorDetails contains error.'
                     $ExceptionMessage.Add("The Halo API said $($ErrorDetails.error).") | Out-Null

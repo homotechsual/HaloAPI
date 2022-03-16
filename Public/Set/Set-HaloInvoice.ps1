@@ -17,6 +17,9 @@ Function Set-HaloInvoice {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Invoice | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Invoice ID is required.'
+            }
             $HaloInvoiceParams = @{
                 InvoiceId = ($_.id)
             }
@@ -29,7 +32,7 @@ Function Set-HaloInvoice {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Invoice -is [Array] ? 'Invoices' : 'Invoice', 'Update')) {
-                New-HaloPOSTRequest -Object $Invoice -Endpoint 'invoice' -Update
+                New-HaloPOSTRequest -Object $Invoice -Endpoint 'invoice'
             }
         } else {
             Throw 'One or more invoices was not found in Halo to update.'

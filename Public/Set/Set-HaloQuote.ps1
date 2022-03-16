@@ -17,6 +17,9 @@ Function Set-HaloQuote {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Quote | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Quote ID is required.'
+            }
             $HaloQuoteParams = @{
                 QuoteId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloQuote {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Quote -is [Array] ? 'Quotations' : 'Quotation', 'Update')) {
-                New-HaloPOSTRequest -Object $Quote -Endpoint 'quotation' -Update
+                New-HaloPOSTRequest -Object $Quote -Endpoint 'quotation'
             }
         } else {
             Throw 'One or more quotations was not found in Halo to update.'

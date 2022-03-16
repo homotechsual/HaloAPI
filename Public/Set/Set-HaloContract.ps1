@@ -17,6 +17,9 @@ Function Set-HaloContract {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Contract | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Contract ID is required.'
+            }
             $HaloContractParams = @{
                 ContractId = ($_.id)
             }
@@ -29,7 +32,7 @@ Function Set-HaloContract {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Contract -is [Array] ? 'Contracts' : 'Contract', 'Update')) {
-                New-HaloPOSTRequest -Object $Contract -Endpoint 'clientcontract' -Update
+                New-HaloPOSTRequest -Object $Contract -Endpoint 'clientcontract'
             }
         } else {
             Throw 'One or more contracts was not found in Halo to update.'

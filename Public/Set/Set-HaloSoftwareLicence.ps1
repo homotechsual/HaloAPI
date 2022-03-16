@@ -17,6 +17,9 @@ Function Set-HaloSoftwareLicence {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $SoftwareLicence | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Software license ID is required.'
+            }
             $HaloSoftwareLicenceParams = @{
                 SoftwareLicence = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloSoftwareLicence {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($SoftwareLicence -is [Array] ? 'Statuses' : 'Status', 'Update')) {
-                New-HaloPOSTRequest -Object $SoftwareLicence -Endpoint 'SoftwareLicence' -Update
+                New-HaloPOSTRequest -Object $SoftwareLicence -Endpoint 'SoftwareLicence'
             }
         } else {
             Throw 'One or more Software Licence was not found in Halo to update.'

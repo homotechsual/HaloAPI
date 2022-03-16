@@ -16,6 +16,12 @@ Function Set-HaloCRMNote {
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($null -eq $CRMNote.id) {
+            throw 'CRM note ID is required.'
+        }
+        if ($null -eq $CRMNote.client_id) {
+            throw 'Client ID is required.'
+        }
         $HaloCRMNoteParams = @{
             CRMNoteID = $CRMNote.id
             ClientID = [int]$CRMNote.client_id
@@ -23,7 +29,7 @@ Function Set-HaloCRMNote {
         $ObjectToUpdate = Get-HaloCRMNote @HaloCRMNoteParams
         if ($ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess("CRM Note $($ObjectToUpdate.id) by $($ObjectToUpdate.who_agentid)", 'Update')) {
-                New-HaloPOSTRequest -Object $CRMNote -Endpoint 'crmnote' -Update
+                New-HaloPOSTRequest -Object $CRMNote -Endpoint 'crmnote'
             }
         } else {
             Throw 'CRM Note was not found in Halo to update.'

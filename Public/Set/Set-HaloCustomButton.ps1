@@ -16,10 +16,13 @@ Function Set-HaloCustomButton {
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($null -eq $CustomButton.id) {
+            throw 'Custom button ID is required.'
+        }
         $ObjectToUpdate = Get-HaloCustomButton -CustomButtonID $CustomButton.id
         if ($ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess("Custom Button '$($ObjectToUpdate.name)'", 'Update')) {
-                New-HaloPOSTRequest -Object $CustomButton -Endpoint 'custombutton' -Update
+                New-HaloPOSTRequest -Object $CustomButton -Endpoint 'custombutton'
             }
         } else {
             Throw 'Custom button was not found in Halo to update.'

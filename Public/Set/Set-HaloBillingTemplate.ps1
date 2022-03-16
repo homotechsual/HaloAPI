@@ -16,10 +16,13 @@ Function Set-HaloBillingTemplate {
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($null -eq $Template.id) {
+            throw 'Billing template ID is required.'
+        }
         $ObjectToUpdate = Get-HaloBillingTemplate -TemplateID $Template.id
         if ($ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess("Billing Template '$($ObjectToUpdate.name)'", 'Update')) {
-                New-HaloPOSTRequest -Object $Template -Endpoint 'billingtemplate' -Update
+                New-HaloPOSTRequest -Object $Template -Endpoint 'billingtemplate'
             }
         } else {
             Throw 'Billing Template was not found in Halo to update.'

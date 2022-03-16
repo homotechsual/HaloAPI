@@ -17,6 +17,9 @@ Function Set-HaloProject {
     Invoke-HaloPreFlightCheck
     try {
         $ObjectToUpdate = $Project | ForEach-Object {
+            if ($null -eq $_.id) {
+                throw 'Project ID is required.'
+            }
             $HaloProjectParams = @{
                 ProjectId = $_.id
             }
@@ -29,7 +32,7 @@ Function Set-HaloProject {
         }
         if ($False -notin $ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess($Project -is [Array] ? 'Projects' : 'Project', 'Update')) {
-                New-HaloPOSTRequest -Object $Project -Endpoint 'projects' -Update
+                New-HaloPOSTRequest -Object $Project -Endpoint 'projects'
             }
         } else {
             Throw 'One or more projects was not found in Halo to update.'

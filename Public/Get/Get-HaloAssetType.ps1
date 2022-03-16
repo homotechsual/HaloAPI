@@ -1,10 +1,10 @@
 #Requires -Version 7
-function Get-HaloAsset {
+function Get-HaloAssetType {
     <#
         .SYNOPSIS
-            Gets assets from the Halo API.
+            Gets asset types from the Halo API.
         .DESCRIPTION
-            Retrieves assets from the Halo API - supports a variety of filtering parameters.
+            Retrieves asset types from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
@@ -12,9 +12,9 @@ function Get-HaloAsset {
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
-        # Asset ID
+        # Asset Type ID
         [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
-        [int64]$AssetID,
+        [int64]$AssetTypeID,
         # Paginate results
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('pageinate')]
@@ -33,49 +33,19 @@ function Get-HaloAsset {
         # Order results in descending order (respects the field choice in '-Order')
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$OrderDesc,
-        # Filter by Assets with an asset field like your search
+        # Filter by AssetTypes with an asset type group like your search
         [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
-        # Filter by Assets belonging to a particular ticket
-        [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('ticket_id')]
-        [int64]$TicketID,
-        # Filter by Assets belonging to a particular client
-        [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('client_id')]
-        [int64]$ClientID,
-        # Filter by Assets belonging to a particular site
-        [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('site_id')]
-        [int64]$SiteID,
-        # Filter by Assets belonging to a particular user
-        [Parameter( ParameterSetName = 'Multi' )]
-        [string]$Username,
-        # Filter by Assets belonging to a particular Asset group
+        # Filter by Asset Types belonging to a particular Asset group
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('assetgroup_id')]
         [int64]$AssetGroupID,
-        # Filter by Assets belonging to a particular Asset type
-        [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('assettype_id')]
-        [int64]$AssetTypeID,
-        # Filter by Assets linked to a particular Asset
-        [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('linkedto_id')]
-        [int64]$LinkedToID,
-        # Include inactive Assets in the response
+        # Include inactive Asset Types in the response
         [Parameter( ParameterSetName = 'Multi' )]
         [Switch]$includeinactive,
-        # Include active Assets in the response
+        # Include active Asset Types in the response
         [Parameter( ParameterSetName = 'Multi' )]
         [Switch]$includeactive,
-        # Include child Assets in the response
-        [Parameter( ParameterSetName = 'Multi' )]
-        [Switch]$includechildren,
-        # Filter by Assets linked to a particular Asset
-        [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('contract_id')]
-        [int64]$ContractID,
         # Parameter to return the complete objects.
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$FullObjects,
@@ -84,53 +54,54 @@ function Get-HaloAsset {
         [Switch]$IncludeDetails,
         # Include the last action in the result.
         [Parameter( ParameterSetName = 'Single' )]
-        [Switch]$IncludeDiagramDetails
+        [Switch]$IncludeDiagramDetails,
+        [Parameter( ParameterSetName = 'Multi')]
+        [Switch]$ShowAll
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'assetid=' parameter by removing it from the set parameters.
-    if ($AssetID) {
-        $Parameters.Remove('AssetID') | Out-Null
+    # Workaround to prevent the query string processor from adding a 'assettypeid=' parameter by removing it from the set parameters.
+    if ($AssetTypeID) {
+        $Parameters.Remove('AssetTypeID') | Out-Null
     }
     # Similarly we don't want a `fullobjects=` parameter
     if ($FullObjects) {
         $Parameters.Remove('FullObjects') | Out-Null
     }
     try {
-        if ($AssetID) {
-            Write-Verbose "Running in single-asset mode because '-AssetID' was provided."
+        if ($AssetTypeID) {
+            Write-Verbose "Running in single-asset type mode because '-AssetTypeID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/asset/$($AssetID)"
+            $Resource = "api/assettype/$($AssetTypeID)"
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = 'assets'
+                #ResourceType = 'assettypes' - Don't think this is needed. Will clean this up or fix it after testing.
             }
         } else {
-            Write-Verbose 'Running in multi-asset mode.'
+            Write-Verbose 'Running in multi-asset type mode'
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = 'api/asset'
+            $Resource = 'api/assettype'
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
-                QSCollection = $QSCollection
-                ResourceType = 'assets'
+                QSCollection = $QSCollection               
             }
         }    
-        $AssetResults = New-HaloGETRequest @RequestParams
+        $AssetTypeResults = New-HaloGETRequest @RequestParams
 
         if ($FullObjects) {
-            $AllAssetResults = $AssetResults | ForEach-Object {             
-                Get-HaloAsset -AssetID $_.id
+            $AllAssetTypeResults = $AssetTypeResults | ForEach-Object {             
+                Get-HaloAssetType -AssetTypeID $_.id
             }
-            $AssetResults = $AllAssetResults
+            $AssetTypeResults = $AllAssetTypeResults
         }
 
-        Return $AssetResults
+        Return $AssetTypeResults
     } catch {
         New-HaloError -ErrorRecord $_
     }

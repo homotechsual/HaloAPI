@@ -16,8 +16,11 @@ Function Set-HaloRecurringTemplate {
     )
     Invoke-HaloPreFlightCheck
     try {        
+        if ($null -eq $Template.id) {
+            throw 'Template ID is required.'
+        }
         if ($PSCmdlet.ShouldProcess("Template '$($ObjectToUpdate.id)'", 'Update')) {
-            New-HaloPOSTRequest -Object $Template -Endpoint 'template' -Update
+            New-HaloPOSTRequest -Object $Template -Endpoint 'template'
         }
     } catch {
         New-HaloError -ErrorRecord $_

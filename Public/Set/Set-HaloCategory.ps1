@@ -16,10 +16,13 @@ Function Set-HaloCategory {
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($null -eq $Category.id) {
+            throw 'Category ID is required.'
+        }
         $ObjectToUpdate = Get-HaloCategory -CategoryID $Category.id
         if ($ObjectToUpdate) {
             if ($PSCmdlet.ShouldProcess("Category List '$($ObjectToUpdate.name)'", 'Update')) {
-                New-HaloPOSTRequest -Object $Category -Endpoint 'Category' -Update
+                New-HaloPOSTRequest -Object $Category -Endpoint 'Category'
             }
         } else {
             Throw 'Category was not found in Halo to update.'
