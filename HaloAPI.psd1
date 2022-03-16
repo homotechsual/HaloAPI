@@ -128,7 +128,7 @@
             Tags         = 'HaloPSA', 'PSA', 'Halo', 'API', 'HaloServiceSolutions', 'HaloITSM', 'HaloServiceDesk', 'ITSM', 'Service', 'Desk', 'REST', 'MSP', 'Automation'
 
             # A URL to the Licence for this module.
-            LicenceUri   = 'https://mit.license.homotechsual.dev/'
+            LicenseUri   = 'https://mit.license.homotechsual.dev/'
 
             # A URL to the main website for this project.
             ProjectUri   = 'https://github.com/homotechsual/HaloAPI'
