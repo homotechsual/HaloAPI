@@ -35,6 +35,10 @@ function Invoke-HaloRequest {
         $AuthHeaders = @{
             Authorization = "$($Script:HAPIAuthToken.Type) $($Script:HAPIAuthToken.Access)"
         }
+        if ($null -ne $Script:HAPIConnectionInformation.AdditionalHeaders) {
+          $AuthHeaders = $AuthHeaders + $Script:HAPIConnectionInformation.AdditionalHeaders
+        }
+
     } else {
         $AuthHeaders = $null
     }
