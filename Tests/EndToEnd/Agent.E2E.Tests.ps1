@@ -95,6 +95,11 @@ Describe 'Agent' {
             $AgentResult.name | Should -Be 'Automated Testing'
             $AgentResult.id | Should -Be ($AgentId + 1)
         }
+        It 'succeeds to get the agent who created the token.' {
+            $AgentResult = Get-HaloAgent -Me
+            $AgentResult.name | Should -Be 'Admin'
+            $AgentResult.id | Should -Be 3
+        }
         It 'fails to get a non existent agent.' {
             $AgentId = 9999
             { Get-HaloAgent -AgentId $AgentId } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Response status code does not indicate success: 404 (Not Found).'
