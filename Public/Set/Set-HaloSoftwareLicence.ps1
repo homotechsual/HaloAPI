@@ -21,7 +21,8 @@ Function Set-HaloSoftwareLicence {
                 throw 'Software license ID is required.'
             }
             $HaloSoftwareLicenceParams = @{
-                SoftwareLicence = $_.id
+                LicenceID = $_.id
+                ClientID = $_.client_id
             }
             $SoftwareLicenceExists = Get-HaloSoftwareLicence @HaloSoftwareLicenceParams
             if ($SoftwareLicenceExists) {
