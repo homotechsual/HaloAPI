@@ -36,15 +36,16 @@ function Invoke-HaloRequest {
             Authorization = "$($Script:HAPIAuthToken.Type) $($Script:HAPIAuthToken.Access)"
         }
         if ($null -ne $Script:HAPIConnectionInformation.AdditionalHeaders) {
-          $AuthHeaders = $AuthHeaders + $Script:HAPIConnectionInformation.AdditionalHeaders
+            $RequestHeaders = $AuthHeaders + $Script:HAPIConnectionInformation.AdditionalHeaders
+        } else {
+            $RequestHeaders = $AuthHeaders
         }
-
     } else {
-        $AuthHeaders = $null
+        $RequestHeaders = $null
     }
     try {
         Write-Verbose "Making a $($WebRequestParams.Method) request to $($WebRequestParams.Uri)"
-        $Response = Invoke-WebRequest @WebRequestParams -Headers $AuthHeaders -ContentType 'application/json; charset=utf-8'
+        $Response = Invoke-WebRequest @WebRequestParams -Headers $RequestHeaders -ContentType 'application/json; charset=utf-8'
         Write-Debug "Response headers: $($Response.Headers | Out-String)"
         Write-Debug "Raw Response: $Response"
         if ($RawResult) {
