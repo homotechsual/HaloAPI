@@ -52,6 +52,7 @@ function New-HaloGETRequest {
         } else {
             Write-Debug 'Query string collection not present...'
         }
+        Write-Verbose "Page Size: $($PageSize)"
         $QSBuilder = [System.UriBuilder]::new()
         if ($AutoPaginateOff) {
             Write-Debug 'Automatic pagination is off.'
@@ -59,7 +60,7 @@ function New-HaloGETRequest {
             $Query = $QSBuilder.Query.ToString()
             $WebRequestParams = @{
                 Method = $Method
-                Uri = "$($Script:HAPIConnectionInformation.URL)$($Resource)$($Query)"
+                Uri    = "$($Script:HAPIConnectionInformation.URL)$($Resource)$($Query)"
             }
             Write-Debug "Building new HaloRequest with params: $($WebRequestParams | Out-String)"
             $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
@@ -78,14 +79,14 @@ function New-HaloGETRequest {
                 $Query = $QSBuilder.Query.ToString()
                 $WebRequestParams = @{
                     Method = $Method
-                    Uri = "$($Script:HAPIConnectionInformation.URL)$($Resource)$($Query)"
+                    Uri    = "$($Script:HAPIConnectionInformation.URL)$($Resource)$($Query)"
                 }
                 Write-Debug "Building new HaloRequest with params: $($WebRequestParams | Out-String)"
                 $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
                 Write-Debug "Halo request returned $($Response | Out-String)"
-                if ($NumPages) {
+                try {
                     $NumPages = [Math]::Ceiling($Response.record_count / $PageSize)
-                } else {
+                } catch {
                     $NumPages = 1
                 }
                 Write-Verbose "Total number of pages to process: $NumPages"

@@ -15,6 +15,8 @@ BeforeAll {
     Import-Module $ManifestPath -Verbose:$False
 }
 
+# Test 
+
 # Test that we can login to Halo, and that it does indeed fail as expected if the login information is incorrect.
 Describe 'Connect' {
     BeforeAll {
@@ -31,7 +33,7 @@ Describe 'Connect' {
             ClientID = $env:HaloTestingClientID
             ClientSecret = $env:HaloTestingClientSecret
             Scopes = 'all'
-            Tenant = $env:HaloTestingTenan
+            Tenant = $env:HaloTestingTenant
         }
         $HaloIncorrectSecretConnectionParameters = @{
             URL = $TestingURL

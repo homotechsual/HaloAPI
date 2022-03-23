@@ -48,7 +48,9 @@ function Connect-HaloAPI {
         [Parameter(
             ParameterSetName = 'Client Credentials'
         )]
-        [String]$Tenant
+        [String]$Tenant,
+        # Hashtable containing additional parameters to be sent with each request.
+        [Hashtable]$AdditionalHeaders
     )
     # Convert scopes to space separated string if it's an array.
     if ($Scopes -is [system.array]) {
@@ -103,6 +105,7 @@ function Connect-HaloAPI {
         ClientSecret = $ClientSecret
         AuthScopes = $AuthScopes
         Tenant = $Tenant
+        AdditionalHeaders = $AdditionalHeaders
     }
     Set-Variable -Name 'HAPIConnectionInformation' -Value $ConnectionInformation -Visibility Private -Scope Script -Force
     Write-Debug "Connection information set to: $($Script:HAPIConnectionInformation | Out-String)"
@@ -119,6 +122,7 @@ function Connect-HaloAPI {
         Method = 'POST'
         Body = $AuthReqBody
         ContentType = 'application/x-www-form-urlencoded'
+        Headers = $AdditionalHeaders
     }
     try {
         $AuthReponse = Invoke-WebRequest @WebRequestParams
