@@ -49,8 +49,8 @@ function Connect-HaloAPI {
             ParameterSetName = 'Client Credentials'
         )]
         [String]$Tenant,
-        # Any Additoinal Headers you want to pass in
-        [OBject]$AdditionalHeaders
+        # Hashtable containing additional parameters to be sent with each request.
+        [Hashtable]$AdditionalHeaders
     )
     # Convert scopes to space separated string if it's an array.
     if ($Scopes -is [system.array]) {
