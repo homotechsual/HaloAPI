@@ -53,7 +53,7 @@ function Get-HaloSite {
         # The number of sites to return if not using pagination.
         [Parameter( ParameterSetName = 'Multi' )]
         [int32]$Count
-		# Parameter to return the complete objects.
+        # Parameter to return the complete objects.
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$FullObjects,
     )
