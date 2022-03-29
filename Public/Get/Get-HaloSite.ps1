@@ -52,7 +52,10 @@ function Get-HaloSite {
         [switch]$IncludeActive,
         # The number of sites to return if not using pagination.
         [Parameter( ParameterSetName = 'Multi' )]
-        [int32]$Count
+        [int32]$Count,
+        # Parameter to return the complete objects.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$FullObjects
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
@@ -61,6 +64,10 @@ function Get-HaloSite {
     if ($SiteID) {
         $Parameters.Remove('SiteID') | Out-Null
     }
+    # Similarly we don't want a `fullobjects=` parameter
+    if ($FullObjects) {
+        $Parameters.Remove('FullObjects') | Out-Null
+    }	
     try {
         if ($SiteID) {
             Write-Verbose "Running in single-site mode because '-SiteID' was provided."
@@ -86,6 +93,12 @@ function Get-HaloSite {
             }
         }
         $SiteResults = New-HaloGETRequest @RequestParams
+        if ($FullObjects) {
+            $AllSiteResults = $SiteResults | ForEach-Object {             
+                Get-HaloSite -SiteID $_.id
+            }
+            $SiteResults = $AllSiteResults
+        }
         Return $SiteResults
     } catch {
         New-HaloError -ErrorRecord $_
