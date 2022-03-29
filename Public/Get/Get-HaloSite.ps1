@@ -52,10 +52,10 @@ function Get-HaloSite {
         [switch]$IncludeActive,
         # The number of sites to return if not using pagination.
         [Parameter( ParameterSetName = 'Multi' )]
-        [int32]$Count
+        [int32]$Count,
         # Parameter to return the complete objects.
         [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$FullObjects,
+        [switch]$FullObjects
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
@@ -93,7 +93,7 @@ function Get-HaloSite {
             }
         }
         $SiteResults = New-HaloGETRequest @RequestParams
-		if ($FullObjects) {
+        if ($FullObjects) {
             $AllSiteResults = $SiteResults | ForEach-Object {             
                 Get-HaloSite -SiteID $_.id
             }
