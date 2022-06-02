@@ -1,26 +1,26 @@
-Function New-HaloTicket {
+Function New-HaloTicketBatch {
     <#
         .SYNOPSIS
-            Creates one or more tickets via the Halo API.
+            Creates multiple tickets via the Halo API.
         .DESCRIPTION
-            Function to send a ticket creation request to the Halo API
+            Function to send a batch of ticket creation requests to the Halo API
         .OUTPUTS
-            Outputs an object containing the response from the web request.
+            Outputs an object containing the responses from the web requests.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object[]])]
     Param (
-        # Object or array of objects containing properties and values used to create one or more new tickets.
+        # Array of objects containing properties and values used to create one or more new tickets.
         [Parameter( Mandatory = $True )]
-        [Object[]]$Tickets
+        [Array[]]$Tickets
     )
     Invoke-HaloPreFlightCheck
     try {
         if ($PSCmdlet.ShouldProcess('Tickets', 'Create')) {
-            if ($Ticket -is [Array]) {
+            if ($Tickets -is [Array]) {
                 $BatchResults = [System.Collections.Concurrent.ConcurrentBag[PSObject]]::New()
-                $Ticket | ForEach-Object -Parallel {
-                    Import-Module -Name 'HaloAPI'
+                $Tickets | ForEach-Object -Parallel {
+                    Import-Module 'X:\Development\Repositories\MJCO\HaloAPI\HaloAPI.psm1'
                     $HaloConnectionParams = @{
                         URL = $Using:HAPIConnectionInformation.URL
                         ClientID = $Using:HAPIConnectionInformation.ClientID
