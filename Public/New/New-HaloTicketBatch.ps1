@@ -12,26 +12,15 @@ Function New-HaloTicket {
     Param (
         # Object or array of objects containing properties and values used to create one or more new tickets.
         [Parameter( Mandatory = $True )]
-        [Object[]]$Ticket,
-        # Return all results when letting Halo batch process.
-        [Parameter()]
-        [Switch]$ReturnAll
+        [Object[]]$Tickets
     )
     Invoke-HaloPreFlightCheck
     try {
-        $CommandName = $MyInvocation.InvocationName
-        $Parameters = (Get-Command -Name $CommandName).Parameters
-        # Workaround to prevent the query string processor from adding an 'actionid=' parameter by removing it from the set parameters.
-        if ($ActionID) {
-            $Parameters.Remove('Ticket') | Out-Null
-        }
-        $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-        if ($PSCmdlet.ShouldProcess($Ticket -is [Array] ? 'Tickets' : 'Ticket', 'Create')) {
-            if ($Batch -and $Ticket -is [Array]) {
+        if ($PSCmdlet.ShouldProcess('Tickets', 'Create')) {
+            if ($Ticket -is [Array]) {
                 $BatchResults = [System.Collections.Concurrent.ConcurrentBag[PSObject]]::New()
                 $Ticket | ForEach-Object -Parallel {
-                    Import-Module 'X:\Development\Repositories\MJCO\HaloAPI\HaloAPI.psm1'
-                    Write-Debug $Using:HAPIConnectionInformation.AuthScopes
+                    Import-Module -Name 'HaloAPI'
                     $HaloConnectionParams = @{
                         URL = $Using:HAPIConnectionInformation.URL
                         ClientID = $Using:HAPIConnectionInformation.ClientID
@@ -53,9 +42,8 @@ Function New-HaloTicket {
                 }
                 Return $BatchResults
             } else {
-                New-HaloPOSTRequest -Object $Ticket -Endpoint 'tickets'
-            }
-            
+                throw 'New-HaloTicketBatch requires an array of tickets to create.'
+            }  
         }
     } catch {
         New-HaloError -ErrorRecord $_

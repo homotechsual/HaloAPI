@@ -17,13 +17,28 @@ function New-HaloPOSTRequest {
         [Object[]]$Object,
         # Endpoint to use
         [Parameter( Mandatory = $True )]
-        [string]$Endpoint
+        [string]$Endpoint,
+        # A hashtable used to build the query string.
+        [Hashtable]$QSCollection
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($QSCollection) {
+            Write-Debug "Query string in New-HaloGETRequest contains: $($QSCollection | Out-String)"
+            $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
+            Write-Verbose 'Building [HttpQSCollection] for New-HaloGETRequest'
+            foreach ($Key in $QSCollection.Keys) {
+                $QueryStringCollection.Add($Key, $QSCollection.$Key)
+            }
+        } else {
+            Write-Debug 'Query string collection not present...'
+        }
+        $QSBuilder = [System.UriBuilder]::new()
+        $QSBuilder.Query = $QueryStringCollection.ToString()
+        $Query = $QSBuilder.Query.ToString()
         $WebRequestParams = @{
             Method = 'POST'
-            Uri = "$($Script:HAPIConnectionInformation.URL)api/$Endpoint"
+            Uri = "$($Script:HAPIConnectionInformation.URL)api/$($Endpoint)$($Query)"
             Body = $Object | ConvertTo-Json -Depth 100 -AsArray
         }
         $Results = Invoke-HaloRequest -WebRequestParams $WebRequestParams

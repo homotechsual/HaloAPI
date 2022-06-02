@@ -87,7 +87,7 @@
     'New-HaloKBArticle', 'New-HaloOpportunity', 'New-HaloProject', 
     'New-HaloQuote', 'New-HaloRecurringInvoice', 'New-HaloReport', 
     'New-HaloSite', 'New-HaloStatus', 'New-HaloSupplier', 'New-HaloTeam', 
-    'New-HaloTicket', 'New-HaloTicketType', 'New-HaloUser', 
+    'New-HaloTicket', 'New-HaloTicketBatch', 'New-HaloTicketType', 'New-HaloUser', 
     'New-HaloWorkday', 'Set-HaloAction', 'Set-HaloAgent', 
     'Set-HaloAppointment', 'Set-HaloAsset', 'Set-HaloAssetType', 'Set-HaloAttachment', 
     'Set-HaloBillingTemplate', 'Set-HaloClient', 'Set-HaloContract', 
