@@ -27,8 +27,6 @@ BeforeAll {
 
 # Test that we can create an action, fetch it, update it and then delete it.
 Describe 'Action' {
-    
-
     BeforeEach {
         $ValidAction = @{
             ticket_id = $TicketID
