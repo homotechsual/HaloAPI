@@ -30,12 +30,13 @@ function New-HaloPOSTRequest {
             foreach ($Key in $QSCollection.Keys) {
                 $QueryStringCollection.Add($Key, $QSCollection.$Key)
             }
+            $QSBuilder = [System.UriBuilder]::new()
+            $QSBuilder.Query = $QueryStringCollection.ToString()
+            $Query = $QSBuilder.Query.ToString()
         } else {
             Write-Debug 'Query string collection not present...'
         }
-        $QSBuilder = [System.UriBuilder]::new()
-        $QSBuilder.Query = $QueryStringCollection.ToString()
-        $Query = $QSBuilder.Query.ToString()
+        
         $WebRequestParams = @{
             Method = 'POST'
             Uri = "$($Script:HAPIConnectionInformation.URL)api/$($Endpoint)$($Query)"
