@@ -41,8 +41,6 @@ function Connect-HaloAPI {
         [Parameter(
             ParameterSetName = 'Client Credentials'
         )]
-        [ArgumentCompleter([HaloAuthScopesCompleter])]
-        [ValidateSet([HaloAuthScopesValidator])]
         [String[]]$Scopes = 'all',
         # The tenant name required for hosted Halo instances.
         [Parameter(
