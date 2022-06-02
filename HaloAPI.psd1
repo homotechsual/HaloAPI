@@ -140,7 +140,7 @@
             ReleaseNotes = 'Fix linting issue and minor bug in parameter declaration.'
 
             # Prerelease string of this module
-            Prerelease = 'Beta2'
+            Prerelease = 'Beta3'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
