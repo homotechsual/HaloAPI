@@ -71,7 +71,7 @@
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = 'Connect-HaloAPI', 'Get-HaloAction', 'Get-HaloAgent', 
     'Get-HaloAppointment', 'Get-HaloAsset', 'Get-HaloAssetType', 'Get-HaloAttachment', 
-    'Get-HaloBillingTemplate', 'Get-HaloClient', 'Get-HaloContract', 
+    'Get-HaloAzureADConnection', 'Get-HaloBillingTemplate', 'Get-HaloClient', 'Get-HaloContract', 
     'Get-HaloCRMNote', 'Get-HaloCustomButton', 'Get-HaloFAQList', 
     'Get-HaloField', 'Get-HaloInvoice', 'Get-HaloItem', 'Get-HaloKBArticle', 
     'Get-HaloLookup', 'Get-HaloOpportunity', 'Get-HaloProject', 
