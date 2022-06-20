@@ -99,7 +99,10 @@
     'Set-HaloTicketType', 'Set-HaloUser', 'Set-HaloWorkday', 
     'Remove-HaloAction', 'Remove-HaloAgent', 'Remove-HaloAssetType', 'Remove-HaloClient', 'Remove-HaloCRMNote',
     'Remove-HaloTicket', 'Get-HaloCategory', 'Set-HaloCategory', 'New-HaloCategory', 
-    'Remove-HaloCategory', 'Get-HaloSoftwareLicence', 'Set-HaloSoftwareLicence', 'New-HaloSoftwareLicence'
+    'Remove-HaloCategory', 'Get-HaloSoftwareLicence', 'Set-HaloSoftwareLicence', 'New-HaloSoftwareLicence',
+    'Get-HaloCustomFields', 'Get-HaloWorkflows', 'New-HaloCustomField', 'New-HaloService',
+    'New-HaloWorkflow'
+
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = @()
@@ -140,7 +143,7 @@
             ReleaseNotes = 'Fix linting issue and minor bug in parameter declaration.'
 
             # Prerelease string of this module
-            Prerelease = 'Beta4'
+            Prerelease = 'Beta5'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
