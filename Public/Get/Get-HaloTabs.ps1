@@ -1,7 +1,7 @@
 
 #Requires -Version 7
 
-function Get-HaloTabs {
+function Get-HaloTab {
     <#
         .SYNOPSIS
             Gets Tabs from the Halo API.
