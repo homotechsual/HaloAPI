@@ -1,12 +1,12 @@
 
 #Requires -Version 7
 
-function Get-HaloWorkflows {
+function Get-HaloCustomField {
     <#
         .SYNOPSIS
-            Gets Workflows from the Halo API.
+            Gets Custom Fields from the Halo API.
         .DESCRIPTION
-            Retrieves Workflows from the Halo API - supports a variety of filtering parameters.
+            Retrieves Custom Fields from the Halo API - supports a variety of filtering parameters.
         .OUTPUTS
             A powershell object containing the response.
     #>
@@ -16,7 +16,7 @@ function Get-HaloWorkflows {
     Param(
         # Item ID
         [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
-        [int64]$WorkflowID,
+        [int64]$CustomFieldID,
         # Number of records to return
         [Parameter( ParameterSetName = 'Multi' )]
         [int64]$Count,
@@ -45,32 +45,32 @@ function Get-HaloWorkflows {
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'WorkflowID=' parameter by removing it from the set parameters.
-    if ($WorkflowID) {
-        $Parameters.Remove('WorkflowID') | Out-Null
+    # Workaround to prevent the query string processor from adding a 'CustomFieldID=' parameter by removing it from the set parameters.
+    if ($CustomFieldID) {
+        $Parameters.Remove('CustomFieldID') | Out-Null
     }
     try {
-        if ($WorkflowID) {
+        if ($CustomFieldID) {
             Write-Verbose "Running in single-item mode because '-ItemID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/Workflow/$($WorkflowID)"
+            $Resource = "api/FieldInfo/$($CustomFieldID)"
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = 'Workflow'
+                ResourceType = 'FieldInfo'
             }
         } else {
             Write-Verbose 'Running in multi-item mode.'
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = 'api/Workflow'
+            $Resource = 'api/FieldInfo'
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
                 AutoPaginateOff = $Paginate
                 QSCollection = $QSCollection
-                ResourceType = 'Workflow'
+                ResourceType = 'FieldInfo'
             }
         }
         $LicenceResults = New-HaloGETRequest @RequestParams

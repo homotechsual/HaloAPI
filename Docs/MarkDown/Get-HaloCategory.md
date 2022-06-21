@@ -51,21 +51,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TypeID
-Type ID
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases: type_id
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ShowAll
 Include Details
 
@@ -77,6 +62,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TypeID
+Type ID
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases: type_id
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
