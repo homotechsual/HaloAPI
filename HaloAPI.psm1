@@ -13,4 +13,6 @@ foreach ($Function in @($Functions)) {
 New-Alias -Name 'Get-HaloArticle' -Value Get-HaloKBArticle
 New-Alias -Name 'New-HaloArticle' -Value New-HaloKBArticle
 New-Alias -Name 'Set-HaloArticle' -Value Set-HaloKBArticle
+New-Alias -Name 'Get-HaloCustomFields' -Value Get-HaloCustomField
+New-Alias -Name 'Get-HaloWorkflows' -Value Get-HaloWorkflow
 Export-ModuleMember -Function $Functions.BaseName -Alias *

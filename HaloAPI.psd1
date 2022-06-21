@@ -224,10 +224,10 @@
             IconUri      = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'New commandlets for batch actions, workflows, custom fields. Exposes Invoke-HaloRequest for adhoc API requests.'
+            ReleaseNotes = 'New commandlets for batch actions, workflows, custom fields. Exposes Invoke-HaloRequest for adhoc API requests..'
 
             # Prerelease string of this module
-            Prerelease = 'Beta6'
+            Prerelease = 'Beta7'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
