@@ -231,7 +231,7 @@
             ReleaseNotes = 'New commandlets for batch actions, workflows, custom fields. Exposes Invoke-HaloRequest for adhoc API requests..'
 
             # Prerelease string of this module
-            Prerelease = 'Beta7'
+            # Prerelease = 'Beta1'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
