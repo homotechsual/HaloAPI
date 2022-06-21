@@ -33,7 +33,7 @@ function Add-PRComment {
 }
 
 
-$ScriptAnalyzerResult = Invoke-ScriptAnalyzer -Path $ScriptDirectory -Recurse -Settings "$($Env:SYSTEM_DEFAULTWORKINGDIRECTORY)\PSScriptAnalyzerSettings.psd1" -ExcludeRule $ScriptAnalyzerExcludeRules
+$ScriptAnalyzerResult = Invoke-ScriptAnalyzer -Path $ScriptDirectory -Recurse -Settings "$($Env:SYSTEM_DEFAULTWORKINGDIRECTORY)\PSScriptAnalyzerSettings.psd1" -ExcludeRule $ScriptAnalyzerExcludeRules -Verbose
 
 if ( $ScriptAnalyzerResult ) {
     $ScriptAnalyzerResultString = $ScriptAnalyzerResult | Out-String

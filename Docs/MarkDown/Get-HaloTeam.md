@@ -37,23 +37,23 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -TeamID
-Team ID
+### -DepartmentID
+Filter by the specified department ID.
 
 ```yaml
-Type: Int64
-Parameter Sets: Single
-Aliases:
+Type: Int32
+Parameter Sets: Multi
+Aliases: department_id
 
-Required: True
+Required: False
 Position: Named
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Type
-Filter teams to a specific type: reqs = tickets, opps = opportunities and prjs = projects.
+### -Domain
+Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
 
 ```yaml
 Type: String
@@ -79,6 +79,51 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDetails
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDisabled
+Include disabled teams.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeEnabled
+Include enabled teams (defaults to $True).
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -113,8 +158,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Domain
-Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
+### -TeamID
+Team ID
+
+```yaml
+Type: Int64
+Parameter Sets: Single
+Aliases:
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Type
+Filter teams to a specific type: reqs = tickets, opps = opportunities and prjs = projects.
 
 ```yaml
 Type: String
@@ -139,66 +199,6 @@ Aliases: view_id
 Required: False
 Position: Named
 Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeEnabled
-Include enabled teams (defaults to $True).
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDisabled
-Include disabled teams.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DepartmentID
-Filter by the specified department ID.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: department_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

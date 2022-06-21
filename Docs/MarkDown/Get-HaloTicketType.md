@@ -37,32 +37,17 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -TicketTypeID
-Ticket Type ID
+### -ClientID
+Filter by a specific client id.
 
 ```yaml
-Type: Int64
-Parameter Sets: Single
-Aliases:
-
-Required: True
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ShowCounts
-Show the count of tickets in the results.
-
-```yaml
-Type: SwitchParameter
+Type: Int32
 Parameter Sets: Multi
-Aliases:
+Aliases: client_id
 
 Required: False
 Position: Named
-Default value: False
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -82,17 +67,32 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ViewID
-Filter counts to a specific view ID.
+### -IncludeDetails
+Include extra objects in the result.
 
 ```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: view_id
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ShowCounts
+Show the count of tickets in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -112,32 +112,32 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ClientID
-Filter by a specific client id.
+### -TicketTypeID
+Ticket Type ID
 
 ```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: client_id
+Type: Int64
+Parameter Sets: Single
+Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeDetails
-Include extra objects in the result.
+### -ViewID
+Filter counts to a specific view ID.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
+Type: Int32
+Parameter Sets: Multi
+Aliases: view_id
 
 Required: False
 Position: Named
-Default value: False
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

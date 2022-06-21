@@ -39,28 +39,13 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -UserID
-User ID
-
-```yaml
-Type: Int64
-Parameter Sets: Single
-Aliases:
-
-Required: True
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-Paginate results
+### -ApproversOnly
+Include approvers only in the results.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: Multi
-Aliases: pageinate
+Aliases:
 
 Required: False
 Position: Named
@@ -69,13 +54,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageSize
-Number of results per page.
+### -AssetID
+Filter by the specified asset ID.
 
 ```yaml
 Type: Int32
 Parameter Sets: Multi
-Aliases: page_size
+Aliases: asset_id
 
 Required: False
 Position: Named
@@ -84,17 +69,152 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageNo
-Which page to return.
+### -ClientID
+Filter by the specified client ID.
 
 ```yaml
 Type: Int32
 Parameter Sets: Multi
-Aliases: page_no
+Aliases: client_id
 
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Count
+The number of users to return if not using pagination.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DepartmentID
+Filter by the specified department ID.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: department_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeAgents
+Exclude users linked to agent accounts from the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FullObjects
+Parameter to return the full objects.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeActive
+Include active users in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeActivity
+Include ticket activity in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDetails
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeInactive
+Include inactive users in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludePopups
+Include customer popups in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -121,6 +241,66 @@ Order results in descending order (respects the field choice in '-Order')
 Type: SwitchParameter
 Parameter Sets: Multi
 Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrganisationID
+Filter by the specified organisation ID.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: organisation_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageNo
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+Number of results per page.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
 
 Required: False
 Position: Named
@@ -159,36 +339,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TopLevelID
-Filter by the specified top level ID.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: toplevel_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ClientID
-Filter by the specified client ID.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: client_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -SiteID
 Filter by the specified site ID.
 
@@ -204,13 +354,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrganisationID
-Filter by the specified organisation ID.
+### -TopLevelID
+Filter by the specified top level ID.
 
 ```yaml
 Type: Int32
 Parameter Sets: Multi
-Aliases: organisation_id
+Aliases: toplevel_id
 
 Required: False
 Position: Named
@@ -219,167 +369,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -DepartmentID
-Filter by the specified department ID.
+### -UserID
+User ID
 
 ```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: department_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -AssetID
-Filter by the specified asset ID.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: asset_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeActive
-Include active users in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeInactive
-Include inactive users in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ApproversOnly
-Include approvers only in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ExcludeAgents
-Exclude users linked to agent accounts from the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Count
-The number of users to return if not using pagination.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -FullObjects
-Parameter to return the full objects.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
+Type: Int64
 Parameter Sets: Single
 Aliases:
 
-Required: False
+Required: True
 Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeActivity
-Include ticket activity in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludePopups
-Include customer popups in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

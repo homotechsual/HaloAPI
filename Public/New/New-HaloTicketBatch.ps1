@@ -20,7 +20,7 @@ Function New-HaloTicketBatch {
             if ($Tickets -is [Array]) {
                 $BatchResults = [System.Collections.Concurrent.ConcurrentBag[PSObject]]::New()
                 $Tickets | ForEach-Object -Parallel {
-                    Import-Module 'X:\Development\Repositories\MJCO\HaloAPI\HaloAPI.psm1'
+                    Import-Module -Name 'HaloAPI'
                     $HaloConnectionParams = @{
                         URL = $Using:HAPIConnectionInformation.URL
                         ClientID = $Using:HAPIConnectionInformation.ClientID
