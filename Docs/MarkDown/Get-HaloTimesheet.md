@@ -32,23 +32,23 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -SelectedTeam
-Return the timesheet for the specified team.
+### -EndDate
+Timesheet end date/time.
 
 ```yaml
-Type: Int32
+Type: DateTime
 Parameter Sets: (All)
-Aliases:
+Aliases: end_date
 
 Required: False
 Position: Named
-Default value: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ShowHolidays
-Include holidays in the result.
+### -IncludeTimesheetFields
+Include all timesheet fields in the result.
 
 ```yaml
 Type: SwitchParameter
@@ -77,6 +77,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -SelectedTeam
+Return the timesheet for the specified team.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -SelectedTypes
 Return the selected types.
 
@@ -88,36 +103,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: @(0, 1 , 2, 3)
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -StartDate
-Timesheet start date/time.
-
-```yaml
-Type: DateTime
-Parameter Sets: (All)
-Aliases: start_date
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -EndDate
-Timesheet end date/time.
-
-```yaml
-Type: DateTime
-Parameter Sets: (All)
-Aliases: end_date
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -137,8 +122,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeTimesheetFields
-Include all timesheet fields in the result.
+### -ShowHolidays
+Include holidays in the result.
 
 ```yaml
 Type: SwitchParameter
@@ -148,6 +133,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -StartDate
+Timesheet start date/time.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases: start_date
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

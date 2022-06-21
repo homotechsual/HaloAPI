@@ -37,21 +37,6 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ReleaseID
-Software Release ID
-
-```yaml
-Type: Int64
-Parameter Sets: Single
-Aliases:
-
-Required: True
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Count
 Number of records to return
 
@@ -67,28 +52,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Search
-Filters response based on the search string
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-Paginate results
+### -IncludeDetails
+Include extra objects in the result.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: pageinate
+Parameter Sets: Single
+Aliases:
 
 Required: False
 Position: Named
@@ -97,32 +67,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageSize
-Number of results per page.
+### -IncludeNoteCount
+Include release note count in the result.
 
 ```yaml
-Type: Int32
+Type: SwitchParameter
 Parameter Sets: Multi
-Aliases: page_size
+Aliases:
 
 Required: False
 Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageNo
-Which page to return.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
-
-Required: False
-Position: Named
-Default value: 0
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -157,13 +112,43 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeNoteCount
-Include release note count in the result.
+### -PageNo
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+Number of results per page.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+Paginate results
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: Multi
-Aliases:
+Aliases: pageinate
 
 Required: False
 Position: Named
@@ -187,17 +172,32 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeDetails
-Include extra objects in the result.
+### -ReleaseID
+Software Release ID
 
 ```yaml
-Type: SwitchParameter
+Type: Int64
 Parameter Sets: Single
+Aliases:
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Search
+Filters response based on the search string
+
+```yaml
+Type: String
+Parameter Sets: Multi
 Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

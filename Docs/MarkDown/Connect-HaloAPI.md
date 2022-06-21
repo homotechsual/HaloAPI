@@ -14,7 +14,7 @@ Creates a new connection to a Halo instance.
 
 ```
 Connect-HaloAPI -URL <Uri> -ClientID <String> -ClientSecret <String> [-Scopes <String[]>] [-Tenant <String>]
- [<CommonParameters>]
+ [-AdditionalHeaders <Hashtable>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,15 +30,15 @@ This logs into Halo using the Client Credentials authorisation flow.
 
 ## PARAMETERS
 
-### -URL
-The URL of the Halo instance to connect to.
+### -AdditionalHeaders
+Hashtable containing additional parameters to be sent with each request.
 
 ```yaml
-Type: Uri
+Type: Hashtable
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -101,6 +101,21 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -URL
+The URL of the Halo instance to connect to.
+
+```yaml
+Type: Uri
+Parameter Sets: (All)
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

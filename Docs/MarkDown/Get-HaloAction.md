@@ -54,43 +54,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Count
-The number of actions to return.
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TicketID
-Get actions for a single ticket with the specified ID.
-\[HaloPipelineIDArgumentTransformation()\]
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases: ticket_id
-
-Required: True
-Position: Named
-Default value: 0
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -ExcludeSys
-Exclude system-performed actions.
+### -AgentOnly
+Only get actions performed by agents.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Multi
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -115,27 +84,27 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -AgentOnly
-Only get actions performed by agents.
+### -Count
+The number of actions to return.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
+Type: Int64
+Parameter Sets: Multi
 Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SupplierOnly
-Only get actions that involve suppliers.
+### -EmailOnly
+Only get email actions.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Multi
+Parameter Sets: Single
 Aliases:
 
 Required: False
@@ -160,38 +129,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeHTMLNote
-Include the action note HTML in the response.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeHTMLEmail
-Include the action email HTML in the response.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeAttachments
-Include attachment details in the response.
+### -ExcludeSys
+Exclude system-performed actions.
 
 ```yaml
 Type: SwitchParameter
@@ -220,8 +159,68 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SLAOnly
-Only get SLA hold and release actions.
+### -IncludeAttachments
+Include attachment details in the response.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDetails
+Include extra detail objects.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeEmail
+Include the HTML and plain text email body in the response.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeHTMLEmail
+Include the action email HTML in the response.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeHTMLNote
+Include the action note HTML in the response.
 
 ```yaml
 Type: SwitchParameter
@@ -250,53 +249,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeEmail
-Include the HTML and plain text email body in the response.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-Include extra detail objects.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -MostRecent
 Ignore the '-ActionID' and get the most recent action for the '-TicketID'
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -EmailOnly
-Only get email actions.
 
 ```yaml
 Type: SwitchParameter
@@ -322,6 +276,52 @@ Required: False
 Position: Named
 Default value: False
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SLAOnly
+Only get SLA hold and release actions.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SupplierOnly
+Only get actions that involve suppliers.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TicketID
+Get actions for a single ticket with the specified ID.
+\[HaloPipelineIDArgumentTransformation()\]
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: ticket_id
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
