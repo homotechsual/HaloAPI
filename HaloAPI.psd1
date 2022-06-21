@@ -114,6 +114,7 @@
         'Get-HaloWorkflows',
         'Invoke-HaloRequest',
         'New-HaloAction',
+        'New-HaloActionBatch',
         'New-HaloAgent',
         'New-HaloAppointment',
         'New-HaloAsset',
@@ -223,10 +224,10 @@
             IconUri      = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Fix linting issue and minor bug in parameter declaration.'
+            ReleaseNotes = 'New commandlets for batch actions, workflows, custom fields. Exposes Invoke-HaloRequest for adhoc API requests.'
 
             # Prerelease string of this module
-            Prerelease = 'Beta5'
+            Prerelease = 'Beta6'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
