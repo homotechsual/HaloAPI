@@ -1,31 +1,30 @@
-Function New-HaloTicketBatch {
+Function New-HaloAssetBatch {
     <#
         .SYNOPSIS
-            Creates multiple tickets via the Halo API.
+            Creates multiple assets via the Halo API.
         .DESCRIPTION
-            Function to send a batch of ticket creation requests to the Halo API
+            Function to send a batch of asset creation requests to the Halo API
         .OUTPUTS
             Outputs an object containing the responses from the web requests.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object[]])]
     Param (
-        # Array of objects containing properties and values used to create one or more new tickets.
+        # Array of objects containing properties and values used to create one or more new assets.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Tickets,
+        [Array[]]$Assets,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.
         [Int32]$BatchWait
-
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess('Tickets', 'Create')) {
-            if ($Tickets -is [Array]) {
+        if ($PSCmdlet.ShouldProcess('Assets', 'Create')) {
+            if ($Assets -is [Array]) {
                 $BatchParams = @{
-                    Input = $Tickets
-                    EntityType = 'Ticket'
+                    Input = $Assets
+                    EntityType = 'Asset'
                     Operation = 'New'
                 }
                 if ($BatchSize) {
@@ -37,7 +36,7 @@ Function New-HaloTicketBatch {
                 $BatchResults = Invoke-HaloBatchProcessor @BatchParams
                 Return $BatchResults
             } else {
-                throw 'New-HaloTicketBatch requires an array of tickets to create.'
+                throw 'New-HaloAssetBatch requires an array of assets to create.'
             }  
         }
     } catch {

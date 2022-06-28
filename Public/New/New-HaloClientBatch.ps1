@@ -1,31 +1,30 @@
-Function New-HaloTicketBatch {
+Function New-HaloClientBatch {
     <#
         .SYNOPSIS
-            Creates multiple tickets via the Halo API.
+            Creates multiple clients via the Halo API.
         .DESCRIPTION
-            Function to send a batch of ticket creation requests to the Halo API
+            Function to send a batch of client creation requests to the Halo API
         .OUTPUTS
             Outputs an object containing the responses from the web requests.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object[]])]
     Param (
-        # Array of objects containing properties and values used to create one or more new tickets.
+        # Array of objects containing properties and values used to create one or more new clients.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Tickets,
+        [Array[]]$Clients,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.
         [Int32]$BatchWait
-
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess('Tickets', 'Create')) {
-            if ($Tickets -is [Array]) {
+        if ($PSCmdlet.ShouldProcess('Clients', 'Create')) {
+            if ($Clients -is [Array]) {
                 $BatchParams = @{
-                    Input = $Tickets
-                    EntityType = 'Ticket'
+                    Input = $Clients
+                    EntityType = 'Client'
                     Operation = 'New'
                 }
                 if ($BatchSize) {
@@ -37,7 +36,7 @@ Function New-HaloTicketBatch {
                 $BatchResults = Invoke-HaloBatchProcessor @BatchParams
                 Return $BatchResults
             } else {
-                throw 'New-HaloTicketBatch requires an array of tickets to create.'
+                throw 'New-HaloClientBatch requires an array of clients to create.'
             }  
         }
     } catch {

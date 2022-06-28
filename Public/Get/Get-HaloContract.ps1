@@ -71,7 +71,7 @@ function Get-HaloContract {
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                ResourceType = 'contracts'
+                ResourceType = $null
             }
         } else {
             Write-Verbose 'Running in multi-contract mode.'

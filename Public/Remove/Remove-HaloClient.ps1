@@ -12,6 +12,7 @@ function Remove-HaloClient {
     Param(
         # The client ID
         [Parameter( Mandatory = $True )]
+        [Alias('Client')]
         [int64]$ClientID
     )
     Invoke-HaloPreFlightCheck

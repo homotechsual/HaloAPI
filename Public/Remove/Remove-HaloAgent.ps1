@@ -12,6 +12,7 @@ function Remove-HaloAgent {
     Param(
         # The agent ID
         [Parameter( Mandatory = $True )]
+        [Alias('Agent')]
         [int64]$AgentId
     )
     Invoke-HaloPreFlightCheck
@@ -24,7 +25,7 @@ function Remove-HaloAgent {
                 Return $ActionResults
             }
         } else {
-            Throw 'Action was not found in Halo to delete.'
+            Throw 'Agent was not found in Halo to delete.'
         }
     } catch {
         New-HaloError -ErrorRecord $_
