@@ -79,7 +79,6 @@ function Get-HaloAssetType {
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
-                #ResourceType = 'assettypes' - Don't think this is needed. Will clean this up or fix it after testing.
             }
         } else {
             Write-Verbose 'Running in multi-asset type mode'
@@ -88,7 +87,7 @@ function Get-HaloAssetType {
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
-                AutoPaginateOff = $Paginate
+                AutoPaginateOff = $True
                 QSCollection = $QSCollection               
             }
         }    
