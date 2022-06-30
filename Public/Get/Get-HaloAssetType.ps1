@@ -79,6 +79,7 @@ function Get-HaloAssetType {
                 Resource = $Resource
                 AutoPaginateOff = $True
                 QSCollection = $QSCollection
+                ResourceType = $Null
             }
         } else {
             Write-Verbose 'Running in multi-asset type mode'
@@ -87,8 +88,9 @@ function Get-HaloAssetType {
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
-                AutoPaginateOff = $True
-                QSCollection = $QSCollection               
+                AutoPaginateOff = $False
+                QSCollection = $QSCollection
+                ResourceType = $Null
             }
         }    
         $AssetTypeResults = New-HaloGETRequest @RequestParams

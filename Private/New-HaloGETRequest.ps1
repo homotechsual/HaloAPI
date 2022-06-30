@@ -91,7 +91,7 @@ function New-HaloGETRequest {
                 }
                 Write-Verbose "Total number of pages to process: $NumPages"
                 $PageNum++
-                if (($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
+                if ((-not [string]::IsNullOrWhiteSpace($ResourceType)) -and ($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
                     $Response.$ResourceType
                 } else {
                     $Response
