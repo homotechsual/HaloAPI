@@ -23,7 +23,7 @@ Function Remove-HaloAgentBatch {
         if ($PSCmdlet.ShouldProcess('Agents', 'Delete')) {
             if ($Actions -is [Array]) {
                 $BatchParams = @{
-                    Input = $Agents
+                    BatchInput = $Agents
                     EntityType = 'Agent'
                     Operation = 'Remove'
                 }

@@ -23,7 +23,7 @@ Function New-HaloOpportunityBatch {
         if ($PSCmdlet.ShouldProcess('Opportunitys', 'Create')) {
             if ($Opportunitys -is [Array]) {
                 $BatchParams = @{
-                    Input = $Opportunitys
+                    BatchInput = $Opportunitys
                     EntityType = 'Opportunity'
                     Operation = 'New'
                 }

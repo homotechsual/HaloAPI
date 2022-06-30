@@ -23,7 +23,7 @@ Function New-HaloCustomFieldBatch {
         if ($PSCmdlet.ShouldProcess('CustomFields', 'Create')) {
             if ($CustomFields -is [Array]) {
                 $BatchParams = @{
-                    Input = $CustomFields
+                    BatchInput = $CustomFields
                     EntityType = 'CustomField'
                     Operation = 'New'
                 }

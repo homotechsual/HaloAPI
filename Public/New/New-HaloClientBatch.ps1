@@ -23,7 +23,7 @@ Function New-HaloClientBatch {
         if ($PSCmdlet.ShouldProcess('Clients', 'Create')) {
             if ($Clients -is [Array]) {
                 $BatchParams = @{
-                    Input = $Clients
+                    BatchInput = $Clients
                     EntityType = 'Client'
                     Operation = 'New'
                 }

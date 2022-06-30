@@ -23,7 +23,7 @@ Function New-HaloServiceBatch {
         if ($PSCmdlet.ShouldProcess('Services', 'Create')) {
             if ($Services -is [Array]) {
                 $BatchParams = @{
-                    Input = $Services
+                    BatchInput = $Services
                     EntityType = 'Service'
                     Operation = 'New'
                 }

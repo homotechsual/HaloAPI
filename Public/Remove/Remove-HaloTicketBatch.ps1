@@ -23,7 +23,7 @@ Function Remove-HaloTicketBatch {
         if ($PSCmdlet.ShouldProcess('Tickets', 'Delete')) {
             if ($Actions -is [Array]) {
                 $BatchParams = @{
-                    Input = $Tickets
+                    BatchInput = $Tickets
                     EntityType = 'Ticket'
                     Operation = 'Remove'
                 }

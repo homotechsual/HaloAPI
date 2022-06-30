@@ -23,7 +23,7 @@ Function New-HaloSupplierBatch {
         if ($PSCmdlet.ShouldProcess('Suppliers', 'Create')) {
             if ($Suppliers -is [Array]) {
                 $BatchParams = @{
-                    Input = $Suppliers
+                    BatchInput = $Suppliers
                     EntityType = 'Supplier'
                     Operation = 'New'
                 }

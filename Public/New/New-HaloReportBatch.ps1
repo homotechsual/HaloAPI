@@ -23,7 +23,7 @@ Function New-HaloReportBatch {
         if ($PSCmdlet.ShouldProcess('Reports', 'Create')) {
             if ($Reports -is [Array]) {
                 $BatchParams = @{
-                    Input = $Reports
+                    BatchInput = $Reports
                     EntityType = 'Report'
                     Operation = 'New'
                 }

@@ -23,7 +23,7 @@ Function New-HaloActionBatch {
         if ($PSCmdlet.ShouldProcess('Actions', 'Create')) {
             if ($Actions -is [Array]) {
                 $BatchParams = @{
-                    Input = $Actions
+                    BatchInput = $Actions
                     EntityType = 'Action'
                     Operation = 'New'
                 }
@@ -32,6 +32,12 @@ Function New-HaloActionBatch {
                 }
                 if ($BatchWait) {
                     $BatchParams.Wait = $BatchWait
+                }
+                if ($DebugPreference -eq 'Continue') {
+                    $BatchParams.Debug = $True
+                }
+                if ($VerbosePreference -eq 'Continue') {
+                    $BatchParams.Verbose = $True
                 }
                 $BatchResults = Invoke-HaloBatchProcessor @BatchParams
                 Return $BatchResults

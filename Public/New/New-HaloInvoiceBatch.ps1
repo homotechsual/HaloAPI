@@ -23,7 +23,7 @@ Function New-HaloInvoiceBatch {
         if ($PSCmdlet.ShouldProcess('Invoices', 'Create')) {
             if ($Invoices -is [Array]) {
                 $BatchParams = @{
-                    Input = $Invoices
+                    BatchInput = $Invoices
                     EntityType = 'Invoice'
                     Operation = 'New'
                 }

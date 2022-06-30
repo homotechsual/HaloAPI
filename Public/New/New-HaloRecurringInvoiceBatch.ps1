@@ -23,7 +23,7 @@ Function New-HaloRecurringInvoiceBatch {
         if ($PSCmdlet.ShouldProcess('Recurring Invoices', 'Create')) {
             if ($RecurringInvoices -is [Array]) {
                 $BatchParams = @{
-                    Input = $RecurringInvoices
+                    BatchInput = $RecurringInvoices
                     EntityType = 'RecurringInvoice'
                     Operation = 'New'
                 }

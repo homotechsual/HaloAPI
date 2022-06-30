@@ -23,7 +23,7 @@ Function New-HaloSiteBatch {
         if ($PSCmdlet.ShouldProcess('Sites', 'Create')) {
             if ($Sites -is [Array]) {
                 $BatchParams = @{
-                    Input = $Sites
+                    BatchInput = $Sites
                     EntityType = 'Site'
                     Operation = 'New'
                 }

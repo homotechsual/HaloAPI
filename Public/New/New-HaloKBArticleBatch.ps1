@@ -23,7 +23,7 @@ Function New-HaloKBArticleBatch {
         if ($PSCmdlet.ShouldProcess('KBArticles', 'Create')) {
             if ($KBArticles -is [Array]) {
                 $BatchParams = @{
-                    Input = $KBArticles
+                    BatchInput = $KBArticles
                     EntityType = 'KBArticle'
                     Operation = 'New'
                 }

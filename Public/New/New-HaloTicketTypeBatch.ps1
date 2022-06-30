@@ -23,7 +23,7 @@ Function New-HaloTicketTypeBatch {
         if ($PSCmdlet.ShouldProcess('Ticket Types', 'Create')) {
             if ($TicketTypes -is [Array]) {
                 $BatchParams = @{
-                    Input = $TicketTypes
+                    BatchInput = $TicketTypes
                     EntityType = 'TicketType'
                     Operation = 'New'
                 }

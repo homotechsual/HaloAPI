@@ -23,7 +23,7 @@ Function New-HaloProjectBatch {
         if ($PSCmdlet.ShouldProcess('Projects', 'Create')) {
             if ($Projects -is [Array]) {
                 $BatchParams = @{
-                    Input = $Projects
+                    BatchInput = $Projects
                     EntityType = 'Project'
                     Operation = 'New'
                 }

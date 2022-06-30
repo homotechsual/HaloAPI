@@ -23,7 +23,7 @@ Function Remove-HaloActionBatch {
         if ($PSCmdlet.ShouldProcess('Actions', 'Delete')) {
             if ($Actions -is [Array]) {
                 $BatchParams = @{
-                    Input = $Actions
+                    BatchInput = $Actions
                     EntityType = 'Action'
                     Operation = 'Remove'
                 }

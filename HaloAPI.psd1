@@ -255,10 +255,10 @@
             IconUri      = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Bugfix for Get-HaloAssetType. More debugging info for POST requests.'
+            ReleaseNotes = 'Bugfix and improved debug information for `Invoke-HaloBatchProcessor` internal API "contract" change - parameter `Input` for Invoke-HaloBatchProcess is now `BatchInput`.'
 
             # Prerelease string of this module
-            Prerelease = 'Beta2'
+            Prerelease = 'Beta3'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false

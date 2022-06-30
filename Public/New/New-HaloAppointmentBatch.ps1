@@ -23,7 +23,7 @@ Function New-HaloAppointmentBatch {
         if ($PSCmdlet.ShouldProcess('Appointments', 'Create')) {
             if ($Appointments -is [Array]) {
                 $BatchParams = @{
-                    Input = $Appointments
+                    BatchInput = $Appointments
                     EntityType = 'Appointment'
                     Operation = 'New'
                 }

@@ -23,7 +23,7 @@ Function New-HaloAssetBatch {
         if ($PSCmdlet.ShouldProcess('Assets', 'Create')) {
             if ($Assets -is [Array]) {
                 $BatchParams = @{
-                    Input = $Assets
+                    BatchInput = $Assets
                     EntityType = 'Asset'
                     Operation = 'New'
                 }

@@ -23,7 +23,7 @@ Function New-HaloAttachmentBatch {
         if ($PSCmdlet.ShouldProcess('Attachments', 'Create')) {
             if ($Attachments -is [Array]) {
                 $BatchParams = @{
-                    Input = $Attachments
+                    BatchInput = $Attachments
                     EntityType = 'Attachment'
                     Operation = 'New'
                 }

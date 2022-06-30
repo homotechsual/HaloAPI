@@ -23,7 +23,7 @@ Function New-HaloContractBatch {
         if ($PSCmdlet.ShouldProcess('Contracts', 'Create')) {
             if ($Contracts -is [Array]) {
                 $BatchParams = @{
-                    Input = $Contracts
+                    BatchInput = $Contracts
                     EntityType = 'Contract'
                     Operation = 'New'
                 }

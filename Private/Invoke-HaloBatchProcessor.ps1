@@ -12,7 +12,7 @@ function Invoke-HaloBatchProcessor {
     [OutputType([Object[]])]
     param (
         [Parameter( Mandatory )]
-        [Object[]]$Input,
+        [Object[]]$BatchInput,
         [Parameter( Mandatory )]
         [String]$EntityType,
         [Parameter( Mandatory )]
@@ -27,17 +27,25 @@ function Invoke-HaloBatchProcessor {
     $Batch.Add([System.Collections.Generic.List[Object]]::New()) | Out-Null
     # Break $Input into an assoc. array of $Size-sized batches.
     $BatchGroup = 0
-    $Input | ForEach-Object {  
-        $Batch[$BatchGroup].Add($Input) | Out-Null
+    Write-Debug "Input:`n$($BatchInput | ConvertTo-Json -AsArray -Depth 5)"
+    Write-Debug "Entity type: $EntityType"
+    Write-Debug "Operation: $Operation"
+    $BatchInput | ForEach-Object {
         if ($Batch[$BatchGroup].Count -ge $Size) {
             $Batch.Add([System.Collections.Generic.List[Object]]::New()) | Out-Null
             $BatchGroup++
         }
+        $Batch[$BatchGroup].Add($_) | Out-Null
     }
     # Iterate over the batches, process each batch and then wait $Wait seconds before the next batch.
+    Write-Debug "Batch:`n$($Batch | ConvertTo-Json -AsArray -Depth 5)"
+    $CommandName = "$($Operation)-Halo$($EntityType)"
+    $CommandExists = Get-Command -Name $CommandName
+    $ModulePath = $MyInvocation.MyCommand.Module.Path
+    Write-Debug "Module Path: $ModulePath"
     $Batch | ForEach-Object {
         $_ | ForEach-Object -Parallel {
-            Import-Module -Name 'HaloAPI'
+            Import-Module $Using:ModulePath
             $HaloConnectionParams = @{
                 URL = $Using:HAPIConnectionInformation.URL
                 ClientID = $Using:HAPIConnectionInformation.ClientID
@@ -55,7 +63,7 @@ function Invoke-HaloBatchProcessor {
             Connect-HaloAPI @HaloConnectionParams
             $LocalBatchResults = $using:BatchResults
             $CommandParameters = @{
-                $EntityType = $_
+                $Using:EntityType = $_
             }
             if ($DebugPreference -eq 'Continue') {
                 $CommandParameters.Debug = $True
@@ -63,10 +71,8 @@ function Invoke-HaloBatchProcessor {
             if ($VerbosePreference -eq 'Continue') {
                 $CommandParameters.Verbose = $True
             }
-            $CommandName = "$Operation-Halo$EntityType"
-            $CommandExists = Get-Command -Name $CommandName
-            if ($CommandExists) {
-                [PSCustomObject]$Result = & $CommandName @CommandParameters
+            if ($Using:CommandExists) {
+                [PSCustomObject]$Result = & $Using:CommandName @CommandParameters
                 $LocalBatchResults.Add($Result)
             } else {
                 Write-Error "The command $CommandName doesn't exist or isn't loaded."

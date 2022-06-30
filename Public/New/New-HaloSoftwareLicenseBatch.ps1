@@ -23,7 +23,7 @@ Function New-HaloSoftwareLicenseBatch {
         if ($PSCmdlet.ShouldProcess('Software Licenses', 'Create')) {
             if ($SoftwareLicenses -is [Array]) {
                 $BatchParams = @{
-                    Input = $SoftwareLicenses
+                    BatchInput = $SoftwareLicenses
                     EntityType = 'SoftwareLicense'
                     Operation = 'New'
                 }

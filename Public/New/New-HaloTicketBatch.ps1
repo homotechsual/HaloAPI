@@ -24,7 +24,7 @@ Function New-HaloTicketBatch {
         if ($PSCmdlet.ShouldProcess('Tickets', 'Create')) {
             if ($Tickets -is [Array]) {
                 $BatchParams = @{
-                    Input = $Tickets
+                    BatchInput = $Tickets
                     EntityType = 'Ticket'
                     Operation = 'New'
                 }

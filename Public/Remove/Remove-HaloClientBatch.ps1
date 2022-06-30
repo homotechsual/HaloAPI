@@ -23,7 +23,7 @@ Function Remove-HaloClientBatch {
         if ($PSCmdlet.ShouldProcess('Clients', 'Delete')) {
             if ($Actions -is [Array]) {
                 $BatchParams = @{
-                    Input = $Clients
+                    BatchInput = $Clients
                     EntityType = 'Client'
                     Operation = 'Remove'
                 }

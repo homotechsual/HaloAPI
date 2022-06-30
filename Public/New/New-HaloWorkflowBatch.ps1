@@ -23,7 +23,7 @@ Function New-HaloWorkflowBatch {
         if ($PSCmdlet.ShouldProcess('Workflows', 'Create')) {
             if ($Workflows -is [Array]) {
                 $BatchParams = @{
-                    Input = $Workflows
+                    BatchInput = $Workflows
                     EntityType = 'Workflow'
                     Operation = 'New'
                 }

@@ -23,7 +23,7 @@ Function New-HaloItemBatch {
         if ($PSCmdlet.ShouldProcess('Items', 'Create')) {
             if ($Items -is [Array]) {
                 $BatchParams = @{
-                    Input = $Items
+                    BatchInput = $Items
                     EntityType = 'Item'
                     Operation = 'New'
                 }

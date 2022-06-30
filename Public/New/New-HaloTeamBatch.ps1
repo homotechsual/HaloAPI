@@ -23,7 +23,7 @@ Function New-HaloTeamBatch {
         if ($PSCmdlet.ShouldProcess('Teams', 'Create')) {
             if ($Teams -is [Array]) {
                 $BatchParams = @{
-                    Input = $Teams
+                    BatchInput = $Teams
                     EntityType = 'Team'
                     Operation = 'New'
                 }

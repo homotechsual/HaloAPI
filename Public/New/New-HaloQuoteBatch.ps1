@@ -23,7 +23,7 @@ Function New-HaloQuoteBatch {
         if ($PSCmdlet.ShouldProcess('Quotes', 'Create')) {
             if ($Quotes -is [Array]) {
                 $BatchParams = @{
-                    Input = $Quotes
+                    BatchInput = $Quotes
                     EntityType = 'Quote'
                     Operation = 'New'
                 }
