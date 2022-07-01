@@ -12,7 +12,7 @@
     RootModule        = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.9.1'
+    ModuleVersion     = '1.10.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -117,45 +117,72 @@
         'New-HaloAction',
         'New-HaloActionBatch',
         'New-HaloAgent',
+        'New-HaloAgentBatch',
         'New-HaloAppointment',
+        'New-HaloAppointmentBatch',
         'New-HaloAsset',
+        'New-HaloAssetBatch',
         'New-HaloAssetType',
         'New-HaloAttachment',
+        'New-HaloAttachmentBatch',
         'New-HaloBillingTemplate',
         'New-HaloCategory',
         'New-HaloClient',
+        'New-HaloClientBatch',
         'New-HaloContract',
+        'New-HaloContractBatch',
         'New-HaloCRMNote',
         'New-HaloCustomButton',
         'New-HaloCustomField',
+        'New-HaloCustomFieldBatch',
         'New-HaloFAQList',
         'New-HaloInvoice',
+        'New-HaloInvoiceBatch',
         'New-HaloItem',
+        'New-HaloItemBatch',
         'New-HaloKBArticle',
+        'New-HaloKBArticleBatch',
         'New-HaloOpportunity',
+        'New-HaloOpportunityBatch',
         'New-HaloProject',
+        'New-HaloProjectBatch',
         'New-HaloQuote',
+        'New-HaloQuoteBatch',
         'New-HaloRecurringInvoice',
+        'New-HaloRecurringInvoiceBatch',
         'New-HaloReport',
+        'New-HaloReportBatch',
         'New-HaloService',
+        'New-HaloServiceBatch',
         'New-HaloSite',
+        'New-HaloSiteBatch',
         'New-HaloSoftwareLicence',
+        'New-HaloSoftwareLicenseBatch',
         'New-HaloStatus',
         'New-HaloSupplier',
+        'New-HaloSupplierBatch',
         'New-HaloTeam',
+        'New-HaloTeamBatch',
         'New-HaloTicket',
         'New-HaloTicketBatch',
         'New-HaloTicketType',
+        'New-HaloTicketTypeBatch',
         'New-HaloUser',
+        'New-HaloUserBatch',
         'New-HaloWorkday',
         'New-HaloWorkflow',
+        'New-HaloWorkflowBatch',
         'Remove-HaloAction',
+        'Remove-HaloActionBatch',
         'Remove-HaloAgent',
+        'Remove-HaloAgentBatch',
         'Remove-HaloAssetType',
         'Remove-HaloCategory',
         'Remove-HaloClient',
+        'Remove-HaloClientBatch',
         'Remove-HaloCRMNote',
         'Remove-HaloTicket',
+        'Remove-HaloTicketBatch',
         'Set-HaloAction',
         'Set-HaloAgent',
         'Set-HaloAppointment',
@@ -199,7 +226,7 @@
     VariablesToExport = '*'
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport   = 'Get-HaloArticle', 'New-HaloArticle', 'Set-HaloArticle', 'Get-HaloCustomFields', 'Get-HaloWorkflows', 'Get-HaloTabs'
+    AliasesToExport   = 'Get-HaloArticle', 'New-HaloArticle', 'Set-HaloArticle', 'New-HaloArticleBatch', 'Get-HaloCustomFields', 'Get-HaloWorkflows', 'Get-HaloTabs'
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()
@@ -228,10 +255,10 @@
             IconUri      = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'New commandlets for batch actions, workflows, custom fields. Exposes Invoke-HaloRequest for adhoc API requests..'
+            ReleaseNotes = 'Bugfix and improved debug information for `Invoke-HaloBatchProcessor` internal API "contract" change - parameter `Input` for Invoke-HaloBatchProcess is now `BatchInput`.'
 
             # Prerelease string of this module
-            # Prerelease = 'Beta1'
+            # Prerelease = 'Beta3'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false

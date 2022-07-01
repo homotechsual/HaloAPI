@@ -12,34 +12,29 @@ Function New-HaloTicketBatch {
     Param (
         # Array of objects containing properties and values used to create one or more new tickets.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Tickets
+        [Array[]]$Tickets,
+        # How many objects to process at once before delaying. Default value is 100.
+        [Int32]$BatchSize,
+        # How long to wait between batch runs. Default value is 1 second.
+        [Int32]$BatchWait
+
     )
     Invoke-HaloPreFlightCheck
     try {
         if ($PSCmdlet.ShouldProcess('Tickets', 'Create')) {
             if ($Tickets -is [Array]) {
-                $BatchResults = [System.Collections.Concurrent.ConcurrentBag[PSObject]]::New()
-                $Tickets | ForEach-Object -Parallel {
-                    Import-Module -Name 'HaloAPI'
-                    $HaloConnectionParams = @{
-                        URL = $Using:HAPIConnectionInformation.URL
-                        ClientID = $Using:HAPIConnectionInformation.ClientID
-                        ClientSecret = $Using:HAPIConnectionInformation.ClientSecret
-                        Scopes = $Using:HAPIConnectionInformation.AuthScopes
-                        Tenant = $Using:HAPIConnectionInformation.Tenant
-                        AdditionalHeaders = $Using:HAPIConnectionInformation.AdditionalHeaders
-                    }
-                    if ($DebugPreference -eq 'Continue') {
-                        $HaloConnectionParams.Debug = $True
-                    }
-                    if ($VerbosePreference -eq 'Continue') {
-                        $HaloConnectionParams.Verbose = $True
-                    }
-                    Connect-HaloAPI @HaloConnectionParams
-                    $LocalBatchResults = $using:BatchResults
-                    [PSCustomObject]$Ticket = New-HaloTicket -Ticket $_
-                    $LocalBatchResults.Add($Ticket)
+                $BatchParams = @{
+                    BatchInput = $Tickets
+                    EntityType = 'Ticket'
+                    Operation = 'New'
                 }
+                if ($BatchSize) {
+                    $BatchParams.Size = $BatchSize
+                }
+                if ($BatchWait) {
+                    $BatchParams.Wait = $BatchWait
+                }
+                $BatchResults = Invoke-HaloBatchProcessor @BatchParams
                 Return $BatchResults
             } else {
                 throw 'New-HaloTicketBatch requires an array of tickets to create.'

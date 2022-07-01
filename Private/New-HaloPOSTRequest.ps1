@@ -36,11 +36,12 @@ function New-HaloPOSTRequest {
         } else {
             Write-Debug 'Query string collection not present...'
         }
-        
+        $JSONBody = $Object | ConvertTo-Json -Depth 100 -AsArray
+        Write-Debug "Request body:`n$JSONBody"
         $WebRequestParams = @{
             Method = 'POST'
             Uri = "$($Script:HAPIConnectionInformation.URL)api/$($Endpoint)$($Query)"
-            Body = $Object | ConvertTo-Json -Depth 100 -AsArray
+            Body = $JSONBody
         }
         $Results = Invoke-HaloRequest -WebRequestParams $WebRequestParams
         Return $Results

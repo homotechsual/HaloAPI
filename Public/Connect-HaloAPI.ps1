@@ -60,7 +60,12 @@ function Connect-HaloAPI {
     $AuthInfoURIBuilder = [System.UriBuilder]::New($URL)
     Write-Verbose "Looking up auth endpoint using the 'api/authinfo' endpoint."
     $AuthInfoURIBuilder.Path = 'api/authinfo'
-    $AuthInfoResponse = Invoke-WebRequest -Uri $AuthInfoURIBuilder.ToString() -Method 'GET'
+    $AuthInfoParams = @{
+        Uri = $AuthInfoURIBuilder.ToString()
+        Method = 'GET'
+        Headers = $AdditionalHeaders
+    }
+    $AuthInfoResponse = Invoke-WebRequest @AuthInfoParams
     if ($AuthInfoResponse.content) {
         $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
         Write-Debug "Auth info response: $AuthInfo"

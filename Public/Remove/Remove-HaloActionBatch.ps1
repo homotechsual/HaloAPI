@@ -1,16 +1,16 @@
-Function New-HaloActionBatch {
+Function Remove-HaloActionBatch {
     <#
         .SYNOPSIS
-            Creates multiple actions via the Halo API.
+            Removes multiple actions via the Halo API.
         .DESCRIPTION
-            Function to send a batch of action creation requests to the Halo API
+            Function to send a batch of action removal requests to the Halo API
         .OUTPUTS
             Outputs an object containing the responses from the web requests.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object[]])]
     Param (
-        # Array of objects containing properties and values used to create one or more new actions.
+        # Array of objects containing properties and values used to remove one or more actions. This should be an array of objects containing an `Id` and `TicketId` property.
         [Parameter( Mandatory = $True )]
         [Array[]]$Actions,
         # How many objects to process at once before delaying. Default value is 100.
@@ -20,12 +20,12 @@ Function New-HaloActionBatch {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess('Actions', 'Create')) {
+        if ($PSCmdlet.ShouldProcess('Actions', 'Delete')) {
             if ($Actions -is [Array]) {
                 $BatchParams = @{
                     BatchInput = $Actions
                     EntityType = 'Action'
-                    Operation = 'New'
+                    Operation = 'Remove'
                 }
                 if ($BatchSize) {
                     $BatchParams.Size = $BatchSize
@@ -33,16 +33,10 @@ Function New-HaloActionBatch {
                 if ($BatchWait) {
                     $BatchParams.Wait = $BatchWait
                 }
-                if ($DebugPreference -eq 'Continue') {
-                    $BatchParams.Debug = $True
-                }
-                if ($VerbosePreference -eq 'Continue') {
-                    $BatchParams.Verbose = $True
-                }
                 $BatchResults = Invoke-HaloBatchProcessor @BatchParams
                 Return $BatchResults
             } else {
-                throw 'New-HaloActionBatch requires an array of actions to create.'
+                throw 'Remove-HaloActionBatch requires an array of actions to delete.'
             }  
         }
     } catch {

@@ -23,11 +23,11 @@ function Invoke-HaloRequest {
     if ($Script:HAPIAuthToken.Expires -le $Now) {
         Write-Verbose 'The auth token has expired, renewing.'
         $ReconnectParameters = @{
-            URL = $Script:HAPIConnectionInformation.URL
-            ClientId = $Script:HAPIConnectionInformation.ClientID
+            URL          = $Script:HAPIConnectionInformation.URL
+            ClientId     = $Script:HAPIConnectionInformation.ClientID
             ClientSecret = $Script:HAPIConnectionInformation.ClientSecret
-            Scopes = $Script:HAPIConnectionInformation.AuthScopes
-            Tenant = $Script:HAPIConnectionInformation.Tenant
+            Scopes       = $Script:HAPIConnectionInformation.AuthScopes
+            Tenant       = $Script:HAPIConnectionInformation.Tenant
         }
         Connect-HaloAPI @ReconnectParameters
     }
@@ -48,6 +48,13 @@ function Invoke-HaloRequest {
         $Response = Invoke-WebRequest @WebRequestParams -Headers $RequestHeaders -ContentType 'application/json; charset=utf-8'
         Write-Debug "Response headers: $($Response.Headers | Out-String)"
         Write-Debug "Raw Response: $Response"
+        if ($Response.StatusCode.__value -eq 429) {
+            do {
+                Write-Warning 'The request was throttled, waiting for 1 second.'
+                Start-Sleep -Seconds 1
+                $Response = Invoke-WebRequest @WebRequestParams -Headers $RequestHeaders -ContentType 'application/json; charset=utf-8'
+            } while ($Response.StatusCode.__value -eq 429)
+        }
         if ($RawResult) {
             $Results = $Response
         } else {

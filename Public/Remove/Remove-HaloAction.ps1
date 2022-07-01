@@ -11,14 +11,21 @@ function Remove-HaloAction {
     [OutputType([Object])]
     Param(
         # The Action ID
-        [Parameter( Mandatory = $True )]
+        [Parameter( Mandatory, ParameterSetName = 'Single' )]
         [int64]$ActionID,
         # The Ticket ID
-        [Parameter( Mandatory = $True )]
-        [int64]$TicketID
+        [Parameter( Mandatory, ParameterSetName = 'Single' )]
+        [int64]$TicketID,
+        # Object containing action id and ticket id for batch processing.
+        [Parameter( Mandatory, ParameterSetName = 'Batch')]
+        [Object]$Action
     )
     Invoke-HaloPreFlightCheck
     try {
+        if ($Action) {
+            $ActionID = $Action.Id
+            $TicketID = $Action.TicketId
+        }
         $ObjectToDelete = Get-HaloAction -ActionID $ActionID -TicketID $TicketID
         if ($ObjectToDelete) {
             if ($PSCmdlet.ShouldProcess("Action '$($ObjectToDelete.id)' by '$($ObjectToDelete.who)'", 'Delete')) {

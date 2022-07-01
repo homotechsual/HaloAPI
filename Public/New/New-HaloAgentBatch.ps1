@@ -1,18 +1,18 @@
-Function New-HaloActionBatch {
+Function New-HaloAgentBatch {
     <#
         .SYNOPSIS
-            Creates multiple actions via the Halo API.
+            Creates multiple agents via the Halo API.
         .DESCRIPTION
-            Function to send a batch of action creation requests to the Halo API
+            Function to send a batch of agent creation requests to the Halo API
         .OUTPUTS
             Outputs an object containing the responses from the web requests.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object[]])]
     Param (
-        # Array of objects containing properties and values used to create one or more new actions.
+        # Array of objects containing properties and values used to create one or more new agents.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Actions,
+        [Array[]]$Agents,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.
@@ -20,11 +20,13 @@ Function New-HaloActionBatch {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess('Actions', 'Create')) {
-            if ($Actions -is [Array]) {
+        if ($PSCmdlet.ShouldProcess('Agents', 'Create')) {
+            Write-Debug "Input:`n $($Agents | ConvertTo-Json -AsArray -Depth 5)"
+            Write-Debug "Input type: $($Agents.GetType())"
+            if ($Agents -is [Array]) {
                 $BatchParams = @{
-                    BatchInput = $Actions
-                    EntityType = 'Action'
+                    BatchInput = $Agents
+                    EntityType = 'Agent'
                     Operation = 'New'
                 }
                 if ($BatchSize) {
@@ -33,16 +35,11 @@ Function New-HaloActionBatch {
                 if ($BatchWait) {
                     $BatchParams.Wait = $BatchWait
                 }
-                if ($DebugPreference -eq 'Continue') {
-                    $BatchParams.Debug = $True
-                }
-                if ($VerbosePreference -eq 'Continue') {
-                    $BatchParams.Verbose = $True
-                }
+                Write-Debug "Batch processor params:`n$($BatchParams | Out-String )"
                 $BatchResults = Invoke-HaloBatchProcessor @BatchParams
                 Return $BatchResults
             } else {
-                throw 'New-HaloActionBatch requires an array of actions to create.'
+                throw 'New-HaloAgentBatch requires an array of agents to create.'
             }  
         }
     } catch {

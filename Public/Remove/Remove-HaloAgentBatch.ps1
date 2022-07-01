@@ -1,18 +1,18 @@
-Function New-HaloActionBatch {
+Function Remove-HaloAgentBatch {
     <#
         .SYNOPSIS
-            Creates multiple actions via the Halo API.
+            Removes multiple agents via the Halo API.
         .DESCRIPTION
-            Function to send a batch of action creation requests to the Halo API
+            Function to send a batch of agent removal requests to the Halo API
         .OUTPUTS
             Outputs an object containing the responses from the web requests.
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object[]])]
     Param (
-        # Array of objects containing properties and values used to create one or more new actions.
+        # Array of objects containing properties and values used to remove one or more agents. This should be an array of agent ids.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Actions,
+        [Array[]]$Agents,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.
@@ -20,12 +20,12 @@ Function New-HaloActionBatch {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess('Actions', 'Create')) {
+        if ($PSCmdlet.ShouldProcess('Agents', 'Delete')) {
             if ($Actions -is [Array]) {
                 $BatchParams = @{
-                    BatchInput = $Actions
-                    EntityType = 'Action'
-                    Operation = 'New'
+                    BatchInput = $Agents
+                    EntityType = 'Agent'
+                    Operation = 'Remove'
                 }
                 if ($BatchSize) {
                     $BatchParams.Size = $BatchSize
@@ -33,16 +33,10 @@ Function New-HaloActionBatch {
                 if ($BatchWait) {
                     $BatchParams.Wait = $BatchWait
                 }
-                if ($DebugPreference -eq 'Continue') {
-                    $BatchParams.Debug = $True
-                }
-                if ($VerbosePreference -eq 'Continue') {
-                    $BatchParams.Verbose = $True
-                }
                 $BatchResults = Invoke-HaloBatchProcessor @BatchParams
                 Return $BatchResults
             } else {
-                throw 'New-HaloActionBatch requires an array of actions to create.'
+                throw 'Remove-HaloAgentBatch requires an array of agent ids to delete.'
             }  
         }
     } catch {

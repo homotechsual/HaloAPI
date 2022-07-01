@@ -13,6 +13,7 @@ foreach ($Function in @($Functions)) {
 New-Alias -Name 'Get-HaloArticle' -Value Get-HaloKBArticle
 New-Alias -Name 'New-HaloArticle' -Value New-HaloKBArticle
 New-Alias -Name 'Set-HaloArticle' -Value Set-HaloKBArticle
+New-Alias -Name 'New-HaloArticleBatch' -Value New-HaloKBArticleBatch
 New-Alias -Name 'Get-HaloCustomFields' -Value Get-HaloCustomField
 New-Alias -Name 'Get-HaloWorkflows' -Value Get-HaloWorkflow
 New-Alias -Name 'Get-HaloTabs' -Value Get-HaloTab

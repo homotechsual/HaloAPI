@@ -12,6 +12,7 @@ function Remove-HaloTicket {
     Param(
         # The Ticket ID
         [Parameter( Mandatory = $True )]
+        [Alias('Ticket')]
         [int64]$TicketID
     )
     Invoke-HaloPreFlightCheck
