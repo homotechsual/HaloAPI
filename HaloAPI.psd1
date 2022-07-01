@@ -258,7 +258,7 @@
             ReleaseNotes = 'Bugfix and improved debug information for `Invoke-HaloBatchProcessor` internal API "contract" change - parameter `Input` for Invoke-HaloBatchProcess is now `BatchInput`.'
 
             # Prerelease string of this module
-            Prerelease = 'Beta3'
+            # Prerelease = 'Beta3'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
