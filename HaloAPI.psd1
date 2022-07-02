@@ -255,7 +255,7 @@
             IconUri      = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Bugfix and improved debug information for `Invoke-HaloBatchProcessor` internal API "contract" change - parameter `Input` for Invoke-HaloBatchProcess is now `BatchInput`.'
+            ReleaseNotes = 'Fix incorrect bugfix reversion affecting batch cmdlets.'
 
             # Prerelease string of this module
             # Prerelease = 'Beta3'
