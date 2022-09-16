@@ -12,7 +12,7 @@
     RootModule        = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.10.0'
+    ModuleVersion     = '1.10.1'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -85,7 +85,7 @@
         'Get-HaloContract',
         'Get-HaloCRMNote',
         'Get-HaloCustomButton',
-        'Get-HaloCustomFields',
+        'Get-HaloCustomField',
         'Get-HaloFAQList',
         'Get-HaloField',
         'Get-HaloInvoice',
