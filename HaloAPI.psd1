@@ -12,7 +12,7 @@
     RootModule        = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.11.0'
+    ModuleVersion     = '1.11.1'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -85,7 +85,7 @@
         'Get-HaloContract',
         'Get-HaloCRMNote',
         'Get-HaloCustomButton',
-        'Get-HaloCustomFields',
+        'Get-HaloCustomField',
         'Get-HaloFAQList',
         'Get-HaloField',
         'Get-HaloInvoice',
@@ -220,13 +220,13 @@
 
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-    CmdletsToExport   = @()
+    CmdletsToExport = @()
 
     # Variables to export from this module
     VariablesToExport = '*'
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport   = 'Get-HaloArticle', 'New-HaloArticle', 'Set-HaloArticle', 'New-HaloArticleBatch', 'Get-HaloCustomFields', 'Get-HaloWorkflows', 'Get-HaloTabs'
+    AliasesToExport = 'Get-HaloArticle', 'New-HaloArticle', 'Set-HaloArticle', 'New-HaloArticleBatch', 'Get-HaloCustomFields', 'Get-HaloWorkflows', 'Get-HaloTabs'
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()
@@ -238,27 +238,27 @@
     # FileList = @()
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
-    PrivateData       = @{
+    PrivateData = @{
 
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags         = 'HaloPSA', 'PSA', 'Halo', 'API', 'HaloServiceSolutions', 'HaloITSM', 'HaloServiceDesk', 'ITSM', 'Service', 'Desk', 'REST', 'MSP', 'Automation'
+            Tags = 'HaloPSA', 'PSA', 'Halo', 'API', 'HaloServiceSolutions', 'HaloITSM', 'HaloServiceDesk', 'ITSM', 'Service', 'Desk', 'REST', 'MSP', 'Automation'
 
             # A URL to the Licence for this module.
-            LicenseUri   = 'https://mit.license.homotechsual.dev/'
+            LicenseUri = 'https://mit.license.homotechsual.dev/'
 
             # A URL to the main website for this project.
-            ProjectUri   = 'https://github.com/homotechsual/HaloAPI'
+            ProjectUri = 'https://github.com/homotechsual/HaloAPI'
 
             # A URL to an icon representing this module.
-            IconUri      = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
+            IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
             ReleaseNotes = 'Fix for PostedOnly and NonPostedOnly parameters on Get-HaloInvoice.'
 
             # Prerelease string of this module
-            Prerelease = 'Beta2'
+            # Prerelease = 'Beta2'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
