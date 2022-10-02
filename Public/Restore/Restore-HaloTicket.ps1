@@ -28,7 +28,7 @@ function Restore-HaloTicket {
             )
         }
         if ($PSCmdlet.ShouldProcess($Tickets -is [Array] ? 'Tickets' : 'Ticket', 'Update')) {
-            Set-HaloTicket -Object $Tickets
+            Set-HaloTicket -Ticket $Tickets
         }
     } catch {
         New-HaloError -ErrorRecord $_
