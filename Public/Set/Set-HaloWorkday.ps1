@@ -12,16 +12,24 @@ Function Set-HaloWorkday {
     Param (
         # Object containing properties and values used to update an existing item.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Workday
+        [Object]$Workday,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
         if ($null -eq $Workday.id) {
             throw 'Workday ID is required.'
         }
-        $ObjectToUpdate = Get-HaloWorkday -WorkdayID $Workday.id
+        if (-not $SkipValidation) {
+            $ObjectToUpdate = Get-HaloWorkday -WorkdayID $Workday.id
+        } else {
+            Write-Verbose 'Skipping validation checks.'
+            $ObjectToUpdate = $True
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Workday '$($ObjectToUpdate.name)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess('Workday', 'Update')) {
                 New-HaloPOSTRequest -Object $Workday -Endpoint 'workday'
             }
         } else {

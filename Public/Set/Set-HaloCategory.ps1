@@ -12,16 +12,24 @@ Function Set-HaloCategory {
     Param (
         # Object containing properties and values used to update an existing knowedgebase article.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Category
+        [Object]$Category,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
         if ($null -eq $Category.id) {
             throw 'Category ID is required.'
         }
-        $ObjectToUpdate = Get-HaloCategory -CategoryID $Category.id
+        if (-not $SkipValidation) {
+            $ObjectToUpdate = Get-HaloCategory -CategoryID $Category.id
+        } else {
+            Write-Verbose 'Skipping validation checks.'
+            $ObjectToUpdate = $True
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Category List '$($ObjectToUpdate.name)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess('Category List', 'Update')) {
                 New-HaloPOSTRequest -Object $Category -Endpoint 'Category'
             }
         } else {

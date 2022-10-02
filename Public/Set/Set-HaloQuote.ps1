@@ -12,7 +12,10 @@ Function Set-HaloQuote {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing quotations.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Quote
+        [Object[]]$Quote,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloQuote {
             $HaloQuoteParams = @{
                 QuoteId = $_.id
             }
-            $QuoteExists = Get-HaloQuote @HaloQuoteParams
-            if ($QuoteExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $QuoteExists = Get-HaloQuote @HaloQuoteParams
+                if ($QuoteExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {

@@ -12,16 +12,24 @@ Function Set-HaloBillingTemplate {
     Param (
         # Object containing properties and values used to update an existing billing template.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$Template
+        [Object]$Template,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
         if ($null -eq $Template.id) {
             throw 'Billing template ID is required.'
         }
-        $ObjectToUpdate = Get-HaloBillingTemplate -TemplateID $Template.id
+        if (-not $SkipValidation) {
+            $ObjectToUpdate = Get-HaloBillingTemplate -TemplateID $Template.id
+        } else {
+            Write-Verbose 'Skipping validation checks.'
+            $ObjectToUpdate = $True
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Billing Template '$($ObjectToUpdate.name)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess('Billing Template', 'Update')) {
                 New-HaloPOSTRequest -Object $Template -Endpoint 'billingtemplate'
             }
         } else {

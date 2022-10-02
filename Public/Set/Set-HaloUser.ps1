@@ -12,7 +12,10 @@ Function Set-HaloUser {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing users.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$User
+        [Object[]]$User,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloUser {
             $HaloUserParams = @{
                 UserId = $_.id
             }
-            $UserExists = Get-HaloUser @HaloUserParams
-            if ($UserExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $UserExists = Get-HaloUser @HaloUserParams
+                if ($UserExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {
