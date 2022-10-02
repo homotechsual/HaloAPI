@@ -65,7 +65,7 @@ function Invoke-HaloRequest {
                 Start-Sleep -Seconds 5
                 continue
             } else {
-                $_
+                throw $_
                 break
             }
         } catch {

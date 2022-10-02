@@ -17,17 +17,15 @@ function Restore-HaloTicket {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $Tickets = [System.Collections.Generic.List[Object]]
-        $TicketId | ForEach-Object {
-            $Tickets.Add(
-                @{
-                    id = $_.id
-                    _recover = $True
-                    _validate_updates = $True
-                }
-            )
+        $Tickets = ForEach ($Ticket in $TicketId) {
+            @{
+                id = $Ticket
+                _recover = $True
+                _validate_updates = $True
+            }
         }
-        if ($PSCmdlet.ShouldProcess($Tickets -is [Array] ? 'Tickets' : 'Ticket', 'Update')) {
+        Write-Debug "Tickets object: $($Tickets | Out-String)"
+        if ($PSCmdlet.ShouldProcess($Tickets -is [Array] ? 'Tickets' : 'Ticket', 'Restore')) {
             Set-HaloTicket -Ticket $Tickets
         }
     } catch {
