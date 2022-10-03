@@ -23,7 +23,7 @@ Function New-HaloUserBatch {
         if ($PSCmdlet.ShouldProcess('Users', 'Create')) {
             if ($Users -is [Array]) {
                 $BatchParams = @{
-                    Input = $Users
+                    BatchInput = $Users
                     EntityType = 'User'
                     Operation = 'New'
                 }

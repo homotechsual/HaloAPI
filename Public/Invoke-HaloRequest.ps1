@@ -60,7 +60,7 @@ function Invoke-HaloRequest {
             Return $Results
         } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
             $Success = $False
-            if ($_.Exception.Response.StatusCode.__value -eq 429) {
+            if ($_.Exception.Response.StatusCode.value__ -eq 429) {
                 Write-Warning 'The request was throttled, waiting for 5 seconds.'
                 Start-Sleep -Seconds 5
                 continue
@@ -76,7 +76,7 @@ function Invoke-HaloRequest {
         Return $Results
     } else {
         if ($Retries -gt 1) {
-            throw ('Retried request {0} times, request unsuccessful.') -f $Retries
+            New-HaloError -ModuleMessage ('Retried request to "{0}" {1} times, request unsuccessful.' -f $WebRequestParams.Uri, $Retries)
         }
     }
 }

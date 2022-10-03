@@ -4,10 +4,12 @@ function New-HaloError {
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter( Mandatory, ParameterSetName = 'ErrorRecord' )]
         [errorrecord]$ErrorRecord,
-        [Parameter()]
-        [switch]$HasResponse
+        [Parameter( ParameterSetName = 'ErrorRecord' )]
+        [switch]$HasResponse,
+        [Parameter( Mandatory, ParameterSetName = 'ModuleMessage' )]
+        [string]$ModuleMessage
 
     )
     Write-Verbose 'Generating Halo error output.'
@@ -57,10 +59,14 @@ function New-HaloError {
         } else {
             Write-Verbose 'ErrorDetails was not JSON or a parseable string or array.'
         }
+    } elseif (-not [String]::IsNullOrEmpty($ModuleMessage)) {
+        throw $ModuleMessage
+    } elseif ($ErrorRecord.Exception.Message) {
+        throw $ErrorRecord.Exception.Message
     } else {
         $ExceptionMessage.Add('The Halo API returned an error but did not provide a result code or error message.') | Out-Null
     }
-    if (($ErrorRecord.Exception.Response -and $HasResponse) -or $ExceptionMessage -NotLike $HTTPResponseMatchString) {
+    if (($ErrorRecord.Exception.Response -and $HasResponse) -or ($ExceptionMessage -NotLike $HTTPResponseMatchString)) {
         $Response = $ErrorRecord.Exception.Response
         Write-Debug "Raw HTTP response: $($Response | Out-String)"
         if ($Response.StatusCode.value__ -and $Response.ReasonPhrase) {

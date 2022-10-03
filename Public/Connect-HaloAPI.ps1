@@ -65,7 +65,27 @@ function Connect-HaloAPI {
         Method = 'GET'
         Headers = $AdditionalHeaders
     }
-    $AuthInfoResponse = Invoke-WebRequest @AuthInfoParams
+    do {
+        $AuthInfoRetries++
+        try {
+            $AuthInfoResponse = Invoke-WebRequest @AuthInfoParams
+        } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+            $AuthInfoResponse = $False
+            if ($_.Exception.Response.StatusCode.value__ -eq 429) {
+                Write-Warning 'The request was throttled, waiting for 5 seconds.'
+                Start-Sleep -Seconds 5
+                continue
+            } else {
+                throw $_
+                break
+            }
+        } catch {
+            New-HaloError -ErrorRecord $_ -HasResponse
+        }
+    } while ((-not $AuthInfoResponse) -and ($AuthRetries -lt 10))
+    if ($AuthInfoRetries -gt 1) {
+        New-HaloError -ModuleMessage ('Retried auth info request {0} times, request unsuccessful.' -f $Retries)
+    }
     if ($AuthInfoResponse.content) {
         $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
         Write-Debug "Auth info response: $AuthInfo"
@@ -127,30 +147,47 @@ function Connect-HaloAPI {
         ContentType = 'application/x-www-form-urlencoded'
         Headers = $AdditionalHeaders
     }
-    try {
-        $AuthReponse = Invoke-WebRequest @WebRequestParams
-        $TokenPayload = ConvertFrom-Json -InputObject $AuthReponse.Content
-        Write-Debug "Raw Token Payload: $($TokenPayload | Out-String)"
-        # Build a script-scoped variable to hold the authentication information.
-        $AuthToken = @{
-            Type = $TokenPayload.token_type
-            Access = $TokenPayload.access_token
-            Expires = Get-TokenExpiry -ExpiresIn $TokenPayload.expires_in
-            Refresh = $TokenPayload.refresh_token
-            Id = $TokenPayload.id_token
+    do {
+        $AuthRetries++
+        try {
+            $AuthReponse = Invoke-WebRequest @WebRequestParams
+            $TokenPayload = ConvertFrom-Json -InputObject $AuthReponse.Content
+            Write-Debug "Raw Token Payload: $($TokenPayload | Out-String)"
+            # Build a script-scoped variable to hold the authentication information.
+            $AuthToken = @{
+                Type = $TokenPayload.token_type
+                Access = $TokenPayload.access_token
+                Expires = Get-TokenExpiry -ExpiresIn $TokenPayload.expires_in
+                Refresh = $TokenPayload.refresh_token
+                Id = $TokenPayload.id_token
+            }
+            Set-Variable -Name 'HAPIAuthToken' -Value $AuthToken -Visibility Private -Scope Script -Force
+            Write-Verbose 'Got authentication token.'
+            Write-Debug "Authentication token set to: $($Script:HAPIAuthToken | Out-String -Width 2048)"
+            Write-Debug 'Initialising the Halo Lookup class cache.'
+            $LookupTypes = Get-HaloLookup -LookupID 11
+            if ($LookupTypes) {
+                [HaloLookup]::LookupTypes = $LookupTypes
+            } else {
+                Write-Error 'Failed to retrieve Halo lookup types.'
+            }
+            Write-Success "Connected to the Halo API with tenant URL $($Script:HAPIConnectionInformation.URL)"
+            $Authenticated = $True
+        } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+            $Authenticated = $False
+            if ($_.Exception.Response.StatusCode.value__ -eq 429) {
+                Write-Warning 'The request was throttled, waiting for 5 seconds.'
+                Start-Sleep -Seconds 5
+                continue
+            } else {
+                throw $_
+                break
+            }
+        } catch {
+            New-HaloError -ErrorRecord $_
         }
-        Set-Variable -Name 'HAPIAuthToken' -Value $AuthToken -Visibility Private -Scope Script -Force
-        Write-Verbose 'Got authentication token.'
-        Write-Debug "Authentication token set to: $($Script:HAPIAuthToken | Out-String -Width 2048)"
-        Write-Debug 'Initialising the Halo Lookup class cache.'
-        $LookupTypes = Get-HaloLookup -LookupID 11
-        if ($LookupTypes) {
-            [HaloLookup]::LookupTypes = $LookupTypes
-        } else {
-            Write-Error 'Failed to retrieve Halo lookup types.'
-        }
-        Write-Success "Connected to the Halo API with tenant URL $($Script:HAPIConnectionInformation.URL)"
-    } catch {
-        New-HaloError $_ -HasResponse
+    } while ((-not $Authenticated) -and ($AuthRetries -lt 10))
+    if ($AuthRetries -gt 1) {
+        New-HaloError -ModuleMessage ('Retried auth request {0} times, request unsuccessful.' -f $Retries)
     }
 }
