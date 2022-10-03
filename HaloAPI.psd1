@@ -258,10 +258,10 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Adds Recover-HaloTicket commandlet and ability to retrieve deleted tickets with Get-HaloTicket -Deleted. Fix for 429 rate limit responses. Skipping Beta1 due to PSD formatting error and Beta 2 because of stuff... and things!'
+            ReleaseNotes = 'Refactor of 429 error handling. Increase batch wait to 30 seconds.'
 
             # Prerelease string of this module
-            Prerelease = 'Beta3'
+            Prerelease = 'Beta4'
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
 
@@ -279,4 +279,3 @@
     # DefaultCommandPrefix = ''
 
 }
-
