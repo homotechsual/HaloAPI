@@ -12,7 +12,7 @@
     RootModule        = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.12.0'
+    ModuleVersion     = '1.13.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -182,6 +182,7 @@
         'Remove-HaloClientBatch',
         'Remove-HaloContract',
         'Remove-HaloCRMNote',
+        'Remove-HaloItem',
         'Remove-HaloTicket',
         'Remove-HaloTicketBatch',
         'Remove-HaloUser',
@@ -258,10 +259,10 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Refactor of 429 error handling. Increase batch wait to 30 seconds.'
+            ReleaseNotes = 'Add Remove-HaloItem.'
 
             # Prerelease string of this module
-            Prerelease = 'Beta4'
+            # Prerelease = 'Beta5'
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
 
