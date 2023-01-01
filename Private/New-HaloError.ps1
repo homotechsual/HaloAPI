@@ -4,10 +4,12 @@ function New-HaloError {
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter( Mandatory, ParameterSetName = 'ErrorRecord' )]
         [errorrecord]$ErrorRecord,
-        [Parameter()]
-        [switch]$HasResponse
+        [Parameter( ParameterSetName = 'ErrorRecord' )]
+        [switch]$HasResponse,
+        [Parameter( Mandatory, ParameterSetName = 'ModuleMessage' )]
+        [string]$ModuleMessage
 
     )
     Write-Verbose 'Generating Halo error output.'
@@ -16,6 +18,7 @@ function New-HaloError {
     $HTTPResponseMatchString = '*The API returned the following HTTP*'
     if ($ErrorRecord.ErrorDetails) {
         Write-Verbose 'ErrorDetails contained in error record.'
+        Write-Debug "Raw ErrorDetails: $($ErrorDetails | Out-String)"
         $ErrorDetailsIsJson = Test-Json -Json $ErrorRecord.ErrorDetails -ErrorAction SilentlyContinue
         if ($ErrorDetailsIsJson) {
             Write-Verbose 'ErrorDetails is JSON.'
@@ -28,6 +31,9 @@ function New-HaloError {
                 } elseif (($null -ne $ErrorDetails.ClassName) -and ($null -ne $ErrorDetails.Message)) {
                     Write-Verbose 'ErrorDetails contains ClassName and Message.'
                     $ExceptionMessage.Add("The Halo API said $($ErrorDetails.ClassName): $($ErrorDetails.Message)") | Out-Null
+                } elseif ($null -ne $ErrorDetails.Message) {
+                    Write-Verbose 'ErrorDetails contains Message.'
+                    $ExceptionMessage.Add("The Halo API said $($ErrorDetails.Message)") | Out-Null
                 } elseif ($null -ne $ErrorDetails.error) {
                     Write-Verbose 'ErrorDetails contains error.'
                     $ExceptionMessage.Add("The Halo API said $($ErrorDetails.error).") | Out-Null
@@ -38,6 +44,8 @@ function New-HaloError {
                     Write-Verbose 'ErrorDetails is null.'
                     $ExceptionMessage.Add('The Halo API returned an error.') | Out-Null
                 }
+            } else {
+                Write-Verbose 'No ErrorDetails - or could not parse.'
             }
         } elseif ($ErrorRecord.ErrorDetails -Like $APIResultMatchString -and $ErrorRecord.ErrorDetails -Like $HTTPResponseMatchString) {
             $Errors = $ErrorRecord.ErrorDetails -Split "`r`n"
@@ -48,11 +56,17 @@ function New-HaloError {
             } elseif ($Errors -is [string]) {
                 $ExceptionMessage.Add($_)
             }
+        } else {
+            Write-Verbose 'ErrorDetails was not JSON or a parseable string or array.'
         }
+    } elseif (-not [String]::IsNullOrEmpty($ModuleMessage)) {
+        throw $ModuleMessage
+    } elseif ($ErrorRecord.Exception.Message) {
+        throw $ErrorRecord.Exception.Message
     } else {
         $ExceptionMessage.Add('The Halo API returned an error but did not provide a result code or error message.') | Out-Null
     }
-    if (($ErrorRecord.Exception.Response -and $HasResponse) -or $ExceptionMessage -NotLike $HTTPResponseMatchString) {
+    if (($ErrorRecord.Exception.Response -and $HasResponse) -or ($ExceptionMessage -NotLike $HTTPResponseMatchString)) {
         $Response = $ErrorRecord.Exception.Response
         Write-Debug "Raw HTTP response: $($Response | Out-String)"
         if ($Response.StatusCode.value__ -and $Response.ReasonPhrase) {

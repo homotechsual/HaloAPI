@@ -12,7 +12,10 @@ Function Set-HaloCRMNote {
     Param (
         # Object containing properties and values used to update an existing CRM note.
         [Parameter( Mandatory = $True, ValueFromPipeline = $True )]
-        [PSCustomObject]$CRMNote
+        [Object]$CRMNote,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -26,9 +29,14 @@ Function Set-HaloCRMNote {
             CRMNoteID = $CRMNote.id
             ClientID = [int]$CRMNote.client_id
         }
-        $ObjectToUpdate = Get-HaloCRMNote @HaloCRMNoteParams
+        if (-not $SkipValidation) {
+            $ObjectToUpdate = Get-HaloCRMNote @HaloCRMNoteParams
+        } else {
+            Write-Verbose 'Skipping validation checks.'
+            $ObjectToUpdate = $True
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("CRM Note $($ObjectToUpdate.id) by $($ObjectToUpdate.who_agentid)", 'Update')) {
+            if ($PSCmdlet.ShouldProcess('CRM Note', 'Update')) {
                 New-HaloPOSTRequest -Object $CRMNote -Endpoint 'crmnote'
             }
         } else {

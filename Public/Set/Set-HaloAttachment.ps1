@@ -12,7 +12,10 @@ Function Set-HaloAttachment {
     Param (
         # Object containing properties and values used to update an existing attachment.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [PSCustomObject]$Attachment
+        [PSCustomObject]$Attachment,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -22,9 +25,14 @@ Function Set-HaloAttachment {
         if ($null -eq $Attachment.ticket_id) {
             throw 'Ticket ID is required.'
         }
-        $ObjectToUpdate = Get-HaloAttachment -TicketID $Attachment.ticket_id -AttachmentID $Attachment.id
+        if (-not $SkipValidation) {
+            $ObjectToUpdate = Get-HaloAttachment -TicketID $Attachment.ticket_id -AttachmentID $Attachment.id
+        } else {
+            Write-Verbose 'Skipping validation checks.'
+            $ObjectToUpdate = $True
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Attachment '$($ObjectToUpdate.filename)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess('Attachment', 'Update')) {
                 New-HaloPOSTRequest -Object $Attachment -Endpoint 'attachment'
             }
         } else {

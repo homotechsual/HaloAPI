@@ -12,16 +12,24 @@ Function Set-HaloCustomButton {
     Param (
         # Object containing properties and values used to update an existing contract.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$CustomButton
+        [Object]$CustomButton,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
         if ($null -eq $CustomButton.id) {
             throw 'Custom button ID is required.'
         }
-        $ObjectToUpdate = Get-HaloCustomButton -CustomButtonID $CustomButton.id
+        if (-not $SkipValidation) {
+            $ObjectToUpdate = Get-HaloCustomButton -CustomButtonID $CustomButton.id
+        } else {
+            Write-Verbose 'Skipping validation checks.'
+            $ObjectToUpdate = $True
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Custom Button '$($ObjectToUpdate.name)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess('Custom Button', 'Update')) {
                 New-HaloPOSTRequest -Object $CustomButton -Endpoint 'custombutton'
             }
         } else {

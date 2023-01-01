@@ -12,7 +12,10 @@ Function Set-HaloInvoice {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing invoices.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Invoice
+        [Object[]]$Invoice,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloInvoice {
             $HaloInvoiceParams = @{
                 InvoiceId = ($_.id)
             }
-            $InvoiceExists = Get-HaloInvoice @HaloInvoiceParams
-            if ($InvoiceExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $InvoiceExists = Get-HaloInvoice @HaloInvoiceParams
+                if ($InvoiceExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {

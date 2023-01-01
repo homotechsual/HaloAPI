@@ -12,7 +12,10 @@ Function Set-HaloAction {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing actions.
         [Parameter( Mandatory = $True, ValueFromPipeline = $True )]
-        [Object[]]$Action
+        [Object[]]$Action,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -27,11 +30,16 @@ Function Set-HaloAction {
                 ActionID = ($_.id)
                 TicketID = ($_.ticket_id)
             }
-            $ActionExists = Get-HaloAction @HaloActionParams
-            if ($ActionExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $ActionExists = Get-HaloAction @HaloActionParams
+                if ($ActionExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectsToUpdate) {

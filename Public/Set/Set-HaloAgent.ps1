@@ -12,7 +12,10 @@ Function Set-HaloAgent {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing agents.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Agent
+        [Object[]]$Agent,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloAgent {
             $HaloAgentParams = @{
                 AgentId = $_.id
             }
-            $AgentExists = Get-HaloAgent @HaloAgentParams
-            if ($AgentExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $AgentExists = Get-HaloAgent @HaloAgentParams
+                if ($AgentExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {

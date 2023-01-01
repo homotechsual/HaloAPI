@@ -81,11 +81,9 @@ function Get-HaloInvoice {
         [int32]$UserID,
         # Filter for posted invoices only.
         [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('postedonly')]
         [switch]$PostedOnly,
         # Filter for non-posted invoices only.
         [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('notpostedonly')]
         [switch]$NotPostedOnly
     )
     Invoke-HaloPreFlightCheck

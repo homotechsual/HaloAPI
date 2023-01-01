@@ -12,7 +12,10 @@ Function Set-HaloAsset {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing assets.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Asset
+        [Object[]]$Asset,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloAsset {
             $HaloAssetParams = @{
                 AssetId = ($_.id)
             }
-            $AssetExists = Get-HaloAsset @HaloAssetParams
-            if ($AssetExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $AssetExists = Get-HaloAsset @HaloAssetParams
+                if ($AssetExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {

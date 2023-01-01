@@ -12,7 +12,10 @@ Function Set-HaloProject {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing projects.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Project
+        [Object[]]$Project,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloProject {
             $HaloProjectParams = @{
                 ProjectId = $_.id
             }
-            $ProjectExists = Get-HaloProject @HaloProjectParams
-            if ($ProjectExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $ProjectExists = Get-HaloProject @HaloProjectParams
+                if ($ProjectExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {

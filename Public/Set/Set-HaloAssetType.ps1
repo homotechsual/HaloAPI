@@ -12,16 +12,24 @@ Function Set-HaloAssetType {
     Param (
         # Object containing properties and values used to update an existing asset type.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$AssetType
+        [Object]$AssetType,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
         if ($null -eq $AssetType.id) {
             throw 'Asset type ID is required.'
         }
-        $ObjectToUpdate = Get-HaloAssetType -AssetTypeID $AssetType.id
+        if (-not $SkipValidation) {
+            $ObjectToUpdate = Get-HaloAssetType -AssetTypeID $AssetType.id
+        } else {
+            Write-Verbose 'Skipping validation checks.'
+            $ObjectToUpdate = $True
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Asset Type '$($ObjectToUpdate.name)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess('Asset Type', 'Update')) {
                 New-HaloPOSTRequest -Object $AssetType -Endpoint 'assettype' -Update
             }
         } else {

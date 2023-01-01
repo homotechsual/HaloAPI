@@ -11,7 +11,11 @@
         'Information'
     )
     IncludeRules = @(
+        'PSAlignAssignmentStatement',
+        'PSAvoidAssignmentToAutomaticVariable',
+        'PSAvoidDefaultValueForMandatoryParameter',
         'PSAvoidDefaultValueSwitchParameter',
+        'PSAvoidGlobalAliases',
         'PSAvoidGlobalVars',
         'PSAvoidUsingCmdletAliases',
         'PSAvoidUsingComputerNameHardcoded',
@@ -24,6 +28,7 @@
         'PSAvoidUsingUserNameAndPasswordParams',
         'PSAvoidUsingWMICmdlet',
         'PSAvoidUsingWriteHost',
+        'PSAvoidUsingWMICmdlet',
         'PSDSC*',
         'PSMissingModuleManifestField',
         'PSPlaceCloseBrace',
@@ -39,8 +44,7 @@
         'PSUseCorrectCasing',
         'PSUseDeclaredVarsMoreThanAssignments',
         'PSUsePSCredentialType',
-        'PSUseShouldProcessForStateChangingFunctions',
-        'PSUseSingularNouns'
+        'PSUseShouldProcessForStateChangingFunctions'
     )
     Rules = @{
         PSPlaceOpenBrace = @{
@@ -85,5 +89,8 @@
             Enable = $true
         }
 
+        PSAlignAssignmentStatement = @{
+            Enable = $false
+        }
     }
 }

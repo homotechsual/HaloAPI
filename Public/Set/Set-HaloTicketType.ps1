@@ -12,7 +12,10 @@ Function Set-HaloTicketType {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing ticket types.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$TicketType
+        [Object[]]$TicketType,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloTicketType {
             $HaloTicketTypeParams = @{
                 TicketTypeId = $_.id
             }
-            $TicketTypeExists = Get-HaloTicketType @HaloTicketTypeParams
-            if ($TicketTypeExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $TicketTypeExists = Get-HaloTicketType @HaloTicketTypeParams
+                if ($TicketTypeExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {
