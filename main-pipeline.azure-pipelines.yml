@@ -17,15 +17,13 @@ stages:
           - powershell: .\Bootstrap.ps1
             displayName: 'Install pre-requisites'
       - job: Build
+        dependsOn: Setup
         steps:
-          - powershell: Import-Module -Name 'InvokeBuild' -Force
-            displayName: 'Import Invoke-Build'
           - powershell: Invoke-Build -Configuration 'Production' -Task Clean, CopyModuleFiles
             displayName: 'Build PowerShell Module'
       - job: Release
+        dependsOn: Build
         steps:
-          - powershell: Import-Module -Name 'InvokeBuild' -Force
-            displayName: 'Import Invoke-Build'
           - powershell: Invoke-Build -Configuration 'Production' -Task PublishModule
             displayName: 'Publish PowerShell Module'
             env:
