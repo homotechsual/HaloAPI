@@ -24,7 +24,10 @@ function Get-HaloAzureADConnection {
         [string]$ShowAll,
         # Include Details
         [Parameter( ParameterSetName = 'Single' )]
-        [switch]$IncludeDetails
+        [switch]$IncludeDetails,
+        # Include Tenants
+        [Parameter( ParameterSetName = 'Single' )]
+        [switch]$IncludeTenants
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.MyCommand.Name
