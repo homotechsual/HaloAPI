@@ -13,19 +13,18 @@ pool:
 variables:
   - group: MSPsUK KeyVault
 
-stages:
-  - stage: Setup
-    jobs: 
-      - job: Setup
-        steps:
-          - powershell: .\bootstrap.ps1
-            displayName: 'Install pre-requisites'
+stages:      
   - stage: Lint
     jobs:
+      - job: Setup
+        steps:
+          - powershell: .\Bootstrap.ps1
+            displayName: 'Install pre-requisites'
       - job: Lint
         steps:
           - task: PowerShell@2
             displayName: 'Lint with PS Script Analyzer'
+            dependsOn: 'Setup'
             inputs:
               TargetType: filePath
               PWSH: true
