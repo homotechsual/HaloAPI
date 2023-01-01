@@ -12,13 +12,11 @@ variables:
 stages:
   - stage: Release
     jobs:
-      - job: Setup
+      - job: Release
+        dependsOn: Build
         steps:
           - powershell: .\Bootstrap.ps1
             displayName: 'Install pre-requisites'
-      - job: Build
-        dependsOn: Setup
-        steps:
           - task: PowerShell@2
             displayName: 'Build PowerShell Module'
             inputs:
@@ -26,12 +24,10 @@ stages:
               PWSH: true
               FilePath: '$(System.DefaultWorkingDirectory)\HaloAPI.build.ps1'
               Arguments: '-CopyModuleFiles -Configuration Production'
-            
-      - job: Release
-        dependsOn: Build
-        steps:
+            env:
+              PSGalleryAPIKey: $(PSGalleryAPI)
           - task: PowerShell@2
-            displayName: 'Build PowerShell Module'
+            displayName: 'Publish PowerShell Module'
             inputs:
               TargetType: filePath
               PWSH: true
