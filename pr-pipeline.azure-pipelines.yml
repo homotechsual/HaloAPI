@@ -21,10 +21,10 @@ stages:
           - powershell: .\Bootstrap.ps1
             displayName: 'Install pre-requisites'
       - job: Lint
+        dependsOn: Setup
         steps:
           - task: PowerShell@2
             displayName: 'Lint with PS Script Analyzer'
-            dependsOn: 'Setup'
             inputs:
               TargetType: filePath
               PWSH: true
