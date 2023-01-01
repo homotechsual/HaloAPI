@@ -1,7 +1,7 @@
 using namespace Microsoft.PowerShell.Commands
 [CmdletBinding()]
 param(
-    #
+    # Set installation scope for required modules.
     [ValidateSet('CurrentUser', 'AllUsers')]
     $Scope = 'CurrentUser'
 )
