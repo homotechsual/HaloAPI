@@ -40,7 +40,7 @@ function Get-HaloTicketType {
         # Include extra objects in the result.
         [Parameter( ParameterSetName = 'Single' )]
         [Switch]$IncludeDetails,
-		# Include all related configuration in the result.
+        # Include all related configuration in the result.
         [Parameter( ParameterSetName = 'Single' )]
         [Switch]$IncludeConfig
     )
