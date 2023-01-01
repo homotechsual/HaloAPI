@@ -13,7 +13,6 @@ stages:
   - stage: Release
     jobs:
       - job: Release
-        dependsOn: Build
         steps:
           - powershell: .\Bootstrap.ps1
             displayName: 'Install pre-requisites'
