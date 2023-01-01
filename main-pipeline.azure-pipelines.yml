@@ -22,10 +22,14 @@ stages:
     jobs:
       - job: Build
         steps:
+          - powershell: Import-Module -Name 'InvokeBuild' -Force
+            displayName: 'Import Invoke-Build'
           - powershell: Invoke-Build -Configuration 'Production' -Task Clean, CopyModuleFiles
             displayName: 'Build PowerShell Module'
       - job: Release
         steps:
+          - powershell: Import-Module -Name 'InvokeBuild' -Force
+            displayName: 'Import Invoke-Build'
           - powershell: Invoke-Build -Configuration 'Production' -Task PublishModule
             displayName: 'Publish PowerShell Module'
             env:
