@@ -29,7 +29,7 @@ stages:
               TargetType: filePath
               PWSH: true
               FilePath: '$(System.DefaultWorkingDirectory)\Tests\Test-WithPSScriptAnalyzer.ps1'
-              Arguments: '-ScriptDirectory $(System.DefaultWorkingDirectory)' 
+              Arguments: '-ScriptDirectory $(System.DefaultWorkingDirectory)'
   - stage: Test
     jobs:
       - job: TestandPublishResults

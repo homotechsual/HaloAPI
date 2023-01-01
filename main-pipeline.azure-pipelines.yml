@@ -19,12 +19,23 @@ stages:
       - job: Build
         dependsOn: Setup
         steps:
-          - powershell: Invoke-Build -Configuration 'Production' -Task Clean, CopyModuleFiles
+          - task: PowerShell@2
             displayName: 'Build PowerShell Module'
+            inputs:
+              TargetType: filePath
+              PWSH: true
+              FilePath: '$(System.DefaultWorkingDirectory)\HaloAPI.build.ps1'
+              Arguments: '-CopyModuleFiles -Configuration Production'
+            
       - job: Release
         dependsOn: Build
         steps:
-          - powershell: Invoke-Build -Configuration 'Production' -Task PublishModule
-            displayName: 'Publish PowerShell Module'
+          - task: PowerShell@2
+            displayName: 'Build PowerShell Module'
+            inputs:
+              TargetType: filePath
+              PWSH: true
+              FilePath: '$(System.DefaultWorkingDirectory)\HaloAPI.build.ps1'
+              Arguments: '-PublishModule -Configuration Production'
             env:
               PSGalleryAPIKey: $(PSGalleryAPI)
