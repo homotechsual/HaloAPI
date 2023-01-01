@@ -39,7 +39,10 @@ function Get-HaloTicketType {
         [int32]$ClientID,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = 'Single' )]
-        [Switch]$IncludeDetails
+        [Switch]$IncludeDetails,
+        # Include all related configuration in the result.
+        [Parameter( ParameterSetName = 'Single' )]
+        [Switch]$IncludeConfig
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.MyCommand.Name

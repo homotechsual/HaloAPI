@@ -1,8 +1,11 @@
 # Docs: https://aka.ms/yaml
 name: $(Build.DefinitionName)-$(Date:yyyyMMdd)
-trigger:
-  - main
-  - develop
+trigger: none
+pr: 
+  branches:
+    include:
+      - develop
+      - main
 
 pool:
   vmImage: 'windows-latest'
