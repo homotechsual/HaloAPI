@@ -20,7 +20,7 @@ function Invoke-HaloBatchProcessor {
         [String]$Operation,
         [Object]$Parameters,
         [Int32]$Size = 100,
-        [Int32]$Wait = 1
+        [Int32]$Wait = 30
     )
     $BatchResults = [System.Collections.Concurrent.ConcurrentBag[PSObject]]::New()
     $Batch = [System.Collections.Generic.List[Object]]::New()

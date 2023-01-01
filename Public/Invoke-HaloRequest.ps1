@@ -43,25 +43,40 @@ function Invoke-HaloRequest {
     } else {
         $RequestHeaders = $null
     }
-    try {
-        Write-Verbose "Making a $($WebRequestParams.Method) request to $($WebRequestParams.Uri)"
-        $Response = Invoke-WebRequest @WebRequestParams -Headers $RequestHeaders -ContentType 'application/json; charset=utf-8'
-        Write-Debug "Response headers: $($Response.Headers | Out-String)"
-        Write-Debug "Raw Response: $Response"
-        if ($Response.StatusCode.__value -eq 429) {
-            do {
-                Write-Warning 'The request was throttled, waiting for 1 second.'
-                Start-Sleep -Seconds 1
-                $Response = Invoke-WebRequest @WebRequestParams -Headers $RequestHeaders -ContentType 'application/json; charset=utf-8'
-            } while ($Response.StatusCode.__value -eq 429)
+    $Retries = 0
+    do {
+        $Retries++
+        $Results = try {
+            Write-Verbose "Making a $($WebRequestParams.Method) request to $($WebRequestParams.Uri)"
+            $Response = Invoke-WebRequest @WebRequestParams -Headers $RequestHeaders -ContentType 'application/json; charset=utf-8'
+            Write-Debug "Response headers: $($Response.Headers | Out-String)"
+            Write-Debug "Raw Response: $Response"
+            $Success = $True
+            if ($RawResult) {
+                $Results = $Response
+            } else {
+                $Results = $Response.Content | ConvertFrom-Json
+            }
+            Return $Results
+        } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+            $Success = $False
+            if ($_.Exception.Response.StatusCode.value__ -eq 429) {
+                Write-Warning 'The request was throttled, waiting for 5 seconds.'
+                Start-Sleep -Seconds 5
+                continue
+            } else {
+                throw $_
+                break
+            }
+        } catch {
+            throw $_
         }
-        if ($RawResult) {
-            $Results = $Response
-        } else {
-            $Results = $Response.Content | ConvertFrom-Json
+    } while ((-not $Results) -and ($Retries -lt 10) -and (-not $Success))
+    if ($Results) {
+        Return $Results
+    } else {
+        if ($Retries -gt 1) {
+            New-HaloError -ModuleMessage ('Retried request to "{0}" {1} times, request unsuccessful.' -f $WebRequestParams.Uri, $Retries)
         }
-        return $Results
-    } catch {
-        throw $_
     }
 }

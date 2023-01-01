@@ -12,7 +12,10 @@ Function Set-HaloSite {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing sites.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Site
+        [Object[]]$Site,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloSite {
             $HaloSiteParams = @{
                 SiteId = $_.id
             }
-            $SiteExists = Get-HaloSite @HaloSiteParams
-            if ($SiteExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $SiteExists = Get-HaloSite @HaloSiteParams
+                if ($SiteExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {

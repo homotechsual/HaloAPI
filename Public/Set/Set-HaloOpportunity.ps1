@@ -12,7 +12,10 @@ Function Set-HaloOpportunity {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing opportunities.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Opportunity
+        [Object[]]$Opportunity,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloOpportunity {
             $HaloOpportunityParams = @{
                 OpportunityId = $_.id
             }
-            $OpportunityExists = Get-HaloOpportunity @HaloOpportunityParams
-            if ($OpportunityExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $OpportunityExists = Get-HaloOpportunity @HaloOpportunityParams
+                if ($OpportunityExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {

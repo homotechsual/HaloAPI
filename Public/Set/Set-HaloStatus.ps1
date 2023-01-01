@@ -12,7 +12,10 @@ Function Set-HaloStatus {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing statuses.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Status
+        [Object[]]$Status,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloStatus {
             $HaloStatusParams = @{
                 StatusId = $_.id
             }
-            $StatusExists = Get-HaloStatus @HaloStatusParams
-            if ($StatusExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $StatusExists = Get-HaloStatus @HaloStatusParams
+                if ($StatusExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {

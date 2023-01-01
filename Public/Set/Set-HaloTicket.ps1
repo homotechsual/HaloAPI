@@ -12,7 +12,10 @@ Function Set-HaloTicket {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing tickets.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Ticket
+        [Object[]]$Ticket,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {

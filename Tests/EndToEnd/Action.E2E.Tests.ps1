@@ -22,12 +22,12 @@ BeforeAll {
     }
     Connect-HaloAPI @HaloConnectionParameters *> $null
     $TicketID = 2200
-    $ActionID = (Get-HaloAction -TicketID $TicketID -Count 1 | Select-Object -First 1 | Select-Object -ExpandProperty ID)
 }
 
 # Test that we can create an action, fetch it, update it and then delete it.
 Describe 'Action' {
     BeforeEach {
+        $CurrentActionId = (Get-HaloAction -TicketID $TicketID -Count 1 | Select-Object -First 1 | Select-Object -ExpandProperty ID)
         $ValidAction = @{
             ticket_id = $TicketID
             who = 'Admin'
@@ -80,7 +80,7 @@ Describe 'Action' {
             $ActionResult = New-HaloAction -Action $ValidAction
             $ActionResult.actionby_application_id | Should -Be 'AzureDevops Testing App'
             $ActionResult.note | Should -BeLike 'This is an action created by a Pester automated test.*'
-            $ActionResult.id | Should -Be ($ActionID + 1)
+            $ActionResult.id | Should -Be ($CurrentActionId + 1)
         }
         It 'fails with a missing ticket id property' {
             { New-HaloAction -Action $InvalidActionMissingTicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Response status code does not indicate success: 400 (Bad Request).'
@@ -92,21 +92,19 @@ Describe 'Action' {
     Context 'CreateArray' {
         It 'succeeds with an array of valid Action objects.' {
             $ActionResult = New-HaloAction -Action @($ValidAction, $ValidAction)
-            $ArrayActionID = ($ActionID + 2)
             $ActionResult | ForEach-Object {
                 $_.actionby_application_id | Should -Be 'AzureDevops Testing App'
                 $_.note | Should -BeLike 'This is an action created by a Pester automated test.*'
-                $_.id | Should -Be ($ArrayActionID + 1)
-                $ArrayActionID++
+                $_.id | Should -Be (($CurrentActionId + 1) -or ($CurrentActionId + 2))
             }
         }
     }
     Context 'Get' {
         It 'succeeds to get the created action.' {
-            $ActionResult = Get-HaloAction -ActionID ($ActionID + 1) -TicketID $TicketID
+            $ActionResult = Get-HaloAction -ActionID ($CurrentActionId) -TicketID $TicketID
             $ActionResult.actionby_application_id | Should -Be 'AzureDevops Testing App'
             $ActionResult.note | Should -BeLike 'This is an action created by a Pester automated test.*'
-            $ActionResult.id | Should -Be ($ActionID + 1)
+            $ActionResult.id | Should -Be ($CurrentActionId)
         }
         It 'fails to get a non existent action' {
             $ActionID = 9999
@@ -116,17 +114,17 @@ Describe 'Action' {
  
     Context 'Update' {
         It 'succeeds with a valid update.' {
-            $ActionAfterCreate.id = ($ActionId + 1)
+            $ActionAfterCreate.id = ($CurrentActionId)
             $ActionAfterCreate.note = 'This action has been updated by a Pester automated test.'
             $ActionAfterCreate.note_html = '<p>This action has been updated by a Pester automated test.</p>'
             $ActionResult = Set-HaloAction -Action $ActionAfterCreate
             $ActionResult.note | Should -BeLike 'This action has been updated by a Pester automated test.*'
         }
         It 'succeeds with a valid array of updates.' {
-            $ArrayOfActionsAfterCreate[0].id = ($ActionId + 2)
+            $ArrayOfActionsAfterCreate[0].id = ($CurrentActionId - 1)
             $ArrayOfActionsAfterCreate[0].note = 'This action has been updated by a Pester automated test.'
             $ArrayOfActionsAfterCreate[0].note_html = '<p>This action has been updated by a Pester automated test.</p>'
-            $ArrayOfActionsAfterCreate[1].id = ($ActionId + 3)
+            $ArrayOfActionsAfterCreate[1].id = ($CurrentActionId)
             $ArrayOfActionsAfterCreate[1].note = 'This action has been updated by a Pester automated test.'
             $ArrayOfActionsAfterCreate[1].note_html = '<p>This action has been updated by a Pester automated test.</p>'
             $ArrayOfActionsResult = Set-HaloAction -Action $ArrayOfActionsAfterCreate
@@ -145,16 +143,17 @@ Describe 'Action' {
     }
     Context 'Delete' {
         It 'succeeds with a valid ticket and action id.' {
-            $ActionResult = Remove-HaloAction -ActionID ($ActionID + 1) -TicketID $TicketID -Confirm:$False
-            $ActionResult.id | Should -Be ($ActionID + 1)
+            $ActionResult = Remove-HaloAction -ActionID ($CurrentActionId) -TicketID $TicketID -Confirm:$False
+            $ActionResult.id | Should -Be ($CurrentActionId)
         }
         It 'can no longer get deleted action.' {
-            { Get-HaloAction -ActionID ($ActionID + 1) -TicketID $TicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Response status code does not indicate success: 404 (Not Found).'
+            { Get-HaloAction -ActionID ($CurrentActionId + 1) -TicketID $TicketID } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Response status code does not indicate success: 404 (Not Found).'
         }
     }
 }
 
 AfterAll {
-    Remove-HaloAction -ActionID ($ActionID + 2) -TicketID $TicketID -Confirm:$False
-    Remove-HaloAction -ActionID ($ActionID + 3) -TicketID $TicketID -Confirm:$False
+    Get-HaloAction -TicketID $TicketID | Where-Object { $_.id -gt 1 } | ForEach-Object {
+        Remove-HaloAction -ActionID $_.id -TicketID $TicketID -Confirm:$False
+    }
 }

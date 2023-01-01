@@ -12,16 +12,24 @@ Function Set-HaloRecurringInvoice {
     Param (
         # Object containing properties and values used to update an existing invoice.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object]$RecurringInvoice
+        [Object]$RecurringInvoice,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
         if ($null -eq $RecurringInvoice.id) {
             throw 'Recurring invoice ID is required.'
         }
-        $ObjectToUpdate = Get-HaloRecurringInvoice -RecurringInvoiceID $RecurringInvoice.id
+        if (-not $SkipValidation) {
+            $ObjectToUpdate = Get-HaloRecurringInvoice -RecurringInvoiceID $RecurringInvoice.id
+        } else {
+            Write-Verbose 'Skipping validation checks.'
+            $ObjectToUpdate = $True
+        }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Invoice '$($ObjectToUpdate.id)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess('Invoice', 'Update')) {
                 New-HaloPOSTRequest -Object $RecurringInvoice -Endpoint 'recurringinvoice'
             }
         } else {

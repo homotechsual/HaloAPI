@@ -53,11 +53,24 @@ function Get-HaloAgent {
         [switch]$IncludeRoles,
         # Include extra detail objects (for example teams and roles) in the response.
         [Parameter( ParameterSetName = 'Single' )]
-        [switch]$IncludeDetails
+        [switch]$IncludeDetails,
+        # Show all agents, including those that have been deleted.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$ShowAll,
+        # Include API agents in the response.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$IncludeAPIAgents,
+        # Show only agents the API user has permissions to edit.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('can_edit_only')]
+        [switch]$CanEditOnly,
+        # Include counts of named license consumption in the response.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$IncludeNamedCount
         
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.InvocationName
+    $CommandName = $MyInvocation.MyCommand.Name
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding an 'agentid=' parameter by removing it from the set parameters.
     if ($AgentID) {

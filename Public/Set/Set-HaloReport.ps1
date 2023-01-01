@@ -12,7 +12,10 @@ Function Set-HaloReport {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing report.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Report
+        [Object[]]$Report,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloReport {
             $HaloReportParams = @{
                 ReportId = $_.id
             }
-            $ReportExists = Get-HaloReport @HaloReportParams
-            if ($ReportExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $ReportExists = Get-HaloReport @HaloReportParams
+                if ($ReportExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {

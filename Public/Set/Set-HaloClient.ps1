@@ -12,7 +12,10 @@ Function Set-HaloClient {
     Param (
         # Object or array of objects containing properties and values used to update one or more existing clients.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
-        [Object[]]$Client
+        [Object[]]$Client,
+        # Skip validation checks.
+        [Parameter()]
+        [Switch]$SkipValidation
     )
     Invoke-HaloPreFlightCheck
     try {
@@ -23,11 +26,16 @@ Function Set-HaloClient {
             $HaloClientParams = @{
                 ClientId = ($_.id)
             }
-            $ClientExists = Get-HaloClient @HaloClientParams
-            if ($ClientExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $ClientExists = Get-HaloClient @HaloClientParams
+                if ($ClientExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                Return $True
             }
         }
         if ($False -notin $ObjectToUpdate) { 

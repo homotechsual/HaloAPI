@@ -78,10 +78,16 @@ function Get-HaloInvoice {
         # Filter by the specified user ID.
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('user_id')]
-        [int32]$UserID
+        [int32]$UserID,
+        # Filter for posted invoices only.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$PostedOnly,
+        # Filter for non-posted invoices only.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$NotPostedOnly
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.InvocationName
+    $CommandName = $MyInvocation.MyCommand.Name
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'invoiceid=' parameter by removing it from the set parameters.
     if ($InvoiceID) {

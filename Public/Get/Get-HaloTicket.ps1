@@ -262,10 +262,13 @@ function Get-HaloTicket {
         [Switch]$IncludeDetails,
         # Include the last action in the result.
         [Parameter( ParameterSetName = 'Single' )]
-        [Switch]$IncludeLastAction
+        [Switch]$IncludeLastAction,
+        # Return deleted tickets only.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Switch]$Deleted
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.InvocationName
+    $CommandName = $MyInvocation.MyCommand.Name
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'ticketid=' parameter by removing it from the set parameters.
     if ($TicketID) {
