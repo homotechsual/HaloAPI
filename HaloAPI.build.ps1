@@ -95,7 +95,7 @@ if ($PublishModule -and $Configuration -eq 'Production') {
         # Build a splat containing the required details and make sure to Stop for errors which will trigger the catch
         $params = @{
             Path = ("$($PSScriptRoot)\Output\$ModuleName")
-            NuGetApiKey = (Get-AzKeyVaultSecret -VaultName $ENV:PSGalleryVault -Name $ENV:PSGallerySecret -AsPlainText)
+            NuGetApiKey = $ENV:TF_BUILD ? $ENV:PSGalleryAPIKey : (Get-AzKeyVaultSecret -VaultName $ENV:PSGalleryVault -Name $ENV:PSGallerySecret -AsPlainText) # If running in Azure DevOps, use the Environment Variable, otherwise use the Key Vault
             ErrorAction = 'Stop'
         }
         $ManifestPath = "$($PSScriptRoot)\$ModuleName.psd1"
