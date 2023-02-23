@@ -10,7 +10,7 @@ function Remove-HaloKBArticle {
     [cmdletbinding( SupportsShouldProcess = $True, ConfirmImpact = 'High' )]
     [OutputType([Object])]
     Param(
-        # The client ID
+        # The KBArticle ID
         [Parameter( Mandatory = $True )]
         [Alias('KBArticle')]
         [int64]$KBArticleID
