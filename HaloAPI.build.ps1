@@ -12,7 +12,7 @@ Param (
     [Switch]$Clean
 )
 
-$ModuleName = 'NinjaOne'
+$ModuleName = 'HaloAPI'
 
 # Use strict mode when building.
 Set-StrictMode -Version Latest
