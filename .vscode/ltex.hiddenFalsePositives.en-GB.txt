@@ -1,0 +1,1 @@
+{"rule":"EN_A_VS_AN","sentence":"^\\QSwitch from using \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q to \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q to fix the actual issue in GitHub #1\nAdd an \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q parameter to \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q for non-standard authentication routes.\\E$"}

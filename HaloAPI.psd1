@@ -12,7 +12,7 @@
     RootModule        = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.13.2'
+    ModuleVersion     = '1.14.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -86,6 +86,7 @@
         'Get-HaloCRMNote',
         'Get-HaloCustomButton',
         'Get-HaloCustomField',
+        'Get-HaloCustomTable',
         'Get-HaloFAQList',
         'Get-HaloField',
         'Get-HaloInvoice',
@@ -136,6 +137,7 @@
         'New-HaloCRMNote',
         'New-HaloCustomButton',
         'New-HaloCustomField',
+        'New-HaloCustomTable',
         'New-HaloCustomFieldBatch',
         'New-HaloFAQList',
         'New-HaloInvoice',
@@ -185,6 +187,7 @@
         'Remove-HaloContract',
         'Remove-HaloCRMNote',
         'Remove-HaloItem',
+        'Remove-HaloKBArticle',
         'Remove-HaloTicket',
         'Remove-HaloTicketBatch',
         'Remove-HaloTicketRules',
@@ -231,7 +234,7 @@
     CmdletsToExport = @()
 
     # Variables to export from this module
-    VariablesToExport = '*'
+    VariablesToExport = @()
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport = 'Get-HaloArticle', 'New-HaloArticle', 'Set-HaloArticle', 'New-HaloArticleBatch', 'Get-HaloCustomFields', 'Get-HaloWorkflows', 'Get-HaloTabs'
@@ -263,7 +266,7 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Bugfixes and improvements.'
+            ReleaseNotes = 'Add Custom Table endpoints.'
 
             # Prerelease string of this module
             # Prerelease = 'Beta5'
