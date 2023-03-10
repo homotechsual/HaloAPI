@@ -185,6 +185,7 @@
         'Remove-HaloContract',
         'Remove-HaloCRMNote',
         'Remove-HaloItem',
+        'Remove-HaloKBArticle',
         'Remove-HaloTicket',
         'Remove-HaloTicketBatch',
         'Remove-HaloTicketRules',
