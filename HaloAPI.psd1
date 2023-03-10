@@ -12,7 +12,7 @@
     RootModule        = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.13.2'
+    ModuleVersion     = '1.14.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -86,6 +86,7 @@
         'Get-HaloCRMNote',
         'Get-HaloCustomButton',
         'Get-HaloCustomField',
+        'Get-HaloCustomTable',
         'Get-HaloFAQList',
         'Get-HaloField',
         'Get-HaloInvoice',
@@ -136,6 +137,7 @@
         'New-HaloCRMNote',
         'New-HaloCustomButton',
         'New-HaloCustomField',
+        'New-HaloCustomTable',
         'New-HaloCustomFieldBatch',
         'New-HaloFAQList',
         'New-HaloInvoice',
@@ -264,7 +266,7 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Bugfixes and improvements.'
+            ReleaseNotes = 'Add Custom Table endpoints.'
 
             # Prerelease string of this module
             # Prerelease = 'Beta5'
