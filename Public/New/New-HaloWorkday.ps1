@@ -17,7 +17,7 @@ Function New-HaloWorkday {
     Invoke-HaloPreFlightCheck
     try {
         if ($PSCmdlet.ShouldProcess("Workday '$($Workday.name)'", 'Create')) {
-            New-HaloPOSTRequest -Object $Item -Endpoint 'workday'
+            New-HaloPOSTRequest -Object $Workday -Endpoint 'workday'
         }
     } catch {
         New-HaloError -ErrorRecord $_

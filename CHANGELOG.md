@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-04-04 - Version 1.14.1
+
+* Fix bug in `New-HaloWorkDay`.
+
 ## 2023-03-10 - Version 1.14.0
 
 * Add Custom Table endpoints `Get-HaloCustomTable`, `New-HaloCustomTable`, `Remove-HaloCustomTable`.
