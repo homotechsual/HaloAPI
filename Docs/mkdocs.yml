@@ -13,6 +13,7 @@ nav:
       - Action: Get-HaloAction.md
       - Agent: Get-HaloAgent.md
       - Appointment: Get-HaloAppointment.md
+      - Area: Get-HaloArea.md
       - Asset: Get-HaloAsset.md
       - Attachment: Get-HaloAttachment.md
       - Client: Get-HaloClient.md
@@ -117,7 +118,7 @@ theme:
 markdown_extensions:
   - toc:
       permalink: true
-  - pymdownx.highlight: 
+  - pymdownx.highlight:
       linenums: true
   - pymdownx.superfences
 extra:
