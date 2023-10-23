@@ -30,6 +30,21 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
+### -WebRequestParams
+Hashtable containing the web request parameters.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -RawResult
 Returns the Raw result.
 Useful for file downloads.
@@ -42,21 +57,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -WebRequestParams
-Hashtable containing the web request parameters.
-
-```yaml
-Type: Hashtable
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

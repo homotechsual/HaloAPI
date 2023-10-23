@@ -37,21 +37,6 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-Filter by the specified client ID.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: client_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ContractID
 Contract ID
 
@@ -63,6 +48,96 @@ Aliases:
 Required: True
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+Number of results per page.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageNo
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Order
+Which field to order results based on.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderDesc
+Order results in descending order (respects the field choice in '-Order')
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Search
+Return contracts matching the search term in the results.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -112,92 +187,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Order
-Which field to order results based on.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderDesc
-Order results in descending order (respects the field choice in '-Order')
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageNo
-Which page to return.
+### -ClientID
+Filter by the specified client ID.
 
 ```yaml
 Type: Int32
 Parameter Sets: Multi
-Aliases: page_no
+Aliases: client_id
 
 Required: False
 Position: Named
 Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageSize
-Number of results per page.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_size
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-Paginate results
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: pageinate
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Search
-Return contracts matching the search term in the results.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

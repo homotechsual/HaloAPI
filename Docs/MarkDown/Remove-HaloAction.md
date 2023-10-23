@@ -12,8 +12,14 @@ Removes an action from the Halo API.
 
 ## SYNTAX
 
+### Single
 ```
-Remove-HaloAction [-ActionID] <Int64> [-TicketID] <Int64> [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-HaloAction -ActionID <Int64> -TicketID <Int64> [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### Batch
+```
+Remove-HaloAction -Action <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,11 +41,11 @@ The Action ID
 
 ```yaml
 Type: Int64
-Parameter Sets: (All)
+Parameter Sets: Single
 Aliases:
 
 Required: True
-Position: 1
+Position: Named
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -50,25 +56,25 @@ The Ticket ID
 
 ```yaml
 Type: Int64
-Parameter Sets: (All)
+Parameter Sets: Single
 Aliases:
 
 Required: True
-Position: 2
+Position: Named
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
+### -Action
+Object containing action id and ticket id for batch processing.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
+Type: Object
+Parameter Sets: Batch
+Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -83,6 +89,21 @@ The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
 
 Required: False
 Position: Named

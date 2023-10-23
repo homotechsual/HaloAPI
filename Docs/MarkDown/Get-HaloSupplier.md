@@ -38,13 +38,43 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -Count
-The number of suppliers to return if not using pagination.
+### -SupplierID
+Supplier ID
+
+```yaml
+Type: Int64
+Parameter Sets: Single
+Aliases:
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+Number of results per page.
 
 ```yaml
 Type: Int32
 Parameter Sets: Multi
-Aliases:
+Aliases: page_size
 
 Required: False
 Position: Named
@@ -53,47 +83,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeActive
-Include active suppliers in the results.
+### -PageNo
+Which page to return.
 
 ```yaml
-Type: SwitchParameter
+Type: Int32
 Parameter Sets: Multi
-Aliases:
+Aliases: page_no
 
 Required: False
 Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeInactive
-Include inactive suppliers in the results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -128,51 +128,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageNo
-Which page to return.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageSize
-Number of results per page.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_size
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-Paginate results
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: pageinate
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Search
 Return suppliers matching the search term in the results.
 
@@ -188,15 +143,15 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SupplierID
-Supplier ID
+### -Count
+The number of suppliers to return if not using pagination.
 
 ```yaml
-Type: Int64
-Parameter Sets: Single
+Type: Int32
+Parameter Sets: Multi
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: 0
 Accept pipeline input: False
@@ -214,6 +169,51 @@ Aliases: toplevel_id
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeActive
+Include active suppliers in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeInactive
+Include inactive suppliers in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDetails
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

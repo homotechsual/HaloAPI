@@ -39,19 +39,18 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-Get CRM notes for a single client  with the specified ID.
-\[HaloPipelineIDArgumentTransformation()\]
+### -CRMNoteID
+CRM note ID.
 
 ```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: client_id
+Type: Int64
+Parameter Sets: Single
+Aliases:
 
 Required: True
 Position: Named
 Default value: 0
-Accept pipeline input: True (ByValue)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -70,23 +69,24 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -CRMNoteID
-CRM note ID.
+### -ClientID
+Get CRM notes for a single client  with the specified ID.
+\[HaloPipelineIDArgumentTransformation()\]
 
 ```yaml
-Type: Int64
-Parameter Sets: Single
-Aliases:
+Type: Int32
+Parameter Sets: Multi
+Aliases: client_id
 
 Required: True
 Position: Named
 Default value: 0
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -IncludeAttachments
-Include attachment details in the response.
+### -IncludeHTMLNote
+Include the CRM note HTML in the response.
 
 ```yaml
 Type: SwitchParameter
@@ -100,8 +100,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeHTMLNote
-Include the CRM note HTML in the response.
+### -IncludeAttachments
+Include attachment details in the response.
 
 ```yaml
 Type: SwitchParameter

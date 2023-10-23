@@ -20,7 +20,7 @@ Get-HaloTicketType [-ShowCounts] [-Domain <String>] [-ViewID <Int32>] [-ShowInac
 
 ### Single
 ```
-Get-HaloTicketType -TicketTypeID <Int64> [-IncludeDetails] [<CommonParameters>]
+Get-HaloTicketType -TicketTypeID <Int64> [-IncludeDetails] [-IncludeConfig] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -37,47 +37,17 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ClientID
-Filter by a specific client id.
+### -TicketTypeID
+Ticket Type ID
 
 ```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: client_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Domain
-Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IncludeDetails
-Include extra objects in the result.
-
-```yaml
-Type: SwitchParameter
+Type: Int64
 Parameter Sets: Single
 Aliases:
 
-Required: False
+Required: True
 Position: Named
-Default value: False
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -97,32 +67,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ShowInactive
-Include inactive ticket types in the results.
+### -Domain
+Filter counts to a specific domain: reqs = tickets, opps = opportunities and prjs = projects.
 
 ```yaml
-Type: SwitchParameter
+Type: String
 Parameter Sets: Multi
 Aliases:
 
 Required: False
 Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TicketTypeID
-Ticket Type ID
-
-```yaml
-Type: Int64
-Parameter Sets: Single
-Aliases:
-
-Required: True
-Position: Named
-Default value: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -138,6 +93,66 @@ Aliases: view_id
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ShowInactive
+Include inactive ticket types in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ClientID
+Filter by a specific client id.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: client_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDetails
+Include extra objects in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeConfig
+Include all related configuration in the result.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Single
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

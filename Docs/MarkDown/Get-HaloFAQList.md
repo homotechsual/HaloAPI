@@ -51,17 +51,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeDetails
-Include Details
+### -Type
+Type
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: Single
+Type: String
+Parameter Sets: Multi
 Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -81,17 +81,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Type
-Type
+### -IncludeDetails
+Include Details
 
 ```yaml
-Type: String
-Parameter Sets: Multi
+Type: SwitchParameter
+Parameter Sets: Single
 Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
