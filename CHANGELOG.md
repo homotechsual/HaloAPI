@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-10-23 - Version 1.15.0
+
+* Overhaul retry handling to increase delay between subsequent retries.
+* Add new commandlets.
+* Add KeyVault support directly to Connect commandlet.
+
 ## 2023-04-04 - Version 1.14.1
 
 * Fix bug in `New-HaloWorkDay`.

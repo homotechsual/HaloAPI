@@ -12,7 +12,7 @@
     RootModule        = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.14.1'
+    ModuleVersion     = '1.15.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -268,10 +268,10 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Add Custom Table endpoints.'
+            ReleaseNotes = 'Overhaul retry handling. Add new endpoints - thanks to Mendy and Ceej for the help'
 
             # Prerelease string of this module
-            # Prerelease = 'Beta5'
+            # Prerelease = 'Beta1'
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
 
