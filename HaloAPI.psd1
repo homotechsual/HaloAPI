@@ -226,7 +226,9 @@
         'Set-HaloUser',
         'Set-HaloWorkday',
         'New-HaloTab', 
-        'Get-HaloTabs'
+        'Get-HaloTabs',
+		'Get-HaloOutcome',
+		'New-HaloOutcome'
     )
 
 
