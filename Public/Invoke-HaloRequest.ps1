@@ -44,6 +44,8 @@ function Invoke-HaloRequest {
         $RequestHeaders = $null
     }
     $Retries = 0
+    $BaseDelay = 5 # Base delay of 5 seconds
+    $MaxDelay = 60 # Maximum delay of 60 seconds
     do {
         $Retries++
         $Results = try {
@@ -61,8 +63,9 @@ function Invoke-HaloRequest {
         } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
             $Success = $False
             if ($_.Exception.Response.StatusCode.value__ -eq 429) {
-                Write-Warning 'The request was throttled, waiting for 5 seconds.'
-                Start-Sleep -Seconds 5
+                $WaitTime = [math]::Min($BaseDelay * [math]::Pow(2, $Retries - 1), $MaxDelay)
+                Write-Warning "The request was throttled, waiting for $WaitTime seconds."
+                Start-Sleep -Seconds $WaitTime
                 continue
             } else {
                 throw $_
