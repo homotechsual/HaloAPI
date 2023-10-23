@@ -30,15 +30,15 @@ This logs into Halo using the Client Credentials authorisation flow.
 
 ## PARAMETERS
 
-### -AdditionalHeaders
-Hashtable containing additional parameters to be sent with each request.
+### -URL
+The URL of the Halo instance to connect to.
 
 ```yaml
-Type: Hashtable
+Type: Uri
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -107,15 +107,15 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -URL
-The URL of the Halo instance to connect to.
+### -AdditionalHeaders
+Hashtable containing additional parameters to be sent with each request.
 
 ```yaml
-Type: Uri
+Type: Hashtable
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

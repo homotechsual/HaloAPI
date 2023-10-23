@@ -36,21 +36,6 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -ExcludeZero
-Exclude default lookup options with ID 0.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: exclude_zero
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ItemID
 Lookup Item ID
 
@@ -103,6 +88,21 @@ Show all records
 Type: SwitchParameter
 Parameter Sets: Multi
 Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeZero
+Exclude default lookup options with ID 0.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: exclude_zero
 
 Required: False
 Position: Named

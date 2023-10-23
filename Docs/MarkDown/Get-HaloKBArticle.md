@@ -37,17 +37,17 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -AdvancedSearch
-Advanced Search
+### -KBArticleID
+Article ID
 
 ```yaml
-Type: String
-Parameter Sets: Multi
-Aliases: advanced_search
+Type: Int64
+Parameter Sets: Single
+Aliases:
 
-Required: False
+Required: True
 Position: Named
-Default value: None
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -67,13 +67,43 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeDetails
-Include extra objects in the result.
+### -Search
+Filters response based on the search string
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AdvancedSearch
+Advanced Search
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases: advanced_search
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+Paginate results
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Single
-Aliases:
+Parameter Sets: Multi
+Aliases: pageinate
 
 Required: False
 Position: Named
@@ -82,15 +112,30 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -KBArticleID
-Article ID
+### -PageSize
+Number of results per page.
 
 ```yaml
-Type: Int64
-Parameter Sets: Single
-Aliases:
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
 
-Required: True
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageNo
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
 Position: Named
 Default value: 0
 Accept pipeline input: False
@@ -127,62 +172,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PageNo
-Which page to return.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageSize
-Number of results per page.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_size
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-Paginate results
+### -IncludeDetails
+Include extra objects in the result.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: pageinate
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Search
-Filters response based on the search string
-
-```yaml
-Type: String
-Parameter Sets: Multi
+Parameter Sets: Single
 Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

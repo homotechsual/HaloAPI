@@ -39,21 +39,6 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -AssetGroupID
-Filter by Assets belonging to a particular Asset group
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases: assetgroup_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -AssetID
 Asset ID
 
@@ -69,13 +54,103 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -AssetTypeID
-Filter by Assets belonging to a particular Asset type
+### -Paginate
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+Number of results per page.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
+
+Required: False
+Position: Named
+Default value: $Script:HAPIDefaultPageSize
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageNo
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Order
+Which field to order results based on.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderDesc
+Order results in descending order (respects the field choice in '-Order')
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Search
+Filter by Assets with an asset field like your search
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TicketID
+Filter by Assets belonging to a particular ticket
 
 ```yaml
 Type: Int64
 Parameter Sets: Multi
-Aliases: assettype_id
+Aliases: ticket_id
 
 Required: False
 Position: Named
@@ -99,13 +174,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ContractID
-Filter by Assets linked to a particular Asset
+### -SiteID
+Filter by Assets belonging to a particular site
 
 ```yaml
 Type: Int64
 Parameter Sets: Multi
-Aliases: contract_id
+Aliases: site_id
 
 Required: False
 Position: Named
@@ -114,8 +189,68 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -FullObjects
-Parameter to return the complete objects.
+### -Username
+Filter by Assets belonging to a particular user
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AssetGroupID
+Filter by Assets belonging to a particular Asset group
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases: assetgroup_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AssetTypeID
+Filter by Assets belonging to a particular Asset type
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases: assettype_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -LinkedToID
+Filter by Assets linked to a particular Asset
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases: linkedto_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -includeinactive
+Include inactive Assets in the response
 
 ```yaml
 Type: SwitchParameter
@@ -159,6 +294,36 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ContractID
+Filter by Assets linked to a particular Asset
+
+```yaml
+Type: Int64
+Parameter Sets: Multi
+Aliases: contract_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FullObjects
+Parameter to return the complete objects.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -IncludeDetails
 Include extra objects in the result.
 
@@ -185,171 +350,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -includeinactive
-Include inactive Assets in the response
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -LinkedToID
-Filter by Assets linked to a particular Asset
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases: linkedto_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Order
-Which field to order results based on.
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OrderDesc
-Order results in descending order (respects the field choice in '-Order')
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageNo
-Which page to return.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_no
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PageSize
-Number of results per page.
-
-```yaml
-Type: Int32
-Parameter Sets: Multi
-Aliases: page_size
-
-Required: False
-Position: Named
-Default value: $Script:HAPIDefaultPageSize
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Paginate
-Paginate results
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases: pageinate
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Search
-Filter by Assets with an asset field like your search
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SiteID
-Filter by Assets belonging to a particular site
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases: site_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TicketID
-Filter by Assets belonging to a particular ticket
-
-```yaml
-Type: Int64
-Parameter Sets: Multi
-Aliases: ticket_id
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Username
-Filter by Assets belonging to a particular user
-
-```yaml
-Type: String
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

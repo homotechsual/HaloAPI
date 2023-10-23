@@ -51,36 +51,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeDetails
-Include extra detail objects in the response.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -IsButtonSetup
-Include custom buttons which are setup (defaults to $True).
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Multi
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Type
 Filter by the specified type.
 
@@ -107,6 +77,36 @@ Aliases:
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IsButtonSetup
+Include custom buttons which are setup (defaults to $True).
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeDetails
+Include extra detail objects in the response.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -36,17 +36,17 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -IncludeDetails
-Include details in results
+### -TemplateID
+Template ID
 
 ```yaml
-Type: SwitchParameter
+Type: Int64
 Parameter Sets: Single
 Aliases:
 
-Required: False
+Required: True
 Position: Named
-Default value: False
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -66,17 +66,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TemplateID
-Template ID
+### -IncludeDetails
+Include details in results
 
 ```yaml
-Type: Int64
+Type: SwitchParameter
 Parameter Sets: Single
 Aliases:
 
-Required: True
+Required: False
 Position: Named
-Default value: 0
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
