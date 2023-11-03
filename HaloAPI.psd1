@@ -117,6 +117,7 @@
         'Get-HaloWorkflow',
         'Get-HaloWorkflows',
         'Invoke-HaloRequest',
+        'Invoke-HaloSQL',
         'New-HaloAction',
         'New-HaloActionBatch',
         'New-HaloAgent',
