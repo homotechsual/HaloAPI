@@ -55,6 +55,7 @@ function Get-HaloAssetType {
         # Include the last action in the result.
         [Parameter( ParameterSetName = 'Single' )]
         [Switch]$IncludeDiagramDetails,
+        # Show all assets, including those that have been deleted.
         [Parameter( ParameterSetName = 'Multi')]
         [Switch]$ShowAll
     )

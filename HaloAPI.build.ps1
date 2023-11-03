@@ -52,6 +52,7 @@ if ($UpdateHelp) {
         Exclude = $ExcludeFiles
         Sidebar = 'commandlets'
         # MetaDescription = 'Generated cmdlet help for the %1 commandlet.'
+        NoPlaceHolderExamples = $true
         GroupByVerb = $true
         UseDescriptionFromHelp = $true
     }

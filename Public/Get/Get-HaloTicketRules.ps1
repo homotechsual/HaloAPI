@@ -16,13 +16,15 @@ function Get-HaloTicketRules {
         [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$RuleID,
         [Parameter( ParameterSetName = 'Single' )]
+        # Include details in the response.
         [switch]$IncludeDetails,
+        # Include criteria info in the response.
         [Parameter( ParameterSetName = 'Single' )]
         [switch]$IncludeCriteriaInfo,
-        # Include Workflow Step Rules
+        # Exclude Workflow Step Rules
         [Parameter( ParameterSetName = 'Multi')]
         [switch]$ExcludeWorkflow,
-        # ShowAll
+        # Show all rules, including those that have been deleted.
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$ShowAll
     )
