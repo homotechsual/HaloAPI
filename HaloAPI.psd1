@@ -9,28 +9,28 @@
 @{
 
     # Script module or binary module file associated with this manifest.
-    RootModule        = '.\HaloAPI.psm1'
+    RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.15.0'
+    ModuleVersion = '1.16.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
 
     # ID used to uniquely identify this module
-    GUID              = '8bc83215-4735-4029-9f40-e05fe3e8f73b'
+    GUID = '8bc83215-4735-4029-9f40-e05fe3e8f73b'
 
     # Author of this module
-    Author            = 'Mikey O''Toole / Luke Whitelock'
+    Author = 'Mikey O''Toole / Luke Whitelock'
 
     # Company or vendor of this module
-    CompanyName       = 'Unknown'
+    CompanyName = 'Unknown'
 
     # Copyright statement for this module
-    Copyright         = '(c) 2021 Mikey O''Toole & Luke Whitelock. All rights reserved.'
+    Copyright = '(c) 2021 Mikey O''Toole & Luke Whitelock. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'This module provides an interface to the Halo API.'
+    Description = 'This module provides an interface to the Halo API.'
 
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion = '7.0'
@@ -227,8 +227,8 @@
         'Set-HaloWorkday',
         'New-HaloTab', 
         'Get-HaloTabs',
-		'Get-HaloOutcome',
-		'New-HaloOutcome'
+        'Get-HaloOutcome',
+        'New-HaloOutcome'
     )
 
 
@@ -268,7 +268,7 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Overhaul retry handling. Add new endpoints - thanks to Mendy and Ceej for the help'
+            ReleaseNotes = 'Refactor `Invoke-HaloRequest` to avoid reusing variable names and keep the scope clearer. Fixes breakage with PowerShell 7.4.0.'
 
             # Prerelease string of this module
             # Prerelease = 'Beta1'

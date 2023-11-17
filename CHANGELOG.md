@@ -1,5 +1,10 @@
 # Changelog
 
+## 2023-11-17 - Version 1.16.0
+
+* Refactor variables in `Invoke-HaloRequest` to avoid scope confusion.
+* Now compatible with PowerShell 7.4.0.
+
 ## 2023-10-23 - Version 1.15.0
 
 * Overhaul retry handling to increase delay between subsequent retries.

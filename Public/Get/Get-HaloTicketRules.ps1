@@ -4,7 +4,7 @@ function Get-HaloTicketRules {
         .SYNOPSIS
             Gets Halo Ticket Rules information from the Halo API.
         .DESCRIPTION
-            Retrieves Ticket Rule from the Halo API. By default it retrieves global rules AND workflow step rules. Use "-ExcludeWorkflow" to limit the list to only Global Rules.
+            Retrieves Ticket Rule from the Halo API. By default it retrieves global rules AND workflow step rules. Use `-ExcludeWorkflow` to limit the list to only Global Rules.
         .OUTPUTS
             A powershell object containing the response.
     #>

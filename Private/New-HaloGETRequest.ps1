@@ -42,8 +42,11 @@ function New-HaloGETRequest {
         } elseif ((-not $QSCollection.pageinate) -and ($QSCollection.page_size)) {
             $QSCollection.Remove('page_size')
         }
+        if (-not $RawResult) {
+            $RawResult = $False
+        }
         if ($QSCollection) {
-            Write-Debug "Query string in New-HaloGETRequest contains: $($QSCollection | Out-String)"
+            Write-Debug "Query string collection in New-HaloGETRequest contains: $($QSCollection | Out-String)"
             $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
             Write-Verbose 'Building [HttpQSCollection] for New-HaloGETRequest'
             foreach ($Key in $QSCollection.Keys) {

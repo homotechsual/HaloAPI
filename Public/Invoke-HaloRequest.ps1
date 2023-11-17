@@ -48,18 +48,19 @@ function Invoke-HaloRequest {
     $MaxDelay = 60 # Maximum delay of 60 seconds
     do {
         $Retries++
-        $Results = try {
+        Write-Verbose "Attempt $Retries of 10"
+        try {
             Write-Verbose "Making a $($WebRequestParams.Method) request to $($WebRequestParams.Uri)"
             $Response = Invoke-WebRequest @WebRequestParams -Headers $RequestHeaders -ContentType 'application/json; charset=utf-8'
             Write-Debug "Response headers: $($Response.Headers | Out-String)"
-            Write-Debug "Raw Response: $Response"
+            Write-Debug "Raw Response: $($Response | Out-String)"
+            Write-Debug "Response Members: $($Response | Get-Member | Out-String)"
             $Success = $True
             if ($RawResult) {
                 $Results = $Response
             } else {
-                $Results = $Response.Content | ConvertFrom-Json
+                $Results = ($Response.Content | ConvertFrom-Json -Depth 100)
             }
-            Return $Results
         } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
             $Success = $False
             if ($_.Exception.Response.StatusCode.value__ -eq 429) {
@@ -74,10 +75,13 @@ function Invoke-HaloRequest {
         } catch {
             throw $_
         }
+        Write-Verbose 'Request successful.'
     } while ((-not $Results) -and ($Retries -lt 10) -and (-not $Success))
     if ($Results) {
+        Write-Verbose 'Request returned results.'
         Return $Results
     } else {
+        Write-Verbose 'Request unsuccessful.'
         if ($Retries -gt 1) {
             New-HaloError -ModuleMessage ('Retried request to "{0}" {1} times, request unsuccessful.' -f $WebRequestParams.Uri, $Retries)
         }

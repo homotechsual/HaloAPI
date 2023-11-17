@@ -52,17 +52,17 @@ function Get-HaloLookup {
     try {
         if ($ItemID) {
             Write-Verbose "Running in single-lookup mode because '-ItemID' was provided."
-            $Resource = "api/Lookup/$($ItemID)"
+            $Resource = "api/lookup/$($ItemID)"
         } else {
             Write-Verbose 'Running in multi-lookup mode.'
-            $Resource = 'api/Lookup'
+            $Resource = 'api/lookup'
         }
         $RequestParams = @{
             Method = 'GET'
             Resource = $Resource
             AutoPaginateOff = $True
             QSCollection = $QSCollection
-            ResourceType = 'lookups'
+            ResourceType = 'lookup'
         }
         $LookupResults = New-HaloGETRequest @RequestParams
         Return $LookupResults
