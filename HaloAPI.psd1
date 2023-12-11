@@ -119,6 +119,7 @@
         'Get-HaloWorkflows',
         'Import-HaloSuppliersFromAccountingPackage',
         'Invoke-HaloRequest',
+        'Invoke-HaloSQL',
         'New-HaloAction',
         'New-HaloActionBatch',
         'New-HaloAgent',
