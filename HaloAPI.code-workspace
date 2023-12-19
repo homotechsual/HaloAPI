@@ -27,7 +27,7 @@
 		"powershell.codeFormatting.whitespaceBetweenParameters": false,
 		"powershell.codeFormatting.whitespaceInsideBrace": true,
 		"editor.codeActionsOnSave": {
-			"source.fixAll.markdownlint": true
+			"source.fixAll.markdownlint": "explicit"
 		}
 	}
 }

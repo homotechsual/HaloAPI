@@ -40,7 +40,10 @@ function Get-HaloAttachment {
         [String]$OutFile,
         # Allow Writing Directly to File, using the specified path and the original file name eg c:\temp\
         [Parameter( ParameterSetName = 'SinglePath', Mandatory = $True )]
-        [String]$OutPath
+        [String]$OutPath,
+        # Return the attachment as a base64 encoded string
+        [Parameter( ParameterSetName = 'Single' )]
+        [Switch]$AsBase64
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.MyCommand.Name
@@ -88,11 +91,14 @@ function Get-HaloAttachment {
                     Write-Verbose "Attempting to output to file $OutFile"
                     $Path = $OutFile
                 }
-
                 Write-Verbose "Writing File $Path"
                 $File = [System.IO.FileStream]::new($Path, [System.IO.FileMode]::Create)
                 $File.write($AttachmentResults.Content, 0, $AttachmentResults.RawContentLength)
                 $File.close()
+            } elseif ($AsBase64) {
+                Write-Verbose 'Returning base64 encoded string'
+                $Base64String = [System.Convert]::ToBase64String($AttachmentResults.Content)
+                Return $Base64String
             } else {
                 return $AttachmentResults.Content
             }

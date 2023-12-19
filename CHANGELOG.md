@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-12-19 - Version 1.17.0
+
+* Add `-AsBase64` parameter to `Get-HaloAttachment` to allow fetching single attachments as base64 encoded strings.
+
 ## 2023-11-17 - Version 1.16.0
 
 * Refactor variables in `Invoke-HaloRequest` to avoid scope confusion.

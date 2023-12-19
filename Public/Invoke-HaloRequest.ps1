@@ -52,14 +52,18 @@ function Invoke-HaloRequest {
         try {
             Write-Verbose "Making a $($WebRequestParams.Method) request to $($WebRequestParams.Uri)"
             $Response = Invoke-WebRequest @WebRequestParams -Headers $RequestHeaders -ContentType 'application/json; charset=utf-8'
-            Write-Debug "Response headers: $($Response.Headers | Out-String)"
-            Write-Debug "Raw Response: $($Response | Out-String)"
-            Write-Debug "Response Members: $($Response | Get-Member | Out-String)"
-            $Success = $True
-            if ($RawResult) {
-                $Results = $Response
+            if ($Response) {
+                Write-Debug "Response headers: $($Response.Headers | Out-String)"
+                Write-Debug "Raw Response: $($Response | Out-String)"
+                Write-Debug "Response Members: $($Response | Get-Member | Out-String)"
+                $Success = $True
+                if ($RawResult) {
+                    $Results = $Response
+                } else {
+                    $Results = ($Response.Content | ConvertFrom-Json -Depth 100)
+                }
             } else {
-                $Results = ($Response.Content | ConvertFrom-Json -Depth 100)
+                Write-Debug 'Response was null.'
             }
         } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
             $Success = $False

@@ -214,9 +214,11 @@ if ($UpdateManifest) {
     Import-Module -Name PlatyPS
 
     # Find Latest Version in Change log.
-    $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md"
+    $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md" -Raw
     $MarkdownObject = [Markdown.MAML.Parser.MarkdownParser]::new()
-    [regex]$Regex = '\d\.\d\.\d'
+    [regex]$ReleaseRegex = '#{2}.*\d*\.\d*\.\d*$/m'
+    $Releases = ($ReleaseRegex.Matches($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text))
+    [regex]$VersionRegex = '\d*\.\d*\.\d*'
     $Versions = $Regex.Matches($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) | ForEach-Object { $_.Value }
     $ChangeLogVersion = ($Versions | Measure-Object -Maximum).Maximum
 
@@ -236,7 +238,7 @@ if ($UpdateManifest) {
     # Update Manifest file with Release Notes
     $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md"
     $MarkdownObject = [Markdown.MAML.Parser.MarkdownParser]::new()
-    $ReleaseNotes = ((($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) -Match '\d\.\d\.\d') -Split ' - ')[1]
+    $ReleaseNotes = ((($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) -Match '#{2}.*\d*\.\d*\.\d') -Split ' - ')[1]
 
     # Update Module with new version
     Update-ModuleManifest -ModuleVersion $ChangeLogVersion -Path "$($PSScriptRoot)\$ModuleName.psd1" -ReleaseNotes $ReleaseNotes
