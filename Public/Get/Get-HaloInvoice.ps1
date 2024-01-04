@@ -84,7 +84,10 @@ function Get-HaloInvoice {
         [switch]$PostedOnly,
         # Filter for non-posted invoices only.
         [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$NotPostedOnly
+        [switch]$NotPostedOnly,
+        # Filter by payment status. Provide an array of status ids.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [object]$PaymentStatuses
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.MyCommand.Name
@@ -92,6 +95,14 @@ function Get-HaloInvoice {
     # Workaround to prevent the query string processor from adding a 'invoiceid=' parameter by removing it from the set parameters.
     if ($InvoiceID) {
         $Parameters.Remove('InvoiceID') | Out-Null
+    }
+    # Transform the payment statuses parameter to a HTML encoded string.
+    $PaymentStatuses = if ($PaymentStatuses -isnot [string]) {
+        if ($PaymentStatuses -is [int64[]]) {
+            return [System.Net.WebUtility]::UrlEncode($PaymentStatuses -join ',')
+        } else {
+            return [string]$PaymentStatuses
+        }
     }
     try {
         if ($InvoiceID) {
