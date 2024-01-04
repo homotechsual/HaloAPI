@@ -43,10 +43,13 @@ function Get-HaloAttachment {
         [String]$OutPath,
         # Return the attachment as a base64 encoded string
         [Parameter( ParameterSetName = 'Single' )]
-        [Switch]$AsBase64
+        [Switch]$AsBase64,
+        # Get the token for accessing the image using the token parameter(s).
+        [Parameter( ParameterSetName = 'Single' )]
+        [Switch]$GetToken
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.MyCommand.Name
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'attachmentid=' parameter by removing it from the set parameters.
     if ($AttachmentID) {

@@ -93,7 +93,7 @@ function Get-HaloUser {
         [Switch]$IncludePopups
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.MyCommand.Name
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'userid=' parameter by removing it from the set parameters.
     if ($UserID) {
