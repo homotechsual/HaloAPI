@@ -4,7 +4,6 @@ title: "[Bug]: "
 labels: [bug, triage]
 assignees:
   - homotechsual
-  - lwhitelock
 body:
   - type: markdown
     attributes:
@@ -27,13 +26,11 @@ body:
       value: "A bug happened!"
     validations:
       required: true
-  - type: dropdown
+  - type: input
     id: version
     attributes:
       label: Version
       description: What version of the module are you running?
-      options:
-        - 1.0.1
     validations:
       required: true
   - type: checkboxes
@@ -46,15 +43,12 @@ body:
         - label: Windows 11
         - label: Mac OS
         - label: Linux
-  - type: dropdown
+  - type: input
     id: psversion
     attributes:
       label: What PowerShell version are you running?
-      multiple: false
-      options:
-        - 7.0.6
-        - 7.1.3
-        - 7.2.0-preview.8
+    validations:
+      required: true
   - type: dropdown
     id: haloproduct
     attributes:
@@ -64,6 +58,7 @@ body:
         - Halo PSA
         - Halo ISTM
         - Halo Service Desk
+        - Halo CRM
     validations:
       required: true
   - type: input
