@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.17.0'
+    ModuleVersion = '1.18.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -268,7 +268,7 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Add -AsBase64 to Get-HaloAttachment to return the attachment as a base64 encoded string.'
+            ReleaseNotes = 'Add missing parameter to Get-HaloInvoice'
 
             # Prerelease string of this module
             # Prerelease = 'Beta1'
