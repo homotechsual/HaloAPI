@@ -41,7 +41,7 @@ function Get-HaloOutcome {
         [switch]$IncludeDetails
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.MyCommand.Name
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
 
     if ($OutcomeID) {

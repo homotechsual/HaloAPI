@@ -40,21 +40,28 @@ if ($Push) {
 ## Requires PlatyPS, Pester, PSScriptAnalyzer and Alt3.Docusaurus.PowerShell installed.
 
 if ($UpdateHelp) {
-    if (-Not($DocusaurusPath)) {
-        throw 'DocusaurusPath parameter is required when updating help'
-    } elseif (-Not(Resolve-Path -Path $DocusaurusPath)) {
-        throw 'DocusaurusPath does not resolve to a valid path'
+    $DocsFolderPath = Join-Path -Path $DocusaurusPath -ChildPath 'docs' -AdditionalChildPath $Script:ModuleName
+    if (-Not(Test-Path -Path $DocsFolderPath)) {
+        New-Item -Path $DocsFolderPath -ItemType Directory | Out-Null
     }
+    $MarkdownHeader = @'
+:::powershell[Generated Cmdlet Help]
+This page has been generated from the {0} PowerShell module source. To make changes please edit the appropriate PowerShell source file.
+:::
+'@ -f $Script:ModuleName
     $ExcludeFiles = Get-ChildItem -Path "$($PSScriptRoot)\Private" -Filter '*.ps1' -Recurse | ForEach-Object { [System.IO.Path]::GetFileNameWithoutExtension($_.FullName) }
     $NewDocusaurusHelpParams = @{
-        Module = ('.\{0}.psm1' -f $ModuleName)
-        DocsFolder = Join-Path -Path $DocusaurusPath -ChildPath 'docs' -AdditionalChildPath $ModuleName
+        Module = ('.\{0}.psd1' -f $Script:ModuleName)
+        DocsFolder = $DocsFolderPath
         Exclude = $ExcludeFiles
         Sidebar = 'commandlets'
         # MetaDescription = 'Generated cmdlet help for the %1 commandlet.'
-        NoPlaceHolderExamples = $true
         GroupByVerb = $true
         UseDescriptionFromHelp = $true
+        NoPlaceHolderExamples = $true
+        UseCustomShortTitles = $false
+        PrependMarkdown = $MarkdownHeader
+        RemoveParameters = @('-ProgressAction', '-FakeParam')
     }
     New-DocusaurusHelp @NewDocusaurusHelpParams | Out-Null
     $CommandletDocsFolder = Join-Path -Path $DocusaurusPath -ChildPath 'docs' -AdditionalChildPath @($ModuleName, 'commandlets')

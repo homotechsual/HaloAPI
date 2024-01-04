@@ -85,25 +85,28 @@ function Get-HaloInvoice {
         # Filter for non-posted invoices only.
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$NotPostedOnly,
-        # Filter by payment status. Provide an array of status ids.
+        # Filter by payment status. Provide a string separated by HTML encoded commas.
         [Parameter( ParameterSetName = 'Multi' )]
-        [object]$PaymentStatuses
+        [string]$PaymentStatuses,
+        # Filter by payment status. Provide an array of integers.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [int64[]]$PaymentStatusIds
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.MyCommand.Name
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'invoiceid=' parameter by removing it from the set parameters.
     if ($InvoiceID) {
         $Parameters.Remove('InvoiceID') | Out-Null
     }
     # Transform the payment statuses parameter to a HTML encoded string.
-    $PaymentStatuses = if ($PaymentStatuses -isnot [string]) {
-        if ($PaymentStatuses -is [int64[]]) {
-            return [System.Net.WebUtility]::UrlEncode($PaymentStatuses -join ',')
-        } else {
-            return [string]$PaymentStatuses
-        }
+    if ($PaymentStatusIds) {
+        Write-Verbose 'Converting Payment Status IDs to a string.'
+        $Parameters.Remove('PaymentStatusIds') | Out-Null
+        [string]$PaymentStatuses = $PaymentStatusIds -join ','
     }
+    Write-Verbose ('Payment Statuses parameter type is {0}' -f $PaymentStatuses.GetType().Name)
+    Write-Verbose ('Payment Statuses parameter value is {0}' -f $PaymentStatuses)
     try {
         if ($InvoiceID) {
             Write-Verbose "Running in single-invoice mode because '-InvoiceID' was provided."

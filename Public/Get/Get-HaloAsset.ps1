@@ -87,7 +87,7 @@ function Get-HaloAsset {
         [Switch]$IncludeDiagramDetails
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.MyCommand.Name
+    $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'assetid=' parameter by removing it from the set parameters.
     if ($AssetID) {

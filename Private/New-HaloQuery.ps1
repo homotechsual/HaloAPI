@@ -23,8 +23,13 @@ function New-HaloQuery {
             Write-Debug "Excluding system parameter $($Parameter.Name)."
             Continue
         }
+        # Skip optional system parameters.
+        if (([System.Management.Automation.Cmdlet]::OptionalCommonParameters).Contains($Parameter.Name)) {
+            Write-Verbose "Excluding optional system parameter $($Parameter.Name)."
+            Continue
+        }
         $ParameterVariable = Get-Variable -Name $Parameter.Name -ErrorAction SilentlyContinue
-        if (($Parameter.ParameterType.Name -eq 'String') -or ($Parameter.ParameterType.Name -eq 'String[]')) {
+        if (($Parameter.ParameterType.Name -eq 'String') -or ($Parameter.ParameterType.Name -eq 'String[]') -or ($Parameter.ParameterType.Name -eq 'Object') -or ($Parameter.ParameterType.Name -eq 'Object[]')) {
             Write-Debug "Found String or String Array param $($ParameterVariable.Name)"
             if ([String]::IsNullOrEmpty($ParameterVariable.Value)) {
                 Write-Debug "Skipping unset param $($ParameterVariable.Name)"
