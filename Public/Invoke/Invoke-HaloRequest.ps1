@@ -43,6 +43,7 @@ function Invoke-HaloRequest {
     } else {
         $RequestHeaders = $null
     }
+    
     $Retries = 0
     $BaseDelay = 5 # Base delay of 5 seconds
     $MaxDelay = 60 # Maximum delay of 60 seconds
@@ -80,7 +81,7 @@ function Invoke-HaloRequest {
             throw $_
         }
         Write-Verbose 'Request successful.'
-    } while ((-not $Results) -and ($Retries -lt 10) -and (-not $Success))
+    } while ((-not $Results) -and ($Retries -lt $Script:HAPIConnectionInformation.MaxRetries) -and (-not $Success))
     if ($Results) {
         Write-Verbose 'Request returned results.'
         Return $Results
