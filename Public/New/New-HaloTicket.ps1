@@ -19,7 +19,8 @@ Function New-HaloTicket {
     )
     Invoke-HaloPreFlightCheck
     try {
-        $CommandName = $MyInvocation.InvocationName
+        $CommandName = $MyInvocation.MyCommand.Name
+        Write-Verbose "Running command '$CommandName'"
         $Parameters = (Get-Command -Name $CommandName).Parameters
         # Workaround to prevent the query string processor from adding an 'actionid=' parameter by removing it from the set parameters.
         if ($ActionID) {
