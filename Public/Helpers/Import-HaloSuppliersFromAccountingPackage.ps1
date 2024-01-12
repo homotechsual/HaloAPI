@@ -9,15 +9,12 @@ function Import-HaloSupplierFromQBO {
     #>
     [CmdletBinding()]
     param (
-        [Parameter()]
-        [System.Object]
-        $APSupplier,
-        [Parameter()]
-        [string]
-        $ImportType = 'quickbooksonline',
-        [Parameter()]
-        [string]
-        $APCompanyID
+        # The QuickBooks Online Supplier object to import
+        [System.Object]$APSupplier,
+        # The type of import to perform
+        [string]$ImportType = 'quickbooksonline',
+        # The QuickBooks Online Company ID
+        [string] $APCompanyID
     )
     [PSCustomObject]$returnData = @{
         _isimport = $true

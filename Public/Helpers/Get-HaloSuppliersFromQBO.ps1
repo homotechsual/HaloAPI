@@ -8,7 +8,9 @@ function Get-HaloSuppliersFromQBO {
             A powershell object containing the response.
     #>
     param(
+        # The Halo <-> QuickBooks Online connection Id
         [int32]$ConnectionID,
+        # The Data Type to retrieve
         [string]$DataType = 'vendor'
     )
     $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
