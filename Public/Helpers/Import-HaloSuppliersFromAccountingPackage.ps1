@@ -1,4 +1,12 @@
 function Import-HaloSupplierFromQBO {
+    <#
+        .SYNOPSIS
+            Imports Halo Suppliers from QuickBooks Online
+        .DESCRIPTION
+            Imports Halo Suppliers from QuickBooks Online into the Halo API.
+        .OUTPUTS
+            A powershell object containing the response.
+    #>
     [CmdletBinding()]
     param (
         [Parameter()]

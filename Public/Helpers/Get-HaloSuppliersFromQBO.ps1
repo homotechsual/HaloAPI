@@ -1,19 +1,25 @@
 function Get-HaloSuppliersFromQBO {
-    param[
+    <#
+        .SYNOPSIS
+            Gets QuickBooks Online suppliers from the Halo API
+        .DESCRIPTION
+            Retrieves QuickBooks Online suppliers from the Halo API.
+        .OUTPUTS
+            A powershell object containing the response.
+    #>
+    param(
         [int32]$ConnectionID,
-        [string]$datatype = 'vendor'
-    ]
-
+        [string]$DataType = 'vendor'
+    )
     $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
     $Resource = 'api/integrationdata/get/quickbooksonline'
     $RequestParams = @{
-        Method = 'GET'
-        Resource = $Resource
+        Method          = 'GET'
+        Resource        = $Resource
         AutoPaginateOff = $Paginate
-        QSCollection = $QSCollection
-        ResourceType = 'releases'
+        QSCollection    = $QSCollection
+        ResourceType    = 'releases'
     }
-    
     $QBOVendors = New-HaloGETRequest @RequestParams
     Return $QBOVendors
 }
