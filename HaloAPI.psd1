@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.18.0'
+    ModuleVersion = '1.19.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -197,6 +197,7 @@
         'Remove-HaloUser',
         'Restore-HaloTicket',
         'Set-HaloAction',
+        'Set-HaloActionBatch',
         'Set-HaloAgent',
         'Set-HaloAppointment',
         'Set-HaloAsset',

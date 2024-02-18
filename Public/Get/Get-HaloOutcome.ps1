@@ -47,29 +47,21 @@ function Get-HaloOutcome {
     if ($OutcomeID) {
         $Parameters.Remove('OutcomeID') | Out-Null
     }
+    $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
     try {
         if ($OutcomeID) {
-            Write-Verbose "Running in single-item mode because '-OutcomeID' was provided."
-            $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/Outcome/$($OutcomeID)"
-            $RequestParams = @{
-                Method = 'GET'
-                Resource = $Resource
-                AutoPaginateOff = $True
-                QSCollection = $QSCollection
-                ResourceType = 'Outcome'
-            }
+            Write-Verbose "Running in single-outcome mode because '-OutcomeID' was provided."
+            $Resource = "api/outcome/$($OutcomeID)"
         } else {
-            Write-Verbose 'Running in multi-item mode.'
-            $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
-            $Resource = 'api/Outcome'
-            $RequestParams = @{
-                Method = 'GET'
-                Resource = $Resource
-                AutoPaginateOff = $Paginate
-                QSCollection = $QSCollection
-                ResourceType = 'Outcome'
-            }
+            Write-Verbose 'Running in multi-outcome mode.'
+            $Resource = 'api/outcome'
+        }
+        $RequestParams = @{
+            Method = 'GET'
+            Resource = $Resource
+            AutoPaginateOff = $True
+            QSCollection = $QSCollection
+            ResourceType = 'outcomes'
         }
         $OutcomeResults = New-HaloGETRequest @RequestParams
         Return $OutcomeResults
