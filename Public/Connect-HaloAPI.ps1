@@ -74,8 +74,13 @@ function Connect-HaloAPI {
         [Parameter(
             ParameterSetName = 'Client Credentials',
             Mandatory = $False
+        )],
+        # The Max Retries Amount of the Connection
+        [Parameter(
+            ParameterSetName = 'Client Credentials',
+            Mandatory = $False
         )]
-        [String]$Identity
+        [Int]$MaxRetries = 10
     )
     if ($UseKeyVault) {
         # If the Identity parameter is specified, use it to connect.
@@ -184,6 +189,7 @@ function Connect-HaloAPI {
         AuthScopes = $AuthScopes
         Tenant = $Tenant
         AdditionalHeaders = $AdditionalHeaders
+        MaxRetries = $MaxRetries
     }
     Set-Variable -Name 'HAPIConnectionInformation' -Value $ConnectionInformation -Visibility Private -Scope Script -Force
     Write-Debug "Connection information set to: $($Script:HAPIConnectionInformation | Out-String)"
