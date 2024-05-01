@@ -43,7 +43,6 @@ function Invoke-HaloRequest {
     } else {
         $RequestHeaders = $null
     }
-    
     $Retries = 0
     $BaseDelay = 5 # Base delay of 5 seconds
     $MaxDelay = 60 # Maximum delay of 60 seconds
