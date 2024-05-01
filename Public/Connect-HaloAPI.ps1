@@ -76,7 +76,8 @@ function Connect-HaloAPI {
             Mandatory = $False
         )]
         [string]$Identity,
-        # The Max Retries Amount of the Connection
+        # The maximum number of times to retry requests before giving up.
+
         [Parameter(
             ParameterSetName = 'Client Credentials',
             Mandatory = $False
