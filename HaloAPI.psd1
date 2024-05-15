@@ -201,7 +201,11 @@
         'Remove-HaloDashboard',
         'Remove-HaloItem',
         'Remove-HaloKBArticle',
+<<<<<<< HEAD
         'Remove-HaloSupplier',
+=======
+        'Remove-HaloReport',
+>>>>>>> d1c12bd (Added function to delete a report)
         'Remove-HaloTicket',
         'Remove-HaloTicketBatch',
         'Remove-HaloTicketRules',
