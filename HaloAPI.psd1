@@ -194,6 +194,7 @@
         'Remove-HaloDashboard',
         'Remove-HaloItem',
         'Remove-HaloKBArticle',
+        'Remove-HaloReport',
         'Remove-HaloTicket',
         'Remove-HaloTicketBatch',
         'Remove-HaloTicketRules',
