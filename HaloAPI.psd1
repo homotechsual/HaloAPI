@@ -73,12 +73,15 @@
     FunctionsToExport = @(
     	'Get-HaloNullObject',
 		'Get-TokenExpiry',
+		'Invoke-HaloBatchProcessor',
+		'Invoke-HaloPreFlightCheck',
 		'New-HaloDELETERequest',
 		'New-HaloError',
 		'New-HaloGETRequest',
 		'New-HaloPOSTRequest',
 		'New-HaloQuery',
 		'Connect-HaloAPI',
+		'Invoke-HaloRequest',
 		'Get-HaloAction',
 		'Get-HaloAgent',
 		'Get-HaloAppointment',
@@ -127,6 +130,7 @@
 		'Get-HaloWorkday',
 		'Get-HaloWorkflow',
 		'Get-HaloSuppliersFromQBO',
+		'Invoke-HaloSQL',
 		'New-HaloAction',
 		'New-HaloActionBatch',
 		'New-HaloAgent',
@@ -206,9 +210,13 @@
 		'Remove-HaloInvoice',
 		'Remove-HaloItem',
 		'Remove-HaloKBArticle',
+		'Remove-HaloOutcome',
 		'Remove-HaloQuote',
 		'Remove-HaloReport',
 		'Remove-HaloSalesOrder',
+		'Remove-HaloService',
+		'Remove-HaloSite',
+		'Remove-HaloStatus',
 		'Remove-HaloSupplier',
 		'Remove-HaloTicket',
 		'Remove-HaloTicketBatch',
@@ -312,6 +320,8 @@
     # DefaultCommandPrefix = ''
 
 }
+
+
 
 
 
