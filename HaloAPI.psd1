@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.19.0'
+    ModuleVersion = '1.20.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -73,15 +73,12 @@
     FunctionsToExport = @(
     	'Get-HaloNullObject',
 		'Get-TokenExpiry',
-		'Invoke-HaloBatchProcessor',
-		'Invoke-HaloPreFlightCheck',
 		'New-HaloDELETERequest',
 		'New-HaloError',
 		'New-HaloGETRequest',
 		'New-HaloPOSTRequest',
 		'New-HaloQuery',
 		'Connect-HaloAPI',
-		'Invoke-HaloRequest',
 		'Get-HaloAction',
 		'Get-HaloAgent',
 		'Get-HaloAppointment',
@@ -92,6 +89,7 @@
 		'Get-HaloBillingTemplate',
 		'Get-HaloCategory',
 		'Get-HaloClient',
+		'Get-HaloClientBillingPlans',
 		'Get-HaloContract',
 		'Get-HaloCRMNote',
 		'Get-HaloCustomButton',
@@ -129,7 +127,6 @@
 		'Get-HaloWorkday',
 		'Get-HaloWorkflow',
 		'Get-HaloSuppliersFromQBO',
-		'Invoke-HaloSQL',
 		'New-HaloAction',
 		'New-HaloActionBatch',
 		'New-HaloAgent',
@@ -315,6 +312,7 @@
     # DefaultCommandPrefix = ''
 
 }
+
 
 
 
