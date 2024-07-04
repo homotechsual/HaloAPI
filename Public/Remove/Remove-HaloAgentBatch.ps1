@@ -12,7 +12,7 @@ Function Remove-HaloAgentBatch {
     Param (
         # Array of objects containing properties and values used to remove one or more agents. This should be an array of agent ids.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Agents,
+        [Int64[]]$Agents,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.
@@ -21,7 +21,7 @@ Function Remove-HaloAgentBatch {
     Invoke-HaloPreFlightCheck
     try {
         if ($PSCmdlet.ShouldProcess('Agents', 'Delete')) {
-            if ($Actions -is [Array]) {
+            if ($Agents -is [Array]) {
                 $BatchParams = @{
                     BatchInput = $Agents
                     EntityType = 'Agent'

@@ -12,7 +12,7 @@ Function Remove-HaloActionBatch {
     Param (
         # Array of objects containing properties and values used to remove one or more actions. This should be an array of objects containing an `Id` and `TicketId` property.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Actions,
+        [Int64[]]$Actions,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.
