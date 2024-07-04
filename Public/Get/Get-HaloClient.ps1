@@ -57,7 +57,10 @@ function Get-HaloClient {
         [Switch]$IncludeDetails,
         # Include ticket activity in the result.
         [Parameter( ParameterSetName = 'Single' )]
-        [Switch]$IncludeActivity
+        [Switch]$IncludeActivity,
+        # Include prepay objects in the result.
+        [Parameter( ParameterSetName = 'Single' )]
+        [Switch]$IncludePrepay
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.MyCommand.Name
@@ -76,27 +79,27 @@ function Get-HaloClient {
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
             $Resource = "api/client/$($ClientID)"
             $RequestParams = @{
-                Method = 'GET'
-                Resource = $Resource
+                Method          = 'GET'
+                Resource        = $Resource
                 AutoPaginateOff = $True
-                QSCollection = $QSCollection
-                ResourceType = 'clients'
+                QSCollection    = $QSCollection
+                ResourceType    = 'clients'
             }
         } else {
             Write-Verbose 'Running in multi-client mode.'
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
             $Resource = 'api/client'
             $RequestParams = @{
-                Method = 'GET'
-                Resource = $Resource
+                Method          = 'GET'
+                Resource        = $Resource
                 AutoPaginateOff = $Paginate
-                QSCollection = $QSCollection
-                ResourceType = 'clients'
+                QSCollection    = $QSCollection
+                ResourceType    = 'clients'
             }
         }
         $ClientResults = New-HaloGETRequest @RequestParams
         if ($FullObjects) {
-            $AllClientResults = $ClientResults | ForEach-Object {             
+            $AllClientResults = $ClientResults | ForEach-Object {
                 Get-HaloClient -ClientID $_.id
             }
             $ClientResults = $AllClientResults

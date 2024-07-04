@@ -82,11 +82,13 @@
         'Get-HaloBillingTemplate',
         'Get-HaloCategory',
         'Get-HaloClient',
+        'Get-HaloClientBillingPlans',
         'Get-HaloContract',
         'Get-HaloCRMNote',
         'Get-HaloCustomButton',
         'Get-HaloCustomField',
         'Get-HaloCustomTable',
+        'Get-HaloDashboard',
         'Get-HaloFAQList',
         'Get-HaloField',
         'Get-HaloInvoice',
@@ -95,7 +97,6 @@
         'Get-HaloLookup',
         'Get-HaloObjectTemplate',
         'Get-HaloOpportunity',
-        'Get-HaloOutcome',
         'Get-HaloProject',
         'Get-HaloPurchaseOrder',
         'Get-HaloQuote',
@@ -142,8 +143,9 @@
         'New-HaloCRMNote',
         'New-HaloCustomButton',
         'New-HaloCustomField',
-        'New-HaloCustomFieldBatch',
         'New-HaloCustomTable',
+        'New-HaloCustomFieldBatch',
+        'New-HaloDashboard',
         'New-HaloFAQList',
         'New-HaloInvoice',
         'New-HaloInvoiceBatch',
@@ -153,7 +155,6 @@
         'New-HaloKBArticleBatch',
         'New-HaloOpportunity',
         'New-HaloOpportunityBatch',
-        'New-HaloOutcome'
         'New-HaloProject',
         'New-HaloProjectBatch',
         'New-HaloQuote',
@@ -171,7 +172,7 @@
         'New-HaloStatus',
         'New-HaloSupplier',
         'New-HaloSupplierBatch',
-        'New-HaloTab', 
+        'New-HaloTab',
         'New-HaloTeam',
         'New-HaloTeamBatch',
         'New-HaloTicket',
@@ -187,16 +188,23 @@
         'Remove-HaloActionBatch',
         'Remove-HaloAgent',
         'Remove-HaloAgentBatch',
-        'Remove-HaloAppointment',
-        'Remove-HaloAsset',
         'Remove-HaloAssetType',
         'Remove-HaloCategory',
         'Remove-HaloClient',
         'Remove-HaloClientBatch',
         'Remove-HaloContract',
         'Remove-HaloCRMNote',
+        'Remove-HaloDashboard',
+        'Remove-HaloInvoice',
         'Remove-HaloItem',
         'Remove-HaloKBArticle',
+        'Remove-HaloOutcome'.
+        'Remove-HaloQuote',
+        'Remove-HaloReport',
+        'Remove-HaloSalesOrder',
+        'Remove-HaloService',
+        'Remove-HaloSite',
+        'Remove-HaloStatus',
         'Remove-HaloSupplier',
         'Remove-HaloTicket',
         'Remove-HaloTicketBatch',
@@ -204,6 +212,7 @@
         'Remove-HaloUser',
         'Restore-HaloTicket',
         'Set-HaloAction',
+        'Set-HaloActionBatch',
         'Set-HaloAgent',
         'Set-HaloAppointment',
         'Set-HaloAsset',
@@ -215,6 +224,7 @@
         'Set-HaloContract',
         'Set-HaloCRMNote',
         'Set-HaloCustomButton',
+        'Set-HaloDashboard',
         'Set-HaloFAQList',
         'Set-HaloInvoice',
         'Set-HaloItem',
@@ -225,16 +235,22 @@
         'Set-HaloRecurringInvoice',
         'Set-HaloRecurringTemplate',
         'Set-HaloReport',
+        'Set-HaloSalesOrder',
         'Set-HaloSite',
         'Set-HaloSoftwareLicence',
         'Set-HaloStatus',
         'Set-HaloSupplier',
         'Set-HaloTeam',
         'Set-HaloTicket',
-        'Set-HaloTicketRules',
+        'Set-HaloTicketBatch',
         'Set-HaloTicketType',
+        'Set-HaloTicketRules',
         'Set-HaloUser',
-        'Set-HaloWorkday'
+        'Set-HaloWorkday',
+        'New-HaloTab', 
+        'Get-HaloTabs',
+        'Get-HaloOutcome',
+        'New-HaloOutcome'
     )
 
 
@@ -295,3 +311,17 @@
     # DefaultCommandPrefix = ''
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
