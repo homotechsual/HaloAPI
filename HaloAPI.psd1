@@ -209,7 +209,7 @@
         'Remove-HaloInvoice',
         'Remove-HaloItem',
         'Remove-HaloKBArticle',
-        'Remove-HaloOutcome'.
+        'Remove-HaloOutcome',
         'Remove-HaloQuote',
         'Remove-HaloReport',
         'Remove-HaloSalesOrder',
