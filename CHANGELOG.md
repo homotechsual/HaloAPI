@@ -1,8 +1,38 @@
 # Changelog
 
+If you contributed one of these and there's no credit in the line PR to add it or let me know!
+
+## 2024-07-04 - Version 1.21.0
+
+* Fix `Remove-HaloActionBatch`, `Remove-HaloTicketBatch`, `Remove-HaloAgentBatch` and `Remove-HaloClientBatch`.
+* Add dashboard commandlets (by Robbie @ Renada)
+* Fix multiple unexposed commandlets.
+
+## 2024-01-12 - Version 1.20.0
+
+* Fix comment-based-help in QBO commandlet.
+* Fix comment-based-help in Suppliers commandlet.
+* Revert change to command name processing made in 1.18.0.
+
+## 2024-01-12 - Version 1.19.0
+
+* Expose missing commandlets for QBO, SQL and Suppliers.
+* Add `Remove-HaloAppointment`.
+* Add `Remove-HaloAsset`.
+* Add `Remove-HaloSupplier`.
+* Expand parameters for `Get-HaloAsset` to match updated API spec.
+
+## 2024-01-04 - Version 1.18.0
+
+* Add `PaymentStatuses` filter parameter to `Get-HaloInvoice`.
+* Minor internal refactor of how the command name is extracted.
+
 ## 2023-12-19 - Version 1.17.0
 
 * Add `-AsBase64` parameter to `Get-HaloAttachment` to allow fetching single attachments as base64 encoded strings.
+* Add endpoints for QuickBooks Online. (By Mendy @ Rising Tide)
+* Add suppliers commandlets. (By Mendy @ Rising Tide)
+* Add `Invoke-HaloSQL` (By Mendy @ Rising Tide)
 
 ## 2023-11-17 - Version 1.16.0
 
