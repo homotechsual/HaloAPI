@@ -204,6 +204,7 @@
         'Remove-HaloUser',
         'Restore-HaloTicket',
         'Set-HaloAction',
+        'Set-HaloActionBatch',
         'Set-HaloAgent',
         'Set-HaloAppointment',
         'Set-HaloAsset',
