@@ -2,6 +2,10 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2024-07-04 - Version 1.21.1
+
+* Expose `Set-HaloTicketBatch`.
+
 ## 2024-07-04 - Version 1.21.0
 
 * Fix `Remove-HaloActionBatch`, `Remove-HaloTicketBatch`, `Remove-HaloAgentBatch` and `Remove-HaloClientBatch`.
