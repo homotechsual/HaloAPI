@@ -43,7 +43,10 @@ function Get-HaloSoftwareLicence {
         [switch]$OrderDesc,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = 'Single' )]
-        [switch]$IncludeDetails
+        [switch]$IncludeDetails,
+        # Include inactive Subscriptions.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$IncludeInactive
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.MyCommand.Name
@@ -58,27 +61,43 @@ function Get-HaloSoftwareLicence {
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
             $Resource = "api/SoftwareLicence/$($LicenceID)"
             $RequestParams = @{
-                Method = 'GET'
-                Resource = $Resource
+                Method          = 'GET'
+                Resource        = $Resource
                 AutoPaginateOff = $True
-                QSCollection = $QSCollection
-                ResourceType = 'licences'
+                QSCollection    = $QSCollection
+                ResourceType    = 'licences'
             }
-        } else {
+        }
+        elseif ($IncludeInactive) {
+            Write-Verbose 'Running in multi-item mode with inactive items included.'
+            $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
+            $Resource = 'api/SoftwareLicence'
+            $RequestParams = @{
+                Method          = 'GET'
+                Resource        = $Resource
+                AutoPaginateOff = $Paginate
+                QSCollection    = $QSCollection
+                ResourceType    = 'licences'
+                includeinactive = $True
+            }
+            
+        }
+        else {
             Write-Verbose 'Running in multi-item mode.'
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
             $Resource = 'api/SoftwareLicence'
             $RequestParams = @{
-                Method = 'GET'
-                Resource = $Resource
+                Method          = 'GET'
+                Resource        = $Resource
                 AutoPaginateOff = $Paginate
-                QSCollection = $QSCollection
-                ResourceType = 'licences'
+                QSCollection    = $QSCollection
+                ResourceType    = 'licences'
             }
         }
         $LicenceResults = New-HaloGETRequest @RequestParams
         Return $LicenceResults
-    } catch {
+    }
+    catch {
         New-HaloError -ErrorRecord $_
     }
 }
