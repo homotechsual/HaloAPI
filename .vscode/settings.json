@@ -1,7 +1,4 @@
 {
-    "cSpell.words": [
-        "authinfo",
-        "PWSH",
-        "Testand"
-    ]
+  "cSpell.words": ["authinfo", "PWSH", "Testand"],
+  "prettier.enable": false
 }
