@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.21.1'
+    ModuleVersion = '1.21.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -296,7 +296,7 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Release 1.21.1'
+            ReleaseNotes = 'Release 1.21.2'
 
             # Prerelease string of this module
             # Prerelease = 'Beta1'
