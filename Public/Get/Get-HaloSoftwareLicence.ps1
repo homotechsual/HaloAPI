@@ -43,7 +43,10 @@ function Get-HaloSoftwareLicence {
         [switch]$OrderDesc,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = 'Single' )]
-        [switch]$IncludeDetails
+        [switch]$IncludeDetails,
+        # Include inactive software licenses / subscriptions.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$IncludeInactive
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.MyCommand.Name
