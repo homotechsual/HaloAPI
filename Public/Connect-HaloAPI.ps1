@@ -76,13 +76,18 @@ function Connect-HaloAPI {
             Mandatory = $False
         )]
         [String]$Identity,
-
         # The maximum number of times to retry requests before giving up.
         [Parameter(
             ParameterSetName = 'Client Credentials',
             Mandatory = $False
         )]
-        [Int]$MaxRetries = 10
+        [Int]$MaxRetries = 10,
+        # Don't return a boolean to confirm the connection status.
+        [Parameter(
+            ParameterSetName = 'Client Credentials',
+            Mandatory = $False
+        )]
+        [Switch]$NoConfirm
     )
     if ($UseKeyVault) {
         # If the Identity parameter is specified, use it to connect.
@@ -250,6 +255,9 @@ function Connect-HaloAPI {
             New-HaloError -ErrorRecord $_
         }
     } while ((-not $Authenticated) -and ($AuthRetries -lt 10))
+    if (!$NoConfirm) {
+        return $Authenticated
+    }
     if ($AuthRetries -gt 1) {
         New-HaloError -ModuleMessage ('Retried auth request {0} times, request unsuccessful.' -f $Retries)
     }
