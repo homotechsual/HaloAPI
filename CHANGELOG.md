@@ -8,6 +8,8 @@ If you contributed one of these and there's no credit in the line PR to add it o
 * Add create, read, update and delete commandlets for View Filters.
 * Add create, read, update and delete commandlets for View List Groups.
 * Add create, read, update and delete commandlets for View Lists.
+* Add create, read, update and delete commandlets for Change Approval Boards.
+* Connect-HaloAPI now returns a boolean value representing the connection state.
 
 ## 2024-07-05 - Version 1.21.2
 
