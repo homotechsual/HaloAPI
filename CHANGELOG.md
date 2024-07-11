@@ -2,6 +2,15 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2024-07-11 - Version 1.22.0
+
+* Add create, read, update and delete commandlets for View Columns.
+* Add create, read, update and delete commandlets for View Filters.
+* Add create, read, update and delete commandlets for View List Groups.
+* Add create, read, update and delete commandlets for View Lists.
+* Add create, read, update and delete commandlets for Change Approval Boards.
+* Connect-HaloAPI now returns a boolean value representing the connection state.
+
 ## 2024-07-05 - Version 1.21.2
 
 * Add `-IncludeInactive` parameter to `Get-HaloSoftwareLicenses` (by @jsanzdev)
