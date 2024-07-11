@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.21.2'
+    ModuleVersion = '1.22.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -118,6 +118,10 @@
         'Get-HaloTicketType',
         'Get-HaloTimesheet',
         'Get-HaloUser',
+        'Get-HaloViewColumn',
+        'Get-HaloViewFilter',
+        'Get-HaloViewListGroup',
+        'Get-HaloViewList',
         'Get-HaloWorkday',
         'Get-HaloWorkflow',
         'Get-HaloWorkflows',
@@ -186,6 +190,10 @@
         'New-HaloTicketTypeBatch',
         'New-HaloUser',
         'New-HaloUserBatch',
+        'New-HaloViewColumn',
+        'New-HaloViewFilter',
+        'New-HaloViewListGroup',
+        'New-HaloViewList',
         'New-HaloWorkday',
         'New-HaloWorkflow',
         'New-HaloWorkflowBatch',
@@ -221,6 +229,10 @@
         'Remove-HaloTicketBatch',
         'Remove-HaloTicketRules',
         'Remove-HaloUser',
+        'Remove-HaloViewColumn',
+        'Remove-HaloViewFilter',
+        'Remove-HaloViewListGroup',
+        'Remove-HaloViewList',
         'Restore-HaloTicket',
         'Set-HaloAction',
         'Set-HaloActionBatch',
@@ -257,6 +269,10 @@
         'Set-HaloTicketRules',
         'Set-HaloTicketType',
         'Set-HaloUser',
+        'Set-HaloViewColumn',
+        'Set-HaloViewFilter',
+        'Set-HaloViewListGroup',
+        'Set-HaloViewList',
         'Set-HaloWorkday'
     )
 
@@ -296,7 +312,7 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Release 1.21.2'
+            ReleaseNotes = 'https://github.com/homotechsual/HaloAPI/releases/tag/1.22.0'
 
             # Prerelease string of this module
             # Prerelease = 'Beta1'
