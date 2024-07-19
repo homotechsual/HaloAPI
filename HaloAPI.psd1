@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.19.0'
+    ModuleVersion = '1.22.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -82,11 +82,13 @@
         'Get-HaloBillingTemplate',
         'Get-HaloCategory',
         'Get-HaloClient',
+        'Get-HaloClientBillingPlans',
         'Get-HaloContract',
         'Get-HaloCRMNote',
         'Get-HaloCustomButton',
         'Get-HaloCustomField',
         'Get-HaloCustomTable',
+        'Get-HaloDashboard',
         'Get-HaloFAQList',
         'Get-HaloField',
         'Get-HaloInvoice',
@@ -95,6 +97,7 @@
         'Get-HaloLookup',
         'Get-HaloObjectTemplate',
         'Get-HaloOpportunity',
+        'Get-HaloOutcome',
         'Get-HaloProject',
         'Get-HaloPurchaseOrder',
         'Get-HaloQuote',
@@ -108,12 +111,17 @@
         'Get-HaloStatus',
         'Get-HaloSupplier',
         'Get-HaloSuppliersFromQBO',
+        'Get-HaloTabs',
         'Get-HaloTeam',
         'Get-HaloTicket',
         'Get-HaloTicketRules',
         'Get-HaloTicketType',
         'Get-HaloTimesheet',
         'Get-HaloUser',
+        'Get-HaloViewColumn',
+        'Get-HaloViewFilter',
+        'Get-HaloViewListGroup',
+        'Get-HaloViewList',
         'Get-HaloWorkday',
         'Get-HaloWorkflow',
         'Get-HaloWorkflows',
@@ -140,8 +148,11 @@
         'New-HaloCRMNote',
         'New-HaloCustomButton',
         'New-HaloCustomField',
+        'New-HaloCustomFieldBatch',
+        'New-HaloCustomTable',
         'New-HaloCustomTable',
         'New-HaloCustomFieldBatch',
+        'New-HaloDashboard',
         'New-HaloFAQList',
         'New-HaloInvoice',
         'New-HaloInvoiceBatch',
@@ -151,6 +162,7 @@
         'New-HaloKBArticleBatch',
         'New-HaloOpportunity',
         'New-HaloOpportunityBatch',
+        'New-HaloOutcome'
         'New-HaloProject',
         'New-HaloProjectBatch',
         'New-HaloQuote',
@@ -168,6 +180,8 @@
         'New-HaloStatus',
         'New-HaloSupplier',
         'New-HaloSupplierBatch',
+        'New-HaloTab', 
+        'New-HaloTab',
         'New-HaloTeam',
         'New-HaloTeamBatch',
         'New-HaloTicket',
@@ -176,6 +190,10 @@
         'New-HaloTicketTypeBatch',
         'New-HaloUser',
         'New-HaloUserBatch',
+        'New-HaloViewColumn',
+        'New-HaloViewFilter',
+        'New-HaloViewListGroup',
+        'New-HaloViewList',
         'New-HaloWorkday',
         'New-HaloWorkflow',
         'New-HaloWorkflowBatch',
@@ -183,18 +201,38 @@
         'Remove-HaloActionBatch',
         'Remove-HaloAgent',
         'Remove-HaloAgentBatch',
+        'Remove-HaloAppointment',
+        'Remove-HaloAsset',
         'Remove-HaloAssetType',
         'Remove-HaloCategory',
         'Remove-HaloClient',
         'Remove-HaloClientBatch',
         'Remove-HaloContract',
         'Remove-HaloCRMNote',
+        'Remove-HaloDashboard',
         'Remove-HaloItem',
         'Remove-HaloKBArticle',
+        'Remove-HaloSupplier',
+        'Remove-HaloReport',
+        'Remove-HaloInvoice',
+        'Remove-HaloItem',
+        'Remove-HaloKBArticle',
+        'Remove-HaloOutcome',
+        'Remove-HaloQuote',
+        'Remove-HaloReport',
+        'Remove-HaloSalesOrder',
+        'Remove-HaloService',
+        'Remove-HaloSite',
+        'Remove-HaloStatus',
+        'Remove-HaloSupplier',
         'Remove-HaloTicket',
         'Remove-HaloTicketBatch',
         'Remove-HaloTicketRules',
         'Remove-HaloUser',
+        'Remove-HaloViewColumn',
+        'Remove-HaloViewFilter',
+        'Remove-HaloViewListGroup',
+        'Remove-HaloViewList',
         'Restore-HaloTicket',
         'Set-HaloAction',
         'Set-HaloActionBatch',
@@ -209,6 +247,7 @@
         'Set-HaloContract',
         'Set-HaloCRMNote',
         'Set-HaloCustomButton',
+        'Set-HaloDashboard',
         'Set-HaloFAQList',
         'Set-HaloInvoice',
         'Set-HaloItem',
@@ -219,22 +258,23 @@
         'Set-HaloRecurringInvoice',
         'Set-HaloRecurringTemplate',
         'Set-HaloReport',
+        'Set-HaloSalesOrder',
         'Set-HaloSite',
         'Set-HaloSoftwareLicence',
         'Set-HaloStatus',
         'Set-HaloSupplier',
         'Set-HaloTeam',
         'Set-HaloTicket',
-        'Set-HaloTicketType',
+        'Set-HaloTicketBatch',
         'Set-HaloTicketRules',
+        'Set-HaloTicketType',
         'Set-HaloUser',
-        'Set-HaloWorkday',
-        'New-HaloTab', 
-        'Get-HaloTabs',
-        'Get-HaloOutcome',
-        'New-HaloOutcome'
+        'Set-HaloViewColumn',
+        'Set-HaloViewFilter',
+        'Set-HaloViewListGroup',
+        'Set-HaloViewList',
+        'Set-HaloWorkday'
     )
-
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport = @()
@@ -272,7 +312,7 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Add missing parameter to Get-HaloInvoice'
+            ReleaseNotes = 'https://github.com/homotechsual/HaloAPI/releases/tag/1.22.0'
 
             # Prerelease string of this module
             # Prerelease = 'Beta1'

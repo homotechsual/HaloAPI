@@ -43,10 +43,13 @@ function Get-HaloSoftwareLicence {
         [switch]$OrderDesc,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = 'Single' )]
-        [switch]$IncludeDetails
+        [switch]$IncludeDetails,
+        # Include inactive software licenses / subscriptions.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$IncludeInactive
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.InvocationName
+    $CommandName = $MyInvocation.MyCommand.Name
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'LicenceID=' parameter by removing it from the set parameters.
     if ($LicenceID) {

@@ -43,7 +43,7 @@ function Get-HaloCustomField {
         [switch]$IncludeDetails
     )
     Invoke-HaloPreFlightCheck
-    $CommandName = $MyInvocation.InvocationName
+    $CommandName = $MyInvocation.MyCommand.Name
     $Parameters = (Get-Command -Name $CommandName).Parameters
     # Workaround to prevent the query string processor from adding a 'CustomFieldID=' parameter by removing it from the set parameters.
     if ($CustomFieldID) {

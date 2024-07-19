@@ -12,7 +12,7 @@ Function Remove-HaloClientBatch {
     Param (
         # Array of objects containing properties and values used to remove one or more clients. This should be an array of client ids.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Clients,
+        [Int64[]]$Clients,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.
@@ -21,7 +21,7 @@ Function Remove-HaloClientBatch {
     Invoke-HaloPreFlightCheck
     try {
         if ($PSCmdlet.ShouldProcess('Clients', 'Delete')) {
-            if ($Actions -is [Array]) {
+            if ($Clients -is [Array]) {
                 $BatchParams = @{
                     BatchInput = $Clients
                     EntityType = 'Client'
