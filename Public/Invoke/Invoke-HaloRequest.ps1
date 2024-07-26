@@ -46,6 +46,10 @@ function Invoke-HaloRequest {
     $Retries = 0
     $BaseDelay = 5 # Base delay of 5 seconds
     $MaxDelay = 60 # Maximum delay of 60 seconds
+    # Check if $WebRequestParams contains a full URI, if not, append the base URL
+    if (-not ([System.Uri]$WebRequestParams.Uri).IsAbsoluteUri) {
+        $WebRequestParams.Uri = $Script:HAPIConnectionInformation.URL + $WebRequestParams.Uri
+    }
     do {
         $Retries++
         Write-Verbose "Attempt $Retries of 10"
