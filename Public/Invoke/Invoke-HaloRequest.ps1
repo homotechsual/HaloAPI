@@ -47,7 +47,7 @@ function Invoke-HaloRequest {
     $BaseDelay = 5 # Base delay of 5 seconds
     $MaxDelay = 60 # Maximum delay of 60 seconds
     # Check if $WebRequestParams contains a full URI, if not, append the base URL
-    if ($WebRequestParams.Uri -notlike 'http*') {
+    if (-not ([System.Uri]$WebRequestParams.Uri).IsAbsoluteUri) {
         $WebRequestParams.Uri = $Script:HAPIConnectionInformation.URL + $WebRequestParams.Uri
     }
     do {
