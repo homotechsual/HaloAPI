@@ -72,6 +72,7 @@
 
     FunctionsToExport = @(
     	'Get-HaloNullObject',
+		'Get-HaloControl',
 		'Get-TokenExpiry',
 		'Invoke-HaloBatchProcessor',
 		'Invoke-HaloPreFlightCheck',
