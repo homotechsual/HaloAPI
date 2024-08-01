@@ -15,85 +15,169 @@ function Get-HaloRecurringInvoice {
         # Invoice ID
         [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$RecurringInvoiceID,
+        # The advanced search query to use.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('advanced_search')]
+        [string]$AdvancedSearch,
+        # Filter by an asset id.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('asset_id')]
+        [int32]$AssetId,
+        # Filter for recurring invoices awaiting approval.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('awaiting_approval')]
+        [switch]$AwaitingApproval,
+        # Filter by billing date.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('billing_date')]
+        [datetime]$BillingDate,
+        # Filter by billing category ids.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('billingcategory_ids')]
+        [Int32[]]$BillingCategoryIds,
+        # Filter by the specified client id.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('client_id')]
+        [int32]$ClientId,
+        # Filter by the specified client ids.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('client_ids')]
+        [int32[]]$ClientIds,
+        # Filter by contract id.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('contract_id')]
+        [int32]$ContractId,
         # The number of invoices to return if not using pagination.
         [Parameter( ParameterSetName = 'Multi' )]
         [int32]$Count,
-        # Return contracts matching the search term in the results.
+        # Return recurring invoice ids only.
         [Parameter( ParameterSetName = 'Multi' )]
-        [string]$Search,
-        # Paginate results
+        [switch]$IdOnly,
+        # Include credit notes
         [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('pageinate')]
-        [switch]$Paginate,
-        # Number of results per page.
+        [switch]$IncludeCredits,
+        # Include invoices
         [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('page_size')]
-        [int32]$PageSize,
+        [switch]$IncludeInvoices,
+        # Include invoice lines
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$IncludeLines,
+        # Include PO invoices.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$IncludePOInvoices,
+        # Include the field `invoicedateend` in the results.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('invoicedateend')]
+        [switch]$IncludeInvoiceDateEnd,
+        # Include the field `invoicedatestart` in the results.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('invoicedatestart')]
+        [switch]$IncludeInvoiceDateStart,
+        # Filter by your approvals.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('my_approvals')]
+        [switch]$MyApprovals,
+        # Filter for unposted invoices only.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$NotPostedOnly,
+        # First field to order the results by.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [string]$Order,
+        # Order results for the first field in descending order (respects the field choice in '-OrderBy')
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$OrderDesc,
+        # Second field to order the results by.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [string]$Order2,
+        # Order results for the second field in descending order (respects the field choice in '-OrderBy2')
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$OrderDesc2,
+        # Third field to order the results by.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [string]$Order3,
+        # Order results for the third field in descending order (respects the field choice in '-OrderBy3')
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$OrderDesc3,
+        # Fourth field to order the results by.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [string]$Order4,
+        # Order results for the fourth field in descending order (respects the field choice in '-OrderBy4')
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$OrderDesc4,
+        # Fifth field to order the results by.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [string]$Order5,
+        # Order results for the fifth field in descending order (respects the field choice in '-OrderBy5')
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$OrderDesc5,
         # Which page to return.
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('page_no')]
         [int32]$PageNo,
-        # First field to order the results by.
+        # Number of results per page.
         [Parameter( ParameterSetName = 'Multi' )]
-        [string]$OrderBy,
-        # Order results for the first field in descending order (respects the field choice in '-OrderBy')
+        [Alias('page_size')]
+        [int32]$PageSize,
+        # Paginate results
         [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$OrderByDesc,
-        # Second field to order the results by.
+        [Alias('pageinate')]
+        [switch]$Paginate,
+        # Filter by the specified payment statuses.
         [Parameter( ParameterSetName = 'Multi' )]
-        [string]$OrderBy2,
-        # Order results for the second field in descending order (respects the field choice in '-OrderBy2')
+        [int32[]]$PaymentStatuses,
+        # Include posted invoices only.
         [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$OrderByDesc2,
-        # Third field to order the results by.
+        [switch]$PostedOnly,
+        # Filter by the specified purchase order id.
         [Parameter( ParameterSetName = 'Multi' )]
-        [string]$OrderBy3,
-        # Order results for the third field in descending order (respects the field choice in '-OrderBy3')
+        [Alias('purchaseorder_id')]
+        [int32]$PurchaseOrderId,
+        # Filter by the specified quote statuses.
         [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$OrderByDesc3,
-        # Fourth field to order the results by.
+        [Alias('quote_status')]
+        [string[]]$QuoteStatuses,
+        # Filter by whether the recurring invoice is marked 'ready for invoicing'.
         [Parameter( ParameterSetName = 'Multi' )]
-        [string]$OrderBy4,
-        # Order results for the fourth field in descending order (respects the field choice in '-OrderBy4')
+        [Alias('ready_for_invoicing')]
+        [switch]$ReadyForInvoicing,
+        # Filter for invoices marked 'review required'.
         [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$OrderByDesc4,
-        # Fifth field to order the results by.
+        [switch]$ReviewRequired,
+        # Filter by recurring invoice type. Valid values are 'contracts', 'invoices' or 'both'.
         [Parameter( ParameterSetName = 'Multi' )]
-        [string]$OrderBy5,
-        # Order results for the fifth field in descending order (respects the field choice in '-OrderBy5')
+        [Alias('rinvoice_type')]
+        [ValidateSet('contracts', 'invoices', 'both')]
+        [string]$RecurringInvoiceType,
+        # Filter by contract sales order id.
         [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$OrderByDesc5,
-        # Include inactive records
+        [Alias('salesorder_id')]
+        [int32]$SalesOrderId,
+        # Filter using the specified search query.
         [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$includeinactive,
-        # Include invoices
+        [string]$Search,
+        # Filter by sent status.
         [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$includeinvoices,
-        # Include credit notes
-        [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$includecredits,
-        # Include invoice lines
-        [Parameter( ParameterSetName = 'Multi' )]
-        [switch]$includeLines,
-        # Include invoice Details
-        [Parameter( ParameterSetName = 'Single' )]
-        [switch]$includeDetails,
-        # Filter by the specified ticket ID.
-        [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('ticket_id')]
-        [int32]$TicketID,
-        # Filter by the specified client ID.
-        [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('client_id')]
-        [int32]$ClientID,
-        # Filter by the specified site ID.
+        [Alias('sent_status')]
+        [int]$SentStatus,
+        # Filter by the specified site id.
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('site_id')]
-        [int32]$SiteID,
+        [int32]$SiteId,
+        # Filter by invoices requiring stripe payment.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$StripeAutoPaymentRequired,
+        # Filter by the specified ticket id.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('ticket_id')]
+        [int32]$TicketId,
+        # Filter by the specified top level id.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('toplevel_id')]
+        [int32]$TopLevelId,
         # Filter by the specified user ID.
         [Parameter( ParameterSetName = 'Multi' )]
         [Alias('user_id')]
-        [int32]$UserID,
+        [int32]$UserId,
         # Parameter to return the complete objects.
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$FullObjects
