@@ -2,6 +2,10 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2024-08-01 - Version 1.22.1
+
+* Fix multiple incorrect parameters and missing parameters for `Get-HaloRecurringInvoice`.
+
 ## 2024-07-11 - Version 1.22.0
 
 * Add create, read, update and delete commandlets for View Columns.
