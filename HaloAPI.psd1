@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.22.1'
+    ModuleVersion = '1.23.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -72,6 +72,7 @@
 
     FunctionsToExport = @(
         'Connect-HaloAPI',
+        'Invoke-HaloRequest',
         'Get-HaloAction',
         'Get-HaloAgent',
         'Get-HaloAppointment',
@@ -84,6 +85,7 @@
         'Get-HaloClient',
         'Get-HaloClientBillingPlans',
         'Get-HaloContract',
+        'Get-HaloControl',
         'Get-HaloCRMNote',
         'Get-HaloCustomButton',
         'Get-HaloCustomField',
@@ -110,7 +112,6 @@
         'Get-HaloSoftwareLicence',
         'Get-HaloStatus',
         'Get-HaloSupplier',
-        'Get-HaloSuppliersFromQBO',
         'Get-HaloTabs',
         'Get-HaloTeam',
         'Get-HaloTicket',
@@ -118,15 +119,9 @@
         'Get-HaloTicketType',
         'Get-HaloTimesheet',
         'Get-HaloUser',
-        'Get-HaloViewColumn',
-        'Get-HaloViewFilter',
-        'Get-HaloViewListGroup',
-        'Get-HaloViewList',
         'Get-HaloWorkday',
         'Get-HaloWorkflow',
-        'Get-HaloWorkflows',
-        'Import-HaloSuppliersFromAccountingPackage',
-        'Invoke-HaloRequest',
+        'Get-HaloSuppliersFromQBO',
         'Invoke-HaloSQL',
         'New-HaloAction',
         'New-HaloActionBatch',
@@ -150,8 +145,6 @@
         'New-HaloCustomField',
         'New-HaloCustomFieldBatch',
         'New-HaloCustomTable',
-        'New-HaloCustomTable',
-        'New-HaloCustomFieldBatch',
         'New-HaloDashboard',
         'New-HaloFAQList',
         'New-HaloInvoice',
@@ -162,7 +155,7 @@
         'New-HaloKBArticleBatch',
         'New-HaloOpportunity',
         'New-HaloOpportunityBatch',
-        'New-HaloOutcome'
+        'New-HaloOutcome',
         'New-HaloProject',
         'New-HaloProjectBatch',
         'New-HaloQuote',
@@ -171,6 +164,7 @@
         'New-HaloRecurringInvoiceBatch',
         'New-HaloReport',
         'New-HaloReportBatch',
+        'New-HaloScheduleTemplate',
         'New-HaloService',
         'New-HaloServiceBatch',
         'New-HaloSite',
@@ -180,7 +174,6 @@
         'New-HaloStatus',
         'New-HaloSupplier',
         'New-HaloSupplierBatch',
-        'New-HaloTab', 
         'New-HaloTab',
         'New-HaloTeam',
         'New-HaloTeamBatch',
@@ -209,11 +202,8 @@
         'Remove-HaloClientBatch',
         'Remove-HaloContract',
         'Remove-HaloCRMNote',
+        'Renmove-HaloCustomField',
         'Remove-HaloDashboard',
-        'Remove-HaloItem',
-        'Remove-HaloKBArticle',
-        'Remove-HaloSupplier',
-        'Remove-HaloReport',
         'Remove-HaloInvoice',
         'Remove-HaloItem',
         'Remove-HaloKBArticle',
@@ -274,7 +264,9 @@
         'Set-HaloViewListGroup',
         'Set-HaloViewList',
         'Set-HaloWorkday'
+
     )
+
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport = @()
