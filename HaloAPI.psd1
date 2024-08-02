@@ -207,6 +207,7 @@
 		'Remove-HaloClientBatch',
 		'Remove-HaloContract',
 		'Remove-HaloCRMNote',
+		'Remove-HaloCustomField',
 		'Remove-HaloDashboard',
 		'Remove-HaloInvoice',
 		'Remove-HaloItem',
