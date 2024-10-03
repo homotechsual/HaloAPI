@@ -42,7 +42,7 @@ Describe 'CustomTable' {
             $CustomTableResult.id | Should -Be 1005
         }
         It 'fails to get a non existent custom table' {
-            $CustomTableId = 999
+            $CustomTableId = 50
             { Get-HaloCustomTable -CustomTableId $CustomTableId } | Should -Throw -ExceptionType 'System.Exception' -ExpectedMessage 'Response status code does not indicate success: 404 (Not Found).'
         }
     }
