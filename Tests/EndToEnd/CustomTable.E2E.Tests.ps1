@@ -37,9 +37,9 @@ Describe 'CustomTable' {
     }
     Context 'Get Single' {
         It 'succeeds to get a specific custom table.' {
-            $CustomTableResult = Get-HaloCustomTable -CustomTableId 1005
+            $CustomTableResult = Get-HaloCustomTable -CustomTableId $CurrentCustomTableId
             $CustomTableResult.Count | Should -Be 1
-            $CustomTableResult.id | Should -Be 1005
+            $CustomTableResult.id | Should -Be $CurrentCustomTableId
         }
         It 'fails to get a non existent custom table' {
             $CustomTableId = 50
