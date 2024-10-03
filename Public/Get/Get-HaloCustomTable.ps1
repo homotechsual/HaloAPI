@@ -25,7 +25,7 @@ function Get-HaloCustomTable {
     }
     $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
     try {
-        if ($AgentID) {
+        if ($CustomTableId) {
             Write-Verbose "Running in single-custom table mode because '-CustomTableId' was provided."
             $Resource = "api/customtable/$($CustomTableId)"
         } else {
