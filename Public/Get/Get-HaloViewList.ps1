@@ -62,7 +62,7 @@ function Get-HaloViewList {
     if ($ViewListId) {
         $Parameters.Remove('ViewListId') | Out-Null
     }
-    $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
+    $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters    
     try {
         if ($ViewListId) {
             Write-Verbose "Running in single-viewlist mode because '-ViewListId' was provided."
