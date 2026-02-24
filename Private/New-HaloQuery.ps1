@@ -107,6 +107,24 @@ function New-HaloQuery {
                 }
             }
         }
+        if (($Parameter.ParameterType.Name -eq 'DateTime')) {
+            Write-Debug "Found DateTime param $($ParameterVariable.Name)"
+            if ($null -eq $ParameterVariable.Value) {
+                Write-Debug "Skipping unset param $($ParameterVariable.Name)"
+                Continue
+            } else {
+                if ($Parameter.Aliases) {
+                    # Use the first alias as the query string name.
+                    $Query = ([String]$Parameter.Aliases[0]).ToLower()
+                } else {
+                    # If no aliases then use the name in lowercase.
+                    $Query = ([String]$ParameterVariable.Name).ToLower()
+                }
+                $Value = $ParameterVariable.Value.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+                $QSCollection.Add($Query, $Value)
+                Write-Debug "Adding parameter $($Query) with value $($Value)"
+            }
+        }
     }
     if ('count' -in $QSCollection.Keys) {
         Write-Verbose "Halo recommend use of pagination with the '-Paginate' parameter instead of '-Count'."
