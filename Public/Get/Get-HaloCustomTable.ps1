@@ -14,7 +14,11 @@ function Get-HaloCustomTable {
     Param(
         # Custom Table ID.
         [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
-        [int64]$CustomTableId
+        [int64]$CustomTableId,
+
+        # Include extra objects in the result.
+        [Parameter( ParameterSetName = 'Single' )]
+        [Switch]$IncludeDetails
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.MyCommand.Name
