@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint with PSScriptAnalyzer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Bootstrap environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $results = & "$env:GITHUB_WORKSPACE\DevOps\Quality\run-pssa.ps1"
+
+          if ($results) {
+            $results | Format-Table -AutoSize
+            throw "PSScriptAnalyzer found $($results.Count) issue(s)."
+          }
+
+          Write-Host 'PSScriptAnalyzer passed.' -ForegroundColor Green
+
+  cross-platform-smoke:
+    name: Cross-Platform Smoke Tests
+    runs-on: ${{ matrix.os }}
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Bootstrap environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+
+      - name: Run metadata smoke tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Meta -Verbosity Normal
+
+  test:
+    name: Run Pester Tests
+    runs-on: windows-latest
+    needs:
+      - lint
+      - cross-platform-smoke
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Bootstrap environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+
+      - name: Run metadata tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Meta -Verbosity Detailed -CodeCoverage
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pester-results
+          path: .artifacts/TestResults.meta.xml
+
+      - name: Publish test results
+        if: always()
+        uses: dorny/test-reporter@v3
+        with:
+          name: Pester Tests (Meta)
+          path: .artifacts/TestResults.meta.xml
+          reporter: java-junit
+
+      - name: Upload code coverage results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-results
+          path: .artifacts/CodeCoverage.meta.xml
