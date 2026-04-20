@@ -1,5 +1,8 @@
 name: Publish Documentation
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   workflow_run:
     workflows: ['Build and Publish Module']
@@ -33,7 +36,7 @@ jobs:
       )
     steps:
       - name: Checkout HaloAPI repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 

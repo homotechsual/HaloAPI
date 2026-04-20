@@ -1,5 +1,8 @@
 name: Sync Development Documentation
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   workflow_run:
     workflows: ['CI']
@@ -20,7 +23,7 @@ jobs:
       github.event.workflow_run.head_branch == 'develop'
     steps:
       - name: Checkout HaloAPI repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
 

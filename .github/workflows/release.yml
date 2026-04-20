@@ -1,5 +1,8 @@
 name: Build and Publish Module
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   push:
     tags:
@@ -16,7 +19,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -104,7 +107,7 @@ jobs:
           Compress-Archive -Path (Join-Path -Path $packageRoot -ChildPath '*') -DestinationPath $archivePath
 
       - name: Upload release artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: HaloAPI-release-package
           path: |
@@ -112,7 +115,7 @@ jobs:
             HaloAPI-${{ github.ref_name }}.zip
 
       - name: Upload documentation artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: module-docs
           path: docs-artifact/
@@ -129,10 +132,10 @@ jobs:
       TF_BUILD: true
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download release artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: HaloAPI-release-package
           path: ${{ github.workspace }}
