@@ -1,33 +1,57 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"editor.tabSize": 4,
-		"editor.formatOnSave": true,
-		"editor.formatOnSaveMode": "modificationsIfAvailable",
-		"azure-pipelines.customSchemaFile": ".\\DevOps\\azurepipelines.schema.json",
-		"powershell.pester.useLegacyCodeLens": false,
-		"powershell.codeFormatting.preset": "OTBS",
-		"powershell.codeFormatting.useConstantStrings": true,
-		"powershell.codeFormatting.alignPropertyValuePairs": false,
-		"powershell.codeFormatting.autoCorrectAliases": true,
-		"powershell.codeFormatting.ignoreOneLineBlock": true,
-		"powershell.codeFormatting.newLineAfterCloseBrace": true,
-		"powershell.codeFormatting.newLineAfterOpenBrace": true,
-		"powershell.codeFormatting.useCorrectCasing": true,
-		"powershell.codeFormatting.whitespaceAfterSeparator": true,
-		"powershell.codeFormatting.trimWhitespaceAroundPipe": false,
-		"powershell.codeFormatting.whitespaceAroundOperator": true,
-		"powershell.codeFormatting.addWhitespaceAroundPipe": true,
-		"powershell.codeFormatting.whitespaceBeforeOpenBrace": true,
-		"powershell.codeFormatting.whitespaceBeforeOpenParen": true,
-		"powershell.codeFormatting.whitespaceBetweenParameters": false,
-		"powershell.codeFormatting.whitespaceInsideBrace": true,
-		"editor.codeActionsOnSave": {
-			"source.fixAll.markdownlint": "explicit"
-		}
-	}
+  "folders": [
+    {
+      "path": ".",
+    },
+    {
+      "path": "../NinjaOne",
+    },
+  ],
+  "settings": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "powershell.pester.useLegacyCodeLens": false,
+    "powershell.codeFormatting.preset": "OTBS",
+    "powershell.codeFormatting.useConstantStrings": true,
+    "powershell.codeFormatting.alignPropertyValuePairs": false,
+    "powershell.codeFormatting.autoCorrectAliases": true,
+    "powershell.codeFormatting.ignoreOneLineBlock": true,
+    "powershell.codeFormatting.newLineAfterCloseBrace": true,
+    "powershell.codeFormatting.newLineAfterOpenBrace": true,
+    "powershell.codeFormatting.useCorrectCasing": true,
+    "powershell.codeFormatting.whitespaceAfterSeparator": true,
+    "powershell.codeFormatting.trimWhitespaceAroundPipe": false,
+    "powershell.codeFormatting.whitespaceAroundOperator": true,
+    "powershell.codeFormatting.addWhitespaceAroundPipe": true,
+    "powershell.codeFormatting.whitespaceBeforeOpenBrace": true,
+    "powershell.codeFormatting.whitespaceBeforeOpenParen": true,
+    "powershell.codeFormatting.whitespaceBetweenParameters": false,
+    "powershell.codeFormatting.whitespaceInsideBrace": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.markdownlint": "explicit",
+    },
+    "chat.tools.terminal.autoApprove": {
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\run-pssa\\.ps1$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "Invoke-ScriptAnalyzer": true,
+      "Group-Object": true,
+      "ForEach-Object": true,
+      "Get-Member": true,
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\run-pssa\\.ps1 -ErrorAction Continue$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "Test-Path": true,
+      "Get-Command": true,
+      "Get-Help": true,
+      ".\\DevOps\\Quality\\run-pssa.ps1": true,
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -IncludeVSCodeMarker$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+    },
+  },
 }

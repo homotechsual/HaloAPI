@@ -24,7 +24,6 @@ if (-Not(Get-Module -Name 'Install-RequiredModule')) {
     Install-Script -Name 'Install-RequiredModule' -Force -Scope CurrentUser
 }
 Install-RequiredModule -RequiredModulesFile ('{0}\RequiredModules.psd1' -f $PSScriptRoot) -Scope CurrentUser -TrustRegisteredRepositories -Import -Quiet
-Import-Module 'R:\Development\Docusaurus.PowerShell\Output\Alt3.Docusaurus.PowerShell\1.0.34\Alt3.Docusaurus.PowerShell.psd1' -Force
 
 # Use strict mode when building.
 Set-StrictMode -Version Latest
@@ -41,8 +40,26 @@ if ($Push) {
 ## Requires PlatyPS, Pester, PSScriptAnalyzer and Alt3.Docusaurus.PowerShell installed.
 
 if ($UpdateHelp) {
+    if (-not $DocusaurusPath) {
+        throw 'The DocusaurusPath parameter is required when using -UpdateHelp.'
+    }
+
+    $docusaurusModuleImported = $false
+    $bundledDocusaurusModule = 'R:\Development\Docusaurus.PowerShell\Output\Alt3.Docusaurus.PowerShell\1.0.34\Alt3.Docusaurus.PowerShell.psd1'
+    if (Test-Path -Path $bundledDocusaurusModule) {
+        Import-Module $bundledDocusaurusModule -Force
+        $docusaurusModuleImported = $true
+    } elseif (Get-Module -ListAvailable -Name 'Alt3.Docusaurus.PowerShell') {
+        Import-Module 'Alt3.Docusaurus.PowerShell' -Force
+        $docusaurusModuleImported = $true
+    }
+
+    if (-not $docusaurusModuleImported) {
+        throw 'Alt3.Docusaurus.PowerShell is required for -UpdateHelp but could not be loaded from a local path or the module path.'
+    }
+
     $DocsFolderPath = Join-Path -Path $DocusaurusPath -ChildPath 'docs' -AdditionalChildPath $Script:ModuleName
-    if (-Not(Test-Path -Path $DocsFolderPath)) {
+    if (-not(Test-Path -Path $DocsFolderPath)) {
         New-Item -Path $DocsFolderPath -ItemType Directory | Out-Null
     }
     $MarkdownHeader = @'
@@ -171,10 +188,10 @@ This page has been generated from the {0} PowerShell module source. To make chan
                 $CategoryFile.customProps.description = 'This category contains commands for updating data, objects, settings and more. This category will overlap with the Set category.'
             }
         }
-        if (-Not($HasCategoryFile)) {
+        if (-not($HasCategoryFile)) {
             $CategoryFile | ConvertTo-Json | Out-File -FilePath $CategoryFilePath -Force
         } else {
-            if (-Not($ForceUpdateCategoryFiles)) {
+            if (-not($ForceUpdateCategoryFiles)) {
                 Write-Warning -Message ('Category file already exists in "{0}" verb folder. Use the ForceUpdateCategoryFiles switch to overwrite existing category files.' -f $VerbFolder.Name)
             } else {
                 Set-Content -Path $CategoryFilePath -Value ($CategoryFile | ConvertTo-Json) -Force
@@ -237,7 +254,7 @@ if ($UpdateManifest) {
     [System.Version]$Version = $Manifest.Version
 
     if ($ChangeLogVersion -eq $Version) {
-        Throw 'No new version found in CHANGELOG.md'
+        throw 'No new version found in CHANGELOG.md'
     }
 
     Write-Output -InputObject ("Current Module Version: $($Version)")
@@ -246,7 +263,7 @@ if ($UpdateManifest) {
     # Update Manifest file with Release Notes
     $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md"
     $MarkdownObject = [Markdown.MAML.Parser.MarkdownParser]::new()
-    $ReleaseNotes = ((($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) -Match '#{2}.*\d*\.\d*\.\d') -Split ' - ')[1]
+    $ReleaseNotes = ((($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) -match '#{2}.*\d*\.\d*\.\d') -split ' - ')[1]
 
     # Update Module with new version
     Update-ModuleManifest -ModuleVersion $ChangeLogVersion -Path "$($PSScriptRoot)\$ModuleName.psd1" -ReleaseNotes $ReleaseNotes
@@ -254,11 +271,11 @@ if ($UpdateManifest) {
 
 # Publish Module to PowerShell Gallery
 if ($PublishModule -and $Configuration -eq 'Production') {
-    Try {
+    try {
         # Build a splat containing the required details and make sure to Stop for errors which will trigger the catch
         $params = @{
             Path = ("$($PSScriptRoot)\Output\$ModuleName")
-            NuGetApiKey = $ENV:TF_BUILD ? $ENV:PSGalleryAPIKey : (Get-AzKeyVaultSecret -VaultName $ENV:PSGalleryVault -Name $ENV:PSGallerySecret -AsPlainText) # If running in Azure DevOps, use the Environment Variable, otherwise use the Key Vault
+            NuGetApiKey = $ENV:PSGalleryAPIKey ? $ENV:PSGalleryAPIKey : (Get-AzKeyVaultSecret -VaultName $ENV:PSGalleryVault -Name $ENV:PSGallerySecret -AsPlainText)
             ErrorAction = 'Stop'
         }
         $ManifestPath = "$($PSScriptRoot)\$ModuleName.psd1"

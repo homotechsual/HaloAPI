@@ -11,6 +11,7 @@ function Get-HaloNullObject {
     [CmdletBinding()]
     [OutputType([PSCustomObject])]
     param(
+        # The object whose nested properties should be replaced with null values.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$NullObject
     )

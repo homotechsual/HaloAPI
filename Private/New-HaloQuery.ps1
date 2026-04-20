@@ -3,16 +3,21 @@ function New-HaloQuery {
     [OutputType([String], [Hashtable])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     param (
+        # The calling command name whose bound parameters are being converted into a query object.
         [Parameter(
             Mandatory = $True
         )]
         [String]$CommandName,
+        # The command parameter metadata collection to inspect when building the query.
         [Parameter(
             Mandatory = $True
         )]
         [Hashtable]$Parameters,
+        # Indicates that the target request can return multiple results and should enable pagination defaults.
         [Switch]$IsMulti,
+        # Indicates that array values should be joined into comma-separated query values.
         [Switch]$CommaSeparatedArrays,
+        # Returns the query as a string instead of a hashtable.
         [Switch]$AsString
     )
     Write-Verbose "Building parameters for $($CommandName). Use '-Debug' with '-Verbose' to see parameter values as they are built."

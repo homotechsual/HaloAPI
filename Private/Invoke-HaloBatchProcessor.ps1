@@ -11,15 +11,21 @@ function Invoke-HaloBatchProcessor {
     [CmdletBinding()]
     [OutputType([Object[]])]
     param (
+        # The input objects to split into batches and process.
         [Parameter( Mandatory )]
         [Object[]]$BatchInput,
+        # The Halo entity suffix used to build the target command name.
         [Parameter( Mandatory )]
         [String]$EntityType,
+        # The verb to invoke for each batched command.
         [Parameter( Mandatory )]
         [ValidateSet('New', 'Set', 'Remove')]
         [String]$Operation,
+        # Additional command parameters reserved for future batch-processing options.
         [Object]$Parameters,
+        # The number of items to include in each batch.
         [Int32]$Size = 100,
+        # The delay in seconds between batches when more than one batch exists.
         [Int32]$Wait = 30
     )
     $BatchResults = [System.Collections.Concurrent.ConcurrentBag[PSObject]]::New()

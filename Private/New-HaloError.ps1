@@ -4,10 +4,13 @@ function New-HaloError {
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     param (
+        # The source error record to normalize into HaloAPI error output.
         [Parameter( Mandatory, ParameterSetName = 'ErrorRecord' )]
         [errorrecord]$ErrorRecord,
+        # Indicates whether the source error is expected to contain an HTTP response object.
         [Parameter( ParameterSetName = 'ErrorRecord' )]
         [switch]$HasResponse,
+        # A module-generated error message to throw when no error record is available.
         [Parameter( Mandatory, ParameterSetName = 'ModuleMessage' )]
         [string]$ModuleMessage
 

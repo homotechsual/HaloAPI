@@ -5,6 +5,9 @@
         https://github.com/PowerShell/PSScriptAnalyzer/blob/master/Engine/Settings/
 #>
 @{
+    CustomRulePath = @(
+        '.\CustomRules'
+    )
     Severity = @(
         'Error',
         'Warning',
@@ -44,7 +47,11 @@
         'PSUseCorrectCasing',
         'PSUseDeclaredVarsMoreThanAssignments',
         'PSUsePSCredentialType',
-        'PSUseShouldProcessForStateChangingFunctions'
+        'PSUseShouldProcessForStateChangingFunctions',
+        'Measure-RequiredCommentBasedHelp',
+        'Measure-EmptyCommentBasedHelpSections',
+        'Measure-MissingParameterDescription',
+        'Measure-AvoidSelfReferentialParameterAlias'
     )
     Rules = @{
         PSPlaceOpenBrace = @{
@@ -92,5 +99,9 @@
         PSAlignAssignmentStatement = @{
             Enable = $false
         }
+
+        # HaloAPI currently uses PascalCase parameters on its public cmdlets,
+        # so the stricter naming and type-accelerator casing rules remain available
+        # in CustomRules without being enabled by default.
     }
 }

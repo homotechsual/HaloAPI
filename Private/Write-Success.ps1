@@ -3,6 +3,7 @@ using namespace System.Management.Automation
 function Write-Success {
     [CmdletBinding()]
     param (
+        # The success message text to emit as host information.
         [Parameter(Mandatory = $True)]
         [String]$Message
     )

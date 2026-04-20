@@ -1,2 +1,4 @@
 Output
 Sign-Module.ps1
+.artifacts/
+TestResults.xml

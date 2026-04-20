@@ -5,7 +5,19 @@ param(
     [ValidateSet('CurrentUser', 'AllUsers')]
     $Scope = 'CurrentUser'
 )
-[ModuleSpecification[]]$RequiredModules = Import-LocalizedData -BaseDirectory $PSScriptRoot -FileName RequiredModules
+$requiredModuleData = Import-LocalizedData -BaseDirectory $PSScriptRoot -FileName RequiredModules
+
+if ($requiredModuleData -is [hashtable]) {
+    [ModuleSpecification[]]$RequiredModules = foreach ($moduleName in ($requiredModuleData.Keys | Sort-Object)) {
+        @{
+            ModuleName = $moduleName
+            RequiredVersion = [string]$requiredModuleData[$moduleName]
+        }
+    }
+} else {
+    [ModuleSpecification[]]$RequiredModules = $requiredModuleData
+}
+
 $Policy = (Get-PSRepository PSGallery).InstallationPolicy
 Set-PSRepository PSGallery -InstallationPolicy Trusted
 try {
