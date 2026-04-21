@@ -107,6 +107,18 @@
       "Import-Csv": true,
       "get_terminal_output": true,
       "git push": true,
+      "/^pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\test\\.ps1\" -Suite Meta,Unit -Verbosity Detailed$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\test\\.ps1\" -Suite Meta -Verbosity Detailed; pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\test\\.ps1\" -Suite Unit -Verbosity Detailed$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\test\\.ps1\" -Suite Meta -Verbosity Normal; pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\test\\.ps1\" -Suite Unit -Verbosity Detailed$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
   },
 }
