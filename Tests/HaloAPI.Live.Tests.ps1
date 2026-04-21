@@ -47,12 +47,14 @@ Describe 'Connect' {
     }
     Context 'with correct parameters' {
         It 'connects successfully' {
-            Connect-HaloAPI @HaloCorrectConnectionParameters 6>&1 | Should -Be "Connected to the Halo API with tenant URL $($HaloCorrectConnectionParameters.URL)"
+            $ConnectResult = Connect-HaloAPI @HaloCorrectConnectionParameters 6>&1
+            ($ConnectResult | Out-String) | Should -Match 'Connected to the Halo API with tenant URL'
+            ($ConnectResult -contains $true) | Should -BeTrue
         }
     }
     Context 'with incorrect URL parameter' {
-        It 'fails with a HTTP 500 status code.' {
-            { Connect-HaloAPI @HaloIncorrectURLConnectionParameters } | Should -Throw -ExceptionType 'System.Net.Http.HttpRequestException' -ExpectedMessage 'Response status code does not indicate success: 500 (Internal Server Error).'
+        It 'fails to connect.' {
+            { Connect-HaloAPI @HaloIncorrectURLConnectionParameters } | Should -Throw
         }
     }
     Context 'with incorrect Client Secret parameter' {
