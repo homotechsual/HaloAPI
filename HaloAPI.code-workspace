@@ -86,6 +86,7 @@
       "git add": true,
       "git commit": true,
       "git rev-parse": true,
+      "New-Object": true,
     },
   },
 }
