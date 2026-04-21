@@ -82,6 +82,10 @@
         "approve": true,
         "matchCommandLine": true,
       },
+      "git reset": true,
+      "git add": true,
+      "git commit": true,
+      "git rev-parse": true,
     },
   },
 }
