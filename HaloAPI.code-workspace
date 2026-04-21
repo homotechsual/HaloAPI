@@ -152,6 +152,10 @@
         "matchCommandLine": true,
       },
       "Resolve-Path": true,
+      "/^pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\test\\.ps1\" -Suite Meta,Unit -Verbosity Normal$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
   },
 }
