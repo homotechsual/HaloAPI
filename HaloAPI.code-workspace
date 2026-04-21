@@ -91,6 +91,8 @@
       "group": true,
       "select": true,
       "Get-Item": true,
+      "Get-Unique": true,
+      "Invoke-Command": true,
     },
   },
 }
