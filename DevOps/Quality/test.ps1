@@ -11,7 +11,7 @@ param(
     # Enables VS Code Pester markers when running the test script interactively.
     [switch]$IncludeVSCodeMarker,
     # The test suites to execute.
-    [ValidateSet('E2E', 'Live', 'Meta', 'Unit')]
+    [ArgumentCompletions('E2E', 'Live', 'Meta', 'Unit')]
     [string[]]$Suite = @('Meta'),
     # The Pester output verbosity level.
     [ValidateSet('Detailed', 'Normal', 'Minimal', 'None')]
