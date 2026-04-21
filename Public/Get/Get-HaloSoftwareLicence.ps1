@@ -57,7 +57,7 @@ function Get-HaloSoftwareLicence {
     }
     try {
         if ($LicenceID) {
-            Write-Verbose "Running in single-item mode because '-ItemID' was provided."
+            Write-Verbose "Running in single-licence mode because '-LicenceID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
             $Resource = "api/SoftwareLicence/$($LicenceID)"
             $RequestParams = @{
@@ -68,7 +68,7 @@ function Get-HaloSoftwareLicence {
                 ResourceType = 'licences'
             }
         } else {
-            Write-Verbose 'Running in multi-item mode.'
+            Write-Verbose 'Running in multi-licence mode.'
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
             $Resource = 'api/SoftwareLicence'
             $RequestParams = @{
