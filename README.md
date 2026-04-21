@@ -82,3 +82,40 @@ For example *HaloAPI PS Module*.
     ```PowerShell
     Connect-HaloAPI -ClientID "a1234567-bcd8-9e01-2f34-56g7hijk89lm" -Tenant "demo" -URL "https://demo.halopsa.com" -ClientSecret "a1234567-bcd8-9e01-2f34-56g7hijk89lm-a1234567-bcd8-9e01-2f34-56g7hijk89lm" -Scopes "all"
     ```
+
+## Local Live and E2E Testing
+
+Run test suites through the quality script entrypoints in `DevOps/Quality`.
+
+For local `Live` and `E2E` runs, use the Key Vault wrapper script. It loads the required environment variables from Azure Key Vault before invoking `DevOps/Quality/test.ps1`.
+
+1. Sign in to Azure first:
+
+    ```PowerShell
+    Connect-AzAccount
+    ```
+
+1. Run the `Live` suite:
+
+    ```PowerShell
+    pwsh -NoProfile -File .\DevOps\Quality\Invoke-HaloLiveTests.ps1 -Suite Live -Verbosity Normal
+    ```
+
+1. Run both `Live` and `E2E` in one invocation:
+
+    ```PowerShell
+    pwsh -NoProfile -File .\DevOps\Quality\Invoke-HaloLiveTests.ps1 -Suite Live,E2E -Verbosity Normal
+    ```
+
+The wrapper expects these secrets in Key Vault (default vault name: `MSPsUK`):
+
+* `HaloTestingURL`
+* `HaloTestingClientID`
+* `HaloTestingClientSecret`
+* `HaloTestingTenant`
+
+For non-live suites, use the standard test entrypoint directly:
+
+```PowerShell
+pwsh -NoProfile -File .\DevOps\Quality\test.ps1 -Suite Meta,Unit -Verbosity Normal
+```
