@@ -12,7 +12,7 @@ Function Set-HaloActionBatch {
     Param (
         # Array of objects containing properties and values used to update one or more existing actions.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Actions,
+        [Object[]]$Actions,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize = 100,
         # How long to wait between batch runs. Default value is 1 second.
