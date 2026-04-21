@@ -22,10 +22,8 @@ Function New-HaloTicket {
         $CommandName = $MyInvocation.MyCommand.Name
         Write-Verbose "Running command '$CommandName'"
         $Parameters = (Get-Command -Name $CommandName).Parameters
-        # Workaround to prevent the query string processor from adding an 'actionid=' parameter by removing it from the set parameters.
-        if ($ActionID) {
-            $Parameters.Remove('Ticket') | Out-Null
-        }
+        # Workaround to prevent the query string processor from adding a 'ticket=' parameter.
+        $Parameters.Remove('Ticket') | Out-Null
         $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
         if ($PSCmdlet.ShouldProcess($Ticket -is [Array] ? 'Tickets' : 'Ticket', 'Create')) {
             $PostRequestParams = @{
