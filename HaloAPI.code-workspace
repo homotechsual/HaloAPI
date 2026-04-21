@@ -160,6 +160,7 @@
         "approve": true,
         "matchCommandLine": true,
       },
+      ".github/workflows": true,
     },
   },
 }
