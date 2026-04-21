@@ -3,9 +3,6 @@
     {
       "path": ".",
     },
-    {
-      "path": "../NinjaOne",
-    },
   ],
   "settings": {
     "editor.tabSize": 4,
@@ -49,6 +46,14 @@
       "Get-Help": true,
       ".\\DevOps\\Quality\\run-pssa.ps1": true,
       "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -IncludeVSCodeMarker$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^pwsh -NoProfile -File \\.\\\\DevOps\\\\Quality\\\\run-pssa\\.ps1 \\| Out-String$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^pwsh -NoProfile -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Meta -Verbosity Detailed$/": {
         "approve": true,
         "matchCommandLine": true,
       },
