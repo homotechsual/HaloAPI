@@ -18,7 +18,7 @@ function Remove-HaloContract {
     try {
         $ObjectToDelete = Get-HaloContract -ContractID $ContractID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Contract '$($ObjectToDelete.ref)')'", 'Delete')) {
+            if ($PSCmdlet.ShouldProcess("Contract '$($ObjectToDelete.ref)'", 'Delete')) {
                 $Resource = "api/ClientContract/$($ContractID)"
                 $ContractResult = New-HaloDELETERequest -Resource $Resource
                 Return $ContractResult

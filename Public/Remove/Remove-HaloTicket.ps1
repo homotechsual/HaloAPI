@@ -19,7 +19,7 @@ function Remove-HaloTicket {
     try {
         $ObjectToDelete = Get-HaloTicket -TicketID $TicketID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Ticket '$($ObjectToDelete.summary)')'", 'Delete')) {
+            if ($PSCmdlet.ShouldProcess("Ticket '$($ObjectToDelete.summary)'", 'Delete')) {
                 $Resource = "api/tickets/$($TicketID)"
                 $TicketResults = New-HaloDELETERequest -Resource $Resource
                 Return $TicketResults

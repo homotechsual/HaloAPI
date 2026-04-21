@@ -19,7 +19,7 @@ function Remove-HaloService {
     try {
         $ObjectToDelete = Get-HaloService -ServiceID $ServiceID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Service '$($ObjectToDelete.name)')'", 'Delete')) {
+            if ($PSCmdlet.ShouldProcess("Service '$($ObjectToDelete.name)'", 'Delete')) {
                 $Resource = "api/Service/$($ServiceID)"
                 $ServiceResults = New-HaloDELETERequest -Resource $Resource
                 Return $ServiceResults

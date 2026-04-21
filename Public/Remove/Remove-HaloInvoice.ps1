@@ -19,7 +19,7 @@ Function Remove-HaloInvoice {
     try {
         $ObjectToDelete = Get-HaloInvoice -InvoiceID $InvoiceID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Invoice '$($ObjectToDelete.name)')'", 'Delete')) {
+            if ($PSCmdlet.ShouldProcess("Invoice '$($ObjectToDelete.name)'", 'Delete')) {
                 $Resource = "api/Invoice/$($InvoiceID)"
                 $InvoiceResults = New-HaloDELETERequest -Resource $Resource
                 Return $InvoiceResults

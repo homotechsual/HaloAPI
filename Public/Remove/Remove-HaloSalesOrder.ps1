@@ -19,7 +19,7 @@ Function Remove-HaloSalesOrder {
     try {
         $ObjectToDelete = Get-HaloSalesOrder -SalesOrderID $SalesOrderID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("SalesOrder '$($ObjectToDelete.name)')'", 'Delete')) {
+            if ($PSCmdlet.ShouldProcess("SalesOrder '$($ObjectToDelete.name)'", 'Delete')) {
                 $Resource = "api/salesorder/$($SalesOrderID)"
                 $SalesOrderResults = New-HaloDELETERequest -Resource $Resource
                 Return $SalesOrderResults

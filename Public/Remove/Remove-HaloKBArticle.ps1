@@ -19,7 +19,7 @@ function Remove-HaloKBArticle {
     try {
         $ObjectToDelete = Get-HaloKBArticle -KBArticleID $KBArticleID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("KBArticleID '$($ObjectToDelete.name)')'", 'Delete')) {
+            if ($PSCmdlet.ShouldProcess("KBArticleID '$($ObjectToDelete.name)'", 'Delete')) {
                 $Resource = "api/KBArticle/$($KBArticleID)"
                 $ClientResults = New-HaloDELETERequest -Resource $Resource
                 Return $ClientResults

@@ -18,7 +18,7 @@ function Remove-HaloCustomField {
     try {
         $ObjectToDelete = Get-HaloCustomField -CustomFieldID $CustomFieldID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Custom Field '$($ObjectToDelete.name)')'", 'Delete')) {
+            if ($PSCmdlet.ShouldProcess("Custom Field '$($ObjectToDelete.name)'", 'Delete')) {
                 $Resource = "api/FieldInfo/$($CustomFieldID)"
                 $CustomFieldResults = New-HaloDELETERequest -Resource $Resource
                 Return $CustomFieldResults

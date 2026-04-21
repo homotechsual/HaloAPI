@@ -19,7 +19,7 @@ function Remove-HaloDashboard {
     try {
         $ObjectToDelete = Get-HaloDashboard -DashboardID $DashboardID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Dashboard '$($ObjectToDelete.name)')'", 'Delete')) {
+            if ($PSCmdlet.ShouldProcess("Dashboard '$($ObjectToDelete.name)'", 'Delete')) {
                 $Resource = "api/DashboardLinks/$($DashboardID)"
                 $DashboardResults = New-HaloDELETERequest -Resource $Resource
                 Return $DashboardResults
