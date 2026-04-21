@@ -131,6 +131,22 @@
         "approve": true,
         "matchCommandLine": true,
       },
+      "/^pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\run-pssa\\.ps1\" \\| Where-Object \\{ \\$_\\.Severity -match 'Warning' -or \\$_\\.Severity -match 'Error' \\}$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^\\$results = pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\run-pssa\\.ps1\"; \\$results \\| Where-Object \\{ \\$_\\.Severity -match 'Warning' -or \\$_\\.Severity -match 'Error' \\} \\| Select-Object -First 50$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^\\$results = pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\run-pssa\\.ps1\"; \\$results\\.Count; \\$results \\| Group-Object Severity$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^\\$results = pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\run-pssa\\.ps1\"; \\$results \\| Where-Object \\{ \\$_ -match 'Warning' -or \\$_ -match 'Error' \\} \\| Select-Object -First 20$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
   },
 }
