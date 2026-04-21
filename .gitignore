@@ -2,3 +2,4 @@ Output
 Sign-Module.ps1
 .artifacts/
 TestResults.xml
+resource_mappings*.csv
