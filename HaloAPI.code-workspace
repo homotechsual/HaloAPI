@@ -106,6 +106,7 @@
       "Export-Csv": true,
       "Import-Csv": true,
       "get_terminal_output": true,
+      "git push": true,
     },
   },
 }
