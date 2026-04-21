@@ -87,6 +87,10 @@
       "git commit": true,
       "git rev-parse": true,
       "New-Object": true,
+      "ft": true,
+      "group": true,
+      "select": true,
+      "Get-Item": true,
     },
   },
 }
