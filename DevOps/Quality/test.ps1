@@ -11,7 +11,7 @@ param(
     # Enables VS Code Pester markers when running the test script interactively.
     [switch]$IncludeVSCodeMarker,
     # The test suites to execute.
-    [ValidateSet('Core', 'Meta')]
+    [ValidateSet('Core', 'E2E', 'Live', 'Meta', 'Unit')]
     [string[]]$Suite = @('Meta'),
     # The Pester output verbosity level.
     [ValidateSet('Detailed', 'Normal', 'Minimal', 'None')]
@@ -46,8 +46,23 @@ try {
             RequiresEnvironment = @('HaloTestingURL', 'HaloTestingClientID', 'HaloTestingClientSecret', 'HaloTestingTenant')
         },
         [pscustomobject]@{
+            Name = 'E2E'
+            Paths = @('.\Tests\EndToEnd\Action.E2E.Tests.ps1', '.\Tests\EndToEnd\Agent.E2E.Tests.ps1')
+            RequiresEnvironment = @('HaloTestingURL', 'HaloTestingClientID', 'HaloTestingClientSecret', 'HaloTestingTenant')
+        },
+        [pscustomobject]@{
+            Name = 'Live'
+            Paths = @('.\Tests\HaloAPI.Live.Tests.ps1')
+            RequiresEnvironment = @('HaloTestingURL', 'HaloTestingClientID', 'HaloTestingClientSecret', 'HaloTestingTenant')
+        },
+        [pscustomobject]@{
             Name = 'Meta'
             Paths = @('.\Tests\HaloAPI.Meta.Tests.ps1')
+            RequiresEnvironment = @()
+        },
+        [pscustomobject]@{
+            Name = 'Unit'
+            Paths = @('.\Tests\HaloAPI.Unit.Tests.ps1')
             RequiresEnvironment = @()
         }
     )
