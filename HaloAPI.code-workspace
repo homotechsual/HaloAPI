@@ -147,6 +147,10 @@
         "approve": true,
         "matchCommandLine": true,
       },
+      "/^pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\Invoke-HaloLiveTests\\.ps1\" -Suite Live -Verbosity Normal$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
   },
 }
