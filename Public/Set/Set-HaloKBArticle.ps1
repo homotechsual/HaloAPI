@@ -24,10 +24,10 @@ Function Set-HaloKBArticle {
                 throw 'KB article ID is required.'
             }
             $HaloKBArticleParams = @{
-                ArticleId = $_.id
+                KBArticleID = $_.id
             }
             if (-not $SkipValidation) {
-                $KBArticleExists = Get-HaloArticle @HaloKBArticleParams
+                $KBArticleExists = Get-HaloKBArticle @HaloKBArticleParams
                 if ($KBArticleExists) {
                     Return $True
                 } else {

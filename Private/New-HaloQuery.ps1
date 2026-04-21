@@ -112,8 +112,8 @@ function New-HaloQuery {
                 }
             }
         }
-        if (($Parameter.ParameterType.Name -eq 'DateTime')) {
-            Write-Debug "Found DateTime param $($ParameterVariable.Name)"
+        if (($Parameter.ParameterType.Name -eq 'DateTime') -or ($Parameter.ParameterType.Name -eq 'DateTime[]')) {
+            Write-Debug "Found DateTime or DateTime Array param $($ParameterVariable.Name)"
             if ($null -eq $ParameterVariable.Value) {
                 Write-Debug "Skipping unset param $($ParameterVariable.Name)"
                 Continue
@@ -125,9 +125,23 @@ function New-HaloQuery {
                     # If no aliases then use the name in lowercase.
                     $Query = ([String]$ParameterVariable.Name).ToLower()
                 }
-                $Value = $ParameterVariable.Value.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
-                $QSCollection.Add($Query, $Value)
-                Write-Debug "Adding parameter $($Query) with value $($Value)"
+                $Value = $ParameterVariable.Value
+                if (($Value -is [array]) -and ($CommaSeparatedArrays)) {
+                    Write-Debug 'Building comma separated DateTime array string.'
+                    $QueryValue = ($Value | ForEach-Object { $_.ToString('o') }) -join ','
+                    $QSCollection.Add($Query, $QueryValue)
+                    Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
+                } elseif (($Value -is [array]) -and (-not $CommaSeparatedArrays)) {
+                    foreach ($ArrayValue in $Value) {
+                        $QueryValue = $ArrayValue.ToString('o')
+                        $QSCollection.Add($Query, $QueryValue)
+                        Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
+                    }
+                } else {
+                    $QueryValue = $Value.ToString('o')
+                    $QSCollection.Add($Query, $QueryValue)
+                    Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
+                }
             }
         }
     }
