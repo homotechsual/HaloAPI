@@ -10,7 +10,7 @@ Function Set-HaloKBArticle {
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object[]])]
     Param (
-        # Object or array of objects containing properties and values used to update one or more existing knowedgebase articles.
+        # Object or array of objects containing properties and values used to update one or more existing knowledgebase articles.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object[]]$KBArticle,
         # Skip validation checks.
