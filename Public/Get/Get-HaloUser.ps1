@@ -72,6 +72,7 @@ function Get-HaloUser {
         [switch]$IncludeInactive,
         # Include approvers only in the results.
         [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('approvers_only', 'approversonly')]
         [switch]$ApproversOnly,
         # Exclude users linked to agent accounts from the results.
         [Parameter( ParameterSetName = 'Multi' )]
