@@ -71,6 +71,12 @@ function Invoke-HaloBatchProcessor {
             $CommandParameters = @{
                 $Using:EntityType = $_
             }
+            $AdditionalParameters = $Using:Parameters
+            if ($AdditionalParameters) {
+                foreach ($Parameter in $AdditionalParameters.GetEnumerator()) {
+                    $CommandParameters[$Parameter.Key] = $Parameter.Value
+                }
+            }
             if ($DebugPreference -eq 'Continue') {
                 $CommandParameters.Debug = $True
             }

@@ -38,6 +38,11 @@ Function Set-HaloTicketBatch {
                 if ($VerbosePreference -eq 'Continue') {
                     $BatchParams.Verbose = $True
                 }
+                if ($SkipValidation) {
+                    $BatchParams.Parameters = @{
+                        SkipValidation = $True
+                    }
+                }
                 $BatchResults = Invoke-HaloBatchProcessor @BatchParams
                 Return $BatchResults
             } else {
