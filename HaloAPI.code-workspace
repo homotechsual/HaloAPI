@@ -93,6 +93,19 @@
       "Get-Item": true,
       "Get-Unique": true,
       "Invoke-Command": true,
+      "\\w+": true,
+      "Out-File": true,
+      "/^\\$files = Get-ChildItem -Path J:\\\\Projects\\\\HaloAPI\\\\Public\\\\Get -Filter \"\\*\\.ps1\"\nforeach \\(\\$file in \\$files\\) \\{\n    \\$content = Get-Content \\$file\\.FullName -Raw\n    \\$tokens = \\[System\\.Management\\.Automation\\.Language\\.Parser\\]::ParseInput\\(\\$content, \\[ref\\]\\$null, \\[ref\\]\\$null\\)\n    \\$params = \\$tokens\\.FindAll\\(\\{ \\$args\\[0\\] -is \\[System\\.Management\\.Automation\\.Language\\.ParameterAst\\] \\}, \\$true\\)\n    \\$allVars = \\$tokens\\.FindAll\\(\\{ \\$args\\[0\\] -is \\[System\\.Management\\.Automation\\.Language\\.VariableExpressionAst\\] \\}, \\$true\\)\n    \n    foreach \\(\\$p in \\$params\\) \\{\n        \\$pName = \\$p\\.Name\\.VariablePath\\.UserPath\n        # Find usage: variable expressions with the same name that are NOT the parameter declaration itself\n        \\$usages = \\$allVars \\| Where-Object \\{ \n            \\$_\\.VariablePath\\.UserPath -eq \\$pName -and \n            \\$_\\.Extent\\.StartOffset -ne \\$p\\.Name\\.Extent\\.StartOffset \n        \\}\n        \n        if \\(-not \\$usages\\) \\{\n            # Check if it's \"New-HaloQuery\" pattern\n            if \\(\\$content -match 'New-HaloQuery'\\) \\{\n                # Potential \"unused\" but actually used by New-HaloQuery\n            \\} else \\{\n                \\[PSCustomObject\\]@\\{\n                    File = \\$file\\.FullName\n                    Parameter = \\$pName\n                    Line = \\$p\\.Extent\\.StartLineNumber\n                \\}\n            \\}\n        \\}\n    \\}\n\\} \\| Select-Object -First 20 \\| Format-Table -AutoSize$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^\\$file = \"J:\\\\Projects\\\\HaloAPI\\\\Public\\\\Get\\\\Get-HaloAction\\.ps1\"\n\\$content = Get-Content \\$file -Raw\n\\$tokens = \\[System\\.Management\\.Automation\\.Language\\.Parser\\]::ParseInput\\(\\$content, \\[ref\\]\\$null, \\[ref\\]\\$null\\)\n\\$params = \\$tokens\\.FindAll\\(\\{ \\$args\\[0\\] -is \\[System\\.Management\\.Automation\\.Language\\.ParameterAst\\] \\}, \\$true\\)\n\\$allVars = \\$tokens\\.FindAll\\(\\{ \\$args\\[0\\] -is \\[System\\.Management\\.Automation\\.Language\\.VariableExpressionAst\\] \\}, \\$true\\)\n\nforeach \\(\\$p in \\$params\\) \\{\n    \\$pName = \\$p\\.Name\\.VariablePath\\.UserPath\n    \\$usages = \\$allVars \\| Where-Object \\{ \n        \\$_\\.VariablePath\\.UserPath -eq \\$pName -and \n        \\$_\\.Extent\\.StartOffset -ne \\$p\\.Name\\.Extent\\.StartOffset \n    \\}\n    \n    \\$isUsed = if \\(\\$usages\\) \\{ \\$true \\} else \\{ \\$false \\}\n    \n    \\[PSCustomObject\\]@\\{\n        Parameter = \\$pName\n        IsUsedExplicitly = \\$isUsed\n        Line = \\$p\\.Extent\\.StartLineNumber\n    \\}\n\\} \\| Format-Table -AutoSize$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "Export-Csv": true,
+      "Import-Csv": true,
+      "get_terminal_output": true,
     },
   },
 }
