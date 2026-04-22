@@ -30,7 +30,7 @@ $nonPublicSettings = @{
     Rules = $settings.Rules
 }
 
-$excludeRegex = '\\(CustomRules|Output)\\'
+$excludeRegex = '/(CustomRules|Output)/'
 $publicRoot = Join-Path -Path $RepoRoot -ChildPath 'Public'
 
 if (Test-Path -Path $publicRoot) {
@@ -40,7 +40,8 @@ if (Test-Path -Path $publicRoot) {
 Get-ChildItem -Path $RepoRoot -Recurse -File -Include *.ps1, *.psm1, *.psd1 |
 Where-Object {
     $fullName = $_.FullName
-    $fullName -notmatch $excludeRegex -and
+    $normalizedFullName = $fullName -replace '\\', '/'
+    $normalizedFullName -notmatch $excludeRegex -and
     $fullName -notlike "$publicRoot*"
 } |
 Invoke-ScriptAnalyzer -Settings $nonPublicSettings -CustomRulePath $customRulePath
