@@ -165,6 +165,10 @@
         "approve": true,
         "matchCommandLine": true,
       },
+      "/^pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\test\\.ps1\" -Suite Meta -Verbosity Normal$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
   },
 }
