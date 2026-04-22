@@ -161,6 +161,10 @@
         "matchCommandLine": true,
       },
       ".github/workflows": true,
+      "/^pwsh -NoProfile -File \"\\.\\\\DevOps\\\\Quality\\\\test\\.ps1\" -Suite Meta -Verbosity Detailed$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
   },
 }
