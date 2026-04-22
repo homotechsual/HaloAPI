@@ -19,8 +19,8 @@ function Remove-HaloAgent {
     try {
         $ObjectToDelete = Get-HaloAgent -AgentId $AgentId
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Agent '$($ObjectToDelete.name)'", 'Delete')) {
-                $Resource = "api/agent/$($AgentId)"
+            if ($PSCmdlet.ShouldProcess(('Agent ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/agent/{0}' -f $AgentId)
                 $ActionResults = New-HaloDELETERequest -Resource $Resource
                 Return $ActionResults
             }

@@ -18,8 +18,8 @@ function Remove-HaloCAB {
     try {
         $ObjectToDelete = Get-HaloCAB -CABID $CABID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("CAB '$($ObjectToDelete.name)'", 'Delete')) {
-                $Resource = "api/CAB/$($CABID)"
+            if ($PSCmdlet.ShouldProcess(('CAB ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/CAB/{0}' -f $CABID)
                 $CABResults = New-HaloDELETERequest -Resource $Resource
                 Return $CABResults
             }

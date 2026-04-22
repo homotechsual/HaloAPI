@@ -16,7 +16,7 @@ Function New-HaloCRMNote {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("CRM Note by '$($CRMNote.who_agentid)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess(('CRM Note by ''{0}''' -f $CRMNote.who_agentid), 'Create')) {
             New-HaloPOSTRequest -Object $CRMNote -Endpoint 'crmnote'
         }
     } catch {

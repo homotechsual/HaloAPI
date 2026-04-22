@@ -21,7 +21,7 @@ class HaloLookupCompleter : IArgumentCompleter {
         # Initialise the HaloLookup class.
         [HaloLookup]::new()
         $LookupTypes = [HaloLookup]::GetLookupTypes()
-        $Wildcard = ("*$($WordToComplete)*")
+        $Wildcard = ('*{0}*' -f $WordToComplete)
         $CompletionResults = [List[CompletionResult]]::new()
         $LookupTypes | Where-Object { $_.name -like $Wildcard } | ForEach-Object {
             $CompletionResults.Add(

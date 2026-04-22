@@ -8,7 +8,7 @@ param()
 BeforeAll {
     $ModulePath = Split-Path -Parent -Path (Split-Path -Parent -Path $PSCommandPath)
     $ModuleName = 'HaloAPI'
-    $ManifestPath = "$($ModulePath)\$($ModuleName).psd1"
+    $ManifestPath = ('{0}\{1}.psd1' -f $ModulePath, $ModuleName)
     if (Get-Module -Name $ModuleName) {
         Remove-Module $ModuleName -Force
     }
@@ -31,7 +31,7 @@ Describe 'Meta' {
     }
 
     It 'Root module is correct' {
-        $Script:ModuleInformation.RootModule | Should -Be ".\$($ModuleName).psm1"
+        $Script:ModuleInformation.RootModule | Should -Be ('.\{0}.psm1' -f $ModuleName)
     }
 
     It 'Has a description' {

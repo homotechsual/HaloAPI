@@ -20,7 +20,7 @@ Function New-HaloTicket {
     Invoke-HaloPreFlightCheck
     try {
         $CommandName = $MyInvocation.MyCommand.Name
-        Write-Verbose "Running command '$CommandName'"
+        Write-Verbose ('Running command ''{0}''' -f $CommandName)
         $Parameters = (Get-Command -Name $CommandName).Parameters
         # Workaround to prevent the query string processor from adding a 'ticket=' parameter.
         $Parameters.Remove('Ticket') | Out-Null

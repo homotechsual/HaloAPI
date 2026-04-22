@@ -19,8 +19,8 @@ function Remove-HaloDistributionListMember {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Member '$Member' from Distribution List", 'Remove')) {
-            $Resource = "api/distributionlist/$($DistributionListID)/members/$Member"
+        if ($PSCmdlet.ShouldProcess(('Member ''{0}'' from Distribution List' -f $Member), 'Remove')) {
+            $Resource = ('api/distributionlist/{0}/members/{1}' -f $DistributionListID, [uri]::EscapeDataString($Member))
             $MemberResults = New-HaloDELETERequest -Resource $Resource
             Return $MemberResults
         }

@@ -69,7 +69,7 @@ function Get-HaloTeam {
     try {
         if ($TeamID) {
             Write-Verbose "Running in single-team mode because '-TeamID' was provided."
-            $Resource = "api/team/$($TeamID)"
+            $Resource = ('api/team/{0}' -f $TeamID)
         } else {
             Write-Verbose 'Running in multi-team mode.'
             $Resource = 'api/team'

@@ -111,7 +111,7 @@ function Get-HaloInvoice {
         if ($InvoiceID) {
             Write-Verbose "Running in single-invoice mode because '-InvoiceID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/invoice/$($InvoiceID)"
+            $Resource = ('api/invoice/{0}' -f $InvoiceID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

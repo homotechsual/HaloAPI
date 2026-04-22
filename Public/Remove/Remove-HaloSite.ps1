@@ -19,8 +19,8 @@ function Remove-HaloSite {
     try {
         $ObjectToDelete = Get-HaloSite -SiteID $SiteID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Site '$($ObjectToDelete.name)'", 'Delete')) {
-                $Resource = "api/Site/$($SiteID)"
+            if ($PSCmdlet.ShouldProcess(('Site ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/Site/{0}' -f $SiteID)
                 $SiteResults = New-HaloDELETERequest -Resource $Resource
                 Return $SiteResults
             }

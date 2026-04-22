@@ -81,7 +81,7 @@ function Get-HaloItem {
         if ($ItemID) {
             Write-Verbose "Running in single-item mode because '-ItemID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/item/$($ItemID)"
+            $Resource = ('api/item/{0}' -f $ItemID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

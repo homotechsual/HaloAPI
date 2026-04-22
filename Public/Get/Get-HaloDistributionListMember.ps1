@@ -26,7 +26,7 @@ function Get-HaloDistributionListMember {
     )
     Invoke-HaloPreFlightCheck
     try {
-        Write-Verbose "Getting members for distribution list ID: $DistributionListID"
+        Write-Verbose ('Getting members for distribution list ID: {0}' -f $DistributionListID)
         $QSCollection = @{}
         if ($Paginate) {
             if ($PageSize) {
@@ -36,7 +36,7 @@ function Get-HaloDistributionListMember {
                 $QSCollection['page_no'] = $PageNo
             }
         }
-        $Resource = "api/distributionlist/$($DistributionListID)/members"
+        $Resource = ('api/distributionlist/{0}/members' -f $DistributionListID)
         $RequestParams = @{
             Method = 'GET'
             Resource = $Resource

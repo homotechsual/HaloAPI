@@ -53,7 +53,7 @@ function Get-HaloTab {
         if ($TableID) {
             Write-Verbose "Running in single-item mode because '-ItemID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/Tabs/$($TableID)"
+            $Resource = ('api/Tabs/{0}' -f $TableID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

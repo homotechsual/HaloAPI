@@ -12,7 +12,8 @@
         'Measure-EmptyCommentBasedHelpSections',
         'Measure-MissingParameterDescription',
         'Measure-AvoidSelfReferentialParameterAlias',
-        'Measure-RequireCamelCaseParameterName'
+        'Measure-RequireCamelCaseParameterName',
+        'Measure-AvoidDoubleQuoteInterpolation'
     )
     CmdletsToExport = @()
     VariablesToExport = @()

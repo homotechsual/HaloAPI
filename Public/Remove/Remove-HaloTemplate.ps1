@@ -19,8 +19,8 @@ function Remove-HaloTemplate {
     try {
         $ObjectToDelete = Get-HaloTemplate -TemplateID $TemplateID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Template '$($ObjectToDelete.name)'", 'Delete')) {
-                $Resource = "api/template/$($TemplateID)"
+            if ($PSCmdlet.ShouldProcess(('Template ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/template/{0}' -f $TemplateID)
                 $TemplateResults = New-HaloDELETERequest -Resource $Resource
                 Return $TemplateResults
             }

@@ -36,7 +36,7 @@ function Get-HaloFAQList {
     try {
         if ($FAQListID) {
             Write-Verbose "Running in single-field mode because 'FAQListID' was provided."
-            $Resource = "api/FAQLists/$($FAQListID)"
+            $Resource = ('api/FAQLists/{0}' -f $FAQListID)
         } else {
             Write-Verbose 'Running in multi-field mode.'
             $Resource = 'api/FAQLists'

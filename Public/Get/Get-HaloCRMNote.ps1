@@ -44,7 +44,7 @@ function Get-HaloCRMNote {
     try {
         if ($CRMNoteID) {
             Write-Verbose "Running in single-CRM-note mode because '-CRMNoteID' was provided."
-            $Resource = "api/crmnote/$($CRMNoteID)"
+            $Resource = ('api/crmnote/{0}' -f $CRMNoteID)
         } else {
             Write-Verbose 'Running in multi-CRM-note mode.'
             $Resource = 'api/crmnote'

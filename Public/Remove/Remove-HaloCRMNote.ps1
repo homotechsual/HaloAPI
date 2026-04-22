@@ -21,8 +21,8 @@ function Remove-HaloCRMNote {
     try {
         $ObjectToDelete = Get-HaloAction -ActionID $CRMNoteID -TicketID $TicketID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("CRM Note '$($ObjectToDelete.id)'", 'Delete')) {
-                $Resource = "api/actions/$($CRMNoteID)?ticket_id=$($TicketID)"
+            if ($PSCmdlet.ShouldProcess(('CRM Note ''{0}''' -f $ObjectToDelete.id), 'Delete')) {
+                $Resource = ('api/actions/{0}?ticket_id={1}' -f $CRMNoteID, $TicketID)
                 $CRMNoteResults = New-HaloDELETERequest -Resource $Resource
                 Return $CRMNoteResults
             }

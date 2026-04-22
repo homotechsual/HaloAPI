@@ -19,7 +19,7 @@ class HaloCustomButtonCompleter : IArgumentCompleter {
         [IDictionary]$FakeBoundParams
     ) {
         $CustomButtonTypeIDs = [HaloCustomButton]::GetButtonTypes()
-        $Wildcard = ("*$($WordToComplete)*")
+        $Wildcard = ('*{0}*' -f $WordToComplete)
         $CompletionResults = [List[CompletionResult]]::new()
         $CustomButtonTypeIDs.Keys -like $Wildcard | ForEach-Object {
             $CompletionResults.Add(

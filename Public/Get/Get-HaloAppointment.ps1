@@ -72,7 +72,7 @@ function Get-HaloAppointment {
     try {
         if ($AppointmentID) {
             Write-Verbose "Running in single-appointment mode because '-AppointmentID' was provided."
-            $Resource = "api/Appointment/$($AppointmentID)"
+            $Resource = ('api/Appointment/{0}' -f $AppointmentID)
         } else {
             Write-Verbose 'Running in multi-appointment mode.'
             $Resource = 'api/Appointment'

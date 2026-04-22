@@ -97,9 +97,9 @@ function Connect-HaloAPI {
         } else {
             Connect-AzAccount
         }
-        $URL = (Get-AzKeyVaultSecret -VaultName $VaultName -Name "${SecretName}_URL").SecretValueText
-        $ClientID = (Get-AzKeyVaultSecret -VaultName $VaultName -Name "${SecretName}_ClientID").SecretValueText
-        $ClientSecret = (Get-AzKeyVaultSecret -VaultName $VaultName -Name "${SecretName}_ClientSecret").SecretValueText
+        $URL = (Get-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_URL' -f $SecretName)).SecretValueText
+        $ClientID = (Get-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_ClientID' -f $SecretName)).SecretValueText
+        $ClientSecret = (Get-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_ClientSecret' -f $SecretName)).SecretValueText
     } elseif ($SaveToKeyVault) {
         # Save the URL, ClientID, and ClientSecret to the Azure Key Vault.
         if ($Identity) {
@@ -108,13 +108,13 @@ function Connect-HaloAPI {
             Connect-AzAccount
         }
         $URL_Secret = ConvertTo-SecureString -String $URL -AsPlainText -Force
-        Set-AzKeyVaultSecret -VaultName $VaultName -Name "${SecretName}_URL" -SecretValue $URL_Secret
+        Set-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_URL' -f $SecretName) -SecretValue $URL_Secret
 
         $ClientID_Secret = ConvertTo-SecureString -String $ClientID -AsPlainText -Force
-        Set-AzKeyVaultSecret -VaultName $VaultName -Name "${SecretName}_ClientID" -SecretValue $ClientID_Secret
+        Set-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_ClientID' -f $SecretName) -SecretValue $ClientID_Secret
 
         $ClientSecret_Secret = ConvertTo-SecureString -String $ClientSecret -AsPlainText -Force
-        Set-AzKeyVaultSecret -VaultName $VaultName -Name "${SecretName}_ClientSecret" -SecretValue $ClientSecret_Secret
+        Set-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_ClientSecret' -f $SecretName) -SecretValue $ClientSecret_Secret
     }
 
     # Convert scopes to space separated string if it's an array.
@@ -155,9 +155,9 @@ function Connect-HaloAPI {
     }
     if ($AuthInfoResponse.content) {
         $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
-        Write-Debug "Auth info response: $AuthInfo"
+        Write-Debug ('Auth info response: {0}' -f $AuthInfo)
         $AuthURIBuilder = [System.UriBuilder]::New($AuthInfo.auth_url)
-        Write-Verbose "Auth info found, using the '$($AuthInfo.auth_url)' endpoint."
+        Write-Verbose ('Auth info found, using the ''{0}'' endpoint.' -f $AuthInfo.auth_url)
         if ($AuthURIBuilder.Path) {
             $AuthURIBuilder.Path = $AuthURIBuilder.Path.TrimEnd('/') + '/token'
         } else {
@@ -165,22 +165,22 @@ function Connect-HaloAPI {
         }
         
         if ($Tenant) {
-            $AuthURIBuilder.Query = "tenant=$($Tenant)"
+            $AuthURIBuilder.Query = ('tenant={0}' -f $Tenant)
         } elseif ($AuthInfo.tenant_id) {
-            $AuthURIBuilder.Query = "tenant=$($AuthInfo.tenant_id)"
+            $AuthURIBuilder.Query = ('tenant={0}' -f $AuthInfo.tenant_id)
         }
     } else {
         $AuthURIBuilder = [System.UriBuilder]::New($URL)
         Write-Warning 'Could not retrieve authentication URL from Halo falling back to default.'
         if ($Tenant) {
             $AuthURIBuilder.Path = 'auth/token'
-            $AuthURIBuilder.Query = "tenant=$($Tenant)"
+            $AuthURIBuilder.Query = ('tenant={0}' -f $Tenant)
         } else {
             $AuthURIBuilder.Path = 'auth/token'
         }
     }
     $AuthenticationURI = $AuthURIBuilder.ToString()
-    Write-Verbose "Using authentication URL: $($AuthenticationURI)"
+    Write-Verbose ('Using authentication URL: {0}' -f $AuthenticationURI)
     # Make sure URL is a base URI.
     $BaseURIBuilder = [System.UriBuilder]::New($URL)
     if ($BaseURIBuilder.Path) {
@@ -199,7 +199,7 @@ function Connect-HaloAPI {
         MaxRetries = $MaxRetries
     }
     Set-Variable -Name 'HAPIConnectionInformation' -Value $ConnectionInformation -Visibility Private -Scope Script -Force
-    Write-Debug "Connection information set to: $($Script:HAPIConnectionInformation | Out-String)"
+    Write-Debug ('Connection information set to: {0}' -f ($Script:HAPIConnectionInformation | Out-String))
     # Halo authorisation request body.
     $AuthReqBody = @{
         grant_type = 'client_credentials'
@@ -220,7 +220,7 @@ function Connect-HaloAPI {
         try {
             $AuthReponse = Invoke-WebRequest @WebRequestParams
             $TokenPayload = ConvertFrom-Json -InputObject $AuthReponse.Content
-            Write-Debug "Raw Token Payload: $($TokenPayload | Out-String)"
+            Write-Debug ('Raw Token Payload: {0}' -f ($TokenPayload | Out-String))
             # Build a script-scoped variable to hold the authentication information.
             $AuthToken = @{
                 Type = $TokenPayload.token_type
@@ -231,7 +231,7 @@ function Connect-HaloAPI {
             }
             Set-Variable -Name 'HAPIAuthToken' -Value $AuthToken -Visibility Private -Scope Script -Force
             Write-Verbose 'Got authentication token.'
-            Write-Debug "Authentication token set to: $($Script:HAPIAuthToken | Out-String -Width 2048)"
+            Write-Debug ('Authentication token set to: {0}' -f ($Script:HAPIAuthToken | Out-String -Width 2048))
             Write-Debug 'Initialising the Halo Lookup class cache.'
             $LookupTypes = Get-HaloLookup -LookupID 11
             if ($LookupTypes) {
@@ -239,7 +239,7 @@ function Connect-HaloAPI {
             } else {
                 New-HaloError -ModuleMessage 'Could not retrieve lookup types from Halo.'
             }
-            Write-Success "Connected to the Halo API with tenant URL $($Script:HAPIConnectionInformation.URL)"
+            Write-Success ('Connected to the Halo API with tenant URL {0}' -f $Script:HAPIConnectionInformation.URL)
             $Authenticated = $True
         } catch [Microsoft.PowerShell.Commands.HttpResponseException] {
             $Authenticated = $False

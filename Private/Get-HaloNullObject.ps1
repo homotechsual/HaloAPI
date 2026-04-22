@@ -16,8 +16,8 @@ function Get-HaloNullObject {
         [PSCustomObject]$NullObject
     )
     $NullObject.PSObject.Properties | ForEach-Object {
-        Write-Verbose "Attribute Name: $($_.name)"
-        Write-Verbose "Attribute Type: $(($_.Value.GetType()).name)"
+        Write-Verbose ('Attribute Name: {0}' -f $_.name)
+        Write-Verbose ('Attribute Type: {0}' -f (($_.Value.GetType()).name))
         if ($_.Value -isnot [PSCustomObject]) {
             $_.Value = $Null
         } else {

@@ -52,7 +52,7 @@ function Get-HaloLookup {
     try {
         if ($ItemID) {
             Write-Verbose "Running in single-lookup mode because '-ItemID' was provided."
-            $Resource = "api/lookup/$($ItemID)"
+            $Resource = ('api/lookup/{0}' -f $ItemID)
         } else {
             Write-Verbose 'Running in multi-lookup mode.'
             $Resource = 'api/lookup'

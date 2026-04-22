@@ -19,8 +19,8 @@ function Remove-HaloDistributionList {
     try {
         $ObjectToDelete = Get-HaloDistributionList -DistributionListID $DistributionListID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Distribution List '$($ObjectToDelete.name)'", 'Delete')) {
-                $Resource = "api/distributionlist/$($DistributionListID)"
+            if ($PSCmdlet.ShouldProcess(('Distribution List ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/distributionlist/{0}' -f $DistributionListID)
                 $DistributionListResults = New-HaloDELETERequest -Resource $Resource
                 Return $DistributionListResults
             }

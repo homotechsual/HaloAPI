@@ -23,10 +23,18 @@ $publicSettings = @{
     IncludeRules = [string[]]@($settings.IncludeRules)
     Rules = $settings.Rules
 }
+$publicOnlyCustomRules = @(
+    'Measure-RequiredCommentBasedHelp',
+    'Measure-EmptyCommentBasedHelpSections',
+    'Measure-MissingParameterDescription',
+    'Measure-AvoidSelfReferentialParameterAlias',
+    'Measure-RequireCamelCaseParameterName',
+    'Measure-RequireProperTypeAcceleratorCasing'
+)
 
 $nonPublicSettings = @{
     Severity = $settings.Severity
-    IncludeRules = [string[]]@($settings.IncludeRules | Where-Object { $_ -notin $customRules })
+    IncludeRules = [string[]]@($settings.IncludeRules | Where-Object { $_ -notin $publicOnlyCustomRules })
     Rules = $settings.Rules
 }
 
@@ -42,6 +50,6 @@ Where-Object {
     $fullName = $_.FullName
     $normalizedFullName = $fullName -replace '\\', '/'
     $normalizedFullName -notmatch $excludeRegex -and
-    $fullName -notlike "$publicRoot*"
+    $fullName -notlike ('{0}*' -f $publicRoot)
 } |
 Invoke-ScriptAnalyzer -Settings $nonPublicSettings -CustomRulePath $customRulePath

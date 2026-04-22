@@ -38,7 +38,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-Write-Host "Loading Halo test credentials from Key Vault '$VaultName'..." -ForegroundColor Cyan
+Write-Host ('Loading Halo test credentials from Key Vault ''{0}''...' -f $VaultName) -ForegroundColor Cyan
 
 $secretNames = @(
     'HaloTestingURL',
@@ -50,10 +50,10 @@ $secretNames = @(
 foreach ($secretName in $secretNames) {
     $secretValue = Get-AzKeyVaultSecret -VaultName $VaultName -Name $secretName -AsPlainText
     if ([string]::IsNullOrEmpty($secretValue)) {
-        throw "Key Vault secret '$secretName' returned empty or null from vault '$VaultName'."
+        throw ('Key Vault secret ''{0}'' returned empty or null from vault ''{1}''.' -f $secretName, $VaultName)
     }
     [System.Environment]::SetEnvironmentVariable($secretName, $secretValue, 'Process')
-    Write-Verbose "Set `$env:$secretName from Key Vault."
+    Write-Verbose ('Set `$env:{0} from Key Vault.' -f $secretName)
 }
 
 Write-Host 'Credentials loaded. Invoking test runner...' -ForegroundColor Cyan

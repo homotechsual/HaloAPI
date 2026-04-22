@@ -55,7 +55,7 @@ function Get-HaloTicketType {
     try {
         if ($TicketTypeID) {
             Write-Verbose "Running in single-ticket-type mode because '-TicketTypeID' was provided."
-            $Resource = "api/tickettype/$($TicketTypeID)"
+            $Resource = ('api/tickettype/{0}' -f $TicketTypeID)
         } else {
             Write-Verbose 'Running in multi-ticket-type mode.'
             $Resource = 'api/tickettype'

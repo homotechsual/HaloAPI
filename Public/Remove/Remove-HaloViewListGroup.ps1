@@ -24,8 +24,8 @@ function Remove-HaloViewListGroup {
         }
         $ObjectToDelete = Get-HaloViewListGroup -ViewListGroupID $ViewListGroupID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("ViewListGroup '$($ObjectToDelete.id)'", 'Delete')) {
-                $Resource = "api/viewlistgroup/$($ViewListGroupID)"
+            if ($PSCmdlet.ShouldProcess(('ViewListGroup ''{0}''' -f $ObjectToDelete.id), 'Delete')) {
+                $Resource = ('api/viewlistgroup/{0}' -f $ViewListGroupID)
                 $ViewListGroupResults = New-HaloDELETERequest -Resource $Resource
                 Return $ViewListGroupResults
             }

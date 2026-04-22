@@ -19,8 +19,8 @@ function Remove-HaloTicketRules {
     try {
         $ObjectToDelete = Get-HaloTicketRules -RuleID $RuleID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Rule '$($ObjectToDelete.value)'", 'Delete')) {
-                $Resource = "api/TicketRules/$($RuleID)"
+            if ($PSCmdlet.ShouldProcess(('Rule ''{0}''' -f $ObjectToDelete.value), 'Delete')) {
+                $Resource = ('api/TicketRules/{0}' -f $RuleID)
                 $ActionResults = New-HaloDELETERequest -Resource $Resource
                 Return $ActionResults
             }

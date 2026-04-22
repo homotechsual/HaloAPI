@@ -16,7 +16,7 @@ Function New-HaloCustomButton {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Custom Button '$($CustomButton.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess(('Custom Button ''{0}''' -f $CustomButton.name), 'Create')) {
             New-HaloPOSTRequest -Object $CustomButton -Endpoint 'custombutton'
         }
     } catch {

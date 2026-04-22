@@ -19,8 +19,8 @@ function Remove-HaloReport {
     try {
         $ObjectToDelete = Get-HaloReport -ReportID $ReportID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Report '$($ObjectToDelete.name)'", 'Delete')) {
-                $Resource = "api/report/$($ReportID)"
+            if ($PSCmdlet.ShouldProcess(('Report ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/report/{0}' -f $ReportID)
                 $ReportResults = New-HaloDELETERequest -Resource $Resource
                 Return $ReportResults
             }

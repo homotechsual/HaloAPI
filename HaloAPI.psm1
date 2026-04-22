@@ -1,12 +1,14 @@
 #Requires -Version 7
-$Functions = @(Get-ChildItem -Path $PSScriptRoot\Public\ -Include *.ps1 -Recurse) + @(Get-ChildItem -Path $PSScriptRoot\Private\ -Include *.ps1 -Recurse)
+$PublicPath = Join-Path -Path $PSScriptRoot -ChildPath 'Public'
+$PrivatePath = Join-Path -Path $PSScriptRoot -ChildPath 'Private'
+$Functions = @(Get-ChildItem -Path $PublicPath -Include *.ps1 -Recurse) + @(Get-ChildItem -Path $PrivatePath -Include *.ps1 -Recurse)
 # Import functions.
 foreach ($Function in @($Functions)) {
     try {
-        Write-Verbose "Importing function $($Function.FullName)"
+        Write-Verbose ('Importing function {0}' -f $Function.FullName)
         . $Function.FullName
     } catch {
-        Write-Error -Message "Failed to import function $($Function.FullName): $_"
+        Write-Error -Message ('Failed to import function {0}: {1}' -f $Function.FullName, $_)
     }
 }
 [int32]$Script:HAPIDefaultPageSize = 1000

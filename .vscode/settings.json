@@ -1,4 +1,13 @@
 {
-  "cSpell.words": ["authinfo", "PWSH", "Testand"],
+  "cSpell.words": [
+    "authinfo",
+    "cmdletbinding",
+    "distributionlist",
+    "distributionlistid",
+    "distributionlists",
+    "pageinate",
+    "PWSH",
+    "Testand"
+  ],
   "prettier.enable": false
 }

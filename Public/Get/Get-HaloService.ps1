@@ -77,7 +77,7 @@ function Get-HaloService {
         if ($ServiceID) {
             Write-Verbose "Running in single-service mode because '-ServiceID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/service/$($ServiceID)"
+            $Resource = ('api/service/{0}' -f $ServiceID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

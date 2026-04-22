@@ -70,7 +70,7 @@ function Get-HaloAssetGroup {
         if ($AssetGroupID) {
             Write-Verbose "Running in single-asset type mode because '-AssetGroupID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/AssetGroup/$($AssetGroupID)"
+            $Resource = ('api/AssetGroup/{0}' -f $AssetGroupID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

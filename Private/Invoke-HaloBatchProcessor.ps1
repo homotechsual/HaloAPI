@@ -33,9 +33,9 @@ function Invoke-HaloBatchProcessor {
     $Batch.Add([System.Collections.Generic.List[Object]]::New()) | Out-Null
     # Break $Input into an assoc. array of $Size-sized batches.
     $BatchGroup = 0
-    Write-Debug "Input:`n$($BatchInput | ConvertTo-Json -AsArray -Depth 5)"
-    Write-Debug "Entity type: $EntityType"
-    Write-Debug "Operation: $Operation"
+    Write-Debug ('Input:{0}{1}' -f [Environment]::NewLine, ($BatchInput | ConvertTo-Json -AsArray -Depth 5))
+    Write-Debug ('Entity type: {0}' -f $EntityType)
+    Write-Debug ('Operation: {0}' -f $Operation)
     $BatchInput | ForEach-Object {
         if ($Batch[$BatchGroup].Count -ge $Size) {
             $Batch.Add([System.Collections.Generic.List[Object]]::New()) | Out-Null
@@ -44,11 +44,11 @@ function Invoke-HaloBatchProcessor {
         $Batch[$BatchGroup].Add($_) | Out-Null
     }
     # Iterate over the batches, process each batch and then wait $Wait seconds before the next batch.
-    Write-Debug "Batch:`n$($Batch | ConvertTo-Json -AsArray -Depth 5)"
-    $CommandName = "$($Operation)-Halo$($EntityType)"
+    Write-Debug ('Batch:{0}{1}' -f [Environment]::NewLine, ($Batch | ConvertTo-Json -AsArray -Depth 5))
+    $CommandName = ('{0}-Halo{1}' -f $Operation, $EntityType)
     $CommandExists = Get-Command -Name $CommandName
     $ModulePath = $MyInvocation.MyCommand.Module.Path
-    Write-Debug "Module Path: $ModulePath"
+    Write-Debug ('Module Path: {0}' -f $ModulePath)
     $Batch | ForEach-Object {
         $_ | ForEach-Object -Parallel {
             Import-Module $Using:ModulePath
@@ -87,11 +87,11 @@ function Invoke-HaloBatchProcessor {
                 [PSCustomObject]$Result = & $Using:CommandName @CommandParameters
                 $LocalBatchResults.Add($Result)
             } else {
-                Write-Error "The command $CommandName doesn't exist or isn't loaded."
+                Write-Error ('The command {0} doesn''t exist or isn''t loaded.' -f $CommandName)
             }
         }
         if ($Batch.Count -ge 2) {
-            Write-Verbose "More than one batch found, waiting $Wait seconds before the next batch runs." 
+            Write-Verbose ('More than one batch found, waiting {0} seconds before the next batch runs.' -f $Wait)
             Start-Sleep -Seconds $Wait
         }
     }

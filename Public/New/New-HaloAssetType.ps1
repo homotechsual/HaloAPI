@@ -16,7 +16,7 @@ Function New-HaloAssetType {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("AssetType $($AssetType.name)", 'Create')) {
+        if ($PSCmdlet.ShouldProcess(('AssetType {0}' -f $AssetType.name), 'Create')) {
             New-HaloPOSTRequest -Object $AssetType -Endpoint 'assettype'
         }
     } catch {

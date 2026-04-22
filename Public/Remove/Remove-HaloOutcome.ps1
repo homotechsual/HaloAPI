@@ -19,8 +19,8 @@ function Remove-HaloOutcome {
     try {
         $ObjectToDelete = Get-HaloOutcome -OutcomeID $OutcomeID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Outcome '$($ObjectToDelete.name)'", 'Delete')) {
-                $Resource = "api/Outcome/$($OutcomeID)"
+            if ($PSCmdlet.ShouldProcess(('Outcome ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/Outcome/{0}' -f $OutcomeID)
                 $OutcomeResults = New-HaloDELETERequest -Resource $Resource
                 Return $OutcomeResults
             }

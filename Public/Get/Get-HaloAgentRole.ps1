@@ -61,7 +61,7 @@ function Get-HaloAgentRoles {
     try {
         if ($RoleID) {
             Write-Verbose "Running in single-role mode because '-RoleID' was provided."
-            $Resource = "api/Roles/$($RoleID)"
+            $Resource = ('api/Roles/{0}' -f $RoleID)
         } else {
             Write-Verbose 'Running in multi-role mode.'
             $Resource = 'api/Roles'

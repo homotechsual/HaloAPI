@@ -19,8 +19,8 @@ function Remove-HaloStatus {
     try {
         $ObjectToDelete = Get-HaloStatus -StatusID $StatusID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Status '$($ObjectToDelete.name)'", 'Delete')) {
-                $Resource = "api/Status/$($StatusID)"
+            if ($PSCmdlet.ShouldProcess(('Status ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/Status/{0}' -f $StatusID)
                 $StatusResults = New-HaloDELETERequest -Resource $Resource
                 Return $StatusResults
             }

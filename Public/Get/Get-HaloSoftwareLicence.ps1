@@ -59,7 +59,7 @@ function Get-HaloSoftwareLicence {
         if ($LicenceID) {
             Write-Verbose "Running in single-licence mode because '-LicenceID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/SoftwareLicence/$($LicenceID)"
+            $Resource = ('api/SoftwareLicence/{0}' -f $LicenceID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

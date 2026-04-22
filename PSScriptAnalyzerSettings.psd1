@@ -51,7 +51,8 @@
         'Measure-RequiredCommentBasedHelp',
         'Measure-EmptyCommentBasedHelpSections',
         'Measure-MissingParameterDescription',
-        'Measure-AvoidSelfReferentialParameterAlias'
+        'Measure-AvoidSelfReferentialParameterAlias',
+        'Measure-AvoidDoubleQuoteInterpolation'
     )
     Rules = @{
         PSPlaceOpenBrace = @{

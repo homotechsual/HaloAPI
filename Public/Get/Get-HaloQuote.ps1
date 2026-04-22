@@ -94,7 +94,7 @@ function Get-HaloQuote {
         if ($QuoteID) {
             Write-Verbose "Running in single-quote mode because '-QuoteID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/quotation/$($QuoteID)"
+            $Resource = ('api/quotation/{0}' -f $QuoteID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

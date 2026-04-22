@@ -11,7 +11,7 @@ param()
 BeforeAll {
     $ModulePath = Split-Path -Parent -Path (Split-Path -Parent -Path $PSCommandPath)
     $ModuleName = 'HaloAPI'
-    $ManifestPath = "$($ModulePath)\$($ModuleName).psd1"
+    $ManifestPath = ('{0}\{1}.psd1' -f $ModulePath, $ModuleName)
     if (Get-Module -Name $ModuleName) {
         Remove-Module $ModuleName -Force
     }
@@ -79,6 +79,33 @@ Describe 'New-HaloTicket' {
         Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
             $Object[0].subject -eq 'Body check' -and $Object[0].client_id -eq 7
         } -Times 1 -Exactly
+    }
+}
+
+Describe 'New-HaloDistributionListMember' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+    }
+
+    It 'posts to the correct distribution list members endpoint' {
+        New-HaloDistributionListMember -DistributionListID 99 -Member @{ agent_id = 1 }
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'distributionlist/99/members'
+        } -Times 1 -Exactly
+    }
+
+    It 'passes the provided member object through to the request body' {
+        $MemberObject = @{ agent_id = 7 }
+        New-HaloDistributionListMember -DistributionListID 1 -Member $MemberObject
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Object[0].agent_id -eq 7
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call New-HaloPOSTRequest when -WhatIf is specified' {
+        New-HaloDistributionListMember -DistributionListID 5 -Member @{ agent_id = 2 } -WhatIf
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
     }
 }
 

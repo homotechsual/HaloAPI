@@ -16,7 +16,7 @@ function New-HaloDashboard {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Dashboard '$($Dashboard.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess(('Dashboard ''{0}''' -f $Dashboard.name), 'Create')) {
             New-HaloPOSTRequest -Object $Dashboard -Endpoint 'DashboardLinks'
         }
     } catch {

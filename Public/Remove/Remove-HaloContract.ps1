@@ -18,13 +18,13 @@ function Remove-HaloContract {
     try {
         $ObjectToDelete = Get-HaloContract -ContractID $ContractID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Contract '$($ObjectToDelete.ref)'", 'Delete')) {
-                $Resource = "api/ClientContract/$($ContractID)"
+            if ($PSCmdlet.ShouldProcess(('Contract ''{0}''' -f $ObjectToDelete.ref), 'Delete')) {
+                $Resource = ('api/ClientContract/{0}' -f $ContractID)
                 $ContractResult = New-HaloDELETERequest -Resource $Resource
                 Return $ContractResult
             }
         } else {
-            Throw "Contract with ID: '$($ContractID)' was not found in Halo to delete."
+            Throw ('Contract with ID: ''{0}'' was not found in Halo to delete.' -f $ContractID)
         }
     } catch {
         New-HaloError -ErrorRecord $_

@@ -66,7 +66,7 @@ function Get-HaloViewList {
     try {
         if ($ViewListId) {
             Write-Verbose "Running in single-viewlist mode because '-ViewListId' was provided."
-            $Resource = "api/viewlists/$($ViewListId)"
+            $Resource = ('api/viewlists/{0}' -f $ViewListId)
         } else {
             Write-Verbose 'Running in multi-viewlist mode.'
             $Resource = 'api/viewlists'

@@ -169,6 +169,8 @@
         "approve": true,
         "matchCommandLine": true,
       },
+      "Import-Clixml": true,
+      "Set-Content": true,
     },
   },
 }

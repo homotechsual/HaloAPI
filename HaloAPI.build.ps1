@@ -67,7 +67,7 @@ if ($UpdateHelp) {
 This page has been generated from the {0} PowerShell module source. To make changes please edit the appropriate PowerShell source file.
 :::
 '@ -f $Script:ModuleName
-    $ExcludeFiles = Get-ChildItem -Path "$($PSScriptRoot)\Private" -Filter '*.ps1' -Recurse | ForEach-Object { [System.IO.Path]::GetFileNameWithoutExtension($_.FullName) }
+    $ExcludeFiles = Get-ChildItem -Path ('{0}\Private' -f $PSScriptRoot) -Filter '*.ps1' -Recurse | ForEach-Object { [System.IO.Path]::GetFileNameWithoutExtension($_.FullName) }
     $NewDocusaurusHelpParams = @{
         Module = ('.\{0}.psd1' -f $Script:ModuleName)
         DocsFolder = $DocsFolderPath
@@ -203,31 +203,31 @@ This page has been generated from the {0} PowerShell module source. To make chan
 # Copy PowerShell Module files to output folder for release on PSGallery
 if ($CopyModuleFiles) {
     # Copy Module Files to Output Folder
-    if (-not (Test-Path "$($PSScriptRoot)\Output\$ModuleName")) {
-        New-Item -Path "$($PSScriptRoot)\Output\$ModuleName" -ItemType Directory | Out-Null
+    if (-not (Test-Path ('{0}\Output\{1}' -f $PSScriptRoot, $ModuleName))) {
+        New-Item -Path ('{0}\Output\{1}' -f $PSScriptRoot, $ModuleName) -ItemType Directory | Out-Null
     }
-    if (Test-Path -Path "$($PSScriptRoot)\Classes\") {
-        Copy-Item -Path "$($PSScriptRoot)\Classes\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\$ModuleName" -Force
+    if (Test-Path -Path ('{0}\Classes\' -f $PSScriptRoot)) {
+        Copy-Item -Path ('{0}\Classes\' -f $PSScriptRoot) -Filter *.* -Recurse -Destination ('{0}\Output\{1}' -f $PSScriptRoot, $ModuleName) -Force
     }
-    if (Test-Path -Path "$($PSScriptRoot)\Data\") {
-        Copy-Item -Path "$($PSScriptRoot)\Data\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\$ModuleName" -Force
+    if (Test-Path -Path ('{0}\Data\' -f $PSScriptRoot)) {
+        Copy-Item -Path ('{0}\Data\' -f $PSScriptRoot) -Filter *.* -Recurse -Destination ('{0}\Output\{1}' -f $PSScriptRoot, $ModuleName) -Force
     }
-    Copy-Item -Path "$($PSScriptRoot)\Private\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\$ModuleName" -Force
-    Copy-Item -Path "$($PSScriptRoot)\Public\" -Filter *.* -Recurse -Destination "$($PSScriptRoot)\Output\$ModuleName" -Force
+    Copy-Item -Path ('{0}\Private\' -f $PSScriptRoot) -Filter *.* -Recurse -Destination ('{0}\Output\{1}' -f $PSScriptRoot, $ModuleName) -Force
+    Copy-Item -Path ('{0}\Public\' -f $PSScriptRoot) -Filter *.* -Recurse -Destination ('{0}\Output\{1}' -f $PSScriptRoot, $ModuleName) -Force
 
     # Copy module, manifest and scaffold files
     Copy-Item -Path @(
-        "$($PSScriptRoot)\LICENSE.md"
-        "$($PSScriptRoot)\CHANGELOG.md"
-        "$($PSScriptRoot)\README.md"
-        "$($PSScriptRoot)\$ModuleName.psd1"
-        "$($PSScriptRoot)\$ModuleName.psm1"
-    ) -Destination "$($PSScriptRoot)\Output\$ModuleName" -Force
+        ('{0}\LICENSE.md' -f $PSScriptRoot)
+        ('{0}\CHANGELOG.md' -f $PSScriptRoot)
+        ('{0}\README.md' -f $PSScriptRoot)
+        ('{0}\{1}.psd1' -f $PSScriptRoot, $ModuleName)
+        ('{0}\{1}.psm1' -f $PSScriptRoot, $ModuleName)
+    ) -Destination ('{0}\Output\{1}' -f $PSScriptRoot, $ModuleName) -Force
 }
 
 # Run all Pester tests in folder .\Tests
 if ($Test) {
-    $Result = Invoke-Pester "$($PSScriptRoot)\Tests" -PassThru
+    $Result = Invoke-Pester ('{0}\Tests' -f $PSScriptRoot) -PassThru
     if ($Result.FailedCount -gt 0) {
         throw 'Pester tests failed'
     }
@@ -239,7 +239,7 @@ if ($UpdateManifest) {
     Import-Module -Name PlatyPS
 
     # Find Latest Version in Change log.
-    $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md" -Raw
+    $CHANGELOG = Get-Content -Path ('{0}\CHANGELOG.md' -f $PSScriptRoot) -Raw
     $MarkdownObject = [Markdown.MAML.Parser.MarkdownParser]::new()
     [regex]$ReleaseRegex = '#{2}.*\d*\.\d*\.\d*$/m'
     $Releases = ($ReleaseRegex.Matches($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text))
@@ -247,7 +247,7 @@ if ($UpdateManifest) {
     $Versions = $Regex.Matches($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) | ForEach-Object { $_.Value }
     $ChangeLogVersion = ($Versions | Measure-Object -Maximum).Maximum
 
-    $ManifestPath = "$($PSScriptRoot)\$ModuleName.psd1"
+    $ManifestPath = ('{0}\{1}.psd1' -f $PSScriptRoot, $ModuleName)
 
     # Start by importing the manifest to determine the version, then add 1 to the Build
     $Manifest = Test-ModuleManifest -Path $ManifestPath
@@ -257,16 +257,16 @@ if ($UpdateManifest) {
         throw 'No new version found in CHANGELOG.md'
     }
 
-    Write-Output -InputObject ("Current Module Version: $($Version)")
-    Write-Output -InputObject ("New Module version: $($ChangeLogVersion)")
+    Write-Output -InputObject ('Current Module Version: {0}' -f $Version)
+    Write-Output -InputObject ('New Module version: {0}' -f $ChangeLogVersion)
 
     # Update Manifest file with Release Notes
-    $CHANGELOG = Get-Content -Path "$($PSScriptRoot)\CHANGELOG.md"
+    $CHANGELOG = Get-Content -Path ('{0}\CHANGELOG.md' -f $PSScriptRoot)
     $MarkdownObject = [Markdown.MAML.Parser.MarkdownParser]::new()
     $ReleaseNotes = ((($MarkdownObject.ParseString($CHANGELOG).Children.Spans.Text) -match '#{2}.*\d*\.\d*\.\d') -split ' - ')[1]
 
     # Update Module with new version
-    Update-ModuleManifest -ModuleVersion $ChangeLogVersion -Path "$($PSScriptRoot)\$ModuleName.psd1" -ReleaseNotes $ReleaseNotes
+    Update-ModuleManifest -ModuleVersion $ChangeLogVersion -Path ('{0}\{1}.psd1' -f $PSScriptRoot, $ModuleName) -ReleaseNotes $ReleaseNotes
 }
 
 # Publish Module to PowerShell Gallery
@@ -274,24 +274,24 @@ if ($PublishModule -and $Configuration -eq 'Production') {
     try {
         # Build a splat containing the required details and make sure to Stop for errors which will trigger the catch
         $params = @{
-            Path = ("$($PSScriptRoot)\Output\$ModuleName")
+            Path = ('{0}\Output\{1}' -f $PSScriptRoot, $ModuleName)
             NuGetApiKey = $ENV:PSGalleryAPIKey ? $ENV:PSGalleryAPIKey : (Get-AzKeyVaultSecret -VaultName $ENV:PSGalleryVault -Name $ENV:PSGallerySecret -AsPlainText)
             ErrorAction = 'Stop'
         }
-        $ManifestPath = "$($PSScriptRoot)\$ModuleName.psd1"
+        $ManifestPath = ('{0}\{1}.psd1' -f $PSScriptRoot, $ModuleName)
         $Manifest = Test-ModuleManifest -Path $ManifestPath
         [System.Version]$Version = $Manifest.Version
         Publish-Module @params
-        Write-Output -InputObject ("$ModuleName PowerShell Module version $($Version) published to the PowerShell Gallery")
-    } Catch {
-        Throw $_
+        Write-Output -InputObject ('{0} PowerShell Module version {1} published to the PowerShell Gallery' -f $ModuleName, $Version)
+    } catch {
+        throw $_
     }
 }
 
 # Clean up Output folder
 if ($Clean) {
     # Clean output folder
-    if ((Test-Path "$($PSScriptRoot)\Output")) {
-        Remove-Item -Path "$($PSScriptRoot)\Output" -Recurse -Force
+    if ((Test-Path ('{0}\Output' -f $PSScriptRoot))) {
+        Remove-Item -Path ('{0}\Output' -f $PSScriptRoot) -Recurse -Force
     }
 }

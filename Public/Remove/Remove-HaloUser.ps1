@@ -19,8 +19,8 @@ function Remove-HaloUser {
     try {
         $ObjectToDelete = Get-HaloUser -UserId $UserId
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("User '$($ObjectToDelete.name)'", 'Delete')) {
-                $Resource = "api/users/$($UserId)"
+            if ($PSCmdlet.ShouldProcess(('User ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/users/{0}' -f $UserId)
                 $UserResults = New-HaloDELETERequest -Resource $Resource
                 Return $UserResults
             }

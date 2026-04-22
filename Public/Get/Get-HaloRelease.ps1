@@ -61,7 +61,7 @@ function Get-HaloRelease {
         if ($ReleaseID) {
             Write-Verbose "Running in single-software release mode because '-ReleaseID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/release/$($ReleaseID)"
+            $Resource = ('api/release/{0}' -f $ReleaseID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

@@ -20,25 +20,25 @@ function New-HaloQuery {
         # Returns the query as a string instead of a hashtable.
         [Switch]$AsString
     )
-    Write-Verbose "Building parameters for $($CommandName). Use '-Debug' with '-Verbose' to see parameter values as they are built."
+    Write-Verbose ('Building parameters for {0}. Use ''-Debug'' with ''-Verbose'' to see parameter values as they are built.' -f $CommandName)
     $QSCollection = [Hashtable]@{}
     foreach ($Parameter in $Parameters.Values) {
         # Skip system parameters.
         if (([System.Management.Automation.Cmdlet]::CommonParameters).Contains($Parameter.Name)) {
-            Write-Debug "Excluding system parameter $($Parameter.Name)."
-            Continue
+            Write-Debug ('Excluding system parameter {0}.' -f $Parameter.Name)
+            continue
         }
         # Skip optional system parameters.
         if (([System.Management.Automation.Cmdlet]::OptionalCommonParameters).Contains($Parameter.Name)) {
-            Write-Verbose "Excluding optional system parameter $($Parameter.Name)."
-            Continue
+            Write-Verbose ('Excluding optional system parameter {0}.' -f $Parameter.Name)
+            continue
         }
         $ParameterVariable = Get-Variable -Name $Parameter.Name -ErrorAction SilentlyContinue
         if (($Parameter.ParameterType.Name -eq 'String') -or ($Parameter.ParameterType.Name -eq 'String[]') -or ($Parameter.ParameterType.Name -eq 'Object') -or ($Parameter.ParameterType.Name -eq 'Object[]')) {
-            Write-Debug "Found String or String Array param $($ParameterVariable.Name)"
+            Write-Debug ('Found String or String Array param {0}' -f $ParameterVariable.Name)
             if ([String]::IsNullOrEmpty($ParameterVariable.Value)) {
-                Write-Debug "Skipping unset param $($ParameterVariable.Name)"
-                Continue
+                Write-Debug ('Skipping unset param {0}' -f $ParameterVariable.Name)
+                continue
             } else {
                 if ($Parameter.Aliases) {
                     # Use the first alias as the query.
@@ -48,27 +48,22 @@ function New-HaloQuery {
                     $Query = ([String]$ParameterVariable.Name).ToLower()
                 }
                 $Value = $ParameterVariable.Value
-                if (($Value -is [array]) -and ($CommaSeparatedArrays)) {
+                if ($Value -is [array]) {
                     Write-Debug 'Building comma separated array string.'
                     $QueryValue = $Value -join ','
                     $QSCollection.Add($Query, $QueryValue)
-                    Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
-                } elseif (($Value -is [array]) -and (-not $CommaSeparatedArrays)) {
-                    foreach ($ArrayValue in $Value) {
-                        $QSCollection.Add($Query, $ArrayValue)
-                        Write-Debug "Adding parameter $($Query) with value $($ArrayValue)"
-                    }
+                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
                 } else {
                     $QSCollection.Add($Query, $Value)
-                    Write-Debug "Adding parameter $($Query) with value $($Value)"
+                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $Value)
                 }
             }
         }
         if ($Parameter.ParameterType.Name -eq 'SwitchParameter') {
-            Write-Debug "Found Switch param $($ParameterVariable.Name)"
+            Write-Debug ('Found Switch param {0}' -f $ParameterVariable.Name)
             if ($ParameterVariable.Value -eq $False) {
-                Write-Debug "Skipping unset param $($ParameterVariable.Name)"
-                Continue
+                Write-Debug ('Skipping unset param {0}' -f $ParameterVariable.Name)
+                continue
             } else {
                 if ($Parameter.Aliases) {
                     # Use the first alias as the query string name.
@@ -79,14 +74,14 @@ function New-HaloQuery {
                 }
                 $Value = ([String]$ParameterVariable.Value).ToLower()
                 $QSCollection.Add($Query, $Value)
-                Write-Debug "Adding parameter $($Query) with value $($Value)"
+                Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $Value)
             }
         }
         if (($Parameter.ParameterType.Name -eq 'Int32') -or ($Parameter.ParameterType.Name -eq 'Int64') -or ($Parameter.ParameterType.Name -eq 'Int32[]') -or ($Parameter.ParameterType.Name -eq 'Int64[]')) {
-            Write-Debug "Found Int or Int Array param $($ParameterVariable.Name)"
+            Write-Debug ('Found Int or Int Array param {0}' -f $ParameterVariable.Name)
             if (($ParameterVariable.Value -eq 0) -or ($null -eq $ParameterVariable.Value)) {
-                Write-Debug "Skipping unset param $($ParameterVariable.Name)"
-                Continue
+                Write-Debug ('Skipping unset param {0}' -f $ParameterVariable.Name)
+                continue
             } else {
                 if ($Parameter.Aliases) {
                     # Use the first alias as the query string name.
@@ -96,27 +91,22 @@ function New-HaloQuery {
                     $Query = ([String]$ParameterVariable.Name).ToLower()
                 }
                 $Value = $ParameterVariable.Value
-                if (($Value -is [array]) -and ($CommaSeparatedArrays)) {
+                if ($Value -is [array]) {
                     Write-Debug 'Building comma separated array string.'
                     $QueryValue = $Value -join ','
                     $QSCollection.Add($Query, $QueryValue)
-                    Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
-                } elseif (($Value -is [array]) -and (-not $CommaSeparatedArrays)) {
-                    foreach ($ArrayValue in $Value) {
-                        $QSCollection.Add($Query, $ArrayValue)
-                        Write-Debug "Adding parameter $($Query) with value $($ArrayValue)"
-                    }
+                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
                 } else {
                     $QSCollection.Add($Query, $Value)
-                    Write-Debug "Adding parameter $($Query) with value $($Value)"
+                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $Value)
                 }
             }
         }
         if (($Parameter.ParameterType.Name -eq 'DateTime') -or ($Parameter.ParameterType.Name -eq 'DateTime[]')) {
-            Write-Debug "Found DateTime or DateTime Array param $($ParameterVariable.Name)"
+            Write-Debug ('Found DateTime or DateTime Array param {0}' -f $ParameterVariable.Name)
             if ($null -eq $ParameterVariable.Value) {
-                Write-Debug "Skipping unset param $($ParameterVariable.Name)"
-                Continue
+                Write-Debug ('Skipping unset param {0}' -f $ParameterVariable.Name)
+                continue
             } else {
                 if ($Parameter.Aliases) {
                     # Use the first alias as the query string name.
@@ -126,21 +116,15 @@ function New-HaloQuery {
                     $Query = ([String]$ParameterVariable.Name).ToLower()
                 }
                 $Value = $ParameterVariable.Value
-                if (($Value -is [array]) -and ($CommaSeparatedArrays)) {
+                if ($Value -is [array]) {
                     Write-Debug 'Building comma separated DateTime array string.'
                     $QueryValue = ($Value | ForEach-Object { $_.ToString('o') }) -join ','
                     $QSCollection.Add($Query, $QueryValue)
-                    Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
-                } elseif (($Value -is [array]) -and (-not $CommaSeparatedArrays)) {
-                    foreach ($ArrayValue in $Value) {
-                        $QueryValue = $ArrayValue.ToString('o')
-                        $QSCollection.Add($Query, $QueryValue)
-                        Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
-                    }
+                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
                 } else {
                     $QueryValue = $Value.ToString('o')
                     $QSCollection.Add($Query, $QueryValue)
-                    Write-Debug "Adding parameter $($Query) with value $($QueryValue)"
+                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
                 }
             }
         }
@@ -157,13 +141,13 @@ function New-HaloQuery {
         $QSCollection.Add('page_no', 1)
     }
     if (('pageinate' -in $QSCollection.Keys) -and ('page_size' -notin $QSCollection.Keys) -and ($IsMulti)) {
-        Write-Verbose "Parameter '-PageSize' was not provided for a paginated request. Using default value of $($Script:HAPIDefaultPageSize)"
+        Write-Verbose ('Parameter ''-PageSize'' was not provided for a paginated request. Using default value of {0}' -f $Script:HAPIDefaultPageSize)
     }
     if (('pageinate' -in $QSCollection.Keys) -and ('page_no' -notin $QSCollection.Keys) -and ($IsMulti)) {
         Write-Error "When using pagination you must specify an initial page number with '-PageNo'."
-        Break
+        break
     }
-    Write-Debug "Query collection contains $($QSCollection | Out-String)"
+    Write-Debug ('Query collection contains {0}' -f ($QSCollection | Out-String))
     if ($AsString) {
         $QSBuilder.Query = $QSCollection.ToString()
         $Query = $QSBuilder.Query.ToString()
