@@ -88,6 +88,6 @@ Describe 'Quality test entrypoint suite parsing' {
     }
 
     It 'splits comma-delimited suite values' {
-        $Script:QualityTestScriptContent | Should -Match "\\$_ -split '\\s\*,\\s\*'"
+        $Script:QualityTestScriptContent | Should -Match '-split\s+''\\s\*,\\s\*'''
     }
 }
