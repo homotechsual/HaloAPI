@@ -74,3 +74,20 @@ Describe 'Module HaloAPI loads' {
         Get-Module -Name 'HaloAPI' | Should -Not -Be $null
     }
 }
+
+Describe 'Quality test entrypoint suite parsing' {
+    BeforeAll {
+        $Script:QualityTestScriptPath = Join-Path -Path $ModulePath -ChildPath 'DevOps\Quality\test.ps1'
+        $Script:QualityTestScriptContent = Get-Content -Path $Script:QualityTestScriptPath -Raw
+    }
+
+    It 'uses string array suite input with argument completions' {
+        $Script:QualityTestScriptContent | Should -Match '\[ArgumentCompletions\(\s*''E2E''\s*,\s*''Live''\s*,\s*''Meta''\s*,\s*''Unit''\s*\)\]'
+        $Script:QualityTestScriptContent | Should -Match '\[string\[\]\]\$Suite\s*=\s*@\(''Meta''\)'
+        $Script:QualityTestScriptContent | Should -Not -Match '\[ValidateSet\(\s*''E2E''\s*,\s*''Live''\s*,\s*''Meta''\s*,\s*''Unit''\s*\)\]\s*\r?\n\s*\[string\[\]\]\$Suite'
+    }
+
+    It 'splits comma-delimited suite values' {
+        $Script:QualityTestScriptContent | Should -Match "\\$_ -split '\\s\*,\\s\*'"
+    }
+}

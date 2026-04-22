@@ -73,4 +73,11 @@ if ($CodeCoverage) {
     $testParams['CodeCoverage'] = $true
 }
 
-& $testScript @testParams
+try {
+    & $testScript @testParams
+} finally {
+    foreach ($secretName in $secretNames) {
+        [System.Environment]::SetEnvironmentVariable($secretName, $null, 'Process')
+    }
+    Write-Verbose 'Cleared Halo test credential environment variables from process scope.'
+}
