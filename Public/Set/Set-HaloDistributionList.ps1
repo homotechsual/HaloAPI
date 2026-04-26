@@ -44,7 +44,7 @@ Function Set-HaloDistributionList {
                 Return $Results
             }
         } else {
-            Throw 'One or more distribution lists was not found in Halo to update.'
+            Throw 'One or more distribution lists were not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

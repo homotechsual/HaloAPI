@@ -34,7 +34,7 @@ function Get-HaloCAB {
     try {
         if ($CABID) {
             Write-Verbose "Running in single-CAB mode because '-CABID' was provided."
-            $Resource = ('api/CAB/{0}' -f $ActionID)
+            $Resource = ('api/CAB/{0}' -f $CABID)
         } else {
             Write-Verbose 'Running in multi-action mode.'
             $Resource = 'api/CAB'

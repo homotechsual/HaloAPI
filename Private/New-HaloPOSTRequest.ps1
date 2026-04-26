@@ -24,11 +24,18 @@ function New-HaloPOSTRequest {
     Invoke-HaloPreFlightCheck
     try {
         if ($QSCollection) {
-            Write-Debug ('Query string in New-HaloGETRequest contains: {0}' -f ($QSCollection | Out-String))
+            Write-Debug ('Query string in New-HaloPOSTRequest contains: {0}' -f ($QSCollection | Out-String))
             $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
-            Write-Verbose 'Building [HttpQSCollection] for New-HaloGETRequest'
+            Write-Verbose 'Building [HttpQSCollection] for New-HaloPOSTRequest'
             foreach ($Key in $QSCollection.Keys) {
-                $QueryStringCollection.Add($Key, $QSCollection.$Key)
+                $QueryValue = $QSCollection[$Key]
+                if ($QueryValue -is [array]) {
+                    foreach ($Entry in $QueryValue) {
+                        $QueryStringCollection.Add($Key, $Entry)
+                    }
+                } else {
+                    $QueryStringCollection.Add($Key, $QueryValue)
+                }
             }
             $QSBuilder = [System.UriBuilder]::new()
             $QSBuilder.Query = $QueryStringCollection.ToString()

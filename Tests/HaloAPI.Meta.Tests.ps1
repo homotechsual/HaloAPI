@@ -12,11 +12,7 @@ BeforeAll {
     if (Get-Module -Name $ModuleName) {
         Remove-Module $ModuleName -Force
     }
-    $importError = $null
-    Import-Module $ManifestPath -Verbose:$False -ErrorAction Stop -ErrorVariable importError
-    if ($importError) {
-        throw $importError[0]
-    }
+    Import-Module $ManifestPath -Verbose:$False -ErrorAction Stop
 
     $Script:ModuleInformation = Import-Module -Name $ManifestPath -PassThru -ErrorAction Stop
 

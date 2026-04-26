@@ -48,11 +48,14 @@ function New-HaloQuery {
                     $Query = ([String]$ParameterVariable.Name).ToLower()
                 }
                 $Value = $ParameterVariable.Value
-                if ($Value -is [array]) {
+                if (($Value -is [array]) -and $CommaSeparatedArrays) {
                     Write-Debug 'Building comma separated array string.'
                     $QueryValue = $Value -join ','
                     $QSCollection.Add($Query, $QueryValue)
                     Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
+                } elseif ($Value -is [array]) {
+                    $QSCollection.Add($Query, $Value)
+                    Write-Debug ('Adding parameter {0} with array values {1}' -f $Query, ($Value -join ', '))
                 } else {
                     $QSCollection.Add($Query, $Value)
                     Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $Value)
@@ -91,11 +94,14 @@ function New-HaloQuery {
                     $Query = ([String]$ParameterVariable.Name).ToLower()
                 }
                 $Value = $ParameterVariable.Value
-                if ($Value -is [array]) {
+                if (($Value -is [array]) -and $CommaSeparatedArrays) {
                     Write-Debug 'Building comma separated array string.'
                     $QueryValue = $Value -join ','
                     $QSCollection.Add($Query, $QueryValue)
                     Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
+                } elseif ($Value -is [array]) {
+                    $QSCollection.Add($Query, $Value)
+                    Write-Debug ('Adding parameter {0} with array values {1}' -f $Query, ($Value -join ', '))
                 } else {
                     $QSCollection.Add($Query, $Value)
                     Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $Value)
@@ -116,11 +122,15 @@ function New-HaloQuery {
                     $Query = ([String]$ParameterVariable.Name).ToLower()
                 }
                 $Value = $ParameterVariable.Value
-                if ($Value -is [array]) {
+                if (($Value -is [array]) -and $CommaSeparatedArrays) {
                     Write-Debug 'Building comma separated DateTime array string.'
                     $QueryValue = ($Value | ForEach-Object { $_.ToString('o') }) -join ','
                     $QSCollection.Add($Query, $QueryValue)
                     Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
+                } elseif ($Value -is [array]) {
+                    $QueryValue = $Value | ForEach-Object { $_.ToString('o') }
+                    $QSCollection.Add($Query, $QueryValue)
+                    Write-Debug ('Adding parameter {0} with array values {1}' -f $Query, ($QueryValue -join ', '))
                 } else {
                     $QueryValue = $Value.ToString('o')
                     $QSCollection.Add($Query, $QueryValue)
@@ -130,10 +140,10 @@ function New-HaloQuery {
         }
     }
     if ('count' -in $QSCollection.Keys) {
-        Write-Verbose "Halo recommend use of pagination with the '-Paginate' parameter instead of '-Count'."
+        Write-Verbose 'Halo recommend use of pagination with the ''-Paginate'' parameter instead of ''-Count''.'
     }
     if ((('pageinate' -notin $QSCollection.Keys) -and ('count' -notin $QSCollection.Keys)) -and ($IsMulti)) {
-        Write-Verbose "Running in 'multi' mode but neither '-Paginate' or '-Count' was specified. All results will be returned."
+        Write-Verbose 'Running in ''multi'' mode but neither ''-Paginate'' or ''-Count'' was specified. All results will be returned.'
         $QSCollection.Add('pageinate', 'true')
         if (-not($QSCollection.page_size)) {
             $QSCollection.Add('page_size', $Script:HAPIDefaultPageSize)
@@ -146,12 +156,23 @@ function New-HaloQuery {
         Write-Verbose ('Parameter ''-PageSize'' was not provided for a paginated request. Using default value of {0}' -f $Script:HAPIDefaultPageSize)
     }
     if (('pageinate' -in $QSCollection.Keys) -and ('page_no' -notin $QSCollection.Keys) -and ($IsMulti)) {
-        Write-Error "When using pagination you must specify an initial page number with '-PageNo'."
-        break
+        throw 'When using pagination you must specify an initial page number with ''-PageNo''.'
     }
     Write-Debug ('Query collection contains {0}' -f ($QSCollection | Out-String))
     if ($AsString) {
-        $QSBuilder.Query = $QSCollection.ToString()
+        $QueryStringCollection = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
+        foreach ($Key in $QSCollection.Keys) {
+            $QueryValue = $QSCollection[$Key]
+            if ($QueryValue -is [array]) {
+                foreach ($Entry in $QueryValue) {
+                    $QueryStringCollection.Add($Key, $Entry)
+                }
+            } else {
+                $QueryStringCollection.Add($Key, $QueryValue)
+            }
+        }
+        $QSBuilder = [System.UriBuilder]::new()
+        $QSBuilder.Query = $QueryStringCollection.ToString()
         $Query = $QSBuilder.Query.ToString()
         Return $Query
     } else {
