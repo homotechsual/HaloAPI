@@ -26,11 +26,16 @@ Function Set-HaloTicket {
             $HaloTicketParams = @{
                 TicketId = $_.id
             }
-            $TicketExists = Get-HaloTicket @HaloTicketParams
-            if ($TicketExists) {
-                Return $True
+            if (-not $SkipValidation) {
+                $TicketExists = Get-HaloTicket @HaloTicketParams
+                if ($TicketExists) {
+                    Return $True
+                } else {
+                    Return $False
+                }
             } else {
-                Return $False
+                Write-Verbose 'Skipping validation checks.'
+                return $True
             }
         }
         if ($False -notin $ObjectToUpdate) {

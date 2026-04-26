@@ -83,7 +83,7 @@ function Get-HaloAgent {
     try {
         if ($AgentID) {
             Write-Verbose "Running in single-agent mode because '-AgentID' was provided."
-            $Resource = "api/agent/$($AgentID)"
+            $Resource = ('api/agent/{0}' -f $AgentID)
         } elseif ($Me) {
             Write-Verbose "Running in 'Me' mode."
             $Resource = 'api/agent/me'

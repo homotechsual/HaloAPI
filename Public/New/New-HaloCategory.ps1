@@ -16,7 +16,7 @@ Function New-HaloCategory {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Category '$($Category.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess(('Category ''{0}''' -f $Category.name), 'Create')) {
             New-HaloPOSTRequest -Object $Category -Endpoint 'Category'
         }
     } catch {

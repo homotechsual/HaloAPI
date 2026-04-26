@@ -65,7 +65,7 @@ function Get-HaloContract {
         if ($ContractID) {
             Write-Verbose "Running in single-contract mode because '-ContractID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/clientcontract/$($ContractID)"
+            $Resource = ('api/clientcontract/{0}' -f $ContractID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

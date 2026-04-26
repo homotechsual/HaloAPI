@@ -16,7 +16,7 @@ Function New-HaloScheduleTemplate {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Schedule Template '$($Template.name)", 'Create')) {
+        if ($PSCmdlet.ShouldProcess(('Schedule Template ''{0}' -f $Template.name), 'Create')) {
             New-HaloPOSTRequest -Object $Template -Endpoint 'Template'
         }
     } catch {

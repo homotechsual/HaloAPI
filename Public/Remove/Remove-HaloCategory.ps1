@@ -19,8 +19,8 @@ function Remove-HaloCategory {
     try {
         $ObjectToDelete = Get-HaloCategory -CategoryID $CategoryID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Category '$($ObjectToDelete.value)'", 'Delete')) {
-                $Resource = "api/Category/$($CategoryID)"
+            if ($PSCmdlet.ShouldProcess(('Category ''{0}''' -f $ObjectToDelete.value), 'Delete')) {
+                $Resource = ('api/Category/{0}' -f $CategoryID)
                 $ActionResults = New-HaloDELETERequest -Resource $Resource
                 Return $ActionResults
             }

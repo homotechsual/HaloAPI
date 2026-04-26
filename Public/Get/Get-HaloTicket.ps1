@@ -282,7 +282,7 @@ function Get-HaloTicket {
         if ($TicketID) {
             Write-Verbose "Running in single-ticket mode because '-TicketID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/tickets/$($TicketID)"
+            $Resource = ('api/tickets/{0}' -f $TicketID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
@@ -310,7 +310,7 @@ function Get-HaloTicket {
             }
             $TicketResults = $AllTicketResults
         }
-        Return $TicketResults
+        return $TicketResults
     } catch {
         New-HaloError -ErrorRecord $_
     }

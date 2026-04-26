@@ -24,8 +24,8 @@ function Remove-HaloAppointment {
         }
         $ObjectToDelete = Get-HaloAppointment -AppointmentID $AppointmentID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Appointment '$($ObjectToDelete.id)' by '$($ObjectToDelete.who)'", 'Delete')) {
-                $Resource = "api/Appointment/$($AppointmentID)"
+            if ($PSCmdlet.ShouldProcess(('Appointment ''{0}'' by ''{1}''' -f $ObjectToDelete.id, $ObjectToDelete.who), 'Delete')) {
+                $Resource = ('api/Appointment/{0}' -f $AppointmentID)
                 $AppointmentResults = New-HaloDELETERequest -Resource $Resource
                 Return $AppointmentResults
             }

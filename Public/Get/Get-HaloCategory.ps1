@@ -34,7 +34,7 @@ function Get-HaloCategory {
     try {
         if ($CategoryID) {
             Write-Verbose "Running in single-field mode because '-CategoryID' was provided."
-            $Resource = "api/Category/$($CategoryID)"
+            $Resource = ('api/Category/{0}' -f $CategoryID)
         } else {
             Write-Verbose 'Running in multi-field mode.'
             $Resource = 'api/Category'

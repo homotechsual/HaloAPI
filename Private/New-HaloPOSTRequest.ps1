@@ -24,7 +24,7 @@ function New-HaloPOSTRequest {
     Invoke-HaloPreFlightCheck
     try {
         if ($QSCollection) {
-            Write-Debug "Query string in New-HaloGETRequest contains: $($QSCollection | Out-String)"
+            Write-Debug ('Query string in New-HaloGETRequest contains: {0}' -f ($QSCollection | Out-String))
             $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
             Write-Verbose 'Building [HttpQSCollection] for New-HaloGETRequest'
             foreach ($Key in $QSCollection.Keys) {
@@ -37,10 +37,10 @@ function New-HaloPOSTRequest {
             Write-Debug 'Query string collection not present...'
         }
         $JSONBody = $Object | ConvertTo-Json -Depth 100 -AsArray
-        Write-Debug "Request body:`n$JSONBody"
+        Write-Debug ('Request body:{0}{1}' -f [Environment]::NewLine, $JSONBody)
         $WebRequestParams = @{
             Method = 'POST'
-            Uri = "$($Script:HAPIConnectionInformation.URL)api/$($Endpoint)$($Query)"
+            Uri = ('{0}api/{1}{2}' -f $Script:HAPIConnectionInformation.URL, $Endpoint, $Query)
             Body = $JSONBody
         }
         $Results = Invoke-HaloRequest -WebRequestParams $WebRequestParams

@@ -72,7 +72,7 @@ function Get-HaloSite {
         if ($SiteID) {
             Write-Verbose "Running in single-site mode because '-SiteID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/site/$($SiteID)"
+            $Resource = ('api/site/{0}' -f $SiteID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

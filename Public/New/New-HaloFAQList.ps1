@@ -16,7 +16,7 @@ Function New-HaloFAQList {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("FAQ List '$($FAQList.name)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess(('FAQ List ''{0}''' -f $FAQList.name), 'Create')) {
             New-HaloPOSTRequest -Object $FAQList -Endpoint 'FAQLists'
         }
     } catch {

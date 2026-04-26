@@ -65,7 +65,10 @@ function Get-HaloItem {
         [switch]$OrderByDesc5,
         # Include extra objects in the result.
         [Parameter( ParameterSetName = 'Single' )]
-        [switch]$IncludeDetails
+        [switch]$IncludeDetails,
+        # Include inactive items in the result.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$IncludeInactive
     )
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.MyCommand.Name
@@ -78,7 +81,7 @@ function Get-HaloItem {
         if ($ItemID) {
             Write-Verbose "Running in single-item mode because '-ItemID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/item/$($ItemID)"
+            $Resource = ('api/item/{0}' -f $ItemID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

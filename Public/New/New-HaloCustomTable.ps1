@@ -16,7 +16,7 @@ Function New-HaloCustomTable {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Custom Table '$($CustomTable.ctname)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess(('Custom Table ''{0}''' -f $CustomTable.ctname), 'Create')) {
             New-HaloPOSTRequest -Object $CustomTable -Endpoint 'customtable'
         }
     } catch {

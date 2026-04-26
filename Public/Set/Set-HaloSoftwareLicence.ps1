@@ -10,7 +10,7 @@ Function Set-HaloSoftwareLicence {
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object[]])]
     Param (
-        # Object or array of objects containing properties and values used to update one or more existing statuses.
+        # Object or array of objects containing properties and values used to update one or more existing software licences.
         [Parameter( Mandatory = $True, ValueFromPipeline )]
         [Object[]]$SoftwareLicence,
         # Skip validation checks.
@@ -40,11 +40,11 @@ Function Set-HaloSoftwareLicence {
             }
         }
         if ($False -notin $ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess($SoftwareLicence -is [Array] ? 'Statuses' : 'Status', 'Update')) {
+            if ($PSCmdlet.ShouldProcess($SoftwareLicence -is [Array] ? 'Software Licences' : 'Software Licence', 'Update')) {
                 New-HaloPOSTRequest -Object $SoftwareLicence -Endpoint 'SoftwareLicence'
             }
         } else {
-            Throw 'One or more Software Licence was not found in Halo to update.'
+            Throw 'One or more software licences were not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

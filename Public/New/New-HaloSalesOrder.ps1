@@ -1,4 +1,4 @@
-﻿Function New-HaloSalesOrder {
+function New-HaloSalesOrder {
     <#
         .SYNOPSIS
             Creates one or more sales orders via the Halo API.
@@ -9,15 +9,16 @@
     #>
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object[]])]
-    Param (
-        # Object or array of objects containing properties and values used to create one or more new quotations.
+    param (
+        # Object or array of objects containing properties and values used to create one or more new sales orders.
         [Parameter( Mandatory = $True )]
         [Object[]]$SalesOrder
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess($SalesOrder -is [Array] ? 'SalesOrders' : 'SalesOrder', 'Create')) {
-            New-HaloPOSTRequest -Object $SalesOrder -Endpoint 'salesorder'
+        if ($PSCmdlet.ShouldProcess($SalesOrder -is [Array] ? 'Sales Orders' : 'Sales Order', 'Create')) {
+            $Results = New-HaloPOSTRequest -Object $SalesOrder -Endpoint 'salesorder'
+            return $Results
         }
     } catch {
         New-HaloError -ErrorRecord $_

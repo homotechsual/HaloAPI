@@ -18,8 +18,8 @@ function Remove-HaloItem {
     try {
         $ObjectToDelete = Get-HaloItem -ItemId $ItemId
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Item '$($ObjectToDelete.id)'", 'Delete')) {
-                $Resource = "api/item/$($ItemId)"
+            if ($PSCmdlet.ShouldProcess(('Item ''{0}''' -f $ObjectToDelete.id), 'Delete')) {
+                $Resource = ('api/item/{0}' -f $ItemId)
                 $ItemResults = New-HaloDELETERequest -Resource $Resource
                 Return $ItemResults
             }

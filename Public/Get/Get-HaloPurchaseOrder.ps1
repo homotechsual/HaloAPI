@@ -77,7 +77,7 @@ function Get-HaloPurchaseOrder {
         if ($PurchaseOrderID) {
             Write-Verbose "Running in single-purchase order mode because '-PurchaseOrderID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/purchaseorder/$($PurchaseOrderID)"
+            $Resource = ('api/purchaseorder/{0}' -f $PurchaseOrderID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

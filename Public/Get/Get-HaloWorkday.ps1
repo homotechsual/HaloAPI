@@ -33,7 +33,7 @@ function Get-HaloWorkday {
     try {
         if ($WorkdayID) {
             Write-Verbose "Running in single-field mode because '-WorkdayID' was provided."
-            $Resource = "api/Workday/$($WorkdayID)"
+            $Resource = ('api/Workday/{0}' -f $WorkdayID)
         } else {
             Write-Verbose 'Running in multi-field mode.'
             $Resource = 'api/Workday'

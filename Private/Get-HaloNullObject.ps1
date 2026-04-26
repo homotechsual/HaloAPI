@@ -11,12 +11,13 @@ function Get-HaloNullObject {
     [CmdletBinding()]
     [OutputType([PSCustomObject])]
     param(
+        # The object whose nested properties should be replaced with null values.
         [Parameter( Mandatory = $True )]
         [PSCustomObject]$NullObject
     )
     $NullObject.PSObject.Properties | ForEach-Object {
-        Write-Verbose "Attribute Name: $($_.name)"
-        Write-Verbose "Attribute Type: $(($_.Value.GetType()).name)"
+        Write-Verbose ('Attribute Name: {0}' -f $_.name)
+        Write-Verbose ('Attribute Type: {0}' -f (($_.Value.GetType()).name))
         if ($_.Value -isnot [PSCustomObject]) {
             $_.Value = $Null
         } else {

@@ -53,7 +53,7 @@ function Get-HaloCustomField {
         if ($CustomFieldID) {
             Write-Verbose "Running in single-item mode because '-ItemID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/FieldInfo/$($CustomFieldID)"
+            $Resource = ('api/FieldInfo/{0}' -f $CustomFieldID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

@@ -51,7 +51,7 @@ function Get-HaloViewColumn {
     try {
         if ($ViewColumnId) {
             Write-Verbose "Running in single-viewcolumn mode because '-ViewColumnId' was provided."
-            $Resource = "api/viewcolumns/$($ViewColumnId)"
+            $Resource = ('api/viewcolumns/{0}' -f $ViewColumnId)
         } else {
             Write-Verbose 'Running in multi-viewcolumn mode.'
             $Resource = 'api/viewcolumns'

@@ -51,7 +51,7 @@ function Get-HaloViewFilter {
     try {
         if ($ViewFilterId) {
             Write-Verbose "Running in single-viewfilter mode because '-ViewFilterId' was provided."
-            $Resource = "api/viewfilter/$($ViewFilterId)"
+            $Resource = ('api/viewfilter/{0}' -f $ViewFilterId)
         } else {
             Write-Verbose 'Running in multi-viewfilter mode.'
             $Resource = 'api/viewfilter'

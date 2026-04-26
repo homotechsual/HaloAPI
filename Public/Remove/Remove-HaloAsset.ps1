@@ -24,8 +24,8 @@ function Remove-HaloAsset {
         }
         $ObjectToDelete = Get-HaloAsset -AssetID $AssetID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Asset '$($ObjectToDelete.id)' by '$($ObjectToDelete.who)'", 'Delete')) {
-                $Resource = "api/Asset/$($AssetID)"
+            if ($PSCmdlet.ShouldProcess(('Asset ''{0}'' by ''{1}''' -f $ObjectToDelete.id, $ObjectToDelete.who), 'Delete')) {
+                $Resource = ('api/Asset/{0}' -f $AssetID)
                 $AssetResults = New-HaloDELETERequest -Resource $Resource
                 Return $AssetResults
             }

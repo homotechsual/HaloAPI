@@ -80,7 +80,7 @@ function Get-HaloSalesOrder {
         if ($SalesOrderID) {
             Write-Verbose "Running in single-sales order mode because '-SalesOrderID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/salesorder/$($SalesOrderID)"
+            $Resource = ('api/salesorder/{0}' -f $SalesOrderID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

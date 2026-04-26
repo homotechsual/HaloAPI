@@ -197,7 +197,7 @@ function Get-HaloRecurringInvoice {
         if ($RecurringInvoiceID) {
             Write-Verbose "Running in single-invoice mode because '-RecurringInvoiceID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/RecurringInvoice/$($RecurringInvoiceID)"
+            $Resource = ('api/RecurringInvoice/{0}' -f $RecurringInvoiceID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

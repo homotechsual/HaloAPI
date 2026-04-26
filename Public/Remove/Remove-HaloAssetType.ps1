@@ -18,8 +18,8 @@ function Remove-HaloAssetType {
     try {
         $ObjectToDelete = Get-HaloAssetType -AssetTypeID $AssetTypeID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Asset Type '$($ObjectToDelete.name)')'", 'Delete')) {
-                $Resource = "api/assettype/$($AssetTypeID)"
+            if ($PSCmdlet.ShouldProcess(('Asset Type ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/assettype/{0}' -f $AssetTypeID)
                 $AssetTypeResult = New-HaloDELETERequest -Resource $Resource
                 Return $AssetTypeResult
             }

@@ -31,7 +31,7 @@ function Get-HaloCustomTable {
     try {
         if ($CustomTableId) {
             Write-Verbose "Running in single-custom table mode because '-CustomTableId' was provided."
-            $Resource = "api/customtable/$($CustomTableId)"
+            $Resource = ('api/customtable/{0}' -f $CustomTableId)
         } else {
             Write-Verbose 'Running in multi-custom button mode.'
             $Resource = 'api/customtable'

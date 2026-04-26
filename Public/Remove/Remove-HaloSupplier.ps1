@@ -18,8 +18,8 @@ function Remove-HaloSupplier {
     try {
         $ObjectToDelete = Get-HaloSupplier -SupplierID $SupplierID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Action '$($ObjectToDelete.id)' by '$($ObjectToDelete.who)'", 'Delete')) {
-                $Resource = "api/supplier/$($SupplierID)"
+            if ($PSCmdlet.ShouldProcess(('Supplier ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/supplier/{0}' -f $SupplierID)
                 $SupplierResults = New-HaloDELETERequest -Resource $Resource
                 Return $SupplierResults
             }

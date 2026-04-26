@@ -271,7 +271,7 @@ function Get-HaloProject {
         if ($ProjectID) {
             Write-Verbose "Running in single-project mode because '-ProjectID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/projects/$($ProjectID)"
+            $Resource = ('api/projects/{0}' -f $ProjectID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

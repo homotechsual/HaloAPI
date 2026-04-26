@@ -1,0 +1,62 @@
+# Development Overview
+
+This page documents the current development workflow for HaloAPI.
+
+## Quick Start
+
+```powershell
+pwsh -File .\Bootstrap.ps1
+pwsh -File .\DevOps\Quality\run-pssa.ps1
+pwsh -File .\DevOps\Quality\test.ps1 -Suite Meta
+```
+
+## Repo Layout
+
+* `Public/` contains exported cmdlets.
+* `Private/` contains internal helpers.
+* `Classes/` contains helper classes, validators, completers, and argument transformations.
+* `Tests/` contains Pester suites.
+* `DevOps/Quality/` contains static-analysis and test entrypoints.
+* `Docs/MarkDown/` contains the published MkDocs content.
+
+## Development Process
+
+HaloAPI uses GitHub Actions for CI and release automation. Keep workflow changes explicit and small.
+
+Normal contribution flow should target `develop`. Treat `main` as the stable release branch.
+
+For normal local validation, prefer the dedicated repo scripts:
+
+```powershell
+pwsh -File .\Bootstrap.ps1
+pwsh -File .\DevOps\Quality\run-pssa.ps1
+pwsh -File .\DevOps\Quality\test.ps1 -Suite Meta
+```
+
+For interactive VS Code runs, prefer the `Test HaloAPI` task or:
+
+```powershell
+pwsh -File .\DevOps\Quality\test.ps1 -IncludeVSCodeMarker
+```
+
+Do not invoke `Invoke-Pester` directly as the normal validation path in the VS Code host, terminal, or automation. Use `DevOps\Quality\test.ps1` as the supported test entrypoint.
+
+## Quality Gates
+
+* Run `Bootstrap.ps1` after changing local dependencies.
+* Run `run-pssa.ps1` to validate PowerShell style and custom repo rules.
+* Run `test.ps1 -Suite Meta` for the safe baseline test suite.
+* Only run `Core` tests when the required Halo testing environment variables are available.
+
+## Release and Workflow Notes
+
+* Keep GitHub Actions changes focused and explicit.
+* Preserve PowerShell Gallery publishing behavior when changing release automation.
+* Stable tags must be reachable from `main`; prerelease tags may be cut from `develop`.
+* Development docs are synced from `Docs/MarkDown/development` to `homotechsualdocs/docs/haloapi/development` after successful `develop` pushes.
+
+## Related Pages
+
+* [Quality Gates](quality-gates.md)
+* [Delivery And Release Process](delivery-and-release-process.md)
+* [Development Troubleshooting](troubleshooting.md)

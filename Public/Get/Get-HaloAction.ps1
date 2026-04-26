@@ -86,7 +86,7 @@ function Get-HaloAction {
     try {
         if ($ActionID) {
             Write-Verbose "Running in single-action mode because '-ActionID' was provided."
-            $Resource = "api/actions/$($ActionID)"
+            $Resource = ('api/actions/{0}' -f $ActionID)
         } else {
             Write-Verbose 'Running in multi-action mode.'
             $Resource = 'api/actions'

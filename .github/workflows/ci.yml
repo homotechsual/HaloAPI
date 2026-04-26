@@ -1,0 +1,188 @@
+name: CI
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint with PSScriptAnalyzer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Bootstrap environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $results = & "$env:GITHUB_WORKSPACE\DevOps\Quality\run-pssa.ps1"
+          $blockingResults = @($results | Where-Object { $_.Severity -in @('Error', 'Warning') })
+
+          if ($results) {
+            $results | Format-Table -AutoSize
+          }
+
+          if ($blockingResults) {
+            throw "PSScriptAnalyzer found $($blockingResults.Count) blocking issue(s)."
+          }
+
+          Write-Host 'PSScriptAnalyzer passed.' -ForegroundColor Green
+
+  cross-platform-smoke:
+    name: Cross-Platform Smoke Tests
+    runs-on: ${{ matrix.os }}
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Bootstrap environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+
+      - name: Run metadata smoke tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Meta -Verbosity Normal
+
+  test:
+    name: Run Pester Tests
+    runs-on: windows-latest
+    needs:
+      - lint
+      - cross-platform-smoke
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Bootstrap environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+
+      - name: Run metadata tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Meta -Verbosity Detailed -CodeCoverage
+
+      - name: Upload metadata test results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: pester-meta-results
+          path: .artifacts/TestResults.meta.xml
+
+      - name: Publish metadata test results
+        if: always()
+        uses: dorny/test-reporter@v3
+        with:
+          name: Pester Tests (Meta)
+          path: .artifacts/TestResults.meta.xml
+          reporter: java-junit
+
+      - name: Upload metadata code coverage results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: code-coverage-meta-results
+          path: .artifacts/CodeCoverage.meta.xml
+
+      - name: Run unit tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Unit -Verbosity Detailed -CodeCoverage
+
+      - name: Upload unit test results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: pester-unit-results
+          path: .artifacts/TestResults.unit.xml
+
+      - name: Publish unit test results
+        if: always()
+        uses: dorny/test-reporter@v3
+        with:
+          name: Pester Tests (Unit)
+          path: .artifacts/TestResults.unit.xml
+          reporter: java-junit
+
+      - name: Upload unit code coverage results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: code-coverage-unit-results
+          path: .artifacts/CodeCoverage.unit.xml
+
+  live-tests:
+    name: Live Tests
+    runs-on: windows-latest
+    needs:
+      - lint
+      - test
+    if: ${{ vars.HALO_LIVE_TESTS_ENABLED == 'true' }}
+    env:
+      HaloTestingURL: ${{ secrets.HaloTestingURL }}
+      HaloTestingClientID: ${{ secrets.HaloTestingClientID }}
+      HaloTestingClientSecret: ${{ secrets.HaloTestingClientSecret }}
+      HaloTestingTenant: ${{ secrets.HaloTestingTenant }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Bootstrap environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+
+      - name: Run live tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Live -Verbosity Detailed
+
+      - name: Upload live test results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: pester-live-results
+          path: .artifacts/TestResults.live.xml
+
+      - name: Publish live test results
+        if: always()
+        uses: dorny/test-reporter@v3
+        with:
+          name: Pester Tests (Live)
+          path: .artifacts/TestResults.live.xml
+          reporter: java-junit

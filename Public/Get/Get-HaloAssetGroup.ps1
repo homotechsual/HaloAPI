@@ -12,7 +12,7 @@ function Get-HaloAssetGroup {
     [OutputType([Object])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '', Justification = 'Uses dynamic parameter parsing.')]
     Param(
-        # Asset Type ID
+        # Asset Group ID
         [Parameter( ParameterSetName = 'Single', Mandatory = $True )]
         [int64]$AssetGroupID,
         # Paginate results
@@ -36,10 +36,6 @@ function Get-HaloAssetGroup {
         # Filter by AssetGroups with an asset type group like your search
         [Parameter( ParameterSetName = 'Multi' )]
         [string]$Search,
-        # Filter by Asset Types belonging to a particular Asset group
-        [Parameter( ParameterSetName = 'Multi' )]
-        [Alias('assetgroup_id')]
-        [int64]$AssetGroupID,
         # Include inactive Asset Types in the response
         [Parameter( ParameterSetName = 'Multi' )]
         [Switch]$includeinactive,
@@ -62,7 +58,7 @@ function Get-HaloAssetGroup {
     Invoke-HaloPreFlightCheck
     $CommandName = $MyInvocation.InvocationName
     $Parameters = (Get-Command -Name $CommandName).Parameters
-    # Workaround to prevent the query string processor from adding a 'AssetGroupid=' parameter by removing it from the set parameters.
+    # Workaround to prevent the query string processor from adding an 'assetgroupid=' parameter by removing it from the set parameters.
     if ($AssetGroupID) {
         $Parameters.Remove('AssetGroupID') | Out-Null
     }
@@ -74,7 +70,7 @@ function Get-HaloAssetGroup {
         if ($AssetGroupID) {
             Write-Verbose "Running in single-asset type mode because '-AssetGroupID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/AssetGroup/$($AssetGroupID)"
+            $Resource = ('api/AssetGroup/{0}' -f $AssetGroupID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

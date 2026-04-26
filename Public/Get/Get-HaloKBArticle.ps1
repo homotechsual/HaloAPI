@@ -58,7 +58,7 @@ function Get-HaloKBArticle {
         if ($KBArticleID) {
             Write-Verbose "Running in single-article mode because '-KBArticleID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/KBArticle/$($KBArticleID)"
+            $Resource = ('api/KBArticle/{0}' -f $KBArticleID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

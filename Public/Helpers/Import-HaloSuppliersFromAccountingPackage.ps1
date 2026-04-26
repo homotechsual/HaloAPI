@@ -23,7 +23,7 @@ function Import-HaloSupplierFromQBO {
         details_id = 1
         qbo_company_id = $APCompanyID
         name = $APSupplier.companyName
-        address = "$($APSupplier.billAddr.line1)`n$($APSupplier.billAddr.city)`n$($APSupplier.billAddr.countrySubDivisionCode)`n$($APSupplier.billAddr.postalCode)"        
+        address = ('{0}{4}{1}{4}{2}{4}{3}' -f $APSupplier.billAddr.line1, $APSupplier.billAddr.city, $APSupplier.billAddr.countrySubDivisionCode, $APSupplier.billAddr.postalCode, [Environment]::NewLine)
     }
 
     if ($Email = $APSupplier.primaryEmailAddr.address) {
@@ -34,7 +34,7 @@ function Import-HaloSupplierFromQBO {
     }
 
     if (($FirstName = $APSupplier.givenName) -or ($LastName = $APSupplier.familyName)) {
-        Add-Member -InputObject $returnData -Name contact_name -Value ("$($FirstName) $($LastName)".trim()) -MemberType NoteProperty -Force
+        Add-Member -InputObject $returnData -Name contact_name -Value (('{0} {1}' -f $FirstName, $LastName).trim()) -MemberType NoteProperty -Force
     }
     return $returnData
 }

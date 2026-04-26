@@ -12,7 +12,7 @@ Function New-HaloReportBatch {
     Param (
         # Array of objects containing properties and values used to create one or more new reports.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Reports,
+        [Object[]]$Reports,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.

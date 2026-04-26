@@ -24,8 +24,8 @@ function Remove-HaloViewColumn {
         }
         $ObjectToDelete = Get-HaloViewColumn -ViewColumnID $ViewColumnID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("ViewColumn '$($ObjectToDelete.id)'", 'Delete')) {
-                $Resource = "api/viewcolumns/$($ViewColumnID)"
+            if ($PSCmdlet.ShouldProcess(('ViewColumn ''{0}''' -f $ObjectToDelete.id), 'Delete')) {
+                $Resource = ('api/viewcolumns/{0}' -f $ViewColumnID)
                 $ViewColumnResults = New-HaloDELETERequest -Resource $Resource
                 Return $ViewColumnResults
             }
