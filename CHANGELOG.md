@@ -2,6 +2,14 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2026-04-26 - Version 1.23.0
+
+* Add new cmdlets and endpoints including Sales Orders, Templates, Distribution Lists, Controls, Asset Groups, and Custom Field removal.
+* Expand query and filtering support with DateTime parameters, additional aliases, and `IncludeInactive`/`IncludeDetails` enhancements.
+* Fix duplicate `page_no` query key handling in multi-result requests when `-PageNo` is provided without `-Paginate`.
+* Fix multiple cmdlet issues including parameter exclusion, confirmation targets/messages, remove cmdlet wiring, and batch input handling.
+* Improve test and CI infrastructure by introducing dedicated Unit/Live/E2E/Meta workflows, adding local live-test wrappers, and migrating pipeline coverage to GitHub Actions with custom analyzer rules.
+
 ## 2024-08-01 - Version 1.22.1
 
 * Fix multiple incorrect parameters and missing parameters for `Get-HaloRecurringInvoice`.
