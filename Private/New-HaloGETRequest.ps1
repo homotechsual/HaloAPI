@@ -50,7 +50,14 @@ function New-HaloGETRequest {
             $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
             Write-Verbose 'Building [HttpQSCollection] for New-HaloGETRequest'
             foreach ($Key in $QSCollection.Keys) {
-                $QueryStringCollection.Add($Key, $QSCollection.$Key)
+                $QueryValue = $QSCollection[$Key]
+                if ($QueryValue -is [array]) {
+                    foreach ($Entry in $QueryValue) {
+                        $QueryStringCollection.Add($Key, $Entry)
+                    }
+                } else {
+                    $QueryStringCollection.Add($Key, $QueryValue)
+                }
             }
         } else {
             Write-Debug 'Query string collection not present...'

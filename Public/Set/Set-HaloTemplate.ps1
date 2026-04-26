@@ -44,7 +44,7 @@ Function Set-HaloTemplate {
                 Return $Results
             }
         } else {
-            Throw 'One or more templates was not found in Halo to update.'
+            Throw 'One or more templates were not found in Halo to update.'
         }
     } catch {
         New-HaloError -ErrorRecord $_

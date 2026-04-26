@@ -19,7 +19,7 @@ Function New-HaloDistributionListMember {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Distribution List members", 'Add')) {
+        if ($PSCmdlet.ShouldProcess('Distribution List members', 'Add')) {
             $Results = New-HaloPOSTRequest -Object $Member -Endpoint ('distributionlist/{0}/members' -f $DistributionListID)
             Return $Results
         }

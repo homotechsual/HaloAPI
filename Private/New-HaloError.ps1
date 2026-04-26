@@ -21,7 +21,7 @@ function New-HaloError {
     $HTTPResponseMatchString = '*The API returned the following HTTP*'
     if ($ErrorRecord.ErrorDetails) {
         Write-Verbose 'ErrorDetails contained in error record.'
-        Write-Debug ('Raw ErrorDetails: {0}' -f ($ErrorDetails | Out-String))
+        Write-Debug ('Raw ErrorDetails: {0}' -f ($ErrorRecord.ErrorDetails | Out-String))
         $ErrorDetailsIsJson = Test-Json -Json $ErrorRecord.ErrorDetails -ErrorAction SilentlyContinue
         if ($ErrorDetailsIsJson) {
             Write-Verbose 'ErrorDetails is JSON.'
