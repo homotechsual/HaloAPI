@@ -172,5 +172,6 @@
       "Import-Clixml": true,
       "Set-Content": true,
     },
+    "cSpell.words": ["HAPI"],
   },
 }
