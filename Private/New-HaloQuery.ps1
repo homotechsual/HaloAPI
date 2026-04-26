@@ -138,7 +138,9 @@ function New-HaloQuery {
         if (-not($QSCollection.page_size)) {
             $QSCollection.Add('page_size', $Script:HAPIDefaultPageSize)
         }
-        $QSCollection.Add('page_no', 1)
+        if (-not($QSCollection.page_no)) {
+            $QSCollection.Add('page_no', 1)
+        }
     }
     if (('pageinate' -in $QSCollection.Keys) -and ('page_size' -notin $QSCollection.Keys) -and ($IsMulti)) {
         Write-Verbose ('Parameter ''-PageSize'' was not provided for a paginated request. Using default value of {0}' -f $Script:HAPIDefaultPageSize)
