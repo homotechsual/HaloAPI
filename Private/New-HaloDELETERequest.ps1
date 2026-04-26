@@ -20,7 +20,7 @@ function New-HaloDELETERequest {
     try {
         $WebRequestParams = @{
             Method = 'DELETE'
-            Uri = "$($Script:HAPIConnectionInformation.URL)$($Resource)"
+            Uri = ('{0}{1}' -f $Script:HAPIConnectionInformation.URL, $Resource)
         }
         $DeleteResults = Invoke-HaloRequest -WebRequestParams $WebRequestParams
         Return $DeleteResults

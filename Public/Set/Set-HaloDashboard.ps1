@@ -29,7 +29,7 @@ function Set-HaloDashboard {
             $ObjectToUpdate = $True
         }
         if ($ObjectToUpdate) {
-            if ($PSCmdlet.ShouldProcess("Dashboard '$($Dashboard.name)'", 'Update')) {
+            if ($PSCmdlet.ShouldProcess(('Dashboard ''{0}''' -f $Dashboard.name), 'Update')) {
                 New-HaloPOSTRequest -Object $Dashboard -Endpoint 'DashboardLinks'
             }
         } else {

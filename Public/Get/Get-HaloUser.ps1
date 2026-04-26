@@ -72,6 +72,7 @@ function Get-HaloUser {
         [switch]$IncludeInactive,
         # Include approvers only in the results.
         [Parameter( ParameterSetName = 'Multi' )]
+        [Alias('approvers_only')]
         [switch]$ApproversOnly,
         # Exclude users linked to agent accounts from the results.
         [Parameter( ParameterSetName = 'Multi' )]
@@ -107,7 +108,7 @@ function Get-HaloUser {
         if ($UserID) {
             Write-Verbose "Running in single-user mode because '-UserID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/users/$($UserID)"
+            $Resource = ('api/users/{0}' -f $UserID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

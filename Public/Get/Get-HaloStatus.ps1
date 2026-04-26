@@ -54,7 +54,7 @@ function Get-HaloStatus {
     try {
         if ($StatusID) {
             Write-Verbose "Running in single-status mode because '-StatusID' was provided."
-            $Resource = "api/status/$($StatusID)"
+            $Resource = ('api/status/{0}' -f $StatusID)
         } else {
             Write-Verbose 'Running in multi-status mode.'
             $Resource = 'api/status'

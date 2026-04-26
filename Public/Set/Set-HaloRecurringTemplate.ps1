@@ -19,7 +19,7 @@ Function Set-HaloRecurringTemplate {
         if ($null -eq $Template.id) {
             throw 'Template ID is required.'
         }
-        if ($PSCmdlet.ShouldProcess("Template '$($ObjectToUpdate.id)'", 'Update')) {
+        if ($PSCmdlet.ShouldProcess(('Template ''{0}''' -f $Template.id), 'Update')) {
             New-HaloPOSTRequest -Object $Template -Endpoint 'template'
         }
     } catch {

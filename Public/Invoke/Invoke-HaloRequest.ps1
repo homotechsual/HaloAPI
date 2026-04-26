@@ -33,7 +33,7 @@ function Invoke-HaloRequest {
     }
     if ($null -ne $Script:HAPIAuthToken) {
         $AuthHeaders = @{
-            Authorization = "$($Script:HAPIAuthToken.Type) $($Script:HAPIAuthToken.Access)"
+            Authorization = ('{0} {1}' -f $Script:HAPIAuthToken.Type, $Script:HAPIAuthToken.Access)
         }
         if ($null -ne $Script:HAPIConnectionInformation.AdditionalHeaders) {
             $RequestHeaders = $AuthHeaders + $Script:HAPIConnectionInformation.AdditionalHeaders
@@ -52,14 +52,14 @@ function Invoke-HaloRequest {
     }
     do {
         $Retries++
-        Write-Verbose "Attempt $Retries of 10"
+        Write-Verbose ('Attempt {0} of 10' -f $Retries)
         try {
-            Write-Verbose "Making a $($WebRequestParams.Method) request to $($WebRequestParams.Uri)"
+            Write-Verbose ('Making a {0} request to {1}' -f $WebRequestParams.Method, $WebRequestParams.Uri)
             $Response = Invoke-WebRequest @WebRequestParams -Headers $RequestHeaders -ContentType 'application/json; charset=utf-8'
             if ($Response) {
-                Write-Debug "Response headers: $($Response.Headers | Out-String)"
-                Write-Debug "Raw Response: $($Response | Out-String)"
-                Write-Debug "Response Members: $($Response | Get-Member | Out-String)"
+                Write-Debug ('Response headers: {0}' -f ($Response.Headers | Out-String))
+                Write-Debug ('Raw Response: {0}' -f ($Response | Out-String))
+                Write-Debug ('Response Members: {0}' -f ($Response | Get-Member | Out-String))
                 $Success = $True
                 if ($RawResult) {
                     $Results = $Response
@@ -73,7 +73,7 @@ function Invoke-HaloRequest {
             $Success = $False
             if ($_.Exception.Response.StatusCode.value__ -eq 429) {
                 $WaitTime = [math]::Min($BaseDelay * [math]::Pow(2, $Retries - 1), $MaxDelay)
-                Write-Warning "The request was throttled, waiting for $WaitTime seconds."
+                Write-Warning ('The request was throttled, waiting for {0} seconds.' -f $WaitTime)
                 Start-Sleep -Seconds $WaitTime
                 continue
             } else {

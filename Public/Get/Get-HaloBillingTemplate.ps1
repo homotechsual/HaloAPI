@@ -35,7 +35,7 @@ function Get-HaloBillingTemplate {
         if ($TemplateID) {
             Write-Verbose "Running in single-template mode because '-TemplateID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/billingtemplate/$($TemplateID)"
+            $Resource = ('api/billingtemplate/{0}' -f $TemplateID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

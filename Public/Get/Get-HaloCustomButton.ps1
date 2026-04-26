@@ -48,9 +48,9 @@ function Get-HaloCustomButton {
         $QSCollection.Add('typeid', $TypeID)
     }
     try {
-        if ($AgentID) {
+        if ($CustomButtonID) {
             Write-Verbose "Running in single-custom button mode because '-CustomButtonID' was provided."
-            $Resource = "api/custombutton/$($CustomButtonID)"
+            $Resource = ('api/custombutton/{0}' -f $CustomButtonID)
         } else {
             Write-Verbose 'Running in multi-custom button mode.'
             $Resource = 'api/custombutton'

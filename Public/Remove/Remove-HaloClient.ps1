@@ -19,8 +19,8 @@ function Remove-HaloClient {
     try {
         $ObjectToDelete = Get-HaloClient -ClientID $ClientID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Client '$($ObjectToDelete.name)')'", 'Delete')) {
-                $Resource = "api/client/$($ClientID)"
+            if ($PSCmdlet.ShouldProcess(('Client ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/client/{0}' -f $ClientID)
                 $ClientResults = New-HaloDELETERequest -Resource $Resource
                 Return $ClientResults
             }

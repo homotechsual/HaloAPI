@@ -12,7 +12,7 @@ Function New-HaloTicketBatch {
     Param (
         # Array of objects containing properties and values used to create one or more new tickets.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Tickets,
+        [Object[]]$Tickets,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.

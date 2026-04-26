@@ -104,7 +104,7 @@ function Get-HaloReport {
         if ($ReportID) {
             Write-Verbose "Running in single-report mode because '-ReportID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/Report/$($ReportID)"
+            $Resource = ('api/Report/{0}' -f $ReportID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

@@ -268,7 +268,7 @@ function Get-HaloOpportunity {
         if ($OpportunityID) {
             Write-Verbose "Running in single-opportunity mode because '-OpportunityID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/opportunities/$($OpportunityID)"
+            $Resource = ('api/opportunities/{0}' -f $OpportunityID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

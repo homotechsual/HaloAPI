@@ -24,8 +24,8 @@ function Remove-HaloViewFilter {
         }
         $ObjectToDelete = Get-HaloViewFilter -ViewFilterID $ViewFilterID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("ViewFilter '$($ObjectToDelete.id)'", 'Delete')) {
-                $Resource = "api/viewfilter/$($ViewFilterID)"
+            if ($PSCmdlet.ShouldProcess(('ViewFilter ''{0}''' -f $ObjectToDelete.id), 'Delete')) {
+                $Resource = ('api/viewfilter/{0}' -f $ViewFilterID)
                 $ViewFilterResults = New-HaloDELETERequest -Resource $Resource
                 Return $ViewFilterResults
             }

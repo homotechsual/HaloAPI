@@ -1,0 +1,184 @@
+name: Build and Publish Module
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Release Package
+    runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Validate tag source
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tagName = $env:GITHUB_REF_NAME
+          $tagCommit = $env:GITHUB_SHA
+
+          if ($tagName -match '-(alpha|beta|rc)') {
+            Write-Host "Pre-release tag detected: $tagName"
+            $developCommit = (git rev-parse origin/develop)
+            $mergeBase = (git merge-base $tagCommit $developCommit)
+            if ($mergeBase -ne $tagCommit) {
+              throw 'Pre-release tag commit is not reachable from develop.'
+            }
+            Write-Host 'Tag commit is reachable from develop.'
+          } else {
+            Write-Host "Stable tag detected: $tagName"
+            $mainCommit = (git rev-parse origin/main)
+            $mergeBase = (git merge-base $tagCommit $mainCommit)
+            if ($mergeBase -ne $tagCommit) {
+              throw 'Stable tag commit is not reachable from main.'
+            }
+            Write-Host 'Tag commit is reachable from main.'
+          }
+
+      - name: Bootstrap environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+
+      - name: Build release package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\HaloAPI.build.ps1" -CopyModuleFiles -Configuration Production
+
+      - name: Prepare documentation artifact
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $docsSourceRoot = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Docs\MarkDown'
+          $docsArtifactRoot = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'docs-artifact\haloapi'
+          $commandletsPath = Join-Path -Path $docsArtifactRoot -ChildPath 'commandlets'
+          $developmentPath = Join-Path -Path $docsArtifactRoot -ChildPath 'development'
+          $imagePath = Join-Path -Path $docsArtifactRoot -ChildPath 'img'
+
+          if (Test-Path -Path $docsArtifactRoot) {
+            Remove-Item -Path $docsArtifactRoot -Recurse -Force
+          }
+
+          New-Item -Path $commandletsPath -ItemType Directory -Force | Out-Null
+          New-Item -Path $developmentPath -ItemType Directory -Force | Out-Null
+
+          Copy-Item -Path (Join-Path -Path $docsSourceRoot -ChildPath 'index.md') -Destination (Join-Path -Path $docsArtifactRoot -ChildPath 'index.md') -Force
+          Copy-Item -Path (Join-Path -Path $docsSourceRoot -ChildPath 'development\*') -Destination $developmentPath -Recurse -Force
+
+          if (Test-Path -Path (Join-Path -Path $docsSourceRoot -ChildPath 'img')) {
+            Copy-Item -Path (Join-Path -Path $docsSourceRoot -ChildPath 'img') -Destination $imagePath -Recurse -Force
+          }
+
+          Get-ChildItem -Path $docsSourceRoot -File -Filter '*.md' |
+            Where-Object { $_.Name -ne 'index.md' } |
+            Copy-Item -Destination $commandletsPath -Force
+
+      - name: Archive module package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tagName = "$env:GITHUB_REF_NAME"
+          $archivePath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath ("HaloAPI-$tagName.zip")
+          $packageRoot = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Output\HaloAPI'
+
+          if (-not (Test-Path -Path $packageRoot)) {
+            throw "Expected module package folder not found: $packageRoot"
+          }
+
+          if (Test-Path -Path $archivePath) {
+            Remove-Item -Path $archivePath -Force
+          }
+
+          Compress-Archive -Path (Join-Path -Path $packageRoot -ChildPath '*') -DestinationPath $archivePath
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: HaloAPI-release-package
+          path: |
+            Output/
+            HaloAPI-${{ github.ref_name }}.zip
+
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: module-docs
+          path: docs-artifact/
+
+  publish:
+    name: Publish Module
+    runs-on: windows-latest
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    environment:
+      name: production
+      url: https://www.powershellgallery.com/packages/HaloAPI
+    env:
+      TF_BUILD: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Download release artifact
+        uses: actions/download-artifact@v6
+        with:
+          name: HaloAPI-release-package
+          path: ${{ github.workspace }}
+
+      - name: Validate PowerShell Gallery secret
+        shell: pwsh
+        env:
+          PSGalleryAPIKey: ${{ secrets.PSGALLERY_API_KEY }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ([string]::IsNullOrWhiteSpace($env:PSGalleryAPIKey)) {
+            throw 'The PSGALLERY_API_KEY secret is required to publish releases.'
+          }
+
+      - name: Bootstrap environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+
+      - name: Publish to PowerShell Gallery
+        shell: pwsh
+        env:
+          PSGalleryAPIKey: ${{ secrets.PSGALLERY_API_KEY }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $moduleManifest = Get-ChildItem -Path "$env:GITHUB_WORKSPACE\Output" -Recurse -Filter 'HaloAPI.psd1' | Select-Object -First 1
+          if (-not $moduleManifest) {
+            throw 'Module manifest not found under Output/. Ensure build artifacts are present.'
+          }
+          $manifest = Test-ModuleManifest -Path $moduleManifest.FullName
+          $version = $manifest.Version.ToString()
+          if ($manifest.PrivateData.PSData.Prerelease) {
+            $version = "$version-$($manifest.PrivateData.PSData.Prerelease)"
+          }
+          Write-Host "Checking if HaloAPI version $version already exists on PSGallery..."
+          try {
+            $existingModule = Find-Module -Name 'HaloAPI' -RequiredVersion $version -AllowPrerelease -ErrorAction SilentlyContinue
+            if ($existingModule) {
+              Write-Host "::warning::Module version $version already exists on PSGallery. Skipping publish."
+              exit 0
+            }
+          } catch {
+            Write-Host "Module version $version not found on PSGallery. Proceeding with publish."
+          }
+          & "$env:GITHUB_WORKSPACE\HaloAPI.build.ps1" -PublishModule -Configuration Production

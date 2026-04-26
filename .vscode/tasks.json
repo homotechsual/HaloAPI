@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Bootstrap HaloAPI",
+      "type": "shell",
+      "command": "pwsh",
+      "args": ["-File", ".\\Bootstrap.ps1"],
+      "isBackground": false,
+      "problemMatcher": []
+    },
+    {
+      "label": "Test HaloAPI",
+      "type": "shell",
+      "command": "pwsh",
+      "args": ["-File", ".\\DevOps\\Quality\\test.ps1", "-IncludeVSCodeMarker"],
+      "isBackground": false,
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Run PSScriptAnalyzer",
+      "type": "shell",
+      "command": "pwsh",
+      "args": ["-File", ".\\DevOps\\Quality\\run-pssa.ps1"],
+      "isBackground": false,
+      "problemMatcher": [],
+      "group": "test"
+    }
+  ]
+}

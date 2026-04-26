@@ -35,7 +35,7 @@ function Get-HaloViewListGroup {
     try {
         if ($ViewListGroupId) {
             Write-Verbose "Running in single-viewlistgroup mode because '-ViewListGroupId' was provided."
-            $Resource = "api/viewlistgroup/$($ViewListGroupId)"
+            $Resource = ('api/viewlistgroup/{0}' -f $ViewListGroupId)
         } else {
             Write-Verbose 'Running in multi-viewlistgroup mode.'
             $Resource = 'api/viewlistgroup'

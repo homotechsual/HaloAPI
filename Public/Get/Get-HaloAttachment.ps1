@@ -59,7 +59,7 @@ function Get-HaloAttachment {
     try {
         if ($AttachmentID) {
             Write-Verbose "Running in single-asset mode because '-AttachmentID' was provided."
-            $Resource = "api/attachment/$($AttachmentID)"
+            $Resource = ('api/attachment/{0}' -f $AttachmentID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
@@ -85,28 +85,28 @@ function Get-HaloAttachment {
             if ($OutFile -or $OutPath) {
                 # Get the file name or set it
                 if ($OutPath) {
-                    Write-Verbose "Attempting to output to path $OutPath"
+                    Write-Verbose ('Attempting to output to path {0}' -f $OutPath)
                     $ContentDisposition = $AttachmentResults.Headers.'Content-Disposition'
                     $Disposition = [System.Net.Mime.ContentDisposition]::new($ContentDisposition)
                     $FileName = $Disposition.FileName
                     $Path = Join-Path $OutPath $FileName
                 } else {
-                    Write-Verbose "Attempting to output to file $OutFile"
+                    Write-Verbose ('Attempting to output to file {0}' -f $OutFile)
                     $Path = $OutFile
                 }
-                Write-Verbose "Writing File $Path"
+                Write-Verbose ('Writing File {0}' -f $Path)
                 $File = [System.IO.FileStream]::new($Path, [System.IO.FileMode]::Create)
                 $File.write($AttachmentResults.Content, 0, $AttachmentResults.RawContentLength)
                 $File.close()
             } elseif ($AsBase64) {
                 Write-Verbose 'Returning base64 encoded string'
                 $Base64String = [System.Convert]::ToBase64String($AttachmentResults.Content)
-                Return $Base64String
+                return $Base64String
             } else {
                 return $AttachmentResults.Content
             }
         } else {
-            Return $AttachmentResults
+            return $AttachmentResults
         }
     } catch {
         New-HaloError -ErrorRecord $_

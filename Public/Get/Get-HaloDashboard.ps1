@@ -28,7 +28,7 @@ function Get-HaloDashboard {
     try {
         if ($DashboardID) {
             Write-Verbose "Running in single-dashboard mode because '-DashboardID' was provided."
-            $Resource = "api/DashboardLinks/$($DashboardID)"
+            $Resource = ('api/DashboardLinks/{0}' -f $DashboardID)
         } else {
             Write-Verbose 'Running in multi-dashboard mode.'
             $Resource = 'api/DashboardLinks'

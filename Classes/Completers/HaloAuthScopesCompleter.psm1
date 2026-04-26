@@ -19,7 +19,7 @@ class HaloAuthScopesCompleter : IArgumentCompleter {
         [IDictionary]$FakeBoundParams
     ) {
         $Scopes = [HaloAuth]::GetScopes()
-        $Wildcard = ("*$($WordToComplete)*")
+        $Wildcard = ('*{0}*' -f $WordToComplete)
         $CompletionResults = [List[CompletionResult]]::new()
         $Scopes -like $Wildcard | ForEach-Object {
             $CompletionResults.Add(

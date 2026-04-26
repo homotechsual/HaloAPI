@@ -8,7 +8,7 @@ param()
 BeforeAll {
     $ModulePath = Split-Path -Parent -Path (Split-Path -Parent -Path (Split-Path -Parent -Path $PSCommandPath))
     $ModuleName = 'HaloAPI'
-    $ManifestPath = "$($ModulePath)\$($ModuleName).psd1"
+    $ManifestPath = ('{0}\{1}.psd1' -f $ModulePath, $ModuleName)
     if (Get-Module -Name $ModuleName) {
         Remove-Module $ModuleName -Force
     }

@@ -34,7 +34,7 @@ function Get-HaloField {
     try {
         if ($FieldID) {
             Write-Verbose "Running in single-field mode because '-FieldID' was provided."
-            $Resource = "api/Field/$($FieldID)"
+            $Resource = ('api/Field/{0}' -f $FieldID)
         } else {
             Write-Verbose 'Running in multi-field mode.'
             $Resource = 'api/Field'

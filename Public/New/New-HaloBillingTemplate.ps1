@@ -16,7 +16,7 @@ Function New-HaloBillingTemplate {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Billing Template '$($Template.name)", 'Create')) {
+        if ($PSCmdlet.ShouldProcess(('Billing Template ''{0}''' -f $Template.name), 'Create')) {
             New-HaloPOSTRequest -Object $Template -Endpoint 'billingtemplate'
         }
     } catch {

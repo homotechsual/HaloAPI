@@ -253,7 +253,7 @@ function Get-HaloAsset {
         if ($AssetID) {
             Write-Verbose "Running in single-asset mode because '-AssetID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -CommaSeparatedArrays
-            $Resource = "api/asset/$($AssetID)"
+            $Resource = ('api/asset/{0}' -f $AssetID)
             $RequestParams = @{
                 Method          = 'GET'
                 Resource        = $Resource

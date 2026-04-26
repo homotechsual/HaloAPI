@@ -7,6 +7,11 @@ repo_name: 'homotechsual/haloapi'
 repo_url: 'https://github.com/homotechsual/haloapi'
 nav:
     - Home: index.md
+    - Development:
+      - Overview: development/index.md
+      - Quality Gates: development/quality-gates.md
+      - Delivery & Release: development/delivery-and-release-process.md
+      - Troubleshooting: development/troubleshooting.md
     - Overview: HaloAPI.md
     - Connect: Connect-HaloAPI.md
     - Get:

@@ -4,10 +4,13 @@ function New-HaloError {
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Private function - no need to support.')]
     param (
+        # The source error record to normalize into HaloAPI error output.
         [Parameter( Mandatory, ParameterSetName = 'ErrorRecord' )]
         [errorrecord]$ErrorRecord,
+        # Indicates whether the source error is expected to contain an HTTP response object.
         [Parameter( ParameterSetName = 'ErrorRecord' )]
         [switch]$HasResponse,
+        # A module-generated error message to throw when no error record is available.
         [Parameter( Mandatory, ParameterSetName = 'ModuleMessage' )]
         [string]$ModuleMessage
 
@@ -18,28 +21,28 @@ function New-HaloError {
     $HTTPResponseMatchString = '*The API returned the following HTTP*'
     if ($ErrorRecord.ErrorDetails) {
         Write-Verbose 'ErrorDetails contained in error record.'
-        Write-Debug "Raw ErrorDetails: $($ErrorDetails | Out-String)"
+        Write-Debug ('Raw ErrorDetails: {0}' -f ($ErrorRecord.ErrorDetails | Out-String))
         $ErrorDetailsIsJson = Test-Json -Json $ErrorRecord.ErrorDetails -ErrorAction SilentlyContinue
         if ($ErrorDetailsIsJson) {
             Write-Verbose 'ErrorDetails is JSON.'
             $ErrorDetails = $ErrorRecord.ErrorDetails | ConvertFrom-Json
-            Write-Debug "Raw error details: $($ErrorDetails | Out-String)"
+            Write-Debug ('Raw error details: {0}' -f ($ErrorDetails | Out-String))
             if ($null -ne $ErrorDetails) {
                 if (($null -ne $ErrorDetails.resultCode) -and ($null -ne $ErrorDetails.errorMessage)) {
                     Write-Verbose 'ErrorDetails contains resultCode and errorMessage.'
-                    $ExceptionMessage.Add("The Halo API said $($ErrorDetails.resultCode): $($ErrorDetails.errorMessage).") | Out-Null
+                    $ExceptionMessage.Add(('The Halo API said {0}: {1}.' -f $ErrorDetails.resultCode, $ErrorDetails.errorMessage)) | Out-Null
                 } elseif (($null -ne $ErrorDetails.ClassName) -and ($null -ne $ErrorDetails.Message)) {
                     Write-Verbose 'ErrorDetails contains ClassName and Message.'
-                    $ExceptionMessage.Add("The Halo API said $($ErrorDetails.ClassName): $($ErrorDetails.Message)") | Out-Null
+                    $ExceptionMessage.Add(('The Halo API said {0}: {1}' -f $ErrorDetails.ClassName, $ErrorDetails.Message)) | Out-Null
                 } elseif ($null -ne $ErrorDetails.Message) {
                     Write-Verbose 'ErrorDetails contains Message.'
-                    $ExceptionMessage.Add("The Halo API said $($ErrorDetails.Message)") | Out-Null
+                    $ExceptionMessage.Add(('The Halo API said {0}' -f $ErrorDetails.Message)) | Out-Null
                 } elseif ($null -ne $ErrorDetails.error) {
                     Write-Verbose 'ErrorDetails contains error.'
-                    $ExceptionMessage.Add("The Halo API said $($ErrorDetails.error).") | Out-Null
+                    $ExceptionMessage.Add(('The Halo API said {0}.' -f $ErrorDetails.error)) | Out-Null
                 } elseif ($null -ne $ErrorDetails) {
                     Write-Verbose 'ErrorDetails is not null.'
-                    $ExceptionMessage.Add("The Halo API said $($ErrorRecord.ErrorDetails).") | Out-Null
+                    $ExceptionMessage.Add(('The Halo API said {0}.' -f $ErrorRecord.ErrorDetails)) | Out-Null
                 } else {
                     Write-Verbose 'ErrorDetails is null.'
                     $ExceptionMessage.Add('The Halo API returned an error.') | Out-Null
@@ -47,8 +50,8 @@ function New-HaloError {
             } else {
                 Write-Verbose 'No ErrorDetails - or could not parse.'
             }
-        } elseif ($ErrorRecord.ErrorDetails -Like $APIResultMatchString -and $ErrorRecord.ErrorDetails -Like $HTTPResponseMatchString) {
-            $Errors = $ErrorRecord.ErrorDetails -Split "`r`n"
+        } elseif ($ErrorRecord.ErrorDetails -like $APIResultMatchString -and $ErrorRecord.ErrorDetails -like $HTTPResponseMatchString) {
+            $Errors = $ErrorRecord.ErrorDetails -split "`r`n"
             if ($Errors -is [array]) {
                 ForEach-Object -InputObject $Errors {
                     $ExceptionMessage.Add($_) | Out-Null
@@ -66,11 +69,11 @@ function New-HaloError {
     } else {
         $ExceptionMessage.Add('The Halo API returned an error but did not provide a result code or error message.') | Out-Null
     }
-    if (($ErrorRecord.Exception.Response -and $HasResponse) -or ($ExceptionMessage -NotLike $HTTPResponseMatchString)) {
+    if (($ErrorRecord.Exception.Response -and $HasResponse) -or ($ExceptionMessage -notlike $HTTPResponseMatchString)) {
         $Response = $ErrorRecord.Exception.Response
-        Write-Debug "Raw HTTP response: $($Response | Out-String)"
+        Write-Debug ('Raw HTTP response: {0}' -f ($Response | Out-String))
         if ($Response.StatusCode.value__ -and $Response.ReasonPhrase) {
-            $ExceptionMessage.Add("The API returned the following HTTP error response: $($Response.StatusCode.value__) $($Response.ReasonPhrase)") | Out-Null
+            $ExceptionMessage.Add(('The API returned the following HTTP error response: {0} {1}' -f $Response.StatusCode.value__, $Response.ReasonPhrase)) | Out-Null
         } else {
             $ExceptionMessage.Add('The API returned an HTTP error response but did not provide a status code or reason phrase.')
         }

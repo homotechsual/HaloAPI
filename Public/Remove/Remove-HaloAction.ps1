@@ -28,8 +28,8 @@ function Remove-HaloAction {
         }
         $ObjectToDelete = Get-HaloAction -ActionID $ActionID -TicketID $TicketID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Action '$($ObjectToDelete.id)' by '$($ObjectToDelete.who)'", 'Delete')) {
-                $Resource = "api/actions/$($ActionID)?ticket_id=$($TicketID)"
+            if ($PSCmdlet.ShouldProcess(('Action ''{0}'' by ''{1}''' -f $ObjectToDelete.id, $ObjectToDelete.who), 'Delete')) {
+                $Resource = ('api/actions/{0}?ticket_id={1}' -f $ActionID, $TicketID)
                 $ActionResults = New-HaloDELETERequest -Resource $Resource
                 Return $ActionResults
             }

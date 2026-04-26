@@ -48,7 +48,7 @@ function Get-HaloObjectTemplate {
             $Type = 'KBArticle'
         }
         # Fetch the object from a template json file in the data directory
-        $TemplateObject = Get-Content "$PSScriptRoot/../../Data/Templates/$Type.json" -Raw | ConvertFrom-Json -Depth 100
+        $TemplateObject = Get-Content ('{0}/../../Data/Templates/{1}.json' -f $PSScriptRoot, $Type) -Raw | ConvertFrom-Json -Depth 100
         # If null variables were requested null them all
         if ($NullVariables) {
             $ReturnObject = Get-HaloNullObject -NullObject $TemplateObject

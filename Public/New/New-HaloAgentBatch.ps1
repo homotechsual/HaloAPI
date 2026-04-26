@@ -12,7 +12,7 @@ Function New-HaloAgentBatch {
     Param (
         # Array of objects containing properties and values used to create one or more new agents.
         [Parameter( Mandatory = $True )]
-        [Array[]]$Agents,
+        [Object[]]$Agents,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.
@@ -21,8 +21,8 @@ Function New-HaloAgentBatch {
     Invoke-HaloPreFlightCheck
     try {
         if ($PSCmdlet.ShouldProcess('Agents', 'Create')) {
-            Write-Debug "Input:`n $($Agents | ConvertTo-Json -AsArray -Depth 5)"
-            Write-Debug "Input type: $($Agents.GetType())"
+            Write-Debug ('Input:{0} {1}' -f [Environment]::NewLine, ($Agents | ConvertTo-Json -AsArray -Depth 5))
+            Write-Debug ('Input type: {0}' -f $Agents.GetType())
             if ($Agents -is [Array]) {
                 $BatchParams = @{
                     BatchInput = $Agents
@@ -35,7 +35,7 @@ Function New-HaloAgentBatch {
                 if ($BatchWait) {
                     $BatchParams.Wait = $BatchWait
                 }
-                Write-Debug "Batch processor params:`n$($BatchParams | Out-String )"
+                Write-Debug ('Batch processor params:{0}{1}' -f [Environment]::NewLine, ($BatchParams | Out-String ))
                 $BatchResults = Invoke-HaloBatchProcessor @BatchParams
                 Return $BatchResults
             } else {

@@ -53,7 +53,7 @@ function Get-HaloWorkflow {
         if ($WorkflowID) {
             Write-Verbose "Running in single-item mode because '-ItemID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/Workflow/$($WorkflowID)"
+            $Resource = ('api/Workflow/{0}' -f $WorkflowID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

@@ -16,7 +16,7 @@ Function New-HaloRecurringInvoice {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess("Invoice '$($RecurringInvoice.invoicenumber)'", 'Create')) {
+        if ($PSCmdlet.ShouldProcess(('Invoice ''{0}''' -f $RecurringInvoice.invoicenumber), 'Create')) {
             New-HaloPOSTRequest -Object $RecurringInvoice -Endpoint 'recurringinvoice'
         }
     } catch {

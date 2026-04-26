@@ -64,7 +64,7 @@ function Get-HaloSupplier {
         if ($SupplierID) {
             Write-Verbose "Running in single-supplier mode because '-SupplierID' was provided."
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters
-            $Resource = "api/supplier/$($SupplierID)"
+            $Resource = ('api/supplier/{0}' -f $SupplierID)
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource

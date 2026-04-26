@@ -8,12 +8,13 @@ param()
 BeforeAll {
     $ModulePath = Split-Path -Parent -Path (Split-Path -Parent -Path $PSCommandPath)
     $ModuleName = 'HaloAPI'
-    $ManifestPath = "$($ModulePath)\$($ModuleName).psd1"
+    $ManifestPath = ('{0}\{1}.psd1' -f $ModulePath, $ModuleName)
     if (Get-Module -Name $ModuleName) {
         Remove-Module $ModuleName -Force
     }
-    Import-Module $ManifestPath -Verbose:$False
-    $Script:ModuleInformation = Import-Module -Name $ManifestPath -PassThru
+    Import-Module $ManifestPath -Verbose:$False -ErrorAction Stop
+
+    $Script:ModuleInformation = Import-Module -Name $ManifestPath -PassThru -ErrorAction Stop
 
 }
 
@@ -26,7 +27,7 @@ Describe 'Meta' {
     }
 
     It 'Root module is correct' {
-        $Script:ModuleInformation.RootModule | Should -Be ".\$($ModuleName).psm1"
+        $Script:ModuleInformation.RootModule | Should -Be ('.\{0}.psm1' -f $ModuleName)
     }
 
     It 'Has a description' {
@@ -67,5 +68,22 @@ Describe 'Meta' {
 Describe 'Module HaloAPI loads' {
     It 'Passed Module load' {
         Get-Module -Name 'HaloAPI' | Should -Not -Be $null
+    }
+}
+
+Describe 'Quality test entrypoint suite parsing' {
+    BeforeAll {
+        $Script:QualityTestScriptPath = Join-Path -Path $ModulePath -ChildPath 'DevOps\Quality\test.ps1'
+        $Script:QualityTestScriptContent = Get-Content -Path $Script:QualityTestScriptPath -Raw
+    }
+
+    It 'uses string array suite input with argument completions' {
+        $Script:QualityTestScriptContent | Should -Match '\[ArgumentCompletions\(\s*''E2E''\s*,\s*''Live''\s*,\s*''Meta''\s*,\s*''Unit''\s*\)\]'
+        $Script:QualityTestScriptContent | Should -Match '\[string\[\]\]\$Suite\s*=\s*@\(''Meta''\)'
+        $Script:QualityTestScriptContent | Should -Not -Match '\[ValidateSet\(\s*''E2E''\s*,\s*''Live''\s*,\s*''Meta''\s*,\s*''Unit''\s*\)\]\s*\r?\n\s*\[string\[\]\]\$Suite'
+    }
+
+    It 'splits comma-delimited suite values' {
+        $Script:QualityTestScriptContent | Should -Match '-split\s+''\\s\*,\\s\*'''
     }
 }

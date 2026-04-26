@@ -19,8 +19,8 @@ Function Remove-HaloQuote {
     try {
         $ObjectToDelete = Get-HaloQuote -QuoteID $QuoteID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("Quote '$($ObjectToDelete.name)')'", 'Delete')) {
-                $Resource = "api/quotation/$($QuoteID)"
+            if ($PSCmdlet.ShouldProcess(('Quote ''{0}''' -f $ObjectToDelete.name), 'Delete')) {
+                $Resource = ('api/quotation/{0}' -f $QuoteID)
                 $QuoteResults = New-HaloDELETERequest -Resource $Resource
                 Return $QuoteResults
             }

@@ -51,7 +51,7 @@ function Get-HaloOutcome {
     try {
         if ($OutcomeID) {
             Write-Verbose "Running in single-outcome mode because '-OutcomeID' was provided."
-            $Resource = "api/outcome/$($OutcomeID)"
+            $Resource = ('api/outcome/{0}' -f $OutcomeID)
         } else {
             Write-Verbose 'Running in multi-outcome mode.'
             $Resource = 'api/outcome'

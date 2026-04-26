@@ -41,7 +41,7 @@ function Get-HaloTicketRules {
     try {
         if ($RuleID) {
             Write-Verbose "Running in single-field mode because '-RuleID' was provided."
-            $Resource = "api/TicketRules/$($RuleID)"
+            $Resource = ('api/TicketRules/{0}' -f $RuleID)
         } else {
             Write-Verbose 'Running in multi-field mode.'
             $Resource = 'api/TicketRules'

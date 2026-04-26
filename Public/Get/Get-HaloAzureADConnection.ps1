@@ -40,7 +40,7 @@ function Get-HaloAzureADConnection {
     try {
         if ($AzureConnectionID) {
             Write-Verbose "Running in single-field mode because 'AzureConnectionID' was provided."
-            $Resource = "api/azureadconnection/$($AzureConnectionID)"
+            $Resource = ('api/azureadconnection/{0}' -f $AzureConnectionID)
         } else {
             Write-Verbose 'Running in multi-field mode.'
             $Resource = 'api/azureadconnection'

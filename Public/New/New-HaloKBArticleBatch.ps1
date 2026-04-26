@@ -12,7 +12,7 @@ Function New-HaloKBArticleBatch {
     Param (
         # Array of objects containing properties and values used to create one or more new knowledgebase articles.
         [Parameter( Mandatory = $True )]
-        [Array[]]$KBArticles,
+        [Object[]]$KBArticles,
         # How many objects to process at once before delaying. Default value is 100.
         [Int32]$BatchSize,
         # How long to wait between batch runs. Default value is 1 second.

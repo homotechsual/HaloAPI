@@ -24,8 +24,8 @@ function Remove-HaloViewList {
         }
         $ObjectToDelete = Get-HaloViewList -ViewListID $ViewListID
         if ($ObjectToDelete) {
-            if ($PSCmdlet.ShouldProcess("ViewList '$($ObjectToDelete.id)'", 'Delete')) {
-                $Resource = "api/viewlists/$($ViewListID)"
+            if ($PSCmdlet.ShouldProcess(('ViewList ''{0}''' -f $ObjectToDelete.id), 'Delete')) {
+                $Resource = ('api/viewlists/{0}' -f $ViewListID)
                 $ViewListResults = New-HaloDELETERequest -Resource $Resource
                 Return $ViewListResults
             }

@@ -8,15 +8,15 @@ Write-Verbose 'Retrieving tickets...' -Verbose
 $tickets = Get-HaloTicket
 
 foreach ($ticket in $tickets) {
-    Write-Verbose "Processing ticket with ID: $($ticket.Id)" -Verbose
+    Write-Verbose ('Processing ticket with ID: {0}' -f $ticket.Id) -Verbose
     # Get actions for the ticket
     $TicketActions = Get-HaloAction -TicketID $ticket.Id -AgentOnly
-    Write-Verbose "Found $($TicketActions.Count) actions for ticket ID: $($ticket.Id)" -Verbose
+    Write-Verbose ('Found {0} actions for ticket ID: {1}' -f $TicketActions.Count, $ticket.Id) -Verbose
 
     foreach ($action in $TicketActions) {
         # Add or update the property as needed
         $action | Add-Member -NotePropertyName actreviewed -NotePropertyValue 'False' -Force
-        Write-Verbose "Updated action ID: $($action.id) with actreviewed property set to 'False'" -Verbose
+        Write-Verbose ('Updated action ID: {0} with actreviewed property set to ''False''' -f $action.id) -Verbose
 
         # Add the updated action to the main actions array
         $actions += $action

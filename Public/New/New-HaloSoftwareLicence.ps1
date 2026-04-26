@@ -10,13 +10,13 @@ Function New-HaloSoftwareLicence {
     [CmdletBinding( SupportsShouldProcess = $True )]
     [OutputType([Object[]])]
     Param (
-        # Object or array of objects containing properties and values used to create one or more new statuses.
+        # Object or array of objects containing properties and values used to create one or more new software licences.
         [Parameter( Mandatory = $True )]
         [Object[]]$SoftwareLicence
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess($SoftwareLicence -is [Array] ? 'Statuses' : 'Status', 'Create')) {
+        if ($PSCmdlet.ShouldProcess($SoftwareLicence -is [Array] ? 'Software Licences' : 'Software Licence', 'Create')) {
             New-HaloPOSTRequest -Object $SoftwareLicence -Endpoint 'SoftwareLicence'
         }
     } catch {
