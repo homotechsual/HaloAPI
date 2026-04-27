@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   build:
-    name: Build Release Package
+    name: Build Module
     runs-on: windows-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
@@ -52,73 +52,33 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+          & "$env:GITHUB_WORKSPACE\DevOps\Build\bootstrap.ps1"
 
-      - name: Build release package
+      - name: Build module
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          & "$env:GITHUB_WORKSPACE\HaloAPI.build.ps1" -CopyModuleFiles -Configuration Production
+          & "$env:GITHUB_WORKSPACE\DevOps\Build\build.ps1" -TaskNames 'clean', 'build'
 
-      - name: Prepare documentation artifact
+      - name: Generate documentation
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $docsSourceRoot = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Docs\MarkDown'
-          $docsArtifactRoot = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'docs-artifact\haloapi'
-          $commandletsPath = Join-Path -Path $docsArtifactRoot -ChildPath 'commandlets'
-          $developmentPath = Join-Path -Path $docsArtifactRoot -ChildPath 'development'
-          $imagePath = Join-Path -Path $docsArtifactRoot -ChildPath 'img'
+          & "$env:GITHUB_WORKSPACE\DevOps\Build\build.ps1" -TaskNames 'updateHelp', 'publishDocs'
 
-          if (Test-Path -Path $docsArtifactRoot) {
-            Remove-Item -Path $docsArtifactRoot -Recurse -Force
-          }
-
-          New-Item -Path $commandletsPath -ItemType Directory -Force | Out-Null
-          New-Item -Path $developmentPath -ItemType Directory -Force | Out-Null
-
-          Copy-Item -Path (Join-Path -Path $docsSourceRoot -ChildPath 'index.md') -Destination (Join-Path -Path $docsArtifactRoot -ChildPath 'index.md') -Force
-          Copy-Item -Path (Join-Path -Path $docsSourceRoot -ChildPath 'development\*') -Destination $developmentPath -Recurse -Force
-
-          if (Test-Path -Path (Join-Path -Path $docsSourceRoot -ChildPath 'img')) {
-            Copy-Item -Path (Join-Path -Path $docsSourceRoot -ChildPath 'img') -Destination $imagePath -Recurse -Force
-          }
-
-          Get-ChildItem -Path $docsSourceRoot -File -Filter '*.md' |
-            Where-Object { $_.Name -ne 'index.md' } |
-            Copy-Item -Destination $commandletsPath -Force
-
-      - name: Archive module package
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $tagName = "$env:GITHUB_REF_NAME"
-          $archivePath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath ("HaloAPI-$tagName.zip")
-          $packageRoot = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Output\HaloAPI'
-
-          if (-not (Test-Path -Path $packageRoot)) {
-            throw "Expected module package folder not found: $packageRoot"
-          }
-
-          if (Test-Path -Path $archivePath) {
-            Remove-Item -Path $archivePath -Force
-          }
-
-          Compress-Archive -Path (Join-Path -Path $packageRoot -ChildPath '*') -DestinationPath $archivePath
-
-      - name: Upload release artifact
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: HaloAPI-release-package
-          path: |
-            Output/
-            HaloAPI-${{ github.ref_name }}.zip
+          name: module-build
+          path: Output/
+          retention-days: 30
 
-      - name: Upload documentation artifact
+      - name: Upload documentation
         uses: actions/upload-artifact@v6
         with:
           name: module-docs
-          path: docs-artifact/
+          path: .build/docs/
+          retention-days: 30
 
   publish:
     name: Publish Module
@@ -134,11 +94,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Download release artifact
-        uses: actions/download-artifact@v6
-        with:
-          name: HaloAPI-release-package
-          path: ${{ github.workspace }}
+      - name: Bootstrap environment
+        shell: pwsh
+        working-directory: ${{ github.workspace }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\DevOps\Build\bootstrap.ps1"
+
+      - name: Download build artifacts
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          gh run download ${{ github.run_id }} --name module-build --dir Output
+
+      - name: Package module for release
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tagName = "$env:GITHUB_REF_NAME"
+          $zipName = "HaloAPI-$tagName.zip"
+          $zipPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath $zipName
+          if (Test-Path -Path $zipPath) {
+            Remove-Item -Path $zipPath -Force
+          }
+          Compress-Archive -Path (Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Output\*') -DestinationPath $zipPath
 
       - name: Validate PowerShell Gallery secret
         shell: pwsh
@@ -149,12 +130,6 @@ jobs:
           if ([string]::IsNullOrWhiteSpace($env:PSGalleryAPIKey)) {
             throw 'The PSGALLERY_API_KEY secret is required to publish releases.'
           }
-
-      - name: Bootstrap environment
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = 'Stop'
-          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
 
       - name: Publish to PowerShell Gallery
         shell: pwsh
@@ -181,4 +156,4 @@ jobs:
           } catch {
             Write-Host "Module version $version not found on PSGallery. Proceeding with publish."
           }
-          & "$env:GITHUB_WORKSPACE\HaloAPI.build.ps1" -PublishModule -Configuration Production
+          & "$env:GITHUB_WORKSPACE\DevOps\Build\build.ps1" -TaskNames 'publish'

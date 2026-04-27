@@ -1,0 +1,107 @@
+---
+id: Get-HaloDistributionListMember
+title: Get-HaloDistributionListMember
+hide_title: false
+hide_table_of_contents: false
+---
+
+:::powershell[Generated Cmdlet Help]
+This page has been generated from the HaloAPI PowerShell module source. To make changes please edit the appropriate PowerShell source file.
+:::
+
+## SYNOPSIS
+
+Gets members of a distribution list from the Halo API.
+
+## SYNTAX
+
+```powershell
+Get-HaloDistributionListMember [-DistributionListID] <Int64> [-Paginate] [[-PageSize] <Int32>]
+ [[-PageNo] <Int32>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+Retrieves members of a specific distribution list from the Halo API.
+
+## EXAMPLES
+
+## PARAMETERS
+
+### -DistributionListID
+
+Distribution List ID
+
+```yaml
+Type: Int64
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+
+Number of results per page.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: page_size
+
+Required: False
+Position: 2
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageNo
+
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: page_no
+
+Required: False
+Position: 3
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+### A powershell object containing the response.
+
+## NOTES
+
+## RELATED LINKS

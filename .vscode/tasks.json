@@ -2,6 +2,24 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Build HaloAPI",
+      "type": "shell",
+      "command": "pwsh",
+      "args": ["-File", ".\\DevOps\\Build\\build.ps1"],
+      "isBackground": false,
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Build HaloAPI (build only)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": ["-File", ".\\DevOps\\Build\\build.ps1", "-TaskNames", "build"],
+      "isBackground": false,
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
       "label": "Bootstrap HaloAPI",
       "type": "shell",
       "command": "pwsh",
@@ -26,6 +44,19 @@
       "isBackground": false,
       "problemMatcher": [],
       "group": "test"
+    },
+    {
+      "label": "Generate Documentation",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File",
+        ".\\DevOps\\Build\\build.ps1",
+        "-TaskNames",
+        "updateHelp,publishDocs"
+      ],
+      "isBackground": false,
+      "problemMatcher": []
     }
   ]
 }

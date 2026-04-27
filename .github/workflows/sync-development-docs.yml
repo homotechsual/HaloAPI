@@ -17,6 +17,8 @@ jobs:
   publish-development-docs:
     name: Publish development docs to homotechsualdocs
     runs-on: windows-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     if: >-
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
@@ -35,11 +37,13 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $PSNativeCommandUseErrorActionPreference = $true
 
-          $sourceDevelopmentPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Docs\MarkDown\development'
+          $sourceDevelopmentPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Docs\development'
           if (-not (Test-Path -Path $sourceDevelopmentPath -PathType Container)) {
             Write-Error "Source development docs path not found: $sourceDevelopmentPath"
             exit 1
           }
+
+          Write-Host "Using development documentation from: $sourceDevelopmentPath" -ForegroundColor Cyan
 
           git -c core.autocrlf=false clone https://x-access-token:$env:GH_TOKEN@github.com/homotechsual/homotechsualdocs.git docs-repo
 
