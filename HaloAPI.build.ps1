@@ -19,13 +19,19 @@ Param (
 
 $ModuleName = 'HaloAPI'
 
-# Install required modules
-$installRequiredModuleScript = Get-InstalledScript -Name 'Install-RequiredModule' -ErrorAction SilentlyContinue
-if (-not $installRequiredModuleScript) {
-    Install-Script -Name 'Install-RequiredModule' -Force -Scope CurrentUser
-    $installRequiredModuleScript = Get-InstalledScript -Name 'Install-RequiredModule'
+# Install required modules (skip if already available — avoids Install-RequiredModule.ps1 calling exit)
+$requiredModules = (Import-PowerShellDataFile -Path ('{0}\RequiredModules.psd1' -f $PSScriptRoot)).Keys
+$modulesAvailable = $requiredModules | Where-Object { Get-Module -Name $_ -ListAvailable -ErrorAction SilentlyContinue }
+if (@($modulesAvailable).Count -lt @($requiredModules).Count) {
+    $installRequiredModuleScript = Get-InstalledScript -Name 'Install-RequiredModule' -ErrorAction SilentlyContinue
+    if (-not $installRequiredModuleScript) {
+        Install-Script -Name 'Install-RequiredModule' -Force -Scope CurrentUser
+        $installRequiredModuleScript = Get-InstalledScript -Name 'Install-RequiredModule'
+    }
+    & (Join-Path -Path $installRequiredModuleScript.InstalledLocation -ChildPath 'Install-RequiredModule.ps1') -RequiredModulesFile ('{0}\RequiredModules.psd1' -f $PSScriptRoot) -Scope CurrentUser -TrustRegisteredRepositories -Import -Quiet
+} else {
+    $requiredModules | ForEach-Object { Import-Module -Name $_ -ErrorAction SilentlyContinue }
 }
-& (Join-Path -Path $installRequiredModuleScript.InstalledLocation -ChildPath 'Install-RequiredModule.ps1') -RequiredModulesFile ('{0}\RequiredModules.psd1' -f $PSScriptRoot) -Scope CurrentUser -TrustRegisteredRepositories -Import -Quiet
 
 # Use strict mode when building.
 Set-StrictMode -Version Latest
