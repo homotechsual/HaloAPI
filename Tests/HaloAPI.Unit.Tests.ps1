@@ -281,6 +281,21 @@ Describe 'New-HaloPOSTRequest' {
 
         Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
     }
+
+    It 'builds a POST request without query string when QSCollection is not provided' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            return [pscustomobject]@{ status = 'ok' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            $null = New-HaloPOSTRequest -Object @([pscustomobject]@{ subject = 'No QS' }) -Endpoint 'tickets'
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $WebRequestParams.Uri -eq 'https://example.halo/api/tickets'
+        }
+    }
 }
 
 Describe 'New-HaloDELETERequest' {
@@ -542,6 +557,53 @@ Describe 'New-HaloError' {
             $Caught | Should -Not -BeNullOrEmpty
             ([string]$Caught.ErrorDetails) | Should -Match 'ValidationException'
             ([string]$Caught.ErrorDetails) | Should -Match 'Payload rejected'
+        }
+    }
+
+    It 'extracts error field from JSON ErrorDetails' {
+        InModuleScope 'HaloAPI' {
+            $Exception = [System.Exception]::new('request failed')
+            $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
+                $Exception,
+                'JsonErrorField',
+                [System.Management.Automation.ErrorCategory]::InvalidOperation,
+                $null
+            )
+            $ErrorRecord.ErrorDetails = '{"error":"Ticket not found"}'
+
+            $Caught = $null
+            try {
+                New-HaloError -ErrorRecord $ErrorRecord
+            } catch {
+                $Caught = $_
+            }
+
+            $Caught | Should -Not -BeNullOrEmpty
+            ([string]$Caught.ErrorDetails) | Should -Match 'Ticket not found'
+        }
+    }
+
+    It 'parses split API and HTTP detail lines from plain-text ErrorDetails' {
+        InModuleScope 'HaloAPI' {
+            $Exception = [System.Exception]::new('request failed')
+            $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
+                $Exception,
+                'SplitDetails',
+                [System.Management.Automation.ErrorCategory]::InvalidOperation,
+                $null
+            )
+            $ErrorRecord.ErrorDetails = "The Halo API said ValidationError: Bad data.`r`nThe API returned the following HTTP error response: 400 Bad Request"
+
+            $Caught = $null
+            try {
+                New-HaloError -ErrorRecord $ErrorRecord
+            } catch {
+                $Caught = $_
+            }
+
+            $Caught | Should -Not -BeNullOrEmpty
+            ([string]$Caught.ErrorDetails) | Should -Match 'ValidationError'
+            ([string]$Caught.ErrorDetails) | Should -Match '400 Bad Request'
         }
     }
 }
