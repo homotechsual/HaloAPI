@@ -7,6 +7,7 @@
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/homotechsual?style=for-the-badge)](https://github.com/sponsors/homotechsual/)
 [![Stable Release](https://img.shields.io/powershellgallery/v/HaloAPI?label=Stable+Release&style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
 [![Preview Release](https://img.shields.io/powershellgallery/v/HaloAPI?label=Preview+Release&include_prereleases&style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
+[![Code Coverage](https://img.shields.io/badge/Code%20Coverage-Meta%20%26%20Unit-blue?style=for-the-badge)](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
 
 ## Who are we?
 
@@ -29,6 +30,19 @@ HaloAPI provides a PowerShell wrapper around the Halo API, tested extensively ag
 ## Where's the content?
 
 Use the docs website for the most up-to-date generated command reference and development guidance. The docs publishing workflows sync HaloAPI content into the shared `homotechsualdocs` site structure.
+
+## Code Coverage
+
+Code coverage is collected in CI for the `Meta` and `Unit` suites using the standard test entrypoint in `DevOps/Quality/test.ps1`.
+
+Coverage artifacts are published on every CI run as:
+
+* `code-coverage-meta-results` (`.artifacts/CodeCoverage.meta.xml`)
+* `code-coverage-unit-results` (`.artifacts/CodeCoverage.unit.xml`)
+
+View the latest run artifacts from the CI workflow:
+
+<https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml>
 
 ## Installing
 
