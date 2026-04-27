@@ -171,6 +171,16 @@
       },
       "Import-Clixml": true,
       "Set-Content": true,
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Meta -CodeCoverage; pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Unit -CodeCoverage$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "Invoke-Pester": true,
+      "?": true,
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Unit$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
     "cSpell.words": ["HAPI"],
   },

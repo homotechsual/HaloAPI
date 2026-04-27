@@ -18,6 +18,81 @@ BeforeAll {
     Import-Module $ManifestPath -Verbose:$False
 }
 
+Describe 'New-HaloQuery' {
+    It 'maps aliases and values into the query hashtable' {
+        InModuleScope 'HaloAPI' {
+            function Invoke-TestNewHaloQueryAlias {
+                [CmdletBinding()]
+                param(
+                    [Alias('search_term')]
+                    [string]$Search,
+                    [Alias('open_only')]
+                    [switch]$OpenOnly,
+                    [Alias('agent_id')]
+                    [int32]$AgentID
+                )
+                $Parameters = (Get-Command -Name 'Invoke-TestNewHaloQueryAlias').Parameters
+                New-HaloQuery -CommandName 'Invoke-TestNewHaloQueryAlias' -Parameters $Parameters
+            }
+
+            $Query = Invoke-TestNewHaloQueryAlias -Search 'printer' -OpenOnly -AgentID 9
+            $Query['search_term'] | Should -Be 'printer'
+            $Query['open_only'] | Should -Be 'true'
+            $Query['agent_id'] | Should -Be 9
+        }
+    }
+
+    It 'adds pagination defaults in multi mode when pagination is unspecified' {
+        InModuleScope 'HaloAPI' {
+            function Invoke-TestNewHaloQueryMultiDefault {
+                [CmdletBinding()]
+                param(
+                    [string]$Search
+                )
+                $Parameters = (Get-Command -Name 'Invoke-TestNewHaloQueryMultiDefault').Parameters
+                New-HaloQuery -CommandName 'Invoke-TestNewHaloQueryMultiDefault' -Parameters $Parameters -IsMulti
+            }
+
+            $Query = Invoke-TestNewHaloQueryMultiDefault -Search 'term'
+            $Query['pageinate'] | Should -Be 'true'
+            $Query['page_size'] | Should -Be $Script:HAPIDefaultPageSize
+            $Query['page_no'] | Should -Be 1
+        }
+    }
+
+    It 'throws when paginating without an initial page number in multi mode' {
+        InModuleScope 'HaloAPI' {
+            function Invoke-TestNewHaloQueryRequiresPageNo {
+                [CmdletBinding()]
+                param(
+                    [Alias('pageinate')]
+                    [switch]$Paginate
+                )
+                $Parameters = (Get-Command -Name 'Invoke-TestNewHaloQueryRequiresPageNo').Parameters
+                New-HaloQuery -CommandName 'Invoke-TestNewHaloQueryRequiresPageNo' -Parameters $Parameters -IsMulti
+            }
+
+            { Invoke-TestNewHaloQueryRequiresPageNo -Paginate } | Should -Throw -ExpectedMessage 'When using pagination you must specify an initial page number with ''-PageNo''.'
+        }
+    }
+
+    It 'joins array values when comma-separated arrays are enabled' {
+        InModuleScope 'HaloAPI' {
+            function Invoke-TestNewHaloQueryCommaSeparatedArray {
+                [CmdletBinding()]
+                param(
+                    [int32[]]$Team
+                )
+                $Parameters = (Get-Command -Name 'Invoke-TestNewHaloQueryCommaSeparatedArray').Parameters
+                New-HaloQuery -CommandName 'Invoke-TestNewHaloQueryCommaSeparatedArray' -Parameters $Parameters -CommaSeparatedArrays
+            }
+
+            $Query = Invoke-TestNewHaloQueryCommaSeparatedArray -Team @(1, 2, 3)
+            $Query['team'] | Should -Be '1,2,3'
+        }
+    }
+}
+
 Describe 'Get-HaloClient' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
