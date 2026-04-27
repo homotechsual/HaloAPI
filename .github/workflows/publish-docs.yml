@@ -81,6 +81,11 @@ jobs:
             exit 1
           }
 
+          if ($env:GITHUB_EVENT_NAME_VALUE -eq 'workflow_dispatch' -and $runId -notmatch '^\d+$') {
+            Write-Error "Input run_id must be a numeric GitHub Actions run id. Received: '$runId'."
+            exit 1
+          }
+
           if ([string]::IsNullOrWhiteSpace($tagName) -or -not $tagName.StartsWith('v')) {
             Write-Error "Expected a tag-based workflow run, received '$tagName'."
             exit 1
@@ -93,9 +98,14 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCS_RUN_ID: ${{ steps.context.outputs.run_id }}
         run: |
           $ErrorActionPreference = 'Stop'
-          gh run download ${{ steps.context.outputs.run_id }} --name module-docs --dir docs-artifact
+          if ([string]::IsNullOrWhiteSpace($env:DOCS_RUN_ID) -or $env:DOCS_RUN_ID -notmatch '^\d+$') {
+            Write-Error "Resolved run id is invalid: '$env:DOCS_RUN_ID'."
+            exit 1
+          }
+          gh run download "$env:DOCS_RUN_ID" --name module-docs --dir docs-artifact
 
       - name: Clone and update homotechsualdocs
         shell: pwsh
