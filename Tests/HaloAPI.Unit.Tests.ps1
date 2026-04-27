@@ -94,6 +94,51 @@ Describe 'New-HaloQuery' {
             $Query['team'] | Should -Be '1,2,3'
         }
     }
+
+    It 'returns a query string when AsString is specified' {
+        InModuleScope 'HaloAPI' {
+            function Invoke-TestNewHaloQueryAsString {
+                [CmdletBinding()]
+                param(
+                    [string]$Search,
+                    [Alias('page_no')]
+                    [int32]$PageNo,
+                    [int32[]]$Team
+                )
+                $Parameters = (Get-Command -Name 'Invoke-TestNewHaloQueryAsString').Parameters
+                New-HaloQuery -CommandName 'Invoke-TestNewHaloQueryAsString' -Parameters $Parameters -AsString
+            }
+
+            $QueryString = Invoke-TestNewHaloQueryAsString -Search 'printer' -PageNo 3 -Team @(1, 2)
+
+            $QueryString | Should -Match '^\?'
+            $QueryString | Should -Match 'search=printer'
+            $QueryString | Should -Match 'page_no=3'
+            $QueryString | Should -Match 'team=1'
+            $QueryString | Should -Match 'team=2'
+        }
+    }
+
+    It 'formats DateTime arrays as ISO values when comma-separated arrays are enabled' {
+        InModuleScope 'HaloAPI' {
+            function Invoke-TestNewHaloQueryDateArray {
+                [CmdletBinding()]
+                param(
+                    [datetime[]]$Dates
+                )
+                $Parameters = (Get-Command -Name 'Invoke-TestNewHaloQueryDateArray').Parameters
+                New-HaloQuery -CommandName 'Invoke-TestNewHaloQueryDateArray' -Parameters $Parameters -CommaSeparatedArrays
+            }
+
+            $DateA = [datetime]'2026-01-01T10:00:00Z'
+            $DateB = [datetime]'2026-01-02T12:30:00Z'
+            $Query = Invoke-TestNewHaloQueryDateArray -Dates @($DateA, $DateB)
+
+            $Query['dates'] | Should -Match '2026-01-01T10:00:00.0000000\+00:00'
+            $Query['dates'] | Should -Match '2026-01-02T12:30:00.0000000\+00:00'
+            $Query['dates'] | Should -Match ','
+        }
+    }
 }
 
 Describe 'Invoke-HaloBatchProcessor' {
@@ -450,6 +495,53 @@ Describe 'Connect-HaloAPI' {
         InModuleScope 'HaloAPI' {
             $null = Connect-HaloAPI -URL 'https://example.halo/path/segment' -ClientID 'client-5' -ClientSecret 'secret-5' -Scopes 'all'
             $Script:HAPIConnectionInformation.URL | Should -Match '^https://example\.halo(:443)?/$'
+        }
+    }
+
+    It 'uses /token when auth_url does not contain a path' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-6' -ClientSecret 'secret-6' -Scopes 'all'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Method -eq 'POST' -and $Uri -eq 'https://auth.example/token?tenant=tenantFromAuthInfo'
+        }
+    }
+
+    It 'forwards AdditionalHeaders to auth info and token requests' {
+        $Headers = @{ 'X-Test' = 'true' }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-7' -ClientSecret 'secret-7' -Scopes 'all' -AdditionalHeaders $Headers
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Method -eq 'GET' -and $Headers['X-Test'] -eq 'true'
+        }
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Method -eq 'POST' -and $Headers['X-Test'] -eq 'true'
         }
     }
 }

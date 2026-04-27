@@ -223,6 +223,7 @@
         "approve": true,
         "matchCommandLine": true,
       },
+      "PSObject": true,
     },
     "cSpell.words": ["HAPI"],
   },
