@@ -49,10 +49,16 @@ jobs:
       - name: Resolve workflow context
         id: context
         shell: pwsh
+        env:
+          GITHUB_EVENT_NAME_VALUE: ${{ github.event_name }}
+          INPUT_RUN_ID_VALUE: ${{ inputs.run_id }}
+          INPUT_TAG_NAME_VALUE: ${{ inputs.tag_name }}
+          WORKFLOW_RUN_ID_VALUE: ${{ github.event.workflow_run.id }}
+          WORKFLOW_RUN_HEAD_BRANCH_VALUE: ${{ github.event.workflow_run.head_branch }}
         run: |
-          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-            $runId = '${{ inputs.run_id }}'
-            $rawTagName = '${{ inputs.tag_name }}'
+          if ($env:GITHUB_EVENT_NAME_VALUE -eq 'workflow_dispatch') {
+            $runId = $env:INPUT_RUN_ID_VALUE
+            $rawTagName = $env:INPUT_TAG_NAME_VALUE
 
             if ([string]::IsNullOrWhiteSpace($rawTagName)) {
               Write-Error 'Input tag_name is required for workflow_dispatch.'
@@ -66,8 +72,8 @@ jobs:
               $tagName = "v$rawTagName"
             }
           } else {
-            $runId = '${{ github.event.workflow_run.id }}'
-            $tagName = '${{ github.event.workflow_run.head_branch }}'
+            $runId = $env:WORKFLOW_RUN_ID_VALUE
+            $tagName = $env:WORKFLOW_RUN_HEAD_BRANCH_VALUE
           }
 
           if ([string]::IsNullOrWhiteSpace($runId)) {
