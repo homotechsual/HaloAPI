@@ -1066,6 +1066,395 @@ Describe 'Set-HaloActionBatch' {
     }
 }
 
+Describe 'Set-HaloTicketRules' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloTicketRules' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 9 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts updates to the TicketRules endpoint when the rule exists' {
+        $Rule = [pscustomobject]@{ id = 9; name = 'Rule 9' }
+
+        Set-HaloTicketRules -Rule $Rule -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Get-HaloTicketRules' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $RuleID -eq 9
+        }
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'TicketRules' -and $Object.id -eq 9
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloTicketRules -Rule ([pscustomobject]@{ id = 10; name = 'Rule 10' }) -WhatIf
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing Rule id through New-HaloError' {
+        Set-HaloTicketRules -Rule ([pscustomobject]@{ name = 'NoId' }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloTicketType' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloTicketType' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 21 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts to tickettype endpoint when all ticket types pass validation' {
+        $TicketTypes = @(
+            [pscustomobject]@{ id = 21; name = 'Incident' },
+            [pscustomobject]@{ id = 22; name = 'Request' }
+        )
+
+        Set-HaloTicketType -TicketType $TicketTypes -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'tickettype' -and $Object.Count -eq 2
+        }
+    }
+
+    It 'bypasses lookup when SkipValidation is used' {
+        Set-HaloTicketType -TicketType @([pscustomobject]@{ id = 30; name = 'Skip' }) -SkipValidation -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Get-HaloTicketType' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+
+    It 'routes missing TicketType id through New-HaloError' {
+        Set-HaloTicketType -TicketType @([pscustomobject]@{ name = 'NoId' }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloUser' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloUser' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 101 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts to users endpoint when user validation succeeds' {
+        $Users = @([pscustomobject]@{ id = 101; name = 'Alex' })
+
+        Set-HaloUser -User $Users -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Get-HaloUser' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $UserId -eq 101
+        }
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'users' -and $Object[0].id -eq 101
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloUser -User @([pscustomobject]@{ id = 102; name = 'Jordan' }) -WhatIf
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing User id through New-HaloError' {
+        Set-HaloUser -User @([pscustomobject]@{ name = 'NoId' }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloViewColumn' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloViewColumn' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 301 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts to viewcolumns endpoint when SkipValidation is used' {
+        $ViewColumns = @([pscustomobject]@{ id = 301; ticket_id = 77; name = 'Priority' })
+
+        Set-HaloViewColumn -ViewColumn $ViewColumns -SkipValidation -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'viewcolumns' -and $Object[0].id -eq 301
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloViewColumn -ViewColumn @([pscustomobject]@{ id = 401; ticket_id = 88 }) -SkipValidation -WhatIf
+
+        Should -Invoke -CommandName 'Get-HaloViewColumn' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing ViewColumn id through New-HaloError' {
+        Set-HaloViewColumn -ViewColumn @([pscustomobject]@{ ticket_id = 99 }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloViewFilter' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloViewFilter' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 501 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts to viewfilter endpoint when SkipValidation is used' {
+        $ViewFilters = @([pscustomobject]@{ id = 501; ticket_id = 91; name = 'Filter A' })
+
+        Set-HaloViewFilter -ViewFilter $ViewFilters -SkipValidation -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'viewfilter' -and $Object[0].id -eq 501
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloViewFilter -ViewFilter @([pscustomobject]@{ id = 502; ticket_id = 92 }) -SkipValidation -WhatIf
+
+        Should -Invoke -CommandName 'Get-HaloViewFilter' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing ViewFilter id through New-HaloError' {
+        Set-HaloViewFilter -ViewFilter @([pscustomobject]@{ ticket_id = 93 }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloViewList' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloViewList' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 601 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts to viewlists endpoint when SkipValidation is used' {
+        $ViewLists = @([pscustomobject]@{ id = 601; ticket_id = 94; name = 'List A' })
+
+        Set-HaloViewList -ViewList $ViewLists -SkipValidation -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'viewlists' -and $Object[0].id -eq 601
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloViewList -ViewList @([pscustomobject]@{ id = 602; ticket_id = 95 }) -SkipValidation -WhatIf
+
+        Should -Invoke -CommandName 'Get-HaloViewList' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing ViewList id through New-HaloError' {
+        Set-HaloViewList -ViewList @([pscustomobject]@{ ticket_id = 96 }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloViewListGroup' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloViewListGroup' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 701 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts to viewlistgroup endpoint when SkipValidation is used' {
+        $ViewListGroups = @([pscustomobject]@{ id = 701; ticket_id = 97; name = 'Group A' })
+
+        Set-HaloViewListGroup -ViewListGroup $ViewListGroups -SkipValidation -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'viewlistgroup' -and $Object[0].id -eq 701
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloViewListGroup -ViewListGroup @([pscustomobject]@{ id = 702; ticket_id = 98 }) -SkipValidation -WhatIf
+
+        Should -Invoke -CommandName 'Get-HaloViewListGroup' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing ViewListGroup id through New-HaloError' {
+        Set-HaloViewListGroup -ViewListGroup @([pscustomobject]@{ ticket_id = 99 }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloWorkday' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloWorkday' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 801 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts updates to workday endpoint when workday exists' {
+        $Workday = [pscustomobject]@{ id = 801; name = 'Monday' }
+
+        Set-HaloWorkday -Workday $Workday -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Get-HaloWorkday' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $WorkdayID -eq 801
+        }
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'workday' -and $Object.id -eq 801
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloWorkday -Workday ([pscustomobject]@{ id = 802; name = 'Tuesday' }) -WhatIf
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing Workday id through New-HaloError' {
+        Set-HaloWorkday -Workday ([pscustomobject]@{ name = 'NoId' }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloTicket' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloTicket' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 5001 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts to tickets endpoint when SkipValidation is used' {
+        $Tickets = @([pscustomobject]@{ id = 5001; summary = 'Update ticket' })
+
+        Set-HaloTicket -Ticket $Tickets -SkipValidation -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'tickets' -and $Object[0].id -eq 5001
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloTicket -Ticket @([pscustomobject]@{ id = 5002; summary = 'Another ticket' }) -SkipValidation -WhatIf
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing Ticket id through New-HaloError' {
+        Set-HaloTicket -Ticket @([pscustomobject]@{ summary = 'No ID ticket' }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloTemplate' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloTemplate' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 6001 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts to template endpoint when SkipValidation is used' {
+        $Templates = @([pscustomobject]@{ id = 6001; name = 'Template A' })
+
+        Set-HaloTemplate -Template $Templates -SkipValidation -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'template' -and $Object[0].id -eq 6001
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloTemplate -Template @([pscustomobject]@{ id = 6002; name = 'Template B' }) -SkipValidation -WhatIf
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing Template id through New-HaloError' {
+        Set-HaloTemplate -Template @([pscustomobject]@{ name = 'No ID template' }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloTeam' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloTeam' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 7001 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts to team endpoint when SkipValidation is used' {
+        $Teams = @([pscustomobject]@{ id = 7001; name = 'Team A' })
+
+        Set-HaloTeam -Team $Teams -SkipValidation -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'team' -and $Object[0].id -eq 7001
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloTeam -Team @([pscustomobject]@{ id = 7002; name = 'Team B' }) -SkipValidation -WhatIf
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing Team id through New-HaloError' {
+        Set-HaloTeam -Team @([pscustomobject]@{ name = 'No ID team' }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloStatus' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-HaloStatus' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ id = 8001 } }
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { [pscustomobject]@{ updated = $true } }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts to status endpoint when SkipValidation is used' {
+        $Statuses = @([pscustomobject]@{ id = 8001; name = 'Open' })
+
+        Set-HaloStatus -Status $Statuses -SkipValidation -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Endpoint -eq 'status' -and $Object[0].id -eq 8001
+        }
+    }
+
+    It 'does not post updates when -WhatIf is specified' {
+        Set-HaloStatus -Status @([pscustomobject]@{ id = 8002; name = 'Closed' }) -SkipValidation -WhatIf
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes missing Status id through New-HaloError' {
+        Set-HaloStatus -Status @([pscustomobject]@{ name = 'No ID status' }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
 Describe 'Remove-HaloActionBatch' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
