@@ -8,8 +8,9 @@ sidebar_position: 0
 [![HaloPSA Community Discord](https://img.shields.io/discord/1044558967545806940?style=for-the-badge&logo=discord&logoColor=white&label=HaloPSA%20Community%20Discord)](https://discord.halopsa.community)
 [![HaloITSM Admin Hangout Discord](https://img.shields.io/discord/1050832376185495562?style=for-the-badge&logo=discord&logoColor=white&label=HaloITSM%20Admin%20Hangout%20Discord)](https://discord.gg/vy53fYdPkW)
 [![GitHub contributors](https://img.shields.io/github/contributors/homotechsual/haloapi?style=for-the-badge&logo=github)](https://github.com/homotechsual/haloapi/)
-[![Azure DevOps Pipeline Status](https://img.shields.io/azure-devops/tests/MSPsUK/HaloAPI/4?style=for-the-badge)](https://dev.azure.com/MSPsUK/HaloAPI/_build?definitionId=4)
-[![Azure DevOps Code Coverage](https://img.shields.io/azure-devops/coverage/MSPsUK/HaloAPI/4?style=for-the-badge)](https://dev.azure.com/MSPsUK/HaloAPI/_build?definitionId=4)
+[![CI](https://img.shields.io/github/actions/workflow/status/homotechsual/HaloAPI/ci.yml?style=for-the-badge&label=CI)](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/actions/workflow/status/homotechsual/HaloAPI/release.yml?style=for-the-badge&label=Release)](https://github.com/homotechsual/HaloAPI/actions/workflows/release.yml)
+[![Code Coverage](https://img.shields.io/badge/Code%20Coverage-Meta%20%26%20Unit-blue?style=for-the-badge)](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/HaloAPI?style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
 [![License](https://img.shields.io/github/license/homotechsual/HaloAPI?style=for-the-badge)](https://mit.license.homotechsual.dev)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/homotechsual?style=for-the-badge)](https://github.com/sponsors/homotechsual/)
@@ -19,6 +20,19 @@ sidebar_position: 0
 ## About
 
 This module provides a PowerShell interface to the Halo API. It's designed to for PowerShell developers to build their own PowerShell scripts and modules to interact with Halo. It's well tested for Halo Professional Services Automation (PSA) but should work with Halo IT Service Management (ITSM), Halo Service Desk and Halo Customer Relationship Management (CRM).
+
+## Code Coverage
+
+Code coverage is generated in CI for the `Meta` and `Unit` suites.
+
+Coverage artifacts are uploaded for each run as:
+
+* `code-coverage-meta-results` (`.artifacts/CodeCoverage.meta.xml`)
+* `code-coverage-unit-results` (`.artifacts/CodeCoverage.unit.xml`)
+
+You can access them from the CI workflow runs:
+
+[GitHub Actions CI workflow](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
 
 ## Installing
 
