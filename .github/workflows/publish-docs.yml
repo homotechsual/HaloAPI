@@ -52,7 +52,19 @@ jobs:
         run: |
           if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
             $runId = '${{ inputs.run_id }}'
-            $tagName = '${{ inputs.tag_name }}'
+            $rawTagName = '${{ inputs.tag_name }}'
+
+            if ([string]::IsNullOrWhiteSpace($rawTagName)) {
+              Write-Error 'Input tag_name is required for workflow_dispatch.'
+              exit 1
+            }
+
+            $rawTagName = $rawTagName.Trim()
+            if ($rawTagName.StartsWith('v')) {
+              $tagName = $rawTagName
+            } else {
+              $tagName = "v$rawTagName"
+            }
           } else {
             $runId = '${{ github.event.workflow_run.id }}'
             $tagName = '${{ github.event.workflow_run.head_branch }}'
