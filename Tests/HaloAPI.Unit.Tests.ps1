@@ -93,6 +93,143 @@ Describe 'New-HaloQuery' {
     }
 }
 
+Describe 'Invoke-HaloBatchProcessor' {
+    It 'rejects unsupported operation values' {
+        InModuleScope 'HaloAPI' {
+            {
+                Invoke-HaloBatchProcessor -BatchInput @() -EntityType 'Action' -Operation 'Get'
+            } | Should -Throw
+        }
+    }
+
+    It 'rejects an empty batch input array' {
+        InModuleScope 'HaloAPI' {
+            {
+                Invoke-HaloBatchProcessor -BatchInput @() -EntityType 'Action' -Operation 'Set'
+            } | Should -Throw
+        }
+    }
+}
+
+Describe 'New-HaloGETRequest' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'builds a GET request and unwraps the ResourceType payload when autopagination is off' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{
+                tickets = @([pscustomobject]@{ id = 1; summary = 'A' })
+            }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+
+            $Result = New-HaloGETRequest -Method 'GET' -Resource 'api/tickets' -QSCollection @{
+                pageinate = 'true'
+                page_no = 2
+                page_size = 10
+                search = 'printer'
+            } -AutoPaginateOff -ResourceType 'tickets'
+
+            $Result.Count | Should -Be 1
+            $Result[0].id | Should -Be 1
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $WebRequestParams.Method -eq 'GET' -and
+            $WebRequestParams.Uri -match '^https://example\.halo/api/tickets\?' -and
+            $WebRequestParams.Uri -match 'search=printer' -and
+            $WebRequestParams.Uri -match 'pageinate=true' -and
+            $WebRequestParams.Uri -match 'page_no=2' -and
+            $WebRequestParams.Uri -match 'page_size=10'
+        }
+    }
+
+    It 'iterates paginated responses when page information is provided' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            if ($WebRequestParams.Uri -match 'page_no=1') {
+                return [pscustomobject]@{
+                    record_count = 3
+                    tickets = @(
+                        [pscustomobject]@{ id = 1 },
+                        [pscustomobject]@{ id = 2 }
+                    )
+                }
+            }
+
+            [pscustomobject]@{
+                record_count = 3
+                tickets = @([pscustomobject]@{ id = 3 })
+            }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+
+            $Result = New-HaloGETRequest -Method 'GET' -Resource 'api/tickets' -QSCollection @{
+                pageinate = 'true'
+                page_no = 1
+                page_size = 2
+            } -ResourceType 'tickets'
+
+            $Result.Count | Should -Be 3
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 2 -Exactly
+    }
+}
+
+Describe 'New-HaloPOSTRequest' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'builds a POST request with query string and JSON array body' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            return [pscustomobject]@{ status = 'ok' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            $BodyObject = @([pscustomobject]@{ subject = 'Test ticket'; client_id = 7 })
+
+            $Result = New-HaloPOSTRequest -Object $BodyObject -Endpoint 'tickets' -QSCollection @{
+                includeinactive = 'true'
+                ids = @(1, 2)
+            }
+
+            $Result.status | Should -Be 'ok'
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $WebRequestParams.Method -eq 'POST' -and
+            $WebRequestParams.Uri -match '^https://example\.halo/api/tickets\?' -and
+            $WebRequestParams.Uri -match 'includeinactive=true' -and
+            $WebRequestParams.Uri -match 'ids=1' -and
+            $WebRequestParams.Uri -match 'ids=2' -and
+            $WebRequestParams.Body -match '"subject"\s*:\s*"Test ticket"' -and
+            $WebRequestParams.Body -match '"client_id"\s*:\s*7'
+        }
+    }
+
+    It 'routes non-http exceptions through New-HaloError' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            throw 'boom'
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            New-HaloPOSTRequest -Object @([pscustomobject]@{ subject = 'x' }) -Endpoint 'tickets'
+        }
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
 Describe 'Get-HaloClient' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
