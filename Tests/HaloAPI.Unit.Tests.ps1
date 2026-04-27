@@ -278,6 +278,42 @@ Describe 'New-HaloGETRequest' {
             $RawResult -eq $true
         }
     }
+
+    It 'stops before request execution when preflight fails' {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {
+            throw 'preflight failed'
+        }
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {}
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+
+            {
+                New-HaloGETRequest -Method 'GET' -Resource 'api/tickets' -QSCollection @{ search = 'x' } -AutoPaginateOff
+            } | Should -Throw -ExpectedMessage 'preflight failed'
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'rethrows HttpResponseException without routing through New-HaloError' {
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::BadRequest)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('http failure', $Response)
+
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            throw $HttpException
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            {
+                New-HaloGETRequest -Method 'GET' -Resource 'api/tickets' -QSCollection @{ search = 'x' } -AutoPaginateOff
+            } | Should -Throw -ExpectedMessage 'http failure'
+        }
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
 }
 
 Describe 'New-HaloPOSTRequest' {
@@ -341,6 +377,41 @@ Describe 'New-HaloPOSTRequest' {
             $WebRequestParams.Uri -eq 'https://example.halo/api/tickets'
         }
     }
+
+    It 'stops before request execution when preflight fails' {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {
+            throw 'preflight failed'
+        }
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {}
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            {
+                New-HaloPOSTRequest -Object @([pscustomobject]@{ subject = 'x' }) -Endpoint 'tickets'
+            } | Should -Throw -ExpectedMessage 'preflight failed'
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'rethrows HttpResponseException without routing through New-HaloError' {
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::BadRequest)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('http failure', $Response)
+
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            throw $HttpException
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            {
+                New-HaloPOSTRequest -Object @([pscustomobject]@{ subject = 'x' }) -Endpoint 'tickets'
+            } | Should -Throw -ExpectedMessage 'http failure'
+        }
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
 }
 
 Describe 'New-HaloDELETERequest' {
@@ -377,6 +448,41 @@ Describe 'New-HaloDELETERequest' {
         }
 
         Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+
+    It 'stops before request execution when preflight fails' {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {
+            throw 'preflight failed'
+        }
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {}
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            {
+                New-HaloDELETERequest -Resource 'api/template/8'
+            } | Should -Throw -ExpectedMessage 'preflight failed'
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'rethrows HttpResponseException without routing through New-HaloError' {
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::BadRequest)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('http failure', $Response)
+
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            throw $HttpException
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            {
+                New-HaloDELETERequest -Resource 'api/template/8'
+            } | Should -Throw -ExpectedMessage 'http failure'
+        }
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly
     }
 }
 
