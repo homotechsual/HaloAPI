@@ -267,6 +267,85 @@ Describe 'New-HaloDELETERequest' {
     }
 }
 
+Describe 'Connect-HaloAPI' {
+    BeforeAll {
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Write-Success' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Get-TokenExpiry' -ModuleName 'HaloAPI' -MockWith { [datetime]'2026-01-01T00:00:00Z' }
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -MockWith {
+            @([pscustomobject]@{ id = 1; name = 'Lookup' })
+        }
+    }
+
+    It 'uses authinfo endpoint, applies provided tenant, and joins scopes for token request' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"authTenant"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-1' -ClientSecret 'secret-1' -Scopes @('all', 'tickets') -Tenant 'tenantProvided'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Method -eq 'GET' -and $Uri -eq 'https://example.halo/api/authinfo'
+        }
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Method -eq 'POST' -and
+            $Uri -eq 'https://auth.example/oauth2/token?tenant=tenantProvided' -and
+            $Body.scope -eq 'all tickets' -and
+            $Body.client_id -eq 'client-1'
+        }
+    }
+
+    It 'falls back to auth/token when authinfo response is empty' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = $null }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-2' -ClientSecret 'secret-2' -Scopes 'all' -Tenant 'fallbackTenant'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Method -eq 'POST' -and $Uri -eq 'https://example.halo/auth/token?tenant=fallbackTenant'
+        }
+    }
+
+    It 'returns no confirmation value when NoConfirm is specified' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/","tenant_id":"authTenant"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-3' -ClientSecret 'secret-3' -Scopes 'all' -NoConfirm
+
+        $Result | Should -BeNullOrEmpty
+        Should -Invoke -CommandName 'Write-Success' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
 Describe 'Get-HaloClient' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}

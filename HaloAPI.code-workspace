@@ -194,6 +194,26 @@
         "approve": true,
         "matchCommandLine": true,
       },
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Unit \\.$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Unit -Verbosity Normal$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Unit -Verbosity Detailed$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^\\$output = pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Unit -Verbosity Detailed; \\$output \\| Select-String -Pattern \"Connect-HaloAPI\" -Context 5,20$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Meta,Unit -CodeCoverage -Verbosity Normal$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
     "cSpell.words": ["HAPI"],
   },
