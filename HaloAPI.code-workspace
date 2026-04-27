@@ -214,6 +214,11 @@
         "approve": true,
         "matchCommandLine": true,
       },
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Meta -CodeCoverage -Verbosity Normal$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      ".\\DevOps\\Quality\\test.ps1": true,
     },
     "cSpell.words": ["HAPI"],
   },

@@ -180,6 +180,56 @@ Describe 'New-HaloGETRequest' {
 
         Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 2 -Exactly
     }
+
+    It 'removes page_size when pagination is not enabled' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ ok = $true }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+
+            $Result = New-HaloGETRequest -Method 'GET' -Resource 'api/tickets' -QSCollection @{
+                page_size = 100
+                search = 'abc'
+            } -AutoPaginateOff
+
+            $Result.ok | Should -BeTrue
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $WebRequestParams.Uri -match 'search=abc' -and
+            $WebRequestParams.Uri -notmatch 'page_size='
+        }
+    }
+
+    It 'returns the full response when ResourceType does not match a response property' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ record_count = 1; tickets = @([pscustomobject]@{ id = 10 }) }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            $Result = New-HaloGETRequest -Method 'GET' -Resource 'api/tickets' -QSCollection @{ search = 'ticket' } -AutoPaginateOff -ResourceType 'users'
+            $Result.record_count | Should -Be 1
+            $Result.tickets[0].id | Should -Be 10
+        }
+    }
+
+    It 'passes RawResult to Invoke-HaloRequest when requested' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ ok = $true }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            $null = New-HaloGETRequest -Method 'GET' -Resource 'api/tickets' -QSCollection @{ search = 'ticket' } -AutoPaginateOff -RawResult
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $RawResult -eq $true
+        }
+    }
 }
 
 Describe 'New-HaloPOSTRequest' {
@@ -343,6 +393,153 @@ Describe 'Connect-HaloAPI' {
 
         $Result | Should -BeNullOrEmpty
         Should -Invoke -CommandName 'Write-Success' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+
+    It 'uses tenant_id from authinfo when Tenant is not provided' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-4' -ClientSecret 'secret-4' -Scopes 'all'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Method -eq 'POST' -and $Uri -eq 'https://auth.example/oauth2/token?tenant=tenantFromAuthInfo'
+        }
+    }
+
+    It 'stores the base url without path in script connection information' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"authTenant"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        InModuleScope 'HaloAPI' {
+            $null = Connect-HaloAPI -URL 'https://example.halo/path/segment' -ClientID 'client-5' -ClientSecret 'secret-5' -Scopes 'all'
+            $Script:HAPIConnectionInformation.URL | Should -Match '^https://example\.halo(:443)?/$'
+        }
+    }
+}
+
+Describe 'Get-TokenExpiry' {
+    It 'returns a DateTime approximately ExpiresIn seconds in the future' {
+        InModuleScope 'HaloAPI' {
+            $Before = Get-Date
+            $Expiry = Get-TokenExpiry -ExpiresIn 120
+            $After = Get-Date
+
+            ($Expiry -ge $Before.AddSeconds(119)) | Should -BeTrue
+            ($Expiry -le $After.AddSeconds(121)) | Should -BeTrue
+        }
+    }
+}
+
+Describe 'Write-Success' {
+    BeforeAll {
+        Mock -CommandName 'Write-Information' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'writes an information message using green host styling' {
+        InModuleScope 'HaloAPI' {
+            Write-Success -Message 'Connected'
+        }
+
+        Should -Invoke -CommandName 'Write-Information' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $InformationAction -eq 'Continue' -and
+            $MessageData.Message -eq 'Connected' -and
+            $MessageData.ForegroundColor -eq 'Green'
+        }
+    }
+}
+
+Describe 'New-HaloError' {
+    It 'throws the module message when ModuleMessage is provided' {
+        InModuleScope 'HaloAPI' {
+            { New-HaloError -ModuleMessage 'module failure' } | Should -Throw -ExpectedMessage 'module failure'
+        }
+    }
+
+    It 'includes API and HTTP details when ErrorDetails JSON and response are present' {
+        InModuleScope 'HaloAPI' {
+            $Exception = [System.Exception]::new('request failed')
+            $Response = [pscustomobject]@{
+                StatusCode = [pscustomobject]@{ value__ = 400 }
+                ReasonPhrase = 'Bad Request'
+            }
+            $Exception | Add-Member -NotePropertyName 'Response' -NotePropertyValue $Response -Force
+            $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
+                $Exception,
+                'BadRequest',
+                [System.Management.Automation.ErrorCategory]::InvalidOperation,
+                $null
+            )
+            $ErrorRecord.ErrorDetails = '{"resultCode":"BadInput","errorMessage":"Invalid payload"}'
+
+            $Caught = $null
+            try {
+                New-HaloError -ErrorRecord $ErrorRecord -HasResponse
+            } catch {
+                $Caught = $_
+            }
+
+            $Caught | Should -Not -BeNullOrEmpty
+            ([string]$Caught.ErrorDetails) | Should -Match 'BadInput'
+            ([string]$Caught.ErrorDetails) | Should -Match 'Invalid payload'
+            ([string]$Caught.ErrorDetails) | Should -Match '400 Bad Request'
+        }
+    }
+
+    It 'uses exception message when ErrorDetails and ModuleMessage are not provided' {
+        InModuleScope 'HaloAPI' {
+            $Exception = [System.Exception]::new('plain failure')
+            $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
+                $Exception,
+                'PlainFailure',
+                [System.Management.Automation.ErrorCategory]::NotSpecified,
+                $null
+            )
+
+            { New-HaloError -ErrorRecord $ErrorRecord } | Should -Throw -ExpectedMessage 'plain failure'
+        }
+    }
+
+    It 'extracts ClassName and Message from JSON ErrorDetails' {
+        InModuleScope 'HaloAPI' {
+            $Exception = [System.Exception]::new('request failed')
+            $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
+                $Exception,
+                'JsonFailure',
+                [System.Management.Automation.ErrorCategory]::InvalidOperation,
+                $null
+            )
+            $ErrorRecord.ErrorDetails = '{"ClassName":"ValidationException","Message":"Payload rejected"}'
+
+            $Caught = $null
+            try {
+                New-HaloError -ErrorRecord $ErrorRecord
+            } catch {
+                $Caught = $_
+            }
+
+            $Caught | Should -Not -BeNullOrEmpty
+            ([string]$Caught.ErrorDetails) | Should -Match 'ValidationException'
+            ([string]$Caught.ErrorDetails) | Should -Match 'Payload rejected'
+        }
     }
 }
 
