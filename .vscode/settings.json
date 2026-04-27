@@ -3,6 +3,7 @@
     "Analyzer",
     "authinfo",
     "cmdletbinding",
+    "Color",
     "commandlets",
     "distributionlist",
     "distributionlistid",
