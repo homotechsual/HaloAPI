@@ -314,6 +314,46 @@ Describe 'New-HaloGETRequest' {
 
         Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly
     }
+
+    It 'returns no result when pagination is enabled without page_no and AutoPaginateOff is not set' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ should_not_run = $true }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            $Result = New-HaloGETRequest -Method 'GET' -Resource 'api/tickets' -QSCollection @{
+                pageinate = 'true'
+                page_size = 50
+            } -ResourceType 'tickets'
+
+            $Result | Should -BeNullOrEmpty
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'processes a single page when record_count is missing from paginated response' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{
+                tickets = @([pscustomobject]@{ id = 42 })
+            }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            $Result = New-HaloGETRequest -Method 'GET' -Resource 'api/tickets' -QSCollection @{
+                pageinate = 'true'
+                page_no = 1
+                page_size = 10
+            } -ResourceType 'tickets'
+
+            $Result.Count | Should -Be 1
+            $Result[0].id | Should -Be 42
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
 }
 
 Describe 'New-HaloPOSTRequest' {
@@ -411,6 +451,21 @@ Describe 'New-HaloPOSTRequest' {
         }
 
         Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'treats an empty query collection as no query string' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            return [pscustomobject]@{ status = 'ok' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            $null = New-HaloPOSTRequest -Object @([pscustomobject]@{ subject = 'Empty QS' }) -Endpoint 'tickets' -QSCollection @{}
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $WebRequestParams.Uri -eq 'https://example.halo/api/tickets'
+        }
     }
 }
 
