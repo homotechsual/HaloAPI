@@ -27,6 +27,8 @@ jobs:
   publish-docs:
     name: Publish docs to homotechsualdocs
     runs-on: windows-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (
@@ -81,27 +83,32 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $PSNativeCommandUseErrorActionPreference = $true
 
-          $sourceRoot = Get-ChildItem -Path 'docs-artifact' -Directory -Recurse |
-            Where-Object { $_.Name -ieq 'haloapi' } |
+          $sourceCommandletsPath = Get-ChildItem -Path 'docs-artifact' -Directory -Recurse |
+            Where-Object {
+              $_.Name -eq 'commandlets' -and
+              $_.Parent -and
+              $_.Parent.Name -ieq 'haloapi'
+            } |
             Select-Object -First 1 -ExpandProperty FullName
 
-          if (-not $sourceRoot) {
-            Write-Error 'Documentation artifact does not contain a haloapi docs root.'
+          $sourceIndexPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'docs\HaloAPI\index.mdx'
+          $sourceImagePath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'docs\HaloAPI\img'
+
+          $hasCommandlets = -not [string]::IsNullOrWhiteSpace($sourceCommandletsPath)
+          $hasIndex = Test-Path -Path $sourceIndexPath -PathType Leaf
+          $hasImages = Test-Path -Path $sourceImagePath -PathType Container
+
+          if (-not $hasCommandlets) {
+            Write-Error 'Documentation artifact does not contain a docs/haloapi/commandlets directory.'
             exit 1
           }
 
-          $sourceCommandletsPath = Join-Path -Path $sourceRoot -ChildPath 'commandlets'
-          $sourceIndexPath = Join-Path -Path $sourceRoot -ChildPath 'index.md'
-          $sourceImagePath = Join-Path -Path $sourceRoot -ChildPath 'img'
-
-          if (-not (Test-Path -Path $sourceCommandletsPath -PathType Container)) {
-            Write-Error "Commandlets docs path not found: $sourceCommandletsPath"
-            exit 1
+          Write-Host "Using generated documentation from: $sourceCommandletsPath" -ForegroundColor Cyan
+          if ($hasIndex) {
+            Write-Host "Using index doc from: $sourceIndexPath" -ForegroundColor Cyan
           }
-
-          if (-not (Test-Path -Path $sourceIndexPath -PathType Leaf)) {
-            Write-Error "Docs index path not found: $sourceIndexPath"
-            exit 1
+          if ($hasImages) {
+            Write-Host "Using image assets from: $sourceImagePath" -ForegroundColor Cyan
           }
 
           git -c core.autocrlf=false clone https://x-access-token:$env:GH_TOKEN@github.com/homotechsual/homotechsualdocs.git docs-repo
@@ -130,15 +137,21 @@ jobs:
             if (Test-Path 'docs/haloapi/commandlets') {
               Remove-Item -Path 'docs/haloapi/commandlets' -Recurse -Force
             }
-            if (Test-Path 'docs/haloapi/img') {
+            if ($hasImages -and (Test-Path 'docs/haloapi/img')) {
               Remove-Item -Path 'docs/haloapi/img' -Recurse -Force
             }
 
             New-Item -Path 'docs/haloapi/commandlets' -ItemType Directory -Force | Out-Null
             Copy-Item -Path (Join-Path -Path $sourceCommandletsPath -ChildPath '*') -Destination 'docs/haloapi/commandlets' -Recurse -Force
-            Copy-Item -Path $sourceIndexPath -Destination 'docs/haloapi/index.md' -Force
 
-            if (Test-Path -Path $sourceImagePath -PathType Container) {
+            if ($hasIndex) {
+              Copy-Item -Path $sourceIndexPath -Destination 'docs/haloapi/index.mdx' -Force
+              if (Test-Path 'docs/haloapi/index.md') {
+                Remove-Item -Path 'docs/haloapi/index.md' -Force
+              }
+            }
+
+            if ($hasImages) {
               Copy-Item -Path $sourceImagePath -Destination 'docs/haloapi/img' -Recurse -Force
             }
 
@@ -151,7 +164,16 @@ jobs:
               exit 0
             }
 
-            git add docs/haloapi/commandlets docs/haloapi/index.md docs/haloapi/img
+            $pathsToAdd = @()
+            $pathsToAdd += 'docs/haloapi/commandlets'
+            if ($hasIndex) {
+              $pathsToAdd += 'docs/haloapi/index.mdx'
+            }
+            if ($hasImages) {
+              $pathsToAdd += 'docs/haloapi/img'
+            }
+
+            git add -- $pathsToAdd
             git commit -m "Docs update for HaloAPI ${{ steps.context.outputs.tag_name }}"
             git push origin "HEAD:$targetBranch"
           } finally {

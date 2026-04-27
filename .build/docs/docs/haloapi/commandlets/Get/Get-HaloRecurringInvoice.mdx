@@ -1,0 +1,829 @@
+---
+id: Get-HaloRecurringInvoice
+title: Get-HaloRecurringInvoice
+hide_title: false
+hide_table_of_contents: false
+---
+
+:::powershell[Generated Cmdlet Help]
+This page has been generated from the HaloAPI PowerShell module source. To make changes please edit the appropriate PowerShell source file.
+:::
+
+## SYNOPSIS
+
+Gets recurring invoices from the Halo API.
+
+## SYNTAX
+
+### Multi (Default)
+
+```powershell
+Get-HaloRecurringInvoice [-AdvancedSearch <String>] [-AssetId <Int32>] [-AwaitingApproval]
+ [-BillingDate <DateTime>] [-BillingCategoryIds <Int32[]>] [-ClientId <Int32>] [-ClientIds <Int32[]>]
+ [-ContractId <Int32>] [-Count <Int32>] [-IdOnly] [-IncludeCredits] [-IncludeInvoices] [-IncludeLines]
+ [-IncludePOInvoices] [-IncludeInvoiceDateEnd] [-IncludeInvoiceDateStart] [-MyApprovals] [-NotPostedOnly]
+ [-Order <String>] [-OrderDesc] [-Order2 <String>] [-OrderDesc2] [-Order3 <String>] [-OrderDesc3]
+ [-Order4 <String>] [-OrderDesc4] [-Order5 <String>] [-OrderDesc5] [-PageNo <Int32>] [-PageSize <Int32>]
+ [-Paginate] [-PaymentStatuses <Int32[]>] [-PostedOnly] [-PurchaseOrderId <Int32>] [-QuoteStatuses <String[]>]
+ [-ReadyForInvoicing] [-ReviewRequired] [-RecurringInvoiceType <String>] [-SalesOrderId <Int32>]
+ [-Search <String>] [-SentStatus <Int32>] [-SiteId <Int32>] [-StripeAutoPaymentRequired] [-TicketId <Int32>]
+ [-TopLevelId <Int32>] [-UserId <Int32>] [-FullObjects] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### Single
+
+```powershell
+Get-HaloRecurringInvoice -RecurringInvoiceID <Int64> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+
+Retrieves recurring invoices from the Halo API - supports a variety of filtering parameters.
+
+## EXAMPLES
+
+## PARAMETERS
+
+### -RecurringInvoiceID
+
+Invoice ID
+
+```yaml
+Type: Int64
+Parameter Sets: Single
+Aliases:
+
+Required: True
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AdvancedSearch
+
+The advanced search query to use.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases: advanced_search
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AssetId
+
+Filter by an asset id.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: asset_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AwaitingApproval
+
+Filter for recurring invoices awaiting approval.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: awaiting_approval
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BillingDate
+
+Filter by billing date.
+
+```yaml
+Type: DateTime
+Parameter Sets: Multi
+Aliases: billing_date
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BillingCategoryIds
+
+Filter by billing category ids.
+
+```yaml
+Type: Int32[]
+Parameter Sets: Multi
+Aliases: billingcategory_ids
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ClientId
+
+Filter by the specified client id.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: client_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ClientIds
+
+Filter by the specified client ids.
+
+```yaml
+Type: Int32[]
+Parameter Sets: Multi
+Aliases: client_ids
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ContractId
+
+Filter by contract id.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: contract_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Count
+
+The number of invoices to return if not using pagination.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IdOnly
+
+Return recurring invoice ids only.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeCredits
+
+Include credit notes
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeInvoices
+
+Include invoices
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeLines
+
+Include invoice lines
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludePOInvoices
+
+Include PO invoices.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeInvoiceDateEnd
+
+Include the field `invoicedateend` in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: invoicedateend
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeInvoiceDateStart
+
+Include the field `invoicedatestart` in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: invoicedatestart
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MyApprovals
+
+Filter by your approvals.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: my_approvals
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NotPostedOnly
+
+Filter for unposted invoices only.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Order
+
+First field to order the results by.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderDesc
+
+Order results for the first field in descending order (respects the field choice in '-OrderBy')
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Order2
+
+Second field to order the results by.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderDesc2
+
+Order results for the second field in descending order (respects the field choice in '-OrderBy2')
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Order3
+
+Third field to order the results by.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderDesc3
+
+Order results for the third field in descending order (respects the field choice in '-OrderBy3')
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Order4
+
+Fourth field to order the results by.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderDesc4
+
+Order results for the fourth field in descending order (respects the field choice in '-OrderBy4')
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Order5
+
+Fifth field to order the results by.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderDesc5
+
+Order results for the fifth field in descending order (respects the field choice in '-OrderBy5')
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageNo
+
+Which page to return.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_no
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PageSize
+
+Number of results per page.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: page_size
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Paginate
+
+Paginate results
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: pageinate
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PaymentStatuses
+
+Filter by the specified payment statuses.
+
+```yaml
+Type: Int32[]
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PostedOnly
+
+Include posted invoices only.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PurchaseOrderId
+
+Filter by the specified purchase order id.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: purchaseorder_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -QuoteStatuses
+
+Filter by the specified quote statuses.
+
+```yaml
+Type: String[]
+Parameter Sets: Multi
+Aliases: quote_status
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ReadyForInvoicing
+
+Filter by whether the recurring invoice is marked 'ready for invoicing'.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases: ready_for_invoicing
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ReviewRequired
+
+Filter for invoices marked 'review required'.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RecurringInvoiceType
+
+Filter by recurring invoice type.
+Valid values are 'contracts', 'invoices' or 'both'.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases: rinvoice_type
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SalesOrderId
+
+Filter by contract sales order id.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: salesorder_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Search
+
+Filter using the specified search query.
+
+```yaml
+Type: String
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SentStatus
+
+Filter by sent status.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: sent_status
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SiteId
+
+Filter by the specified site id.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: site_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -StripeAutoPaymentRequired
+
+Filter by invoices requiring stripe payment.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TicketId
+
+Filter by the specified ticket id.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: ticket_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TopLevelId
+
+Filter by the specified top level id.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: toplevel_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UserId
+
+Filter by the specified user ID.
+
+```yaml
+Type: Int32
+Parameter Sets: Multi
+Aliases: user_id
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FullObjects
+
+Parameter to return the complete objects.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Multi
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+### A powershell object containing the response.
+
+## NOTES
+
+## RELATED LINKS

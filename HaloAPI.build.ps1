@@ -45,11 +45,19 @@ if ($UpdateHelp) {
     }
 
     $docusaurusModuleImported = $false
-    $bundledDocusaurusModule = 'R:\Development\Docusaurus.PowerShell\Output\Alt3.Docusaurus.PowerShell\1.0.34\Alt3.Docusaurus.PowerShell.psd1'
-    if (Test-Path -Path $bundledDocusaurusModule) {
-        Import-Module $bundledDocusaurusModule -Force
-        $docusaurusModuleImported = $true
-    } elseif (Get-Module -ListAvailable -Name 'Alt3.Docusaurus.PowerShell') {
+    $bundledDocusaurusModuleCandidates = @(
+        (Join-Path -Path $PSScriptRoot -ChildPath 'Modules\Alt3.Docusaurus.Powershell\1.0.37\Alt3.Docusaurus.Powershell.psd1')
+        'R:\Development\Docusaurus.PowerShell\Output\Alt3.Docusaurus.PowerShell\1.0.34\Alt3.Docusaurus.PowerShell.psd1'
+    )
+    foreach ($bundledDocusaurusModule in $bundledDocusaurusModuleCandidates) {
+        if (Test-Path -Path $bundledDocusaurusModule) {
+            Import-Module $bundledDocusaurusModule -Force
+            $docusaurusModuleImported = $true
+            break
+        }
+    }
+
+    if (-not $docusaurusModuleImported -and (Get-Module -ListAvailable -Name 'Alt3.Docusaurus.PowerShell')) {
         Import-Module 'Alt3.Docusaurus.PowerShell' -Force
         $docusaurusModuleImported = $true
     }
@@ -73,7 +81,10 @@ This page has been generated from the {0} PowerShell module source. To make chan
         DocsFolder = $DocsFolderPath
         Exclude = $ExcludeFiles
         Sidebar = 'commandlets'
-        # MetaDescription = 'Generated cmdlet help for the %1 commandlet.'
+    }
+
+    # Keep compatibility across Alt3.Docusaurus.PowerShell versions by only using supported parameters.
+    $OptionalNewDocusaurusHelpParams = @{
         GroupByVerb = $true
         UseDescriptionFromHelp = $true
         NoPlaceHolderExamples = $true
@@ -81,6 +92,13 @@ This page has been generated from the {0} PowerShell module source. To make chan
         PrependMarkdown = $MarkdownHeader
         RemoveParameters = @('-ProgressAction', '-FakeParam')
     }
+    $SupportedNewDocusaurusHelpParameters = (Get-Command -Name 'New-DocusaurusHelp' -ErrorAction Stop).Parameters.Keys
+    foreach ($OptionalParameter in $OptionalNewDocusaurusHelpParams.GetEnumerator()) {
+        if ($SupportedNewDocusaurusHelpParameters -contains $OptionalParameter.Key) {
+            $NewDocusaurusHelpParams[$OptionalParameter.Key] = $OptionalParameter.Value
+        }
+    }
+
     New-DocusaurusHelp @NewDocusaurusHelpParams | Out-Null
     $CommandletDocsFolder = Join-Path -Path $DocusaurusPath -ChildPath 'docs' -AdditionalChildPath @($ModuleName, 'commandlets')
     $VerbFolders = Get-ChildItem -Path $CommandletDocsFolder -Directory
