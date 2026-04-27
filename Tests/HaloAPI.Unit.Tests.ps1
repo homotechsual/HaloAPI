@@ -60,6 +60,34 @@ Describe 'Get-HaloClient' {
     }
 }
 
+Describe 'Get-HaloTicket' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+    }
+
+    It 'maps multiple filters and aliases to expected query keys' {
+        Get-HaloTicket -PageSize 25 -PageNo 2 -AgentID 7 -OpenOnly -Search 'printer'
+
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Resource -eq 'api/tickets' -and
+            $QSCollection['page_size'] -eq 25 -and
+            $QSCollection['page_no'] -eq 2 -and
+            $QSCollection['agent_id'] -eq 7 -and
+            $QSCollection['open_only'] -eq 'true' -and
+            $QSCollection['search'] -eq 'printer'
+        } -Times 1 -Exactly
+    }
+
+    It 'uses single-ticket resource mode when TicketID is provided' {
+        Get-HaloTicket -TicketID 42
+
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Resource -eq 'api/tickets/42'
+        } -Times 1 -Exactly
+    }
+}
+
 Describe 'New-HaloTicket' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
@@ -186,5 +214,24 @@ Describe 'Set-HaloActionBatch' {
         Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
             $null -ne $Parameters -and $Parameters['SkipValidation'] -eq $true
         } -Times 1 -Exactly
+    }
+
+    It 'does not call Invoke-HaloBatchProcessor when -WhatIf is specified' {
+        Set-HaloActionBatch -Actions @([pscustomobject]@{ id = 8; ticket_id = 8001 }) -WhatIf
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'Remove-HaloActionBatch' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -MockWith { return @('ok') }
+    }
+
+    It 'does not call Invoke-HaloBatchProcessor when -WhatIf is specified' {
+        Remove-HaloActionBatch -Actions @(101, 102) -WhatIf
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -Times 0 -Exactly
     }
 }
