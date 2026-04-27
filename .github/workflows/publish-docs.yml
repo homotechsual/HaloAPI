@@ -18,6 +18,11 @@ on:
         description: Release tag associated with the documentation, for example v1.23.0
         required: true
         type: string
+      dry_run:
+        description: Skip the git push to homotechsualdocs (test mode)
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   actions: read
@@ -174,7 +179,11 @@ jobs:
 
             git add -- $pathsToAdd
             git commit -m "Docs update for HaloAPI ${{ steps.context.outputs.tag_name }}"
-            git push origin "HEAD:$targetBranch"
+            if ('${{ inputs.dry_run }}' -eq 'true') {
+              Write-Host 'Dry run: skipping git push.' -ForegroundColor Yellow
+            } else {
+              git push origin "HEAD:$targetBranch"
+            }
           } finally {
             Pop-Location
           }

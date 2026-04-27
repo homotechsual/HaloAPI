@@ -57,6 +57,19 @@
       ],
       "isBackground": false,
       "problemMatcher": []
+    },
+    {
+      "label": "Build and Generate Documentation",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-File",
+        ".\\DevOps\\Build\\build.ps1",
+        "-TaskNames",
+        "build,updateHelp,publishDocs"
+      ],
+      "isBackground": false,
+      "problemMatcher": []
     }
   ]
 }

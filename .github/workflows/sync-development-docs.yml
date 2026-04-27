@@ -8,6 +8,13 @@ on:
     workflows: ['CI']
     types:
       - completed
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Skip the git push to homotechsualdocs (test mode)
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   actions: read
@@ -20,14 +27,17 @@ jobs:
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     if: >-
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'develop'
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.head_branch == 'develop'
+      )
     steps:
       - name: Checkout HaloAPI repository
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Clone and update homotechsualdocs
         shell: pwsh
@@ -85,7 +95,11 @@ jobs:
 
             git add docs/haloapi/development
             git commit -m 'Sync HaloAPI development docs from develop'
-            git push origin "HEAD:$targetBranch"
+            if ('${{ inputs.dry_run }}' -eq 'true') {
+              Write-Host 'Dry run: skipping git push.' -ForegroundColor Yellow
+            } else {
+              git push origin "HEAD:$targetBranch"
+            }
           } finally {
             Pop-Location
           }
