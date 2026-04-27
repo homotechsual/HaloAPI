@@ -20,10 +20,12 @@ Param (
 $ModuleName = 'HaloAPI'
 
 # Install required modules
-if (-Not(Get-Module -Name 'Install-RequiredModule')) {
+$installRequiredModuleScript = Get-InstalledScript -Name 'Install-RequiredModule' -ErrorAction SilentlyContinue
+if (-not $installRequiredModuleScript) {
     Install-Script -Name 'Install-RequiredModule' -Force -Scope CurrentUser
+    $installRequiredModuleScript = Get-InstalledScript -Name 'Install-RequiredModule'
 }
-Install-RequiredModule -RequiredModulesFile ('{0}\RequiredModules.psd1' -f $PSScriptRoot) -Scope CurrentUser -TrustRegisteredRepositories -Import -Quiet
+& (Join-Path -Path $installRequiredModuleScript.InstalledLocation -ChildPath 'Install-RequiredModule.ps1') -RequiredModulesFile ('{0}\RequiredModules.psd1' -f $PSScriptRoot) -Scope CurrentUser -TrustRegisteredRepositories -Import -Quiet
 
 # Use strict mode when building.
 Set-StrictMode -Version Latest
