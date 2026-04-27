@@ -1,6 +1,9 @@
 <#
     .SYNOPSIS
         Unit test suite for the HaloAPI module.
+    .DESCRIPTION
+        Runs mock-driven Pester unit tests for HaloAPI cmdlets and private
+        helpers. This suite is designed to run without live Halo credentials.
     .NOTES
         All HTTP calls are mocked. No live Halo instance is required.
         Mocks target the private request functions via -ModuleName 'HaloAPI'.
