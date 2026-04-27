@@ -38,7 +38,7 @@ $nonPublicSettings = @{
     Rules = $settings.Rules
 }
 
-$excludeRegex = '/(CustomRules|Output)/'
+$excludeRegex = '/(CustomRules|Output|Modules)/'
 $publicRoot = Join-Path -Path $RepoRoot -ChildPath 'Public'
 
 if (Test-Path -Path $publicRoot) {
