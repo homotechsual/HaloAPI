@@ -230,6 +230,43 @@ Describe 'New-HaloPOSTRequest' {
     }
 }
 
+Describe 'New-HaloDELETERequest' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'builds a DELETE request with the expected uri' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ deleted = $true }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            $Result = New-HaloDELETERequest -Resource 'api/template/5'
+            $Result.deleted | Should -BeTrue
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $WebRequestParams.Method -eq 'DELETE' -and
+            $WebRequestParams.Uri -eq 'https://example.halo/api/template/5'
+        }
+    }
+
+    It 'routes non-http exceptions through New-HaloError' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            throw 'delete failed'
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            New-HaloDELETERequest -Resource 'api/template/7'
+        }
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+}
+
 Describe 'Get-HaloClient' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}

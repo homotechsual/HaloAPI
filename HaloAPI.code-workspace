@@ -181,6 +181,19 @@
         "approve": true,
         "matchCommandLine": true,
       },
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Meta,Unit -CodeCoverage$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Unit -CodeCoverage$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
+      ".artifacts\\CodeCoverage.unit.xml": true,
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Meta,Unit -CodeCoverage \\.$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
     "cSpell.words": ["HAPI"],
   },
