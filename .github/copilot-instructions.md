@@ -12,7 +12,7 @@ This repository is a PowerShell module for the Halo API with helper classes, gen
 * Keep public cmdlet names, aliases, and manifest exports consistent with existing patterns.
 * Avoid editing generated output under `Output/` unless explicitly asked.
 * Treat generated docs output under `docs/HaloAPI/`, `Docs/MAML/`, and `Docs/en_GB/` as generated unless the task is specifically about docs generation.
-* Treat `Docs/development/` as repo-authored development documentation.
+* Treat `Docs/HaloAPI/development/` as repo-authored development documentation.
 
 ## Testing and verification
 

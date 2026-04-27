@@ -37,16 +37,9 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $PSNativeCommandUseErrorActionPreference = $true
 
-          $sourceDevelopmentPathCandidates = @(
-            (Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Docs\development')
-            (Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Docs\MarkDown\development')
-          )
-          $sourceDevelopmentPath = $sourceDevelopmentPathCandidates |
-            Where-Object { Test-Path -Path $_ -PathType Container } |
-            Select-Object -First 1
-
-          if (-not $sourceDevelopmentPath) {
-            Write-Error "Source development docs path not found. Checked: $($sourceDevelopmentPathCandidates -join ', ')"
+          $sourceDevelopmentPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Docs\HaloAPI\development'
+          if (-not (Test-Path -Path $sourceDevelopmentPath -PathType Container)) {
+            Write-Error "Source development docs path not found: $sourceDevelopmentPath"
             exit 1
           }
 
