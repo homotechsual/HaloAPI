@@ -125,3 +125,66 @@ Describe 'Remove-HaloTemplate' {
         } -Times 1 -Exactly
     }
 }
+
+Describe 'New-HaloRecurringInvoiceBatch' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -MockWith { return @('ok') }
+    }
+
+    It 'passes a flat recurring invoice array to Invoke-HaloBatchProcessor' {
+        $RecurringInvoices = @(
+            [pscustomobject]@{ id = 101; description = 'Invoice A' },
+            [pscustomobject]@{ id = 102; description = 'Invoice B' }
+        )
+
+        New-HaloRecurringInvoiceBatch -RecurringInvoices $RecurringInvoices -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $EntityType -eq 'RecurringInvoice' -and
+            $Operation -eq 'New' -and
+            $BatchInput.Count -eq 2 -and
+            $BatchInput[0].id -eq 101 -and
+            $BatchInput[1].id -eq 102
+        } -Times 1 -Exactly
+    }
+
+    It 'passes batch tuning values when supplied' {
+        New-HaloRecurringInvoiceBatch -RecurringInvoices @([pscustomobject]@{ id = 201 }) -BatchSize 25 -BatchWait 4 -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Size -eq 25 -and $Wait -eq 4
+        } -Times 1 -Exactly
+    }
+}
+
+Describe 'Set-HaloActionBatch' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -MockWith { return @('ok') }
+    }
+
+    It 'uses default batch size and wait values' {
+        $Actions = @(
+            [pscustomobject]@{ id = 1; ticket_id = 2001; details = 'update one' },
+            [pscustomobject]@{ id = 2; ticket_id = 2002; details = 'update two' }
+        )
+
+        Set-HaloActionBatch -Actions $Actions -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $EntityType -eq 'Action' -and
+            $Operation -eq 'Set' -and
+            $Size -eq 100 -and
+            $Wait -eq 1
+        } -Times 1 -Exactly
+    }
+
+    It 'passes SkipValidation through additional parameters' {
+        Set-HaloActionBatch -Actions @([pscustomobject]@{ id = 5; ticket_id = 5001 }) -SkipValidation -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $null -ne $Parameters -and $Parameters['SkipValidation'] -eq $true
+        } -Times 1 -Exactly
+    }
+}
