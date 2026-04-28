@@ -20,7 +20,7 @@ BeforeAll {
         Scopes = 'all'
         Tenant = $env:HaloTestingTenant
     }
-    Connect-HaloAPI @HaloConnectionParameters *> $null
+    Connect-HaloAPI @HaloConnectionParameters
     $TicketID = 2200
 }
 
@@ -78,7 +78,7 @@ Describe 'Action' {
     Context 'Create' {
         It 'succeeds with a valid Action object.' {
             $ActionResult = New-HaloAction -Action $ValidAction
-            $ActionResult.actionby_application_id | Should -Be 'AzureDevops Testing App'
+            $ActionResult.actionby_application_id | Should -Be 'GitHub Actions - HaloAPI'
             $ActionResult.note | Should -BeLike 'This is an action created by a Pester automated test.*'
             $ActionResult.id | Should -Be ($CurrentActionId + 1)
         }
@@ -93,7 +93,7 @@ Describe 'Action' {
         It 'succeeds with an array of valid Action objects.' {
             $ActionResult = New-HaloAction -Action @($ValidAction, $ValidAction)
             $ActionResult | ForEach-Object {
-                $_.actionby_application_id | Should -Be 'AzureDevops Testing App'
+                $_.actionby_application_id | Should -Be 'GitHub Actions - HaloAPI'
                 $_.note | Should -BeLike 'This is an action created by a Pester automated test.*'
                 $_.id | Should -Be (($CurrentActionId + 1) -or ($CurrentActionId + 2))
             }
@@ -102,7 +102,7 @@ Describe 'Action' {
     Context 'Get' {
         It 'succeeds to get the created action.' {
             $ActionResult = Get-HaloAction -ActionID ($CurrentActionId) -TicketID $TicketID
-            $ActionResult.actionby_application_id | Should -Be 'AzureDevops Testing App'
+            $ActionResult.actionby_application_id | Should -Be 'GitHub Actions - HaloAPI'
             $ActionResult.note | Should -BeLike 'This is an action created by a Pester automated test.*'
             $ActionResult.id | Should -Be ($CurrentActionId)
         }

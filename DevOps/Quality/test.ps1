@@ -17,7 +17,10 @@ param(
     [ValidateSet('Detailed', 'Normal', 'Minimal', 'None')]
     [string]$Verbosity = 'Detailed',
     # Enables Pester code coverage output for the selected suites.
-    [switch]$CodeCoverage
+    [switch]$CodeCoverage,
+    # Optional minimum coverage percentage required when code coverage is enabled.
+    [ValidateRange(0, 100)]
+    [double]$MinimumCoveragePercent = 0
 )
 
 $repoRoot = Resolve-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath '..\..')
@@ -78,6 +81,10 @@ try {
     $selectedSuites = $testSuites | Where-Object { $_.Name -in $requestedSuites }
     if (-not $selectedSuites) {
         throw ('No matching test suites were selected. Valid values: {0}' -f ($validSuites -join ', '))
+    }
+
+    if ($MinimumCoveragePercent -gt 0 -and -not $CodeCoverage) {
+        throw 'MinimumCoveragePercent requires CodeCoverage to be enabled.'
     }
 
     $allResults = @()
@@ -157,6 +164,22 @@ try {
         }
     }
 
+    if ($MinimumCoveragePercent -gt 0 -and $coverageSummaries) {
+        $coverageThresholdFailures = @(
+            $coverageSummaries |
+            Where-Object { [double]$_.CoveragePercent -lt $MinimumCoveragePercent }
+        )
+
+        if ($coverageThresholdFailures) {
+            $failureDetails = ($coverageThresholdFailures | ForEach-Object {
+                    '{0}: {1}%' -f $_.Suite, $_.CoveragePercent
+                }) -join '; '
+            throw ('Code coverage threshold check failed (minimum {0}%): {1}' -f $MinimumCoveragePercent, $failureDetails)
+        }
+
+        Write-Host ('Coverage threshold check passed: all suites are at or above {0}%.' -f $MinimumCoveragePercent) -ForegroundColor Green
+    }
+
     if ($env:GITHUB_STEP_SUMMARY) {
         $summaryLines = @(
             '## HaloAPI Test Summary',
@@ -171,6 +194,10 @@ try {
             $summaryLines += ''
             $summaryLines += '## HaloAPI Coverage Summary'
             $summaryLines += ''
+            if ($MinimumCoveragePercent -gt 0) {
+                $summaryLines += ('- Minimum coverage threshold: {0}%' -f $MinimumCoveragePercent)
+                $summaryLines += ''
+            }
             $summaryLines += '| Suite | Coverage | Commands | Artifact |'
             $summaryLines += '| --- | ---: | ---: | --- |'
             foreach ($coverageSummary in $coverageSummaries) {
