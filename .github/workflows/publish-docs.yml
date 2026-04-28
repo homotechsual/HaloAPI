@@ -49,17 +49,40 @@ jobs:
       - name: Resolve workflow context
         id: context
         shell: pwsh
+        env:
+          GITHUB_EVENT_NAME_VALUE: ${{ github.event_name }}
+          INPUT_RUN_ID_VALUE: ${{ inputs.run_id }}
+          INPUT_TAG_NAME_VALUE: ${{ inputs.tag_name }}
+          WORKFLOW_RUN_ID_VALUE: ${{ github.event.workflow_run.id }}
+          WORKFLOW_RUN_HEAD_BRANCH_VALUE: ${{ github.event.workflow_run.head_branch }}
         run: |
-          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-            $runId = '${{ inputs.run_id }}'
-            $tagName = '${{ inputs.tag_name }}'
+          if ($env:GITHUB_EVENT_NAME_VALUE -eq 'workflow_dispatch') {
+            $runId = $env:INPUT_RUN_ID_VALUE
+            $rawTagName = $env:INPUT_TAG_NAME_VALUE
+
+            if ([string]::IsNullOrWhiteSpace($rawTagName)) {
+              Write-Error 'Input tag_name is required for workflow_dispatch.'
+              exit 1
+            }
+
+            $rawTagName = $rawTagName.Trim()
+            if ($rawTagName.StartsWith('v')) {
+              $tagName = $rawTagName
+            } else {
+              $tagName = "v$rawTagName"
+            }
           } else {
-            $runId = '${{ github.event.workflow_run.id }}'
-            $tagName = '${{ github.event.workflow_run.head_branch }}'
+            $runId = $env:WORKFLOW_RUN_ID_VALUE
+            $tagName = $env:WORKFLOW_RUN_HEAD_BRANCH_VALUE
           }
 
           if ([string]::IsNullOrWhiteSpace($runId)) {
             Write-Error 'Workflow run id was not provided by the event payload.'
+            exit 1
+          }
+
+          if ($env:GITHUB_EVENT_NAME_VALUE -eq 'workflow_dispatch' -and $runId -notmatch '^\d+$') {
+            Write-Error "Input run_id must be a numeric GitHub Actions run id. Received: '$runId'."
             exit 1
           }
 
@@ -75,9 +98,14 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCS_RUN_ID: ${{ steps.context.outputs.run_id }}
         run: |
           $ErrorActionPreference = 'Stop'
-          gh run download ${{ steps.context.outputs.run_id }} --name module-docs --dir docs-artifact
+          if ([string]::IsNullOrWhiteSpace($env:DOCS_RUN_ID) -or $env:DOCS_RUN_ID -notmatch '^\d+$') {
+            Write-Error "Resolved run id is invalid: '$env:DOCS_RUN_ID'."
+            exit 1
+          }
+          gh run download "$env:DOCS_RUN_ID" --name module-docs --dir docs-artifact
 
       - name: Clone and update homotechsualdocs
         shell: pwsh

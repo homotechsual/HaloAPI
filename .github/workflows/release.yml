@@ -67,25 +67,48 @@ jobs:
           $ErrorActionPreference = 'Stop'
           & "$env:GITHUB_WORKSPACE\DevOps\Build\build.ps1" -TaskNames 'updateHelp', 'publishDocs'
 
+      - name: Verify build outputs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $moduleOutputPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'Output'
+          $docsOutputPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath '.build\docs'
+
+          if (-not (Test-Path -Path $moduleOutputPath -PathType Container)) {
+            throw "Expected module output path was not found: $moduleOutputPath"
+          }
+
+          if (-not (Test-Path -Path $docsOutputPath -PathType Container)) {
+            throw "Expected documentation output path was not found: $docsOutputPath"
+          }
+
+          Write-Host "Module output path: $moduleOutputPath" -ForegroundColor Cyan
+          Get-ChildItem -Path $moduleOutputPath -Recurse | Select-Object -First 20 FullName
+
+          Write-Host "Documentation output path: $docsOutputPath" -ForegroundColor Cyan
+          Get-ChildItem -Path $docsOutputPath -Recurse | Select-Object -First 20 FullName
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
         with:
           name: module-build
-          path: Output/
+          path: ${{ github.workspace }}/Output/**
+          if-no-files-found: error
           retention-days: 30
 
       - name: Upload documentation
         uses: actions/upload-artifact@v6
         with:
           name: module-docs
-          path: .build/docs/
+          path: ${{ github.workspace }}/.build/docs/**
+          if-no-files-found: error
           retention-days: 30
 
   publish:
     name: Publish Module
     runs-on: windows-latest
     needs: build
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
     environment:
       name: production
       url: https://www.powershellgallery.com/packages/HaloAPI

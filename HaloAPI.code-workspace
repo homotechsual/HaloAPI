@@ -229,5 +229,6 @@
       "PSObject": true,
     },
     "cSpell.words": ["HAPI"],
+    "codeQL.githubDatabase.download": "never",
   },
 }

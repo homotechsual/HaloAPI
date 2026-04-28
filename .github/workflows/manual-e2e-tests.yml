@@ -1,0 +1,68 @@
+name: Manual E2E Tests
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_destructive:
+        description: Confirm this run is allowed to execute destructive E2E tests
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: haloapi-manual-e2e
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    name: Run E2E Tests
+    runs-on: windows-latest
+    env:
+      HaloTestingURL: ${{ secrets.HaloTestingURL }}
+      HaloTestingClientID: ${{ secrets.HaloTestingClientID }}
+      HaloTestingClientSecret: ${{ secrets.HaloTestingClientSecret }}
+      HaloTestingTenant: ${{ secrets.HaloTestingTenant }}
+    steps:
+      - name: Validate destructive test confirmation
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ('${{ inputs.confirm_destructive }}' -ne 'true') {
+            throw 'This workflow runs destructive E2E tests. Set confirm_destructive=true to proceed.'
+          }
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Bootstrap environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
+
+      - name: Run E2E tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite E2E -Verbosity Detailed
+
+      - name: Upload E2E test results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: pester-e2e-results
+          path: .artifacts/TestResults.e2e.xml
+
+      - name: Publish E2E test results
+        if: always()
+        uses: dorny/test-reporter@v3
+        with:
+          name: Pester Tests (E2E)
+          path: .artifacts/TestResults.e2e.xml
+          reporter: java-junit
