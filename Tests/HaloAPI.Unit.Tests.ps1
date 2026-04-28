@@ -159,6 +159,160 @@ Describe 'Invoke-HaloBatchProcessor' {
     }
 }
 
+Describe 'Invoke-HaloRequest' {
+    BeforeEach {
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{
+                URL = 'https://example.halo/'
+                ClientID = 'client-id'
+                ClientSecret = 'client-secret'
+                AuthScopes = @('all')
+                Tenant = 'tenant-id'
+                AdditionalHeaders = @{ 'X-Test' = 'HeaderValue' }
+                MaxRetries = 3
+            }
+
+            $Script:HAPIAuthToken = [pscustomobject]@{
+                Type = 'Bearer'
+                Access = 'abc123'
+                Expires = [datetime]'2099-01-01T00:00:00Z'
+            }
+        }
+
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Connect-HaloAPI' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Start-Sleep' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'adds the base URL for relative URIs and merges auth and additional headers' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"ok":true}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -WebRequestParams @{
+                Method = 'GET'
+                Uri = 'api/test'
+            }
+
+            $Result.ok | Should -BeTrue
+        }
+
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Uri -eq 'https://example.halo/api/test' -and
+            $Headers.Authorization -eq 'Bearer abc123' -and
+            $Headers['X-Test'] -eq 'HeaderValue' -and
+            $ContentType -eq 'application/json; charset=utf-8'
+        }
+    }
+
+    It 'returns the raw web response when RawResult is specified' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"ok":true}'; StatusCode = 200 }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -WebRequestParams @{
+                Method = 'GET'
+                Uri = 'https://example.halo/api/test'
+            } -RawResult
+
+            $Result.StatusCode | Should -Be 200
+            $Result.Content | Should -Be '{"ok":true}'
+        }
+    }
+
+    It 'refreshes the auth token when expired' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"ok":true}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIAuthToken = [pscustomobject]@{
+                Type = 'Bearer'
+                Access = 'expired-token'
+                Expires = [datetime]'2000-01-01T00:00:00Z'
+            }
+
+            $null = Invoke-HaloRequest -WebRequestParams @{
+                Method = 'GET'
+                Uri = 'api/test'
+            }
+        }
+
+        Should -Invoke -CommandName 'Connect-HaloAPI' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $URL -eq 'https://example.halo/' -and
+            $ClientId -eq 'client-id' -and
+            $ClientSecret -eq 'client-secret' -and
+            $Tenant -eq 'tenant-id'
+        }
+    }
+
+    It 'retries on 429 responses and succeeds on a subsequent attempt' {
+        $CallCount = 0
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::TooManyRequests)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('throttled', $Response)
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            $script:CallCount += 1
+            if ($script:CallCount -eq 1) {
+                throw $HttpException
+            }
+
+            [pscustomobject]@{ Content = '{"ok":true}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -WebRequestParams @{
+                Method = 'GET'
+                Uri = 'api/test'
+            }
+
+            $Result.ok | Should -BeTrue
+        }
+
+        Should -Invoke -CommandName 'Start-Sleep' -ModuleName 'HaloAPI' -Times 1 -Exactly
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 2 -Exactly
+    }
+
+    It 'rethrows non-429 HTTP exceptions' {
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::BadRequest)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('bad request', $Response)
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            throw $HttpException
+        }
+
+        InModuleScope 'HaloAPI' {
+            {
+                Invoke-HaloRequest -WebRequestParams @{
+                    Method = 'GET'
+                    Uri = 'api/test'
+                }
+            } | Should -Throw -ExpectedMessage 'bad request'
+        }
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'calls New-HaloError when retries are exhausted without a result' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith { $null }
+
+        InModuleScope 'HaloAPI' {
+            $null = Invoke-HaloRequest -WebRequestParams @{
+                Method = 'GET'
+                Uri = 'api/test'
+            }
+        }
+
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 3 -Exactly
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $ModuleMessage -match 'Retried request to "https://example\.halo/api/test" 3 times, request unsuccessful\.'
+        }
+    }
+}
+
 Describe 'New-HaloGETRequest' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}

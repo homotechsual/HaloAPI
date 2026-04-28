@@ -227,6 +227,10 @@
         "matchCommandLine": true,
       },
       "PSObject": true,
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 20$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
     "cSpell.words": ["HAPI"],
     "codeQL.githubDatabase.download": "never",
