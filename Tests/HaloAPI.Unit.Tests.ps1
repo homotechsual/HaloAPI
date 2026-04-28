@@ -2575,6 +2575,168 @@ Describe 'New-HaloDistributionListMember' {
     }
 }
 
+Describe 'New-HaloTicketType' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+    }
+
+    It 'posts to the tickettype endpoint' {
+        New-HaloTicketType -TicketType @([pscustomobject]@{ name = 'Incident' }) -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'tickettype'
+        } -Times 1 -Exactly
+    }
+
+    It 'passes the provided ticket type object through to the request body' {
+        $TicketType = @([pscustomobject]@{ name = 'Change'; id = 11 })
+        New-HaloTicketType -TicketType $TicketType -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Object[0].name -eq 'Change' -and $Object[0].id -eq 11
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call New-HaloPOSTRequest when -WhatIf is specified' {
+        New-HaloTicketType -TicketType @([pscustomobject]@{ name = 'Problem' }) -WhatIf
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'New-HaloProject' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+    }
+
+    It 'posts to the projects endpoint' {
+        New-HaloProject -Project @([pscustomobject]@{ name = 'Project A' }) -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'projects'
+        } -Times 1 -Exactly
+    }
+
+    It 'passes the provided project object through to the request body' {
+        $Projects = @([pscustomobject]@{ name = 'Project B'; id = 12 })
+        New-HaloProject -Project $Projects -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Object[0].name -eq 'Project B' -and $Object[0].id -eq 12
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call New-HaloPOSTRequest when -WhatIf is specified' {
+        New-HaloProject -Project @([pscustomobject]@{ name = 'Project C' }) -WhatIf
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'New-HaloQuote' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+    }
+
+    It 'posts to the quotation endpoint' {
+        New-HaloQuote -Quote @([pscustomobject]@{ description = 'Quote A' }) -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'quotation'
+        } -Times 1 -Exactly
+    }
+
+    It 'passes the provided quote object through to the request body' {
+        $Quotes = @([pscustomobject]@{ description = 'Quote B'; id = 13 })
+        New-HaloQuote -Quote $Quotes -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Object[0].description -eq 'Quote B' -and $Object[0].id -eq 13
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call New-HaloPOSTRequest when -WhatIf is specified' {
+        New-HaloQuote -Quote @([pscustomobject]@{ description = 'Quote C' }) -WhatIf
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'New-HaloRecurringInvoice' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+    }
+
+    It 'posts to the recurringinvoice endpoint' {
+        New-HaloRecurringInvoice -RecurringInvoice ([pscustomobject]@{ invoicenumber = 'RI-001' }) -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'recurringinvoice'
+        } -Times 1 -Exactly
+    }
+
+    It 'passes the provided recurring invoice object through to the request body' {
+        $RecurringInvoice = [pscustomobject]@{ invoicenumber = 'RI-002'; id = 14 }
+        New-HaloRecurringInvoice -RecurringInvoice $RecurringInvoice -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Object.invoicenumber -eq 'RI-002' -and $Object.id -eq 14
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call New-HaloPOSTRequest when -WhatIf is specified' {
+        New-HaloRecurringInvoice -RecurringInvoice ([pscustomobject]@{ invoicenumber = 'RI-003' }) -WhatIf
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'New-HaloReport' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+    }
+
+    It 'posts to the report endpoint' {
+        New-HaloReport -Report @([pscustomobject]@{ name = 'Report A' }) -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'report'
+        } -Times 1 -Exactly
+    }
+
+    It 'passes the provided report object through to the request body' {
+        $Reports = @([pscustomobject]@{ name = 'Report B'; id = 15 })
+        New-HaloReport -Report $Reports -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Object[0].name -eq 'Report B' -and $Object[0].id -eq 15
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call New-HaloPOSTRequest when -WhatIf is specified' {
+        New-HaloReport -Report @([pscustomobject]@{ name = 'Report C' }) -WhatIf
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'New-HaloService' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+    }
+
+    It 'posts to the Service endpoint' {
+        New-HaloService -Service @([pscustomobject]@{ name = 'Service A' }) -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'Service'
+        } -Times 1 -Exactly
+    }
+
+    It 'passes the provided service object through to the request body' {
+        $Services = @([pscustomobject]@{ name = 'Service B'; id = 16 })
+        New-HaloService -Service $Services -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Object[0].name -eq 'Service B' -and $Object[0].id -eq 16
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call New-HaloPOSTRequest when -WhatIf is specified' {
+        New-HaloService -Service @([pscustomobject]@{ name = 'Service C' }) -WhatIf
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
 Describe 'Remove-HaloTemplate' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
