@@ -2,10 +2,7 @@
   "folders": [
     {
       "path": ".",
-    },
-    {
-      "path": "../NinjaOne",
-    },
+    }
   ],
   "settings": {
     "editor.tabSize": 4,
