@@ -1,13 +1,16 @@
 # HaloAPI - A [PowerShell](https://microsoft.com/powershell) module for [Halo Service Solutions](https://haloservicesolutions.com/) software
 
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/homotechsual/HaloAPI/ci.yml?style=for-the-badge&label=CI)](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
+[![Homotechsual Discord](https://img.shields.io/discord/1075421628424523816?style=for-the-badge&logo=discord&logoColor=white&label=Homotechsual%20Discord)](https://discord.com/invite/NrCjh5ht7K)
+[![HaloPSA Community Discord](https://img.shields.io/discord/676451788395642880?style=for-the-badge&logo=discord&logoColor=white&label=NinjaOne%20Discord)](https://discord.com/invite/Y4R5duJD4z)
+[![GitHub contributors](https://img.shields.io/github/contributors/homotechsual/haloapi?style=for-the-badge&logo=github)](https://github.com/homotechsual/haloapi/)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/homotechsual/HaloAPI/release.yml?style=for-the-badge&label=Release)](https://github.com/homotechsual/HaloAPI/actions/workflows/release.yml)
-[![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/HaloAPI?style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
-[![License](https://img.shields.io/github/license/homotechsual/HaloAPI?style=for-the-badge)](https://haloapi.mit-license.org/)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/homotechsual/HaloAPI/ci.yml?style=for-the-badge&label=CI)](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
+![Codecov (with branch)](https://img.shields.io/codecov/c/github/homotechsual/HaloAPI/develop?style=for-the-badge)
+![Codecov (with branch)](https://img.shields.io/codecov/c/github/homotechsual/HaloAPI/develop?style=for-the-badge)
+[![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/HaloAPI?style=for-the-badge)](https://www.powershellgallery.com/packages/NinjaOne/)
+![PowerShell Gallery Platform Support](https://img.shields.io/powershellgallery/p/HaloAPI?style=for-the-badge)
+[![License](https://img.shields.io/github/license/homotechsual/HaloAPI?style=for-the-badge)](https://mit.license.homotechsual.dev/)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/homotechsual?style=for-the-badge)](https://github.com/sponsors/homotechsual/)
-[![Stable Release](https://img.shields.io/powershellgallery/v/HaloAPI?label=Stable+Release&style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
-[![Preview Release](https://img.shields.io/powershellgallery/v/HaloAPI?label=Preview+Release&include_prereleases&style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
-[![Code Coverage](https://img.shields.io/badge/Code%20Coverage-Meta%20%26%20Unit-blue?style=for-the-badge)](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
 
 ## Who are we?
 
@@ -34,6 +37,8 @@ Use the docs website for the most up-to-date generated command reference and dev
 ## Code Coverage
 
 Code coverage is collected in CI for the `Meta` and `Unit` suites using the standard test entrypoint in `DevOps/Quality/test.ps1`.
+
+CI enforces a minimum 40% coverage threshold for the `Unit` suite.
 
 Coverage artifacts are published on every CI run as:
 
