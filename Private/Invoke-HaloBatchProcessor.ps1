@@ -1,4 +1,59 @@
 #Requires -Version 7
+function Invoke-HaloBatchItem {
+    [CmdletBinding()]
+    [OutputType([Object])]
+    param (
+        [Parameter( Mandatory )]
+        [Object]$BatchItem,
+        [Parameter( Mandatory )]
+        [String]$EntityType,
+        [Parameter( Mandatory )]
+        [String]$CommandName,
+        [Parameter( Mandatory )]
+        [Boolean]$CommandExists,
+        [Object]$Parameters,
+        [Parameter( Mandatory )]
+        [Object]$ConnectionInformation
+    )
+
+    $HaloConnectionParams = @{
+        URL = $ConnectionInformation.URL
+        ClientID = $ConnectionInformation.ClientID
+        ClientSecret = $ConnectionInformation.ClientSecret
+        Scopes = $ConnectionInformation.AuthScopes
+        Tenant = $ConnectionInformation.Tenant
+        AdditionalHeaders = $ConnectionInformation.AdditionalHeaders
+    }
+    if ($DebugPreference -eq 'Continue') {
+        $HaloConnectionParams.Debug = $True
+    }
+    if ($VerbosePreference -eq 'Continue') {
+        $HaloConnectionParams.Verbose = $True
+    }
+    Connect-HaloAPI @HaloConnectionParams
+
+    $CommandParameters = @{
+        $EntityType = $BatchItem
+    }
+    if ($Parameters) {
+        foreach ($Parameter in $Parameters.GetEnumerator()) {
+            $CommandParameters[$Parameter.Key] = $Parameter.Value
+        }
+    }
+    if ($DebugPreference -eq 'Continue') {
+        $CommandParameters.Debug = $True
+    }
+    if ($VerbosePreference -eq 'Continue') {
+        $CommandParameters.Verbose = $True
+    }
+
+    if ($CommandExists) {
+        return [PSCustomObject](& $CommandName @CommandParameters)
+    }
+
+    Write-Error ('The command {0} doesn''t exist or isn''t loaded.' -f $CommandName)
+}
+
 function Invoke-HaloBatchProcessor {
     <#
     .SYNOPSIS
@@ -52,42 +107,10 @@ function Invoke-HaloBatchProcessor {
     $Batch | ForEach-Object {
         $_ | ForEach-Object -Parallel {
             Import-Module $Using:ModulePath
-            $HaloConnectionParams = @{
-                URL = $Using:HAPIConnectionInformation.URL
-                ClientID = $Using:HAPIConnectionInformation.ClientID
-                ClientSecret = $Using:HAPIConnectionInformation.ClientSecret
-                Scopes = $Using:HAPIConnectionInformation.AuthScopes
-                Tenant = $Using:HAPIConnectionInformation.Tenant
-                AdditionalHeaders = $Using:HAPIConnectionInformation.AdditionalHeaders
-            }
-            if ($DebugPreference -eq 'Continue') {
-                $HaloConnectionParams.Debug = $True
-            }
-            if ($VerbosePreference -eq 'Continue') {
-                $HaloConnectionParams.Verbose = $True
-            }
-            Connect-HaloAPI @HaloConnectionParams
             $LocalBatchResults = $using:BatchResults
-            $CommandParameters = @{
-                $Using:EntityType = $_
-            }
-            $AdditionalParameters = $Using:Parameters
-            if ($AdditionalParameters) {
-                foreach ($Parameter in $AdditionalParameters.GetEnumerator()) {
-                    $CommandParameters[$Parameter.Key] = $Parameter.Value
-                }
-            }
-            if ($DebugPreference -eq 'Continue') {
-                $CommandParameters.Debug = $True
-            }
-            if ($VerbosePreference -eq 'Continue') {
-                $CommandParameters.Verbose = $True
-            }
-            if ($Using:CommandExists) {
-                [PSCustomObject]$Result = & $Using:CommandName @CommandParameters
+            $Result = Invoke-HaloBatchItem -BatchItem $_ -EntityType $Using:EntityType -CommandName $Using:CommandName -CommandExists ([bool]$Using:CommandExists) -Parameters $Using:Parameters -ConnectionInformation $Using:HAPIConnectionInformation
+            if ($null -ne $Result) {
                 $LocalBatchResults.Add($Result)
-            } else {
-                Write-Error ('The command {0} doesn''t exist or isn''t loaded.' -f $CommandName)
             }
         }
         if ($Batch.Count -ge 2) {

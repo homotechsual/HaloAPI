@@ -159,6 +159,66 @@ Describe 'Invoke-HaloBatchProcessor' {
     }
 }
 
+Describe 'Invoke-HaloBatchItem' {
+    BeforeEach {
+        Mock -CommandName 'Connect-HaloAPI' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloDistributionListMember' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{
+                Id = $Member.id
+                DistributionListID = $DistributionListID
+            }
+        }
+        Mock -CommandName 'Write-Error' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'connects and invokes the target command with merged parameters' {
+        InModuleScope 'HaloAPI' {
+            $ConnectionInformation = [pscustomobject]@{
+                URL = 'https://example.halo/'
+                ClientID = 'client-id'
+                ClientSecret = 'client-secret'
+                AuthScopes = @('all')
+                Tenant = 'tenant-id'
+                AdditionalHeaders = @{ 'X-Test' = 'HeaderValue' }
+            }
+
+            $Result = Invoke-HaloBatchItem -BatchItem ([pscustomobject]@{ id = 42 }) -EntityType 'Member' -CommandName 'New-HaloDistributionListMember' -CommandExists $true -Parameters @{ DistributionListID = 99 } -ConnectionInformation $ConnectionInformation
+
+            $Result.Id | Should -Be 42
+            $Result.DistributionListID | Should -Be 99
+        }
+
+        Should -Invoke -CommandName 'Connect-HaloAPI' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $URL -eq 'https://example.halo/' -and $ClientID -eq 'client-id' -and $ClientSecret -eq 'client-secret' -and $Scopes[0] -eq 'all' -and $Tenant -eq 'tenant-id'
+        }
+        Should -Invoke -CommandName 'New-HaloDistributionListMember' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Member.id -eq 42 -and $DistributionListID -eq 99
+        }
+    }
+
+    It 'writes an error when the target command is unavailable' {
+        InModuleScope 'HaloAPI' {
+            $ConnectionInformation = [pscustomobject]@{
+                URL = 'https://example.halo/'
+                ClientID = 'client-id'
+                ClientSecret = 'client-secret'
+                AuthScopes = @('all')
+                Tenant = 'tenant-id'
+                AdditionalHeaders = @{}
+            }
+
+            $Result = Invoke-HaloBatchItem -BatchItem ([pscustomobject]@{ id = 42 }) -EntityType 'Action' -CommandName 'Missing-HaloAction' -CommandExists $false -ConnectionInformation $ConnectionInformation -ErrorAction SilentlyContinue
+
+            $Result | Should -BeNullOrEmpty
+        }
+
+        Should -Invoke -CommandName 'Connect-HaloAPI' -ModuleName 'HaloAPI' -Times 1 -Exactly
+        Should -Invoke -CommandName 'Write-Error' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Message -eq "The command Missing-HaloAction doesn't exist or isn't loaded."
+        }
+    }
+}
+
 Describe 'Invoke-HaloRequest' {
     BeforeEach {
         InModuleScope 'HaloAPI' {
