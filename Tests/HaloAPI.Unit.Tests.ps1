@@ -2191,6 +2191,96 @@ Describe 'Get cmdlet request wiring' {
             $Resource -eq 'api/Roles/role-42' -and $ResourceType -eq 'roles' -and $AutoPaginateOff -eq $true
         }
     }
+
+    It 'routes Get-HaloWorkflow multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloWorkflow -Count 10 -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Workflow' -and $ResourceType -eq 'Workflow' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloWorkflow single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloWorkflow -WorkflowID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Workflow/42' -and $ResourceType -eq 'Workflow' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloService multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloService -Search 'support' -Count 10 -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/service' -and $ResourceType -eq 'services' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'support'
+        }
+    }
+
+    It 'routes Get-HaloService single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloService -ServiceID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/service/42' -and $ResourceType -eq 'services' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloBillingTemplate multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloBillingTemplate -ShowAll
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/billingtemplate' -and $ResourceType -eq 'billingtemplate' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloBillingTemplate single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloBillingTemplate -TemplateID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/billingtemplate/42' -and $ResourceType -eq 'billingtemplate' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloCustomButton multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCustomButton -Type 'Company'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/custombutton' -and $ResourceType -eq 'custombuttons' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloCustomButton single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCustomButton -CustomButtonID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/custombutton/42' -and $ResourceType -eq 'custombuttons' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloViewList multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloViewList -ShowAll
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/viewlists' -and $ResourceType -eq 'viewlists' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloViewList single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloViewList -ViewListId 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/viewlists/42' -and $ResourceType -eq 'viewlists' -and $AutoPaginateOff -eq $true
+        }
+    }
 }
 
 Describe 'New-HaloTicket' {

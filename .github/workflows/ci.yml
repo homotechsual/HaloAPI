@@ -144,7 +144,7 @@ jobs:
           pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 45
 
       - name: Upload unit test results
-        if: always()
+            pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 50
         uses: actions/upload-artifact@v6
         with:
           name: pester-unit-results
