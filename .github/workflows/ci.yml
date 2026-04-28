@@ -141,10 +141,10 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 45
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 50
 
       - name: Upload unit test results
-            pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 50
+        if: always()
         uses: actions/upload-artifact@v6
         with:
           name: pester-unit-results

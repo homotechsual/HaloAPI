@@ -38,10 +38,9 @@ Use the docs website for the most up-to-date generated command reference and dev
 
 Code coverage is collected in CI for the `Meta` and `Unit` suites using the standard test entrypoint in `DevOps/Quality/test.ps1`.
 
-CI enforces a minimum 45% coverage threshold for the `Unit` suite.
+CI enforces a minimum 50% coverage threshold for the `Unit` suite.
 
 Coverage artifacts are published on every CI run as:
-CI enforces a minimum 50% coverage threshold for the `Unit` suite.
 
 * `code-coverage-meta-results` (`.artifacts/CodeCoverage.meta.xml`)
 * `code-coverage-unit-results` (`.artifacts/CodeCoverage.unit.xml`)
