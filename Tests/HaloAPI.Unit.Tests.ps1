@@ -1912,6 +1912,96 @@ Describe 'Get cmdlet request wiring' {
             $Resource -eq 'api/opportunities/42' -and $ResourceType -eq 'tickets' -and $AutoPaginateOff -eq $true
         }
     }
+
+    It 'routes Get-HaloPurchaseOrder multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloPurchaseOrder -Search 'hardware' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/purchaseorder' -and $ResourceType -eq 'purchaseorders' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'hardware'
+        }
+    }
+
+    It 'routes Get-HaloPurchaseOrder single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloPurchaseOrder -PurchaseOrderID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/purchaseorder/42' -and $ResourceType -eq 'purchaseorders' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloQuote multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloQuote -Search 'renewal' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/quotation' -and $ResourceType -eq 'quotes' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'renewal'
+        }
+    }
+
+    It 'routes Get-HaloQuote single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloQuote -QuoteID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/quotation/42' -and $ResourceType -eq 'quotes' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloRelease multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloRelease -Search 'spring' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/release' -and $ResourceType -eq 'releases' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'spring'
+        }
+    }
+
+    It 'routes Get-HaloRelease single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloRelease -ReleaseID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/release/42' -and $ResourceType -eq 'releases' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloReport multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloReport -Search 'finance' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Report' -and $ResourceType -eq 'reports' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'finance'
+        }
+    }
+
+    It 'routes Get-HaloReport single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloReport -ReportID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Report/42' -and $ResourceType -eq 'reports' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloSalesOrder multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloSalesOrder -Search 'subscription' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/salesorder' -and $ResourceType -eq 'salesorders' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'subscription'
+        }
+    }
+
+    It 'routes Get-HaloSalesOrder single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloSalesOrder -SalesOrderID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/salesorder/42' -and $ResourceType -eq 'salesorders' -and $AutoPaginateOff -eq $true
+        }
+    }
 }
 
 Describe 'New-HaloTicket' {

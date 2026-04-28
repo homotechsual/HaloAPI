@@ -18,7 +18,7 @@ We are Mikey O'Toole ([@homotechsual](https://github.com/homotechsual)) and Luke
 
 ## What is this?
 
-This is the code for a [PowerShell](https://microsoft.com/powershell) module for the [Halo Service Solutions](https://haloservicesolutions.com/) series of software, including:
+This is the code for a [PowerShell](https://microsoft.com/powershell) module for the [Halo Service Solutions](https://usehalo.com/) series of software, including:
 
 * [HaloPSA](https://halopsa.com)
 * [HaloITSM](https://haloitsm.com/)
@@ -38,7 +38,7 @@ Use the docs website for the most up-to-date generated command reference and dev
 
 Code coverage is collected in CI for the `Meta` and `Unit` suites using the standard test entrypoint in `DevOps/Quality/test.ps1`.
 
-CI enforces a minimum 35% coverage threshold for the `Unit` suite.
+CI enforces a minimum 40% coverage threshold for the `Unit` suite.
 
 Coverage artifacts are published on every CI run as:
 
