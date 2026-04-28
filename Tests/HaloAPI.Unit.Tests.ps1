@@ -2092,6 +2092,105 @@ Describe 'Get cmdlet request wiring' {
             $Resource -eq 'api/FAQLists/42' -and $ResourceType -eq 'FAQLists' -and $AutoPaginateOff -eq $true
         }
     }
+
+    It 'routes Get-HaloAppointment multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAppointment -Search 'review' -TicketID 101
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Appointment' -and $ResourceType -eq 'appointments' -and $AutoPaginateOff -eq $true -and $QSCollection['ticket_id'] -eq 101
+        }
+    }
+
+    It 'routes Get-HaloAppointment single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAppointment -AppointmentID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Appointment/42' -and $ResourceType -eq 'appointments' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloAzureADConnection multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAzureADConnection -Type 'entra' -ShowAll 'true'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/azureadconnection' -and $ResourceType -eq 'azureadconnection' -and $AutoPaginateOff -eq $true -and $QSCollection['type'] -eq 'entra'
+        }
+    }
+
+    It 'routes Get-HaloAzureADConnection single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAzureADConnection -AzureConnectionID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/azureadconnection/42' -and $ResourceType -eq 'azureadconnection' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloCAB multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCAB -IncludeMembers
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/CAB' -and $ResourceType -eq 'CAB' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloCAB single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCAB -CABID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/CAB/42' -and $ResourceType -eq 'CAB' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloAgent multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAgent -Search 'alex'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/agent' -and $ResourceType -eq 'agents' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'alex'
+        }
+    }
+
+    It 'routes Get-HaloAgent single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAgent -AgentID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/agent/42' -and $ResourceType -eq 'agents' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloAgent me mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAgent -Me
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/agent/me' -and $ResourceType -eq 'agents' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloAgentRoles multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAgentRoles -Search 'service desk'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Roles' -and $ResourceType -eq 'roles' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'service desk'
+        }
+    }
+
+    It 'routes Get-HaloAgentRoles single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAgentRoles -RoleID 'role-42'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Roles/role-42' -and $ResourceType -eq 'roles' -and $AutoPaginateOff -eq $true
+        }
+    }
 }
 
 Describe 'New-HaloTicket' {
