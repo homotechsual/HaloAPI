@@ -5135,10 +5135,9 @@ Describe 'New-HaloOpportunityBatch' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
         Mock -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -MockWith { return @('ok') }
-        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
     }
 
-    It 'routes the null batch input failure through New-HaloError' {
+    It 'passes a flat opportunity array to Invoke-HaloBatchProcessor' {
         $Opportunities = @(
             [pscustomobject]@{ id = 1901; name = 'Opportunity C' },
             [pscustomobject]@{ id = 1902; name = 'Opportunity D' }
@@ -5146,11 +5145,16 @@ Describe 'New-HaloOpportunityBatch' {
 
         New-HaloOpportunityBatch -Opportunities $Opportunities -Confirm:$false | Out-Null
 
-        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
-        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $EntityType -eq 'Opportunity' -and
+            $Operation -eq 'New' -and
+            $BatchInput.Count -eq 2 -and
+            $BatchInput[0].id -eq 1901 -and
+            $BatchInput[1].id -eq 1902
+        } -Times 1 -Exactly
     }
 
-    It 'routes the null batch input failure through New-HaloError even with tuning values' {
+    It 'passes batch tuning values when supplied' {
         $Opportunities = @(
             [pscustomobject]@{ id = 1903; name = 'Opportunity E' },
             [pscustomobject]@{ id = 1904; name = 'Opportunity F' }
@@ -5158,8 +5162,12 @@ Describe 'New-HaloOpportunityBatch' {
 
         New-HaloOpportunityBatch -Opportunities $Opportunities -BatchSize 14 -BatchWait 5 -Confirm:$false | Out-Null
 
-        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
-        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $EntityType -eq 'Opportunity' -and
+            $Operation -eq 'New' -and
+            $Size -eq 14 -and
+            $Wait -eq 5
+        } -Times 1 -Exactly
     }
 
     It 'does not call Invoke-HaloBatchProcessor when -WhatIf is specified' {
