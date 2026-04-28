@@ -116,6 +116,27 @@ jobs:
           name: code-coverage-meta-results
           path: .artifacts/CodeCoverage.meta.xml
 
+      - name: Upload metadata coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v6
+        with:
+          files: .artifacts/CodeCoverage.meta.xml
+          flags: meta
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload metadata test results to Codecov
+        if: always()
+        uses: codecov/codecov-action@v6
+        with:
+          files: .artifacts/TestResults.meta.xml
+          report_type: test_results
+          flags: meta
+          name: pester-meta
+          verbose: true
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Run unit tests
         shell: pwsh
         run: |
@@ -143,6 +164,27 @@ jobs:
         with:
           name: code-coverage-unit-results
           path: .artifacts/CodeCoverage.unit.xml
+
+      - name: Upload unit coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v6
+        with:
+          files: .artifacts/CodeCoverage.unit.xml
+          flags: unit
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload unit test results to Codecov
+        if: always()
+        uses: codecov/codecov-action@v6
+        with:
+          files: .artifacts/TestResults.unit.xml
+          report_type: test_results
+          flags: unit
+          name: pester-unit
+          verbose: true
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   live-tests:
     name: Live Tests
