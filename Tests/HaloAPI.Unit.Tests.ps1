@@ -1001,6 +1001,243 @@ Describe 'Connect-HaloAPI' {
         }
     }
 
+    It 'loads secrets from Key Vault using interactive Azure login when no identity is provided' {
+        Mock -CommandName 'Connect-AzAccount' -ModuleName 'HaloAPI' -MockWith {} -ParameterFilter {
+            -not $Identity
+        }
+
+        Mock -CommandName 'Get-AzKeyVaultSecret' -ModuleName 'HaloAPI' -MockWith {
+            switch ($Name) {
+                'halo_URL' { [pscustomobject]@{ SecretValueText = 'https://interactive.example/' } }
+                'halo_ClientID' { [pscustomobject]@{ SecretValueText = 'interactive-client' } }
+                'halo_ClientSecret' { [pscustomobject]@{ SecretValueText = 'interactive-secret' } }
+            }
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://placeholder.example/' -ClientID 'unused' -ClientSecret 'unused' -Scopes 'all' -UseKeyVault $true -VaultName 'vault' -SecretName 'halo'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Connect-AzAccount' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            -not $Identity
+        }
+    }
+
+    It 'saves secrets to Key Vault using interactive Azure login when no identity is provided' {
+        Mock -CommandName 'Connect-AzAccount' -ModuleName 'HaloAPI' -MockWith {} -ParameterFilter {
+            -not $Identity
+        }
+
+        Mock -CommandName 'Set-AzKeyVaultSecret' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Name = $Name }
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-save' -ClientSecret 'secret-save' -Scopes 'all' -SaveToKeyVault $true -VaultName 'vault' -SecretName 'halo'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Connect-AzAccount' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            -not $Identity
+        }
+    }
+
+    It 'falls back to auth/token without tenant when authinfo response is empty and no tenant is provided' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = $null }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-fallback' -ClientSecret 'secret-fallback' -Scopes 'all'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Method -eq 'POST' -and $Uri -eq 'https://example.halo/auth/token'
+        }
+    }
+
+    It 'rethrows non-throttling HttpResponseException from auth info lookup' {
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::BadRequest)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('bad request', $Response)
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            throw $HttpException
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        {
+            Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-authinfo' -ClientSecret 'secret-authinfo' -Scopes 'all'
+        } | Should -Throw
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly -ParameterFilter {
+            $HasResponse
+        }
+    }
+
+    It 'routes unexpected auth info lookup errors through New-HaloError and then falls back to the default auth path' {
+        $script:AuthInfoErrorCallCount = 0
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            $script:AuthInfoErrorCallCount += 1
+            if ($script:AuthInfoErrorCallCount -eq 1) {
+                throw [System.Exception]::new('auth info failed')
+            }
+
+            [pscustomobject]@{ content = $null }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-authinfo' -ClientSecret 'secret-authinfo' -Scopes 'all'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $HasResponse
+        }
+    }
+
+    It 'reports auth info retry exhaustion after repeated throttling before falling back to the default auth path' {
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::TooManyRequests)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('throttled', $Response)
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            throw $HttpException
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-authinfo' -ClientSecret 'secret-authinfo' -Scopes 'all'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Start-Sleep' -ModuleName 'HaloAPI' -Times 10 -Exactly -ParameterFilter {
+            $Seconds -eq 5
+        }
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $ModuleMessage -eq 'Retried auth info request 10 times, request unsuccessful.'
+        }
+    }
+
+    It 'rethrows non-throttling HttpResponseException from token request' {
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::BadRequest)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('bad request', $Response)
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            throw $HttpException
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        {
+            Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-token' -ClientSecret 'secret-token' -Scopes 'all'
+        } | Should -Throw
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly -ParameterFilter {
+            -not $HasResponse -and $ErrorRecord
+        }
+    }
+
+    It 'routes unexpected token request errors through New-HaloError before succeeding on retry' {
+        $script:TokenErrorCallCount = 0
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            $script:TokenErrorCallCount += 1
+            if ($script:TokenErrorCallCount -eq 1) {
+                throw [System.Exception]::new('token failed')
+            }
+
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-token' -ClientSecret 'secret-token' -Scopes 'all'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            -not $HasResponse -and $ErrorRecord
+        }
+    }
+
+    It 'reports auth retry exhaustion after repeated throttling and returns false' {
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::TooManyRequests)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('throttled', $Response)
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            throw $HttpException
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-token' -ClientSecret 'secret-token' -Scopes 'all'
+
+        $Result | Should -BeFalse
+        Should -Invoke -CommandName 'Start-Sleep' -ModuleName 'HaloAPI' -Times 10 -Exactly -ParameterFilter {
+            $Seconds -eq 5
+        }
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $ModuleMessage -eq 'Retried auth request 10 times, request unsuccessful.'
+        }
+    }
+
     It 'retries the auth info request after a throttled response and does not report a failure after success' {
         $script:AuthInfoCallCount = 0
         $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::TooManyRequests)
