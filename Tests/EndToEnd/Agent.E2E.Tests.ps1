@@ -20,7 +20,7 @@ BeforeAll {
         Scopes = 'all'
         Tenant = $env:HaloTestingTenant
     }
-    Connect-HaloAPI @HaloConnectionParameters *> $null
+    Connect-HaloAPI @HaloConnectionParameters
 }
 
 # Test that we can create an action, fetch it, update it and then delete it.

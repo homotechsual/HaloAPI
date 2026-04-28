@@ -20,7 +20,7 @@ BeforeAll {
         Scopes = 'all'
         Tenant = $env:HaloTestingTenant
     }
-    Connect-HaloAPI @HaloConnectionParameters *> $null
+    Connect-HaloAPI @HaloConnectionParameters
 }
 
 #TODO: This will also need tests for create.
