@@ -4,3 +4,5 @@ Sign-Module.ps1
 TestResults.xml
 resource_mappings*.csv
 test_output.txt
+cmdlets.txt
+tests_content.txt
