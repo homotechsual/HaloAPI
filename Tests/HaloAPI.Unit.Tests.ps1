@@ -1259,6 +1259,78 @@ Describe 'Get cmdlet request wiring' {
             $Resource -eq 'api/asset/42' -and $ResourceType -eq 'assets' -and $AutoPaginateOff -eq $true
         }
     }
+
+    It 'routes Get-HaloProject multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloProject -Search 'roadmap' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/projects' -and $ResourceType -eq 'tickets' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'roadmap'
+        }
+    }
+
+    It 'routes Get-HaloProject single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloProject -ProjectID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/projects/42' -and $ResourceType -eq 'tickets' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloTemplate multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloTemplate -Search 'standard' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/template' -and $ResourceType -eq 'templates' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'standard'
+        }
+    }
+
+    It 'routes Get-HaloTemplate single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloTemplate -TemplateID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/template/42' -and $ResourceType -eq 'templates' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloSupplier multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloSupplier -Search 'vendor' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/supplier' -and $ResourceType -eq 'suppliers' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'vendor'
+        }
+    }
+
+    It 'routes Get-HaloSupplier single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloSupplier -SupplierID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/supplier/42' -and $ResourceType -eq 'suppliers' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloItem multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloItem -Search 'keyboard' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/item' -and $ResourceType -eq 'items' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'keyboard'
+        }
+    }
+
+    It 'routes Get-HaloItem single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloItem -ItemID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/item/42' -and $ResourceType -eq 'items' -and $AutoPaginateOff -eq $true
+        }
+    }
 }
 
 Describe 'New-HaloTicket' {
