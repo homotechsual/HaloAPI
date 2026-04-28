@@ -88,6 +88,12 @@ jobs:
           $ErrorActionPreference = 'Stop'
           & "$env:GITHUB_WORKSPACE\Bootstrap.ps1"
 
+      - name: Validate Codecov component config
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\Generate-CodecovComponents.ps1" -Validate
+
       - name: Run metadata tests
         shell: pwsh
         run: |
@@ -141,7 +147,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 60
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 63
 
       - name: Upload unit test results
         if: always()
