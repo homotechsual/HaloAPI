@@ -24,10 +24,10 @@ jobs:
     name: Run E2E Tests
     runs-on: windows-latest
     env:
-      HaloTestingURL: ${{ secrets.HaloTestingURL }}
-      HaloTestingClientID: ${{ secrets.HaloTestingClientID }}
-      HaloTestingClientSecret: ${{ secrets.HaloTestingClientSecret }}
-      HaloTestingTenant: ${{ secrets.HaloTestingTenant }}
+      HaloTestingURL: ${{ secrets.HALOTESTINGURL }}
+      HaloTestingClientID: ${{ secrets.HALOTESTINGCLIENTID }}
+      HaloTestingClientSecret: ${{ secrets.HALOTESTINGCLIENTSECRET }}
+      HaloTestingTenant: ${{ secrets.HALOTESTINGTENANT }}
     steps:
       - name: Validate destructive test confirmation
         shell: pwsh
