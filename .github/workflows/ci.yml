@@ -141,7 +141,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 50
+          pwsh -NoProfile -File "$env:GITHUB_WORKSPACE\DevOps\Quality\test.ps1" -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 55
 
       - name: Upload unit test results
         if: always()

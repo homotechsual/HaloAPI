@@ -2281,6 +2281,186 @@ Describe 'Get cmdlet request wiring' {
             $Resource -eq 'api/viewlists/42' -and $ResourceType -eq 'viewlists' -and $AutoPaginateOff -eq $true
         }
     }
+
+    It 'routes Get-HaloViewListGroup multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloViewListGroup -Type 'reqs'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/viewlistgroup' -and $ResourceType -eq 'viewlistgroup' -and $AutoPaginateOff -eq $true -and $QSCollection['type'] -eq 'reqs'
+        }
+    }
+
+    It 'routes Get-HaloViewListGroup single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloViewListGroup -ViewListGroupId 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/viewlistgroup/42' -and $ResourceType -eq 'viewlistgroup' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloStatus multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloStatus -Type 'ticket' -Domain 'reqs'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/status' -and $ResourceType -eq 'statuses' -and $AutoPaginateOff -eq $true -and $QSCollection['type'] -eq 'ticket'
+        }
+    }
+
+    It 'routes Get-HaloStatus single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloStatus -StatusID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/status/42' -and $ResourceType -eq 'statuses' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloViewFilter multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloViewFilter -Type 'reqs'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/viewfilter' -and $ResourceType -eq 'viewfilter' -and $AutoPaginateOff -eq $true -and $QSCollection['type'] -eq 'reqs'
+        }
+    }
+
+    It 'routes Get-HaloViewFilter single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloViewFilter -ViewFilterId 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/viewfilter/42' -and $ResourceType -eq 'viewfilter' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloTeam multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloTeam -Type 'reqs' -Domain 'reqs'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/team' -and $ResourceType -eq 'teams' -and $AutoPaginateOff -eq $true -and $QSCollection['type'] -eq 'reqs'
+        }
+    }
+
+    It 'routes Get-HaloTeam single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloTeam -TeamID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/team/42' -and $ResourceType -eq 'teams' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloViewColumn multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloViewColumn -Type 'reqs'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/viewcolumns' -and $ResourceType -eq 'viewcolumns' -and $AutoPaginateOff -eq $true -and $QSCollection['type'] -eq 'reqs'
+        }
+    }
+
+    It 'routes Get-HaloViewColumn single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloViewColumn -ViewColumnId 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/viewcolumns/42' -and $ResourceType -eq 'viewcolumns' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloDashboard multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloDashboard
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/DashboardLinks' -and $ResourceType -eq 'dashboards' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloDashboard single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloDashboard -DashboardID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/DashboardLinks/42' -and $ResourceType -eq 'dashboards' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloCategory multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCategory -TypeID '1'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Category' -and $ResourceType -eq 'categories' -and $AutoPaginateOff -eq $true -and $QSCollection['type_id'] -eq '1'
+        }
+    }
+
+    It 'routes Get-HaloCategory single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCategory -CategoryID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Category/42' -and $ResourceType -eq 'categories' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloCustomTable multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCustomTable
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/customtable' -and $ResourceType -eq 'customtables' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloCustomTable single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCustomTable -CustomTableId 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/customtable/42' -and $ResourceType -eq 'customtables' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloTicketType multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloTicketType -Domain 'reqs'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/tickettype' -and $ResourceType -eq 'tickettypes' -and $AutoPaginateOff -eq $true -and $QSCollection['domain'] -eq 'reqs'
+        }
+    }
+
+    It 'routes Get-HaloTicketType single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloTicketType -TicketTypeID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/tickettype/42' -and $ResourceType -eq 'tickettypes' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloCRMNote multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCRMNote -ClientID 7 -Count 5
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/crmnote' -and $ResourceType -eq 'actions' -and $AutoPaginateOff -eq $true -and $QSCollection['client_id'] -eq 7
+        }
+    }
+
+    It 'routes Get-HaloCRMNote single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCRMNote -CRMNoteID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/crmnote/42' -and $ResourceType -eq 'actions' -and $AutoPaginateOff -eq $true
+        }
+    }
 }
 
 Describe 'New-HaloTicket' {
