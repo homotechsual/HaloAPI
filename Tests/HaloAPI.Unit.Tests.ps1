@@ -2002,6 +2002,96 @@ Describe 'Get cmdlet request wiring' {
             $Resource -eq 'api/salesorder/42' -and $ResourceType -eq 'salesorders' -and $AutoPaginateOff -eq $true
         }
     }
+
+    It 'routes Get-HaloAction multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAction -TicketID 101 -Count 5
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/actions' -and $ResourceType -eq 'actions' -and $AutoPaginateOff -eq $true -and $QSCollection['ticket_id'] -eq 101
+        }
+    }
+
+    It 'routes Get-HaloAction single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAction -TicketID 101 -ActionID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/actions/42' -and $ResourceType -eq 'actions' -and $AutoPaginateOff -eq $true -and $QSCollection['ticket_id'] -eq 101
+        }
+    }
+
+    It 'routes Get-HaloField multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloField -Kind 'ticket'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Field' -and $ResourceType -eq 'fields' -and $AutoPaginateOff -eq $true -and $QSCollection['kind'] -eq 'ticket'
+        }
+    }
+
+    It 'routes Get-HaloField single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloField -FieldID 42 -Kind 'ticket'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Field/42' -and $ResourceType -eq 'fields' -and $AutoPaginateOff -eq $true -and $QSCollection['kind'] -eq 'ticket'
+        }
+    }
+
+    It 'routes Get-HaloWorkday multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloWorkday -ShowAll
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Workday' -and $ResourceType -eq 'workdays' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloWorkday single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloWorkday -WorkdayID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Workday/42' -and $ResourceType -eq 'workdays' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloOutcome multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloOutcome -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/outcome' -and $ResourceType -eq 'outcomes' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloOutcome single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloOutcome -OutcomeID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/outcome/42' -and $ResourceType -eq 'outcomes' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloFAQList multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloFAQList -Type 'internal' -ShowAll 'true'
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/FAQLists' -and $ResourceType -eq 'FAQLists' -and $AutoPaginateOff -eq $true -and $QSCollection['type'] -eq 'internal'
+        }
+    }
+
+    It 'routes Get-HaloFAQList single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloFAQList -FAQListID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/FAQLists/42' -and $ResourceType -eq 'FAQLists' -and $AutoPaginateOff -eq $true
+        }
+    }
 }
 
 Describe 'New-HaloTicket' {
