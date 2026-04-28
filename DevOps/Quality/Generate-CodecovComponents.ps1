@@ -23,7 +23,7 @@ if (-not $OutputPath) {
 }
 
 if (-not (Test-Path -Path $MapPath)) {
-    throw "Codecov component map file not found: $MapPath"
+    throw ('Codecov component map file not found: {0}' -f $MapPath)
 }
 
 $map = Get-Content -Path $MapPath -Raw | ConvertFrom-Json
@@ -43,21 +43,21 @@ foreach ($component in $map.components) {
         throw 'A component id is missing in the map file.'
     }
     if ([string]::IsNullOrWhiteSpace($component.name)) {
-        throw "Component '$($component.id)' is missing a name in the map file."
+        throw ('Component ''{0}'' is missing a name in the map file.' -f $component.id)
     }
     if ($null -eq $component.paths -or $component.paths.Count -eq 0) {
-        throw "Component '$($component.id)' does not define any paths in the map file."
+        throw ('Component ''{0}'' does not define any paths in the map file.' -f $component.id)
     }
 
-    $generatedLines += "    - component_id: $($component.id)"
-    $generatedLines += "      name: $($component.name)"
+    $generatedLines += ('    - component_id: {0}' -f $component.id)
+    $generatedLines += ('      name: {0}' -f $component.name)
     $generatedLines += '      paths:'
 
     foreach ($pathPattern in $component.paths) {
         if ([string]::IsNullOrWhiteSpace($pathPattern)) {
             continue
         }
-        $generatedLines += "        - $pathPattern"
+        $generatedLines += ('        - {0}' -f $pathPattern)
     }
 }
 
@@ -82,7 +82,7 @@ function Normalize-TextForComparison {
 
 if ($Validate) {
     if (-not (Test-Path -Path $OutputPath)) {
-        throw "Codecov config file is missing: $OutputPath"
+        throw ('Codecov config file is missing: {0}' -f $OutputPath)
     }
 
     $existingContent = Get-Content -Path $OutputPath -Raw
@@ -95,4 +95,4 @@ if ($Validate) {
 }
 
 Set-Content -Path $OutputPath -Value $generatedContent -Encoding utf8
-Write-Host "Generated Codecov component config at: $OutputPath" -ForegroundColor Green
+Write-Host ('Generated Codecov component config at: {0}' -f $OutputPath) -ForegroundColor Green
