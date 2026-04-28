@@ -194,10 +194,10 @@ jobs:
       - test
     if: ${{ vars.HALO_LIVE_TESTS_ENABLED == 'true' }}
     env:
-      HaloTestingURL: ${{ secrets.HaloTestingURL }}
-      HaloTestingClientID: ${{ secrets.HaloTestingClientID }}
-      HaloTestingClientSecret: ${{ secrets.HaloTestingClientSecret }}
-      HaloTestingTenant: ${{ secrets.HaloTestingTenant }}
+      HaloTestingURL: ${{ secrets.HALOTESTINGURL }}
+      HaloTestingClientID: ${{ secrets.HALOTESTINGCLIENTID }}
+      HaloTestingClientSecret: ${{ secrets.HALOTESTINGCLIENTSECRET }}
+      HaloTestingTenant: ${{ secrets.HALOTESTINGTENANT }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -228,3 +228,15 @@ jobs:
           name: Pester Tests (Live)
           path: .artifacts/TestResults.live.xml
           reporter: java-junit
+
+      - name: Upload live test results to Codecov
+        if: always()
+        uses: codecov/codecov-action@v6
+        with:
+          files: .artifacts/TestResults.live.xml
+          report_type: test_results
+          flags: live
+          name: pester-live
+          verbose: true
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
