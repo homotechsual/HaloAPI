@@ -764,6 +764,7 @@ Describe 'Connect-HaloAPI' {
         Mock -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -MockWith {
             @([pscustomobject]@{ id = 1; name = 'Lookup' })
         }
+        Mock -CommandName 'Start-Sleep' -ModuleName 'HaloAPI' -MockWith {}
     }
 
     It 'uses authinfo endpoint, applies provided tenant, and joins scopes for token request' {
@@ -917,6 +918,181 @@ Describe 'Connect-HaloAPI' {
         }
         Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
             $Method -eq 'POST' -and $Headers['X-Test'] -eq 'true'
+        }
+    }
+
+    It 'loads URL, client ID, and client secret from Key Vault using managed identity' {
+        Mock -CommandName 'Connect-AzAccount' -ModuleName 'HaloAPI' -MockWith {} -ParameterFilter {
+            $Identity
+        }
+
+        Mock -CommandName 'Get-AzKeyVaultSecret' -ModuleName 'HaloAPI' -MockWith {
+            switch ($Name) {
+                'halo_URL' { [pscustomobject]@{ SecretValueText = 'https://vault.example/' } }
+                'halo_ClientID' { [pscustomobject]@{ SecretValueText = 'vault-client' } }
+                'halo_ClientSecret' { [pscustomobject]@{ SecretValueText = 'vault-secret' } }
+            }
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"vaultTenant"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://placeholder.example/' -ClientID 'unused' -ClientSecret 'unused' -Scopes 'all' -UseKeyVault $true -VaultName 'vault' -SecretName 'halo' -Identity 'mi-1'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Connect-AzAccount' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Identity
+        }
+        Should -Invoke -CommandName 'Get-AzKeyVaultSecret' -ModuleName 'HaloAPI' -Times 3 -Exactly -ParameterFilter {
+            $VaultName -eq 'vault'
+        }
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Method -eq 'GET' -and $Uri -eq 'https://vault.example/api/authinfo'
+        }
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Method -eq 'POST' -and $Body.client_id -eq 'vault-client' -and $Body.client_secret -eq 'vault-secret'
+        }
+    }
+
+    It 'saves URL, client ID, and client secret to Key Vault before authenticating' {
+        Mock -CommandName 'Connect-AzAccount' -ModuleName 'HaloAPI' -MockWith {} -ParameterFilter {
+            $Identity
+        }
+
+        Mock -CommandName 'Set-AzKeyVaultSecret' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Name = $Name }
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-save' -ClientSecret 'secret-save' -Scopes 'all' -SaveToKeyVault $true -VaultName 'vault' -SecretName 'halo' -Identity 'mi-2'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Connect-AzAccount' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Identity
+        }
+        Should -Invoke -CommandName 'Set-AzKeyVaultSecret' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $VaultName -eq 'vault' -and $Name -eq 'halo_URL'
+        }
+        Should -Invoke -CommandName 'Set-AzKeyVaultSecret' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $VaultName -eq 'vault' -and $Name -eq 'halo_ClientID'
+        }
+        Should -Invoke -CommandName 'Set-AzKeyVaultSecret' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $VaultName -eq 'vault' -and $Name -eq 'halo_ClientSecret'
+        }
+    }
+
+    It 'retries the auth info request after a throttled response and does not report a failure after success' {
+        $script:AuthInfoCallCount = 0
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::TooManyRequests)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('throttled', $Response)
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            $script:AuthInfoCallCount += 1
+            if ($script:AuthInfoCallCount -eq 1) {
+                throw $HttpException
+            }
+
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-retry' -ClientSecret 'secret-retry' -Scopes 'all'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Start-Sleep' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Seconds -eq 5
+        }
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 2 -Exactly -ParameterFilter {
+            $Method -eq 'GET'
+        }
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly -ParameterFilter {
+            $ModuleMessage -like 'Retried auth info request*'
+        }
+    }
+
+    It 'retries the token request after a throttled response and does not report a failure after success' {
+        $script:TokenCallCount = 0
+        $Response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::TooManyRequests)
+        $HttpException = [Microsoft.PowerShell.Commands.HttpResponseException]::new('throttled', $Response)
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            $script:TokenCallCount += 1
+            if ($script:TokenCallCount -eq 1) {
+                throw $HttpException
+            }
+
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-retry' -ClientSecret 'secret-retry' -Scopes 'all'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'Start-Sleep' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Seconds -eq 5
+        }
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 2 -Exactly -ParameterFilter {
+            $Method -eq 'POST'
+        }
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 0 -Exactly -ParameterFilter {
+            $ModuleMessage -like 'Retried auth request*'
+        }
+    }
+
+    It 'reports a lookup initialisation failure when lookup types cannot be retrieved' {
+        Mock -CommandName 'Get-HaloLookup' -ModuleName 'HaloAPI' -MockWith { $null }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"tenantFromAuthInfo"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"abc","expires_in":3600,"refresh_token":"ref","id_token":"id"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-lookup' -ClientSecret 'secret-lookup' -Scopes 'all'
+
+        $Result | Should -BeTrue
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $ModuleMessage -eq 'Could not retrieve lookup types from Halo.'
         }
     }
 }

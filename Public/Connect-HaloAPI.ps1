@@ -132,6 +132,7 @@ function Connect-HaloAPI {
         Method = 'GET'
         Headers = $AdditionalHeaders
     }
+    $AuthInfoRetries = 0
     do {
         $AuthInfoRetries++
         try {
@@ -149,9 +150,9 @@ function Connect-HaloAPI {
         } catch {
             New-HaloError -ErrorRecord $_ -HasResponse
         }
-    } while ((-not $AuthInfoResponse) -and ($AuthRetries -lt 10))
-    if ($AuthInfoRetries -gt 1) {
-        New-HaloError -ModuleMessage ('Retried auth info request {0} times, request unsuccessful.' -f $Retries)
+    } while ((-not $AuthInfoResponse) -and ($AuthInfoRetries -lt 10))
+    if ((-not $AuthInfoResponse) -and ($AuthInfoRetries -gt 1)) {
+        New-HaloError -ModuleMessage ('Retried auth info request {0} times, request unsuccessful.' -f $AuthInfoRetries)
     }
     if ($AuthInfoResponse.content) {
         $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
@@ -215,6 +216,7 @@ function Connect-HaloAPI {
         ContentType = 'application/x-www-form-urlencoded'
         Headers = $AdditionalHeaders
     }
+    $AuthRetries = 0
     do {
         $AuthRetries++
         try {
@@ -255,10 +257,10 @@ function Connect-HaloAPI {
             New-HaloError -ErrorRecord $_
         }
     } while ((-not $Authenticated) -and ($AuthRetries -lt 10))
+    if ((-not $Authenticated) -and ($AuthRetries -gt 1)) {
+        New-HaloError -ModuleMessage ('Retried auth request {0} times, request unsuccessful.' -f $AuthRetries)
+    }
     if (!$NoConfirm) {
         return $Authenticated
-    }
-    if ($AuthRetries -gt 1) {
-        New-HaloError -ModuleMessage ('Retried auth request {0} times, request unsuccessful.' -f $Retries)
     }
 }

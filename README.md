@@ -24,7 +24,7 @@ This is the code for a [PowerShell](https://microsoft.com/powershell) module for
 * [HaloITSM](https://haloitsm.com/)
 * [HaloServiceDesk](https://haloservicedesk.com/)
 
-The module is written for [PowerShell 7](https://docs.microsoft.com/en-us/powershell/scripting/whats-new/what-s-new-in-powershell-71?view=powershell-7.1). **It is not compatible with Windows PowerShell 5.1 and never will be.**. This module is licensed under the [MIT](https://haloapi.mit-license.org/) license.
+The module is written for [PowerShell 7](https://docs.microsoft.com/en-us/powershell/scripting/whats-new/what-s-new-in-powershell-71?view=powershell-7.1). **It is not compatible with Windows PowerShell 5.1 and there are no current plans to change this**. This module is licensed under the [MIT](https://mit.license.homotechsual.dev/) license.
 
 ## What does it do?
 
