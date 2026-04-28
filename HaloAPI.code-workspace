@@ -229,7 +229,16 @@
         "matchCommandLine": true,
       },
     },
-    "cSpell.words": ["HAPI"],
+    "cSpell.words": [
+      "Analyzed",
+      "dorny",
+      "HALOTESTINGCLIENTID",
+      "HALOTESTINGTENANT",
+      "HALOTESTINGURL",
+      "HAPI",
+      "pscustomobject",
+      "vars",
+    ],
     "codeQL.githubDatabase.download": "never",
   },
 }
