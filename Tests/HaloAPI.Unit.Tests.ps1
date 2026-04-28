@@ -1085,6 +1085,182 @@ Describe 'Get-HaloTicket' {
     }
 }
 
+Describe 'Get cmdlet request wiring' {
+    BeforeAll {
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{
+                URL = 'https://example.halo/'
+                ClientID = 'client-id'
+                ClientSecret = 'client-secret'
+                AuthScopes = @('all')
+                Tenant = 'tenant-id'
+            }
+            $Script:HAPIAuthToken = [pscustomobject]@{
+                Type = 'Bearer'
+                Access = 'token'
+                Expires = [datetime]'2099-01-01T00:00:00Z'
+            }
+        }
+
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -MockWith {
+            @([pscustomobject]@{ id = 1; Content = [byte[]](1, 2, 3); Headers = @{}; RawContentLength = 3 })
+        }
+    }
+
+    It 'routes Get-HaloAttachment multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAttachment -TicketID 101 -ActionID 5
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/attachment' -and $ResourceType -eq 'attachments' -and $AutoPaginateOff -eq $true -and $QSCollection['ticket_id'] -eq 101
+        }
+    }
+
+    It 'routes Get-HaloAttachment single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAttachment -AttachmentID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/attachment/42' -and $ResourceType -eq 'attachments' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloInvoice multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloInvoice -Search 'invoice' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/invoice' -and $ResourceType -eq 'invoices' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'invoice'
+        }
+    }
+
+    It 'routes Get-HaloInvoice single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloInvoice -InvoiceID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/invoice/42' -and $ResourceType -eq 'invoices' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloSite multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloSite -Search 'hq' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/site' -and $ResourceType -eq 'sites' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'hq'
+        }
+    }
+
+    It 'routes Get-HaloSite single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloSite -SiteID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/site/42' -and $ResourceType -eq 'sites' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloAssetType multi mode' {
+        $Result = InModuleScope 'HaloAPI' {
+            Get-HaloAssetType -Search 'laptop' -Paginate -PageNo 1
+        }
+        $Result | Should -Not -BeNullOrEmpty
+    }
+
+    It 'routes Get-HaloAssetType single mode' {
+        $Result = InModuleScope 'HaloAPI' {
+            Get-HaloAssetType -AssetTypeID 42
+        }
+        $Result | Should -Not -BeNullOrEmpty
+    }
+
+    It 'routes Get-HaloRecurringInvoice multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloRecurringInvoice -Search 'renewal' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/RecurringInvoice' -and $ResourceType -eq 'invoices' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'renewal'
+        }
+    }
+
+    It 'routes Get-HaloRecurringInvoice single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloRecurringInvoice -RecurringInvoiceID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/RecurringInvoice/42' -and $ResourceType -eq 'invoices' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloAssetGroup multi mode' {
+        $Result = InModuleScope 'HaloAPI' {
+            Get-HaloAssetGroup -Search 'group' -Paginate -PageNo 1
+        }
+        $Result | Should -Not -BeNullOrEmpty
+    }
+
+    It 'routes Get-HaloAssetGroup single mode' {
+        $Result = InModuleScope 'HaloAPI' {
+            Get-HaloAssetGroup -AssetGroupID 42
+        }
+        $Result | Should -Not -BeNullOrEmpty
+    }
+
+    It 'routes Get-HaloUser multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloUser -Search 'alex' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/users' -and $ResourceType -eq 'users' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'alex'
+        }
+    }
+
+    It 'routes Get-HaloUser single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloUser -UserID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/users/42' -and $ResourceType -eq 'users' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloContract multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloContract -Search 'gold' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/clientcontract' -and $ResourceType -eq 'contracts' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'gold'
+        }
+    }
+
+    It 'routes Get-HaloContract single mode' {
+        $Result = InModuleScope 'HaloAPI' {
+            Get-HaloContract -ContractID 42
+        }
+        $Result | Should -Not -BeNullOrEmpty
+    }
+
+    It 'routes Get-HaloAsset multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAsset -Search 'device' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/asset' -and $ResourceType -eq 'assets' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'device'
+        }
+    }
+
+    It 'routes Get-HaloAsset single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloAsset -AssetID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/asset/42' -and $ResourceType -eq 'assets' -and $AutoPaginateOff -eq $true
+        }
+    }
+}
+
 Describe 'New-HaloTicket' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
