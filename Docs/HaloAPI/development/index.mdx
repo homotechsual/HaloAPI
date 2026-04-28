@@ -47,7 +47,27 @@ Do not invoke `Invoke-Pester` directly as the normal validation path in the VS C
 * Run `Bootstrap.ps1` after changing local dependencies.
 * Run `run-pssa.ps1` to validate PowerShell style and custom repo rules.
 * Run `test.ps1 -Suite Meta` for the safe baseline test suite.
-* Only run `Core` tests when the required Halo testing environment variables are available.
+* Only run `Live` tests when the required Halo testing environment variables are available.
+
+## Manual E2E Workflow
+
+Destructive end-to-end tests are executed through a dedicated manual workflow.
+
+Workflow: `Manual E2E Tests`
+Path: `.github/workflows/manual-e2e-tests.yml`
+
+Run steps:
+
+1. Open **Actions** in GitHub and select **Manual E2E Tests**.
+2. Click **Run workflow**.
+3. Set `confirm_destructive` to `true`.
+4. Run the workflow and review published `Pester Tests (E2E)` results.
+
+Notes:
+
+* The workflow requires Halo test secrets (`HaloTestingURL`, `HaloTestingClientID`, `HaloTestingClientSecret`, `HaloTestingTenant`).
+* The workflow runs `DevOps\Quality\test.ps1 -Suite E2E` and uploads `.artifacts/TestResults.e2e.xml`.
+* Keep E2E runs manual/on-demand to avoid destructive test execution in normal PR CI.
 
 ## Release and Workflow Notes
 
