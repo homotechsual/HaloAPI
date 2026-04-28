@@ -5058,3 +5058,229 @@ Describe 'New-HaloKBArticle' {
         Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
     }
 }
+
+Describe 'New-HaloKBArticleBatch' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -MockWith { return @('ok') }
+    }
+
+    It 'passes a flat knowledgebase article array to Invoke-HaloBatchProcessor' {
+        $KBArticles = @(
+            [pscustomobject]@{ id = 1701; title = 'KB C' },
+            [pscustomobject]@{ id = 1702; title = 'KB D' }
+        )
+
+        New-HaloKBArticleBatch -KBArticles $KBArticles -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $EntityType -eq 'KBArticle' -and
+            $Operation -eq 'New' -and
+            $BatchInput.Count -eq 2 -and
+            $BatchInput[0].id -eq 1701 -and
+            $BatchInput[1].id -eq 1702
+        } -Times 1 -Exactly
+    }
+
+    It 'passes batch tuning values when supplied' {
+        $KBArticles = @(
+            [pscustomobject]@{ id = 1703; title = 'KB E' },
+            [pscustomobject]@{ id = 1704; title = 'KB F' }
+        )
+
+        New-HaloKBArticleBatch -KBArticles $KBArticles -BatchSize 10 -BatchWait 4 -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $EntityType -eq 'KBArticle' -and
+            $Operation -eq 'New' -and
+            $Size -eq 10 -and
+            $Wait -eq 4
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call Invoke-HaloBatchProcessor when -WhatIf is specified' {
+        New-HaloKBArticleBatch -KBArticles @([pscustomobject]@{ id = 1705; title = 'WhatIf KB' }) -WhatIf
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'New-HaloOpportunity' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+    }
+
+    It 'posts to the opportunities endpoint' {
+        New-HaloOpportunity -Opportunity @([pscustomobject]@{ name = 'Opportunity A' }) -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'opportunities'
+        } -Times 1 -Exactly
+    }
+
+    It 'passes the provided opportunity object through to the request body' {
+        $Opportunities = @([pscustomobject]@{ name = 'Opportunity B'; id = 1801 })
+        New-HaloOpportunity -Opportunity $Opportunities -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Object[0].name -eq 'Opportunity B' -and $Object[0].id -eq 1801
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call New-HaloPOSTRequest when -WhatIf is specified' {
+        New-HaloOpportunity -Opportunity @([pscustomobject]@{ name = 'WhatIf Opportunity' }) -WhatIf
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'New-HaloOpportunityBatch' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -MockWith { return @('ok') }
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'routes the null batch input failure through New-HaloError' {
+        $Opportunities = @(
+            [pscustomobject]@{ id = 1901; name = 'Opportunity C' },
+            [pscustomobject]@{ id = 1902; name = 'Opportunity D' }
+        )
+
+        New-HaloOpportunityBatch -Opportunities $Opportunities -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'routes the null batch input failure through New-HaloError even with tuning values' {
+        $Opportunities = @(
+            [pscustomobject]@{ id = 1903; name = 'Opportunity E' },
+            [pscustomobject]@{ id = 1904; name = 'Opportunity F' }
+        )
+
+        New-HaloOpportunityBatch -Opportunities $Opportunities -BatchSize 14 -BatchWait 5 -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -Times 1 -Exactly
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+
+    It 'does not call Invoke-HaloBatchProcessor when -WhatIf is specified' {
+        New-HaloOpportunityBatch -Opportunities @([pscustomobject]@{ id = 1905; name = 'WhatIf Opportunity' }) -WhatIf
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'New-HaloOutcome' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+    }
+
+    It 'posts to the Outcome endpoint' {
+        New-HaloOutcome -Outcome @([pscustomobject]@{ name = 'Outcome A' }) -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'Outcome'
+        } -Times 1 -Exactly
+    }
+
+    It 'passes the provided outcome object through to the request body' {
+        $Outcomes = @([pscustomobject]@{ name = 'Outcome B'; id = 2001 })
+        New-HaloOutcome -Outcome $Outcomes -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Object[0].name -eq 'Outcome B' -and $Object[0].id -eq 2001
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call New-HaloPOSTRequest when -WhatIf is specified' {
+        New-HaloOutcome -Outcome @([pscustomobject]@{ name = 'WhatIf Outcome' }) -WhatIf
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'New-HaloProjectBatch' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -MockWith { return @('ok') }
+    }
+
+    It 'passes a flat project array to Invoke-HaloBatchProcessor' {
+        $Projects = @(
+            [pscustomobject]@{ id = 2101; summary = 'Project A' },
+            [pscustomobject]@{ id = 2102; summary = 'Project B' }
+        )
+
+        New-HaloProjectBatch -Projects $Projects -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $EntityType -eq 'Project' -and
+            $Operation -eq 'New' -and
+            $BatchInput.Count -eq 2 -and
+            $BatchInput[0].id -eq 2101 -and
+            $BatchInput[1].id -eq 2102
+        } -Times 1 -Exactly
+    }
+
+    It 'passes batch tuning values when supplied' {
+        $Projects = @(
+            [pscustomobject]@{ id = 2103; summary = 'Project C' },
+            [pscustomobject]@{ id = 2104; summary = 'Project D' }
+        )
+
+        New-HaloProjectBatch -Projects $Projects -BatchSize 16 -BatchWait 6 -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $EntityType -eq 'Project' -and
+            $Operation -eq 'New' -and
+            $Size -eq 16 -and
+            $Wait -eq 6
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call Invoke-HaloBatchProcessor when -WhatIf is specified' {
+        New-HaloProjectBatch -Projects @([pscustomobject]@{ id = 2105; summary = 'WhatIf Project' }) -WhatIf
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'New-HaloQuoteBatch' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -MockWith { return @('ok') }
+    }
+
+    It 'passes a flat quote array to Invoke-HaloBatchProcessor' {
+        $Quotes = @(
+            [pscustomobject]@{ id = 2201; title = 'Quote A' },
+            [pscustomobject]@{ id = 2202; title = 'Quote B' }
+        )
+
+        New-HaloQuoteBatch -Quotes $Quotes -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $EntityType -eq 'Quote' -and
+            $Operation -eq 'New' -and
+            $BatchInput.Count -eq 2 -and
+            $BatchInput[0].id -eq 2201 -and
+            $BatchInput[1].id -eq 2202
+        } -Times 1 -Exactly
+    }
+
+    It 'passes batch tuning values when supplied' {
+        $Quotes = @(
+            [pscustomobject]@{ id = 2203; title = 'Quote C' },
+            [pscustomobject]@{ id = 2204; title = 'Quote D' }
+        )
+
+        New-HaloQuoteBatch -Quotes $Quotes -BatchSize 18 -BatchWait 7 -Confirm:$false | Out-Null
+
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -ParameterFilter {
+            $EntityType -eq 'Quote' -and
+            $Operation -eq 'New' -and
+            $Size -eq 18 -and
+            $Wait -eq 7
+        } -Times 1 -Exactly
+    }
+
+    It 'does not call Invoke-HaloBatchProcessor when -WhatIf is specified' {
+        New-HaloQuoteBatch -Quotes @([pscustomobject]@{ id = 2205; title = 'WhatIf Quote' }) -WhatIf
+        Should -Invoke -CommandName 'Invoke-HaloBatchProcessor' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}

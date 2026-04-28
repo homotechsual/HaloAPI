@@ -1,0 +1,150 @@
+[31;1mSet-PSReadLineOption: [0mC:\Users\MichaelO'Toole\OneDrive - MJCO\Documents\PowerShell\Microsoft.PowerShell_profile.ps1:491:1[0m
+[31;1m[0m[36;1mLine |[0m
+[31;1m[0m[36;1m[36;1m 491 | [0m [36;1mSet-PSReadLineOption -PredictionSource History[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mThe predictive suggestion feature cannot be enabled because the console[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m     | [31;1moutput doesn't support virtual terminal processing or it's redirected.[0m
+
+=== Running Unit test suite ===
+[95m
+[95mStarting discovery in 1 files.[0m
+[95mDiscovery found 440 tests in 481ms.[0m
+[95mStarting code coverage.[0m
+[95mRunning tests.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: Could not retrieve authentication URL from Halo falling back to default.[0m
+[33;1mWARNING: Could not retrieve authentication URL from Halo falling back to default.[0m
+[33;1mWARNING: Could not retrieve authentication URL from Halo falling back to default.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: Could not retrieve authentication URL from Halo falling back to default.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+[33;1mWARNING: The request was throttled, waiting for 5 seconds.[0m
+What if: Performing the operation "Add" on target "Distribution List members".
+What if: Performing the operation "Create" on target "Ticket Types".
+What if: Performing the operation "Create" on target "Projects".
+What if: Performing the operation "Create" on target "Quotes".
+What if: Performing the operation "Create" on target "Invoice 'RI-003'".
+What if: Performing the operation "Create" on target "Report".
+What if: Performing the operation "Create" on target "Services".
+What if: Performing the operation "Update" on target "Actions".
+What if: Performing the operation "Update" on target "Rule List".
+What if: Performing the operation "Update" on target "Users".
+What if: Performing the operation "Update" on target "ViewColumns".
+What if: Performing the operation "Update" on target "ViewFilters".
+What if: Performing the operation "Update" on target "ViewLists".
+What if: Performing the operation "Update" on target "ViewListGroups".
+What if: Performing the operation "Update" on target "Workday".
+What if: Performing the operation "Update" on target "Tickets".
+What if: Performing the operation "Update" on target "Templates".
+What if: Performing the operation "Update" on target "Teams".
+What if: Performing the operation "Update" on target "Statuses".
+What if: Performing the operation "Update" on target "Sites".
+What if: Performing the operation "Update" on target "Suppliers".
+What if: Performing the operation "Update" on target "Reports".
+What if: Performing the operation "Update" on target "Projects".
+What if: Performing the operation "Update" on target "Actions".
+What if: Performing the operation "Update" on target "Assets".
+What if: Performing the operation "Update" on target "Clients".
+What if: Performing the operation "Update" on target "Contracts".
+What if: Performing the operation "Delete" on target "Actions".
+What if: Performing the operation "Update" on target "Agents".
+What if: Performing the operation "Update" on target "Appointments".
+What if: Performing the operation "Update" on target "Category List".
+What if: Performing the operation "Update" on target "Items".
+What if: Performing the operation "Update" on target "Knowledgebase Articles".
+What if: Performing the operation "Update" on target "Opportunities".
+What if: Performing the operation "Update" on target "Asset Type".
+What if: Performing the operation "Update" on target "Attachment".
+What if: Performing the operation "Update" on target "Quotations".
+What if: Performing the operation "Update" on target "Billing Template".
+What if: Performing the operation "Update" on target "CRM Note".
+What if: Performing the operation "Update" on target "Dashboard 'Dashboard B'".
+What if: Performing the operation "Update" on target "Distribution Lists".
+What if: Performing the operation "Update" on target "FAQ List".
+What if: Performing the operation "Update" on target "Invoices".
+What if: Performing the operation "Update" on target "Custom Button".
+What if: Performing the operation "Update" on target "Tickets".
+What if: Performing the operation "Update" on target "Invoice".
+What if: Performing the operation "Update" on target "Template '1902'".
+What if: Performing the operation "Update" on target "Sales Order".
+What if: Performing the operation "Update" on target "Software Licences".
+What if: Performing the operation "Create" on target "Actions".
+What if: Performing the operation "Create" on target "Agents".
+What if: Performing the operation "Create" on target "Appointments".
+What if: Performing the operation "Create" on target "Assets".
+What if: Performing the operation "Create" on target "AssetType WhatIf type".
+What if: Performing the operation "Create" on target "Attachments".
+What if: Performing the operation "Create" on target "Actions".
+What if: Performing the operation "Create" on target "Agents".
+What if: Performing the operation "Create" on target "Appointments".
+What if: Performing the operation "Create" on target "Assets".
+What if: Performing the operation "Create" on target "Attachments".
+What if: Performing the operation "Create" on target "Billing Template 'WhatIf Template'".
+What if: Performing the operation "Create" on target "Category 'WhatIf Category'".
+What if: Performing the operation "Create" on target "Clients".
+What if: Performing the operation "Create" on target "Contracts".
+What if: Performing the operation "Create" on target "CRM Note by '14'".
+What if: Performing the operation "Create" on target "Custom Button 'WhatIf Button'".
+What if: Performing the operation "Create" on target "Dashboard 'WhatIf Dashboard'".
+What if: Performing the operation "Create" on target "Clients".
+What if: Performing the operation "Create" on target "Contracts".
+What if: Performing the operation "Create" on target "FieldInfos".
+What if: Performing the operation "Create" on target "CustomFields".
+What if: Performing the operation "Create" on target "Custom Table 'WhatIf Table'".
+What if: Performing the operation "Create" on target "Distribution Lists".
+What if: Performing the operation "Create" on target "FAQ List 'WhatIf FAQ'".
+What if: Performing the operation "Create" on target "Invoices".
+What if: Performing the operation "Create" on target "Invoices".
+What if: Performing the operation "Create" on target "Items".
+What if: Performing the operation "Create" on target "Items".
+What if: Performing the operation "Create" on target "Knowledgebase Articles".
+What if: Performing the operation "Create" on target "KBArticles".
+What if: Performing the operation "Create" on target "Opportunities".
+What if: Performing the operation "Create" on target "Opportunitys".
+What if: Performing the operation "Create" on target "Outcomes".
+What if: Performing the operation "Create" on target "Projects".
+What if: Performing the operation "Create" on target "Quotes".
+[32m[+] J:\Projects\HaloAPI\Tests\HaloAPI.Unit.Tests.ps1[0m[90m 12.73s (9.33s|2.94s)[0m
+[97mTests completed in 12.75s[0m
+[32mTests Passed: 440, [0m[90mFailed: 0, [0m[90mSkipped: 0 [0m[37m[0m[90mNotRun: 0[0m
+[95mProcessing code coverage result.[0m
+[91mCovered 70.28% / 75%. 4,206 analyzed Commands in 226 Files.[0m
+
+=== Test Results Summary ===
+Unit: 440 passed, 0 failed, 0 skipped -> J:\Projects\HaloAPI\.artifacts\TestResults.unit.xml
+Total: 440 passed, 0 failed, 0 skipped
+
+=== Code Coverage Summary ===
+Unit: 70.28% (2956/4206) -> J:\Projects\HaloAPI\.artifacts\CodeCoverage.unit.xml
+Coverage threshold check passed: all suites are at or above 65%.
+
+[32;1mTotalPassed  : [0m440
+[32;1mTotalFailed  : [0m0
+[32;1mTotalSkipped : [0m0
+[32;1mSuites       : [0m{@{Suite=Unit; Paths=System.Object[]; PassedCount=440; 
+               FailedCount=0; SkippedCount=0; 
+               OutputPath=J:\Projects\HaloAPI\.artifacts\TestResults.unit.xml}}
+[32;1mCoverage     : [0m{@{Suite=Unit; CommandsExecuted=2956; CommandsAnalyzed=4206; 
+               CoveragePercent=70.28; OutputPath=J:\Projects\HaloAPI\.artifacts
+               \CodeCoverage.unit.xml}}
+[32;1mExecutedAt   : [0m28/04/2026 21:08:50
+
