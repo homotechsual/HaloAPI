@@ -1331,6 +1331,114 @@ Describe 'Get cmdlet request wiring' {
             $Resource -eq 'api/item/42' -and $ResourceType -eq 'items' -and $AutoPaginateOff -eq $true
         }
     }
+
+    It 'routes Get-HaloCustomField multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCustomField -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/FieldInfo' -and $ResourceType -eq 'FieldInfo' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloCustomField single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloCustomField -CustomFieldID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/FieldInfo/42' -and $ResourceType -eq 'FieldInfo' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloDistributionList multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloDistributionList -Search 'ops' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/distributionlist' -and $ResourceType -eq 'distributionlists' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'ops'
+        }
+    }
+
+    It 'routes Get-HaloDistributionList single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloDistributionList -DistributionListID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/distributionlist/42' -and $ResourceType -eq 'distributionlists' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloTab multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloTab -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Tabs' -and $ResourceType -eq 'Tabs' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloTab single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloTab -TableID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/Tabs/42' -and $ResourceType -eq 'Tabs' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloKBArticle multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloKBArticle -Search 'vpn' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/KBArticle' -and $ResourceType -eq 'articles' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'vpn'
+        }
+    }
+
+    It 'routes Get-HaloKBArticle single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloKBArticle -KBArticleID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/KBArticle/42' -and $ResourceType -eq 'articles' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloSoftwareLicence multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloSoftwareLicence -ClientID 7 -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/SoftwareLicence' -and $ResourceType -eq 'licences' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloSoftwareLicence single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloSoftwareLicence -LicenceID 42 -ClientID 7
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/SoftwareLicence/42' -and $ResourceType -eq 'licences' -and $AutoPaginateOff -eq $true
+        }
+    }
+
+    It 'routes Get-HaloOpportunity multi mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloOpportunity -Search 'renewal' -Paginate -PageNo 1
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/opportunities' -and $ResourceType -eq 'tickets' -and $AutoPaginateOff -eq $true -and $QSCollection['search'] -eq 'renewal'
+        }
+    }
+
+    It 'routes Get-HaloOpportunity single mode' {
+        InModuleScope 'HaloAPI' {
+            Get-HaloOpportunity -OpportunityID 42
+        }
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Resource -eq 'api/opportunities/42' -and $ResourceType -eq 'tickets' -and $AutoPaginateOff -eq $true
+        }
+    }
 }
 
 Describe 'New-HaloTicket' {
