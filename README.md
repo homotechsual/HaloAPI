@@ -5,7 +5,7 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/homotechsual/haloapi?style=for-the-badge&logo=github)](https://github.com/homotechsual/haloapi/)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/homotechsual/HaloAPI/release.yml?style=for-the-badge&label=Release)](https://github.com/homotechsual/HaloAPI/actions/workflows/release.yml)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/homotechsual/HaloAPI/ci.yml?style=for-the-badge&label=CI)](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
-![Codecov (with branch)](https://img.shields.io/codecov/c/github/homotechsual/HaloAPI/develop?style=for-the-badge)
+[![Codecov (with branch)](https://img.shields.io/codecov/c/github/homotechsual/HaloAPI/develop?style=for-the-badge)](https://app.codecov.io/gh/homotechsual/HaloAPI)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/HaloAPI?style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
 [![License](https://img.shields.io/github/license/homotechsual/HaloAPI?style=for-the-badge)](https://mit.license.homotechsual.dev/)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/homotechsual?style=for-the-badge)](https://github.com/sponsors/homotechsual/)
@@ -38,7 +38,7 @@ Use the docs website for the most up-to-date generated command reference and dev
 
 Code coverage is collected in CI for the `Meta` and `Unit` suites using the standard test entrypoint in `DevOps/Quality/test.ps1`.
 
-CI enforces a minimum 30% coverage threshold for the `Unit` suite.
+CI enforces a minimum 35% coverage threshold for the `Unit` suite.
 
 Coverage artifacts are published on every CI run as:
 
