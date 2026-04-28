@@ -6,7 +6,6 @@
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/homotechsual/HaloAPI/release.yml?style=for-the-badge&label=Release)](https://github.com/homotechsual/HaloAPI/actions/workflows/release.yml)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/homotechsual/HaloAPI/ci.yml?style=for-the-badge&label=CI)](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
 ![Codecov (with branch)](https://img.shields.io/codecov/c/github/homotechsual/HaloAPI/develop?style=for-the-badge)
-![Codecov (with branch)](https://img.shields.io/codecov/c/github/homotechsual/HaloAPI/develop?style=for-the-badge)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/HaloAPI?style=for-the-badge)](https://www.powershellgallery.com/packages/HaloAPI/)
 ![PowerShell Gallery Platform Support](https://img.shields.io/powershellgallery/p/HaloAPI?style=for-the-badge)
 [![License](https://img.shields.io/github/license/homotechsual/HaloAPI?style=for-the-badge)](https://mit.license.homotechsual.dev/)
