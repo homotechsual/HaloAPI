@@ -108,7 +108,19 @@ function Invoke-HaloBatchProcessor {
         $_ | ForEach-Object -Parallel {
             Import-Module $Using:ModulePath
             $LocalBatchResults = $using:BatchResults
-            $Result = Invoke-HaloBatchItem -BatchItem $_ -EntityType $Using:EntityType -CommandName $Using:CommandName -CommandExists ([bool]$Using:CommandExists) -Parameters $Using:Parameters -ConnectionInformation $Using:HAPIConnectionInformation
+            $HaloModule = Get-Module -Name 'HaloAPI'
+            $Result = $HaloModule.Invoke({
+                    param(
+                        [Object]$BatchItem,
+                        [String]$EntityType,
+                        [String]$CommandName,
+                        [Boolean]$CommandExists,
+                        [Object]$Parameters,
+                        [Object]$ConnectionInformation
+                    )
+
+                    Invoke-HaloBatchItem -BatchItem $BatchItem -EntityType $EntityType -CommandName $CommandName -CommandExists $CommandExists -Parameters $Parameters -ConnectionInformation $ConnectionInformation
+                }, @($_, $Using:EntityType, $Using:CommandName, ([bool]$Using:CommandExists), $Using:Parameters, $Using:HAPIConnectionInformation))
             if ($null -ne $Result) {
                 $LocalBatchResults.Add($Result)
             }
@@ -118,5 +130,5 @@ function Invoke-HaloBatchProcessor {
             Start-Sleep -Seconds $Wait
         }
     }
-    Return $BatchResults
+    return $BatchResults.ToArray()
 }
