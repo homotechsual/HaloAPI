@@ -2,6 +2,10 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2026-04-29 - Version 1.23.2
+
+* Fix `Invoke-HaloBatchProcessor` parallel runspace error where `Invoke-HaloBatchItem` was not recognised; private function is now invoked via `Module.Invoke()` within the imported module scope.
+
 ## 2026-04-29 - Version 1.23.1
 
 * Fix `Get-HaloTicket` pagination behavior so explicitly providing `-PageNo` and/or `-PageSize` no longer auto-fetches all pages.
