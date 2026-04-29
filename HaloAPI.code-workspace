@@ -2,10 +2,7 @@
   "folders": [
     {
       "path": ".",
-    },
-    {
-      "path": "../NinjaOne",
-    },
+    }
   ],
   "settings": {
     "editor.tabSize": 4,
@@ -227,8 +224,21 @@
         "matchCommandLine": true,
       },
       "PSObject": true,
+      "/^pwsh -File \\.\\\\DevOps\\\\Quality\\\\test\\.ps1 -Suite Unit -Verbosity Detailed -CodeCoverage -MinimumCoveragePercent 20$/": {
+        "approve": true,
+        "matchCommandLine": true,
+      },
     },
-    "cSpell.words": ["HAPI"],
+    "cSpell.words": [
+      "Analyzed",
+      "dorny",
+      "HALOTESTINGCLIENTID",
+      "HALOTESTINGTENANT",
+      "HALOTESTINGURL",
+      "HAPI",
+      "pscustomobject",
+      "vars",
+    ],
     "codeQL.githubDatabase.download": "never",
   },
 }

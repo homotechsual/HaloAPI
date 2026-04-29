@@ -20,10 +20,10 @@ Function New-HaloOpportunityBatch {
     )
     Invoke-HaloPreFlightCheck
     try {
-        if ($PSCmdlet.ShouldProcess('Opportunitys', 'Create')) {
+        if ($PSCmdlet.ShouldProcess('Opportunities', 'Create')) {
             if ($Opportunities -is [Array]) {
                 $BatchParams = @{
-                    BatchInput = $Opportunitys
+                    BatchInput = $Opportunities
                     EntityType = 'Opportunity'
                     Operation = 'New'
                 }

@@ -1,0 +1,65 @@
+{
+    "components": [
+        {
+            "id": "tickets",
+            "name": "Tickets",
+            "paths": [
+                "Public/**/*Ticket*.ps1",
+                "Private/**/*Ticket*.ps1",
+                "Classes/**/*Ticket*.psm1"
+            ]
+        },
+        {
+            "id": "actions",
+            "name": "Actions",
+            "paths": [
+                "Public/**/*Action*.ps1",
+                "Private/**/*Action*.ps1",
+                "Data/Templates/Action.json"
+            ]
+        },
+        {
+            "id": "assets",
+            "name": "Assets",
+            "paths": [
+                "Public/**/*Asset*.ps1",
+                "Private/**/*Asset*.ps1",
+                "Data/Templates/Asset.json"
+            ]
+        },
+        {
+            "id": "clients",
+            "name": "Clients",
+            "paths": [
+                "Public/**/*Client*.ps1",
+                "Public/**/*Site*.ps1",
+                "Public/**/*Supplier*.ps1",
+                "Data/Templates/Client.json",
+                "Data/Templates/Site.json",
+                "Data/Templates/Supplier.json"
+            ]
+        },
+        {
+            "id": "billing",
+            "name": "Billing",
+            "paths": [
+                "Public/**/*Invoice*.ps1",
+                "Public/**/*Quote*.ps1",
+                "Public/**/*BillingTemplate*.ps1",
+                "Public/**/*SalesOrder*.ps1",
+                "Data/Templates/Invoice.json",
+                "Data/Templates/Quote.json"
+            ]
+        },
+        {
+            "id": "knowledge",
+            "name": "Knowledge",
+            "paths": [
+                "Public/**/*KB*.ps1",
+                "Public/**/*FAQ*.ps1",
+                "Public/**/*Article*.ps1",
+                "Data/Templates/KBArticle.json"
+            ]
+        }
+    ]
+}

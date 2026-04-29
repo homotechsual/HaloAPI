@@ -294,10 +294,11 @@ function Get-HaloTicket {
             Write-Verbose 'Running in multi-ticket mode.'
             $QSCollection = New-HaloQuery -CommandName $CommandName -Parameters $Parameters -IsMulti
             $Resource = 'api/tickets'
+            $ManualPaginationRequested = $Paginate -or $PSBoundParameters.ContainsKey('PageNo') -or $PSBoundParameters.ContainsKey('PageSize')
             $RequestParams = @{
                 Method = 'GET'
                 Resource = $Resource
-                AutoPaginateOff = $Paginate
+                AutoPaginateOff = $ManualPaginationRequested
                 QSCollection = $QSCollection
                 ResourceType = 'tickets'
             }
