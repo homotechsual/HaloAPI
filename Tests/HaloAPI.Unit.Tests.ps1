@@ -1556,6 +1556,27 @@ Describe 'Get-HaloTicket' {
             $Resource -eq 'api/tickets/42'
         } -Times 1 -Exactly
     }
+
+    It 'disables auto pagination when page arguments are explicitly provided' {
+        Get-HaloTicket -PageSize 25 -PageNo 2
+
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Resource -eq 'api/tickets' -and
+            $AutoPaginateOff -eq $true -and
+            $QSCollection['page_size'] -eq 25 -and
+            $QSCollection['page_no'] -eq 2
+        } -Times 1 -Exactly
+    }
+
+    It 'keeps auto pagination enabled by default in multi mode' {
+        Get-HaloTicket -Search 'printer'
+
+        Should -Invoke -CommandName 'New-HaloGETRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Resource -eq 'api/tickets' -and
+            $AutoPaginateOff -eq $false -and
+            $QSCollection['search'] -eq 'printer'
+        } -Times 1 -Exactly
+    }
 }
 
 Describe 'Get cmdlet request wiring' {
