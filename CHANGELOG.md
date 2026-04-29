@@ -2,6 +2,10 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2026-04-29 - Version 1.23.1
+
+* Fix `Get-HaloTicket` pagination behavior so explicitly providing `-PageNo` and/or `-PageSize` no longer auto-fetches all pages.
+
 ## 2026-04-26 - Version 1.23.0
 
 * Add new cmdlets and endpoints including Sales Orders, Templates, Distribution Lists, Controls, Asset Groups, and Custom Field removal.
