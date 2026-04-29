@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.23.1'
+    ModuleVersion = '1.23.2'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core')
