@@ -73,7 +73,7 @@ jobs:
           }
 
           if ((Test-Path -Path $notesPath) -and -not [string]::IsNullOrWhiteSpace((Get-Content -Path $notesPath -Raw))) {
-            gh release create $tagName @preReleaseFlag --notes-file $notesPath
+            gh release create $tagName @preReleaseFlag --title $tagName --notes-file $notesPath
           } else {
-            gh release create $tagName @preReleaseFlag --generate-notes
+            gh release create $tagName @preReleaseFlag --title $tagName --generate-notes
           }
