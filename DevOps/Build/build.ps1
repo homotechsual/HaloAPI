@@ -100,7 +100,8 @@ function Build {
     foreach ($pathToCopy in $pathsToCopy) {
         $sourcePath = Join-Path -Path $RepoRoot -ChildPath $pathToCopy
         if (Test-Path -Path $sourcePath -PathType Container) {
-            Copy-Item -Path (Join-Path -Path $sourcePath -ChildPath '*') -Destination $moduleOutputPath -Recurse -Force
+            # Copy each top-level source folder as a folder to preserve module layout in release output.
+            Copy-Item -Path $sourcePath -Destination $moduleOutputPath -Recurse -Force
         }
     }
 

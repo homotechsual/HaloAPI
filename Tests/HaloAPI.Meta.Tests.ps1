@@ -87,3 +87,22 @@ Describe 'Quality test entrypoint suite parsing' {
         $Script:QualityTestScriptContent | Should -Match '-split\s+''\\s\*,\\s\*'''
     }
 }
+
+Describe 'Build output layout' {
+    BeforeAll {
+        $Script:BuildScriptPath = Join-Path -Path $ModulePath -ChildPath 'DevOps\Build\build.ps1'
+        $Script:BuiltModulePath = Join-Path -Path $ModulePath -ChildPath 'Output\HaloAPI'
+    }
+
+    It 'preserves wrapped top-level folders in packaged output' {
+        {
+            & $Script:BuildScriptPath -TaskNames @('clean', 'build')
+        } | Should -Not -Throw
+
+        $expectedDirectories = @('Public', 'Private', 'Classes', 'Data')
+        foreach ($expectedDirectory in $expectedDirectories) {
+            $expectedPath = Join-Path -Path $Script:BuiltModulePath -ChildPath $expectedDirectory
+            Test-Path -Path $expectedPath -PathType Container | Should -BeTrue
+        }
+    }
+}

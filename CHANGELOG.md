@@ -2,6 +2,11 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2026-04-30 - Version 1.23.3
+
+* Fix release packaging layout so `Public`, `Private`, `Classes`, and `Data` remain wrapped as top-level folders in module output.
+* Add meta test coverage to guard against output structure regressions in build packaging.
+
 ## 2026-04-29 - Version 1.23.2
 
 * Fix `Invoke-HaloBatchProcessor` parallel runspace error where `Invoke-HaloBatchItem` was not recognised; private function is now invoked via `Module.Invoke()` within the imported module scope.
