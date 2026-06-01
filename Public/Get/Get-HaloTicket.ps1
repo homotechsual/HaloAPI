@@ -76,6 +76,9 @@ function Get-HaloTicket {
         # Include next activity date in the results.
         [Parameter( ParameterSetName = 'Multi' )]
         [switch]$IncludeNextActivityDate,
+        # Exclude SLA calculations in the results.
+        [Parameter( ParameterSetName = 'Multi' )]
+        [switch]$ExcludeSLA,
         # Filter by the specified ticket area.
         [Parameter( ParameterSetName = 'Multi' )]
         [int32]$TicketAreaID,
