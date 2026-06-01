@@ -2,6 +2,12 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2026-06-01 - Version 1.24.0-beta1
+
+* Add `New-HaloCustomTableData`, `Set-HaloCustomTableData`, and `Remove-HaloCustomTableData` for managing custom table row data through the documented `CustomTable` API surface.
+* Improve `Invoke-HaloRequest` with direct request parameters, fragment normalization, method validation, and `ExpandProperty` response extraction.
+* Add `-ExcludeSLA` to `Get-HaloTicket`.
+
 ## 2026-04-30 - Version 1.23.3
 
 * Fix release packaging layout so `Public`, `Private`, `Classes`, and `Data` remain wrapped as top-level folders in module output.
