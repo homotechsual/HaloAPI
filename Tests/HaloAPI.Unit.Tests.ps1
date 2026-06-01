@@ -4925,6 +4925,50 @@ Describe 'New-HaloCustomTable' {
     }
 }
 
+Describe 'CustomTableData' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts new custom table data to the customtable endpoint' {
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+
+        New-HaloCustomTableData -CustomTableData ([pscustomobject]@{ id = 1; _add_rows = @(@{ name = 'Alpha' }) }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'customtable'
+        } -Times 1 -Exactly
+    }
+
+    It 'updates custom table data via the customtable endpoint' {
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+
+        Set-HaloCustomTableData -CustomTableData ([pscustomobject]@{ id = 2; rows = @(@{ id = 22; name = 'Beta' }) }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'customtable'
+        } -Times 1 -Exactly
+    }
+
+    It 'deletes custom table data via customtable payload flags' {
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+
+        Remove-HaloCustomTableData -CustomTableID 7 -AllData -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'customtable' -and $Object.id -eq 7 -and $Object._delete_data -eq $True
+        } -Times 1 -Exactly
+    }
+
+    It 'routes invalid delete parameter combinations through New-HaloError' {
+        Remove-HaloCustomTableData -CustomTableID 7 -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -ParameterFilter {
+            $ErrorRecord.Exception.Message -eq 'Specify -AllData or provide both -StartDate and -EndDate.'
+        } -Times 1 -Exactly
+    }
+}
+
 Describe 'New-HaloDistributionList' {
     BeforeAll {
         Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
