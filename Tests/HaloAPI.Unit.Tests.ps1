@@ -319,6 +319,24 @@ Describe 'Invoke-HaloRequest' {
         }
     }
 
+    It 'expands a named response property' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"tickets":[{"id":1},{"id":2}]}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -Method 'GET' -Fragment 'tickets' -ExpandProperty 'tickets'
+
+            $Result.Count | Should -Be 2
+            $Result[0].id | Should -Be 1
+            $Result[1].id | Should -Be 2
+        }
+
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Uri -eq 'https://example.halo/api/tickets'
+        }
+    }
+
     It 'returns the raw web response when RawResult is specified' {
         Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
             [pscustomobject]@{ Content = '{"ok":true}'; StatusCode = 200 }

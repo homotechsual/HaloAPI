@@ -27,6 +27,8 @@ function Invoke-HaloRequest {
             Request body.
         .PARAMETER ContentType
             Content type for the request.
+        .PARAMETER ExpandProperty
+            Returns the value of a property from the JSON response, such as tickets.
         .PARAMETER RawResult
             Returns the raw web response. Useful for file downloads.
         .EXAMPLE
@@ -41,6 +43,10 @@ function Invoke-HaloRequest {
             Invoke-HaloRequest -Method 'GET' -Fragment 'tickets'
 
             Resolves a slashless fragment to /api/tickets before sending the request.
+        .EXAMPLE
+            Invoke-HaloRequest -Method 'GET' -Fragment 'tickets' -ExpandProperty 'tickets'
+
+            Returns only the tickets property from the JSON response.
         .OUTPUTS
             Outputs an object containing the response from the web request.
     #>
@@ -69,6 +75,10 @@ function Invoke-HaloRequest {
         # Content type for the request.
         [Parameter( ParameterSetName = 'RequestParameters' )]
         [string]$ContentType,
+        # Property to expand from the JSON response.
+        [Parameter( ParameterSetName = 'RequestParameters' )]
+        [Parameter( ParameterSetName = 'WebRequestParams' )]
+        [string]$ExpandProperty,
         # Returns the Raw result. Useful for file downloads.
         [Switch]$RawResult
     )
@@ -122,6 +132,10 @@ function Invoke-HaloRequest {
         if ($PSBoundParameters.ContainsKey('ContentType')) {
             $WebRequestParams.ContentType = $ContentType
         }
+
+        if (-not [string]::IsNullOrWhiteSpace($ExpandProperty)) {
+            $WebRequestParams.ExpandProperty = $ExpandProperty
+        }
     }
     $Retries = 0
     $BaseDelay = 5 # Base delay of 5 seconds
@@ -157,6 +171,11 @@ function Invoke-HaloRequest {
         $RequestContentType = $WebRequestParams.ContentType
         $WebRequestParams.Remove('ContentType') | Out-Null
     }
+    $ResponseExpandProperty = $null
+    if ($WebRequestParams.ContainsKey('ExpandProperty')) {
+        $ResponseExpandProperty = $WebRequestParams.ExpandProperty
+        $WebRequestParams.Remove('ExpandProperty') | Out-Null
+    }
     do {
         $Retries++
         Write-Verbose ('Attempt {0} of 10' -f $Retries)
@@ -172,6 +191,9 @@ function Invoke-HaloRequest {
                     $Results = $Response
                 } else {
                     $Results = ($Response.Content | ConvertFrom-Json -Depth 100)
+                    if ($ResponseExpandProperty) {
+                        $Results = $Results | Select-Object -ExpandProperty $ResponseExpandProperty
+                    }
                 }
             } else {
                 Write-Debug 'Response was null.'
