@@ -267,6 +267,26 @@ Describe 'Invoke-HaloRequest' {
         }
     }
 
+    It 'resolves Fragment values against the base URL' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"ok":true}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -WebRequestParams @{
+                Method = 'POST'
+                Fragment = '/api/customtable'
+            }
+
+            $Result.ok | Should -BeTrue
+        }
+
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Uri -eq 'https://example.halo/api/customtable' -and
+            -not $PSBoundParameters.ContainsKey('Fragment')
+        }
+    }
+
     It 'returns the raw web response when RawResult is specified' {
         Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
             [pscustomobject]@{ Content = '{"ok":true}'; StatusCode = 200 }

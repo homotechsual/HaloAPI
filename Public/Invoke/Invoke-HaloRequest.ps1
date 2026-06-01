@@ -46,9 +46,16 @@ function Invoke-HaloRequest {
     $Retries = 0
     $BaseDelay = 5 # Base delay of 5 seconds
     $MaxDelay = 60 # Maximum delay of 60 seconds
-    # Check if $WebRequestParams contains a full URI, if not, append the base URL
+    $BaseUri = [System.Uri]$Script:HAPIConnectionInformation.URL
+    # Check for a fragment first so callers can supply just the path portion.
+    if ($WebRequestParams.Fragment) {
+        $WebRequestParams.Uri = [System.Uri]::new($BaseUri, $WebRequestParams.Fragment).AbsoluteUri
+        $WebRequestParams.Remove('Fragment') | Out-Null
+    }
+
+    # Check if $WebRequestParams contains a full URI, if not, append the base URL.
     if (-not ([System.Uri]$WebRequestParams.Uri).IsAbsoluteUri) {
-        $WebRequestParams.Uri = $Script:HAPIConnectionInformation.URL + $WebRequestParams.Uri
+        $WebRequestParams.Uri = [System.Uri]::new($BaseUri, $WebRequestParams.Uri).AbsoluteUri
     }
     do {
         $Retries++
