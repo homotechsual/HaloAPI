@@ -267,16 +267,32 @@ Describe 'Invoke-HaloRequest' {
         }
     }
 
+    It 'accepts individual request parameters' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"ok":true}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -Method 'GET' -Uri 'api/test'
+
+            $Result.ok | Should -BeTrue
+        }
+
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Uri -eq 'https://example.halo/api/test' -and
+            $Headers.Authorization -eq 'Bearer abc123' -and
+            $Headers['X-Test'] -eq 'HeaderValue' -and
+            $ContentType -eq 'application/json; charset=utf-8'
+        }
+    }
+
     It 'resolves Fragment values against the base URL' {
         Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
             [pscustomobject]@{ Content = '{"ok":true}' }
         }
 
         InModuleScope 'HaloAPI' {
-            $Result = Invoke-HaloRequest -WebRequestParams @{
-                Method = 'POST'
-                Fragment = '/api/customtable'
-            }
+            $Result = Invoke-HaloRequest -Method 'POST' -Fragment '/api/customtable'
 
             $Result.ok | Should -BeTrue
         }
@@ -284,6 +300,22 @@ Describe 'Invoke-HaloRequest' {
         Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
             $Uri -eq 'https://example.halo/api/customtable' -and
             -not $PSBoundParameters.ContainsKey('Fragment')
+        }
+    }
+
+    It 'prefixes slashless fragments with api' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"ok":true}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -Method 'GET' -Fragment 'tickets'
+
+            $Result.ok | Should -BeTrue
+        }
+
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Uri -eq 'https://example.halo/api/tickets'
         }
     }
 
