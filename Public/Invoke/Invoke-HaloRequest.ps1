@@ -52,6 +52,7 @@ function Invoke-HaloRequest {
         [Hashtable]$WebRequestParams,
         # HTTP method for the request.
         [Parameter( ParameterSetName = 'RequestParameters', Mandatory = $True )]
+        [ValidateSet('GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'HEAD', 'OPTIONS')]
         [string]$Method,
         # URI or path for the request.
         [Parameter( ParameterSetName = 'RequestParameters' )]
