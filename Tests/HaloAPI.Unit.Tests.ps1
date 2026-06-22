@@ -267,6 +267,76 @@ Describe 'Invoke-HaloRequest' {
         }
     }
 
+    It 'accepts individual request parameters' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"ok":true}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -Method 'GET' -Uri 'api/test'
+
+            $Result.ok | Should -BeTrue
+        }
+
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Uri -eq 'https://example.halo/api/test' -and
+            $Headers.Authorization -eq 'Bearer abc123' -and
+            $Headers['X-Test'] -eq 'HeaderValue' -and
+            $ContentType -eq 'application/json; charset=utf-8'
+        }
+    }
+
+    It 'resolves Fragment values against the base URL' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"ok":true}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -Method 'POST' -Fragment '/api/customtable'
+
+            $Result.ok | Should -BeTrue
+        }
+
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Uri -eq 'https://example.halo/api/customtable' -and
+            -not $PSBoundParameters.ContainsKey('Fragment')
+        }
+    }
+
+    It 'prefixes slashless fragments with api' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"ok":true}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -Method 'GET' -Fragment 'tickets'
+
+            $Result.ok | Should -BeTrue
+        }
+
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Uri -eq 'https://example.halo/api/tickets'
+        }
+    }
+
+    It 'expands a named response property' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"tickets":[{"id":1},{"id":2}]}' }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Result = Invoke-HaloRequest -Method 'GET' -Fragment 'tickets' -ExpandProperty 'tickets'
+
+            $Result.Count | Should -Be 2
+            $Result[0].id | Should -Be 1
+            $Result[1].id | Should -Be 2
+        }
+
+        Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
+            $Uri -eq 'https://example.halo/api/tickets'
+        }
+    }
+
     It 'returns the raw web response when RawResult is specified' {
         Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
             [pscustomobject]@{ Content = '{"ok":true}'; StatusCode = 200 }
@@ -4852,6 +4922,50 @@ Describe 'New-HaloCustomTable' {
     It 'does not call New-HaloPOSTRequest when -WhatIf is specified' {
         New-HaloCustomTable -CustomTable ([pscustomobject]@{ ctname = 'WhatIf Table' }) -WhatIf
         Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -Times 0 -Exactly
+    }
+}
+
+Describe 'CustomTableData' {
+    BeforeAll {
+        Mock -CommandName 'Invoke-HaloPreFlightCheck' -ModuleName 'HaloAPI' -MockWith {}
+        Mock -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -MockWith {}
+    }
+
+    It 'posts new custom table data to the customtable endpoint' {
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+
+        New-HaloCustomTableData -CustomTableData ([pscustomobject]@{ id = 1; _add_rows = @(@{ name = 'Alpha' }) }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'customtable'
+        } -Times 1 -Exactly
+    }
+
+    It 'updates custom table data via the customtable endpoint' {
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+
+        Set-HaloCustomTableData -CustomTableData ([pscustomobject]@{ id = 2; rows = @(@{ id = 22; name = 'Beta' }) }) -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'customtable'
+        } -Times 1 -Exactly
+    }
+
+    It 'deletes custom table data via customtable payload flags' {
+        Mock -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -MockWith { return @{} }
+
+        Remove-HaloCustomTableData -CustomTableID 7 -AllData -Confirm:$false
+
+        Should -Invoke -CommandName 'New-HaloPOSTRequest' -ModuleName 'HaloAPI' -ParameterFilter {
+            $Endpoint -eq 'customtable' -and $Object.id -eq 7 -and $Object._delete_data -eq $True
+        } -Times 1 -Exactly
+    }
+
+    It 'routes invalid delete parameter combinations through New-HaloError' {
+        Remove-HaloCustomTableData -CustomTableID 7 -Confirm:$false
+        Should -Invoke -CommandName 'New-HaloError' -ModuleName 'HaloAPI' -ParameterFilter {
+            $ErrorRecord.Exception.Message -eq 'Specify -AllData or provide both -StartDate and -EndDate.'
+        } -Times 1 -Exactly
     }
 }
 

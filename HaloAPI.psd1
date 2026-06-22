@@ -12,7 +12,7 @@
     RootModule = '.\HaloAPI.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.23.3'
+    ModuleVersion = '1.24.0'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core')
@@ -148,6 +148,7 @@
         'New-HaloCustomField',
         'New-HaloCustomFieldBatch',
         'New-HaloCustomTable',
+        'New-HaloCustomTableData',
         'New-HaloDashboard',
         'New-HaloDistributionList',
         'New-HaloDistributionListMember',
@@ -210,6 +211,7 @@
         'Remove-HaloContract',
         'Remove-HaloCRMNote',
         'Remove-HaloCustomField',
+        'Remove-HaloCustomTableData',
         'Remove-HaloDashboard',
         'Remove-HaloDistributionList',
         'Remove-HaloDistributionListMember',
@@ -247,6 +249,7 @@
         'Set-HaloContract',
         'Set-HaloCRMNote',
         'Set-HaloCustomButton',
+        'Set-HaloCustomTableData',
         'Set-HaloDashboard',
         'Set-HaloDistributionList',
         'Set-HaloFAQList',
@@ -316,10 +319,10 @@
             IconUri = 'https://3c3br937rz386088k2z3qqdi-wpengine.netdna-ssl.com/wp-content/uploads/2020/04/HaloIcon-300x300.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'https://github.com/homotechsual/HaloAPI/releases/tag/1.23.3'
+            ReleaseNotes = 'https://github.com/homotechsual/HaloAPI/releases/tag/v1.24.0-beta1'
 
             # Prerelease string of this module
-            # Prerelease = 'Beta1'
+            Prerelease = 'beta1'
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
             # RequireLicenceAcceptance = $false
 
