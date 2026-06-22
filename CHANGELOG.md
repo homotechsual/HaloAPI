@@ -2,10 +2,12 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
-## 2026-06-01 - Version 1.24.0-beta1
+## 2026-06-22 - Version 1.24.0
 
-* Add `New-HaloCustomTableData`, `Set-HaloCustomTableData`, and `Remove-HaloCustomTableData` for managing custom table row data through the documented `CustomTable` API surface.
-* Improve `Invoke-HaloRequest` with direct request parameters, fragment normalization, method validation, and `ExpandProperty` response extraction.
+* Add `New-HaloCustomTableData`, `Set-HaloCustomTableData`, and `Remove-HaloCustomTableData` for managing custom table row data through the documented `CustomTable` API surface (closes #83).
+* Improve `Invoke-HaloRequest` with direct request parameters, fragment normalization, method validation, and `ExpandProperty` response extraction (closes #84).
+* Fix `Invoke-HaloRequest` returning `$true` in results when token is renewed.
+* Fix `Connect-HaloAPI` Azure Key Vault integration: use hyphens in secret names (valid for Key Vault), use `-AsPlainText` instead of `.SecretValueText`, and make parameters optional when using KeyVault. Replace `Identity` string parameter with `UseManagedIdentity` switch (closes #85).
 * Add `-ExcludeSLA` to `Get-HaloTicket`.
 
 ## 2026-04-30 - Version 1.23.3
