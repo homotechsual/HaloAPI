@@ -94,7 +94,7 @@ function Invoke-HaloRequest {
             Scopes = $Script:HAPIConnectionInformation.AuthScopes
             Tenant = $Script:HAPIConnectionInformation.Tenant
         }
-        Connect-HaloAPI @ReconnectParameters
+        $null = Connect-HaloAPI @ReconnectParameters -NoConfirm
     }
     if ($null -ne $Script:HAPIAuthToken) {
         $AuthHeaders = @{
