@@ -998,9 +998,9 @@ Describe 'Connect-HaloAPI' {
 
         Mock -CommandName 'Get-AzKeyVaultSecret' -ModuleName 'HaloAPI' -MockWith {
             switch ($Name) {
-                'halo_URL' { [pscustomobject]@{ SecretValueText = 'https://vault.example/' } }
-                'halo_ClientID' { [pscustomobject]@{ SecretValueText = 'vault-client' } }
-                'halo_ClientSecret' { [pscustomobject]@{ SecretValueText = 'vault-secret' } }
+                'halo-URL' { 'https://vault.example/' }
+                'halo-ClientID' { 'vault-client' }
+                'halo-ClientSecret' { 'vault-secret' }
             }
         }
 
@@ -1016,7 +1016,7 @@ Describe 'Connect-HaloAPI' {
             $Method -eq 'POST'
         }
 
-        $Result = Connect-HaloAPI -URL 'https://placeholder.example/' -ClientID 'unused' -ClientSecret 'unused' -Scopes 'all' -UseKeyVault $true -VaultName 'vault' -SecretName 'halo' -Identity 'mi-1'
+        $Result = Connect-HaloAPI -URL 'https://placeholder.example/' -ClientID 'unused' -ClientSecret 'unused' -Scopes 'all' -UseKeyVault $true -VaultName 'vault' -SecretName 'halo' -UseManagedIdentity
 
         $Result | Should -BeTrue
         Should -Invoke -CommandName 'Connect-AzAccount' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
@@ -1054,20 +1054,20 @@ Describe 'Connect-HaloAPI' {
             $Method -eq 'POST'
         }
 
-        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-save' -ClientSecret 'secret-save' -Scopes 'all' -SaveToKeyVault $true -VaultName 'vault' -SecretName 'halo' -Identity 'mi-2'
+        $Result = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-save' -ClientSecret 'secret-save' -Scopes 'all' -SaveToKeyVault $true -VaultName 'vault' -SecretName 'halo' -UseManagedIdentity
 
         $Result | Should -BeTrue
         Should -Invoke -CommandName 'Connect-AzAccount' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
             $Identity
         }
         Should -Invoke -CommandName 'Set-AzKeyVaultSecret' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
-            $VaultName -eq 'vault' -and $Name -eq 'halo_URL'
+            $VaultName -eq 'vault' -and $Name -eq 'halo-URL'
         }
         Should -Invoke -CommandName 'Set-AzKeyVaultSecret' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
-            $VaultName -eq 'vault' -and $Name -eq 'halo_ClientID'
+            $VaultName -eq 'vault' -and $Name -eq 'halo-ClientID'
         }
         Should -Invoke -CommandName 'Set-AzKeyVaultSecret' -ModuleName 'HaloAPI' -Times 1 -Exactly -ParameterFilter {
-            $VaultName -eq 'vault' -and $Name -eq 'halo_ClientSecret'
+            $VaultName -eq 'vault' -and $Name -eq 'halo-ClientSecret'
         }
     }
 
@@ -1078,9 +1078,9 @@ Describe 'Connect-HaloAPI' {
 
         Mock -CommandName 'Get-AzKeyVaultSecret' -ModuleName 'HaloAPI' -MockWith {
             switch ($Name) {
-                'halo_URL' { [pscustomobject]@{ SecretValueText = 'https://interactive.example/' } }
-                'halo_ClientID' { [pscustomobject]@{ SecretValueText = 'interactive-client' } }
-                'halo_ClientSecret' { [pscustomobject]@{ SecretValueText = 'interactive-secret' } }
+                'halo-URL' { 'https://interactive.example/' }
+                'halo-ClientID' { 'interactive-client' }
+                'halo-ClientSecret' { 'interactive-secret' }
             }
         }
 
