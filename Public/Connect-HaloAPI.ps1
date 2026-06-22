@@ -18,22 +18,22 @@ function Connect-HaloAPI {
     )]
     [OutputType([System.Void])]
     Param (
-        # The URL of the Halo instance to connect to.
+        # The URL of the Halo instance to connect to. Not required if UseKeyVault is set to $true.
         [Parameter(
             ParameterSetName = 'Client Credentials',
-            Mandatory = $True
+            Mandatory = $False
         )]
         [URI]$URL,
-        # The Client ID for the application configured in Halo.
+        # The Client ID for the application configured in Halo. Not required if UseKeyVault is set to $true.
         [Parameter(
             ParameterSetName = 'Client Credentials',
-            Mandatory = $True
+            Mandatory = $False
         )]
         [String]$ClientID,
-        # The Client Secret for the application configured in Halo.
+        # The Client Secret for the application configured in Halo. Not required if UseKeyVault is set to $true.
         [Parameter(
             ParameterSetName = 'Client Credentials',
-            Mandatory = $True
+            Mandatory = $False
         )]
         [String]$ClientSecret,
         # The API scopes to request, if this isn't passed the scope is assumed to be "all". Pass a string or array of strings. Limited by the scopes granted to the application in Halo.
@@ -70,12 +70,12 @@ function Connect-HaloAPI {
             ParameterSetName = 'Client Credentials'
         )]
         [bool]$SaveToKeyVault = $False,
-        # The object ID of the Managed Identity or Service Principal.
+        # When set to $true, uses a Managed Identity to connect to Azure Key Vault instead of interactive login.
         [Parameter(
             ParameterSetName = 'Client Credentials',
             Mandatory = $False
         )]
-        [String]$Identity,
+        [Switch]$UseManagedIdentity,
         # The maximum number of times to retry requests before giving up.
         [Parameter(
             ParameterSetName = 'Client Credentials',
@@ -89,32 +89,44 @@ function Connect-HaloAPI {
         )]
         [Switch]$NoConfirm
     )
+    # Validate that required parameters are provided when not using KeyVault
+    if (-not $UseKeyVault -and -not $SaveToKeyVault) {
+        if ([string]::IsNullOrWhiteSpace($URL)) {
+            throw 'URL parameter is required when UseKeyVault is not specified.'
+        }
+        if ([string]::IsNullOrWhiteSpace($ClientID)) {
+            throw 'ClientID parameter is required when UseKeyVault is not specified.'
+        }
+        if ([string]::IsNullOrWhiteSpace($ClientSecret)) {
+            throw 'ClientSecret parameter is required when UseKeyVault is not specified.'
+        }
+    }
     if ($UseKeyVault) {
         # If the Identity parameter is specified, use it to connect.
         # Otherwise, fall back to interactive login.
-        if ($Identity) {
+        if ($UseManagedIdentity) {
             Connect-AzAccount -Identity
         } else {
             Connect-AzAccount
         }
-        $URL = (Get-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_URL' -f $SecretName)).SecretValueText
-        $ClientID = (Get-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_ClientID' -f $SecretName)).SecretValueText
-        $ClientSecret = (Get-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_ClientSecret' -f $SecretName)).SecretValueText
+        $URL = Get-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}-URL' -f $SecretName) -AsPlainText
+        $ClientID = Get-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}-ClientID' -f $SecretName) -AsPlainText
+        $ClientSecret = Get-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}-ClientSecret' -f $SecretName) -AsPlainText
     } elseif ($SaveToKeyVault) {
         # Save the URL, ClientID, and ClientSecret to the Azure Key Vault.
-        if ($Identity) {
+        if ($UseManagedIdentity) {
             Connect-AzAccount -Identity
         } else {
             Connect-AzAccount
         }
         $URL_Secret = ConvertTo-SecureString -String $URL -AsPlainText -Force
-        Set-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_URL' -f $SecretName) -SecretValue $URL_Secret
+        Set-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}-URL' -f $SecretName) -SecretValue $URL_Secret
 
         $ClientID_Secret = ConvertTo-SecureString -String $ClientID -AsPlainText -Force
-        Set-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_ClientID' -f $SecretName) -SecretValue $ClientID_Secret
+        Set-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}-ClientID' -f $SecretName) -SecretValue $ClientID_Secret
 
         $ClientSecret_Secret = ConvertTo-SecureString -String $ClientSecret -AsPlainText -Force
-        Set-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}_ClientSecret' -f $SecretName) -SecretValue $ClientSecret_Secret
+        Set-AzKeyVaultSecret -VaultName $VaultName -Name ('{0}-ClientSecret' -f $SecretName) -SecretValue $ClientSecret_Secret
     }
 
     # Convert scopes to space separated string if it's an array.
