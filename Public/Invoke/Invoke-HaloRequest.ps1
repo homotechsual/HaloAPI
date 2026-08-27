@@ -100,10 +100,14 @@ function Invoke-HaloRequest {
         $AuthHeaders = @{
             Authorization = ('{0} {1}' -f $Script:HAPIAuthToken.Type, $Script:HAPIAuthToken.Access)
         }
+        $ModuleVersion = $MyInvocation.MyCommand.ScriptBlock.Module.Version
+        $UserAgentHeader = @{
+            'User-Agent' = ('HaloPSModule/{0}' -f $ModuleVersion)
+        }
         if ($null -ne $Script:HAPIConnectionInformation.AdditionalHeaders) {
-            $RequestHeaders = $AuthHeaders + $Script:HAPIConnectionInformation.AdditionalHeaders
+            $RequestHeaders = $AuthHeaders + $Script:HAPIConnectionInformation.AdditionalHeaders + $UserAgentHeader
         } else {
-            $RequestHeaders = $AuthHeaders
+            $RequestHeaders = $AuthHeaders + $UserAgentHeader
         }
     } else {
         $RequestHeaders = $null
