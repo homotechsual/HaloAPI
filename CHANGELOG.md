@@ -2,6 +2,10 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2026-08-27 - Version 1.25.0
+
+* Sends a `User-Agent` header (`HaloPSModule/<version>`) with all requests now, preparing for [upcoming changes announced by Halo](https://www.usehalo.com/news/upgrading-halos-infrastructure-faster-more-scalable-and-built-for-the-future-aws-eks).
+
 ## 2026-06-22 - Version 1.24.0
 
 * Add `New-HaloCustomTableData`, `Set-HaloCustomTableData`, and `Remove-HaloCustomTableData` for managing custom table row data through the documented `CustomTable` API surface (closes #83).
