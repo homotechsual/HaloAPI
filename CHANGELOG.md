@@ -2,6 +2,11 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2026-09-10 - Version 1.25.1
+
+* Fix `1.25.0` being published to the PowerShell Gallery as `1.25.0-beta1` due to a stale `Prerelease` value left in `HaloAPI.psd1`; `1.25.1` is a clean stable republish with no other code changes.
+* Add `Test-ReleasePrerelease.ps1` validation to `tag-validate.yml` and `release.yml` so a stale prerelease string can never be published again.
+
 ## 2026-08-27 - Version 1.25.0
 
 * Sends a `User-Agent` header (`HaloPSModule/<version>`) with all requests now, preparing for [upcoming changes announced by Halo](https://www.usehalo.com/news/upgrading-halos-infrastructure-faster-more-scalable-and-built-for-the-future-aws-eks).
