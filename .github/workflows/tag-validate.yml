@@ -46,4 +46,4 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          & "$env:GITHUB_WORKSPACE\DevOps\Build\Test-ReleasePrerelease.ps1" -TagName "$env:GITHUB_REF_NAME"
+          & (Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'DevOps/Build/Test-ReleasePrerelease.ps1') -TagName $env:GITHUB_REF_NAME
