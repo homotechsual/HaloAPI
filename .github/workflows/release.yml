@@ -49,6 +49,13 @@ jobs:
             Write-Host 'Tag commit is reachable from main.'
           }
 
+      - name: Validate manifest prerelease matches tag
+        if: github.event_name != 'workflow_dispatch'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & "$env:GITHUB_WORKSPACE\DevOps\Build\Test-ReleasePrerelease.ps1" -TagName "$env:GITHUB_REF_NAME"
+
       - name: Bootstrap environment
         shell: pwsh
         run: |

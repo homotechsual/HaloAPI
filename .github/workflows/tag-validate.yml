@@ -41,3 +41,9 @@ jobs:
               exit 1
             fi
           fi
+
+      - name: Validate manifest prerelease matches tag
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & (Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath 'DevOps/Build/Test-ReleasePrerelease.ps1') -TagName $env:GITHUB_REF_NAME
