@@ -516,7 +516,7 @@ Describe 'New-HaloGETRequest' {
     It 'keeps paginating when the API returns fewer records per page than requested' {
         # Regression test: the Halo API can silently cap a page below the requested page_size
         # (e.g. asking for page_size=1000 but only ever getting 100 records back per page).
-        # Bug: computing page count from the *requested* page_size (Ceiling(717 / 1000) = 1)
+        # Bug: computing page count from the *requested* page_size (Ceiling(250 / 1000) = 1)
         # stopped after a single page and silently dropped everything past the first 100 records.
         Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
             if ($WebRequestParams.Uri -match 'page_no=1') {
