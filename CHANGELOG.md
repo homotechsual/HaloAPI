@@ -2,6 +2,10 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2026-09-28 - Version 1.25.2
+
+* Fix paginated requests under-counting pages when the Halo API returns fewer records per page than requested; page counts now use the actual size of the first page returned.
+
 ## 2026-09-10 - Version 1.25.1
 
 * Fix `1.25.0` being published to the PowerShell Gallery as `1.25.0-beta1` due to a stale `Prerelease` value left in `HaloAPI.psd1`; `1.25.1` is a clean stable republish with no other code changes.
