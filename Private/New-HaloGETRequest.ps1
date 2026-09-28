@@ -81,6 +81,14 @@ function New-HaloGETRequest {
                 $Result = $Response
             }
         } elseif ($PageNum) {
+            # The Halo API can silently cap the number of records returned on a page below the
+            # requested page_size (e.g. asking for page_size=1000 but only ever getting 100 back).
+            # Basing the page count on the *requested* page size then under-counts how many pages
+            # actually exist, so instead we capture the actual size of the first page returned and
+            # use that consistently for every subsequent page-count calculation. Later pages -
+            # including a short final page - don't change this, so the loop still stops at the
+            # right point instead of assuming every page is as small as the last one.
+            $EffectivePageSize = $null
             $Result = do {
                 Write-Verbose ('Processing page {0}' -f $PageNum)
                 $QueryStringCollection.Remove('page_no')
@@ -94,18 +102,23 @@ function New-HaloGETRequest {
                 Write-Debug ('Building new HaloRequest with params: {0}' -f ($WebRequestParams | Out-String))
                 $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
                 Write-Debug ('Halo request returned {0}' -f ($Response | Out-String))
+                if ((-not [string]::IsNullOrWhiteSpace($ResourceType)) -and ($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
+                    $PageResults = $Response.$ResourceType
+                } else {
+                    $PageResults = $Response
+                }
+                if (-not $EffectivePageSize) {
+                    $ActualCount = @($PageResults).Count
+                    $EffectivePageSize = if ($ActualCount -gt 0) { $ActualCount } else { $PageSize }
+                }
                 try {
-                    $NumPages = [Math]::Ceiling($Response.record_count / $PageSize)
+                    $NumPages = [Math]::Ceiling($Response.record_count / $EffectivePageSize)
                 } catch {
                     $NumPages = 1
                 }
                 Write-Verbose ('Total number of pages to process: {0}' -f $NumPages)
                 $PageNum++
-                if ((-not [string]::IsNullOrWhiteSpace($ResourceType)) -and ($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
-                    $Response.$ResourceType
-                } else {
-                    $Response
-                }
+                $PageResults
             } while ($PageNum -le $NumPages)
         }
         Return $Result

@@ -513,6 +513,46 @@ Describe 'New-HaloGETRequest' {
         Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 2 -Exactly
     }
 
+    It 'keeps paginating when the API returns fewer records per page than requested' {
+        # Regression test: the Halo API can silently cap a page below the requested page_size
+        # (e.g. asking for page_size=1000 but only ever getting 100 records back per page).
+        # Bug: computing page count from the *requested* page_size (Ceiling(250 / 1000) = 1)
+        # stopped after a single page and silently dropped everything past the first 100 records.
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
+            if ($WebRequestParams.Uri -match 'page_no=1') {
+                return [pscustomobject]@{
+                    record_count = 250
+                    tickets = 1..100 | ForEach-Object { [pscustomobject]@{ id = $_ } }
+                }
+            }
+            if ($WebRequestParams.Uri -match 'page_no=2') {
+                return [pscustomobject]@{
+                    record_count = 250
+                    tickets = 101..200 | ForEach-Object { [pscustomobject]@{ id = $_ } }
+                }
+            }
+            [pscustomobject]@{
+                record_count = 250
+                tickets = 201..250 | ForEach-Object { [pscustomobject]@{ id = $_ } }
+            }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+
+            $Result = New-HaloGETRequest -Method 'GET' -Resource 'api/tickets' -QSCollection @{
+                pageinate = 'true'
+                page_no = 1
+                page_size = 1000
+            } -ResourceType 'tickets'
+
+            $Result.Count | Should -Be 250
+            ($Result.id | Select-Object -Unique).Count | Should -Be 250
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -Times 3 -Exactly
+    }
+
     It 'removes page_size when pagination is not enabled' {
         Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
             [pscustomobject]@{ ok = $true }
