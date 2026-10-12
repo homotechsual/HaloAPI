@@ -74,13 +74,6 @@ HaloAPI supports two ways of authenticating. Both need an API application in Hal
 
 If you are scripting something that runs without you at the keyboard, use client credentials. If you want API calls to run with your own permissions (and show up as you in Halo), use `-Interactive`.
 
-### Install the module
-
-Install the HaloAPI PowerShell module on PowerShell 7.0 or above.
-
-```PowerShell
-Install-Module HaloAPI
-```
 
 ### Option 1: Client credentials (unattended)
 
