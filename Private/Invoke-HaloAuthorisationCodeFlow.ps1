@@ -157,7 +157,7 @@ function Wait-HaloAuthorisationCode {
     if ($ResponseParameters['error']) {
         throw ('Halo returned ''{0}'' during sign-in: {1}' -f $ResponseParameters['error'], $ResponseParameters['error_description'])
     }
-    if ($ResponseParameters['state'] -ne $State) {
+    if ($ResponseParameters['state'] -cne $State) {
         throw 'The Halo sign-in response state did not match the request.'
     }
     if ([String]::IsNullOrEmpty($ResponseParameters['code'])) {
