@@ -69,7 +69,7 @@ HaloAPI supports two ways of authenticating. Both need an API application in Hal
 | --- | --- | --- |
 | Best for | Unattended scripts, scheduled tasks, automation, CI | Hands-on use at a console, ad-hoc admin tasks |
 | Halo **Authentication Method** | *Client ID and Secret (Services)* | *Authorisation Code (Native Application)* |
-| Secret to store | Client ID **and** Client Secret | Client ID only (no secret) |
+| Credentials to retain | Client ID and Client Secret (keep the Client Secret confidential) | Client ID only (no client secret) |
 | Requests run as | The **Agent to login as** set on the application | The agent who signs in through the browser |
 | Needs a browser | No | Yes, on the machine running PowerShell |
 | Token renewal | Requests a new token with the secret | Refresh token, with a browser sign-in as fallback |
