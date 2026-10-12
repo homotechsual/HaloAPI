@@ -32,10 +32,11 @@ function Invoke-HaloAuthorisationCodeRefresh {
             Write-Warning ('Could not refresh the Halo auth token, signing in again. {0}' -f $_.Exception.Message)
         }
     }
+    $PreviousRefresh = $Script:HAPIAuthToken.Refresh
     if (-not $TokenPayload.access_token) {
+        $PreviousRefresh = $null
         $TokenPayload = Invoke-HaloAuthorisationCodeFlow -ConnectionInformation $Script:HAPIConnectionInformation
     }
-    $PreviousRefresh = $Script:HAPIAuthToken.Refresh
     $AuthToken = ConvertTo-HaloAuthToken -TokenPayload $TokenPayload
     # Some servers do not rotate refresh tokens, keep the existing one if none is returned.
     if (-not $AuthToken.Refresh) {
