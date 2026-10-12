@@ -49,6 +49,21 @@ Generate coverage through the same entrypoint:
 pwsh -File .\DevOps\Quality\test.ps1 -Suite Meta -Verbosity Detailed -CodeCoverage
 ```
 
+## Code Coverage
+
+Code coverage is generated in CI for the `Meta` and `Unit` suites.
+
+CI enforces a minimum 70% coverage threshold for the `Unit` suite.
+
+Coverage artifacts are uploaded for each run as:
+
+* `code-coverage-meta-results` (`.artifacts/CodeCoverage.meta.xml`)
+* `code-coverage-unit-results` (`.artifacts/CodeCoverage.unit.xml`)
+
+You can access them from the CI workflow runs:
+
+[GitHub Actions CI workflow](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
+
 ## Local Live and E2E Testing
 
 Run test suites through the quality script entrypoints in `DevOps/Quality`.
