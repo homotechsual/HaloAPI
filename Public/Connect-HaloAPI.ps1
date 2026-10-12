@@ -291,6 +291,7 @@ function Connect-HaloAPI {
     do {
         $AuthRetries++
         try {
+            Set-Variable -Name 'HAPIAuthToken' -Value $null -Visibility Private -Scope Script -Force
             if ($UseAuthorisationCode) {
                 $TokenPayload = Invoke-HaloAuthorisationCodeFlow -ConnectionInformation $Script:HAPIConnectionInformation
             } else {

@@ -29,6 +29,15 @@ function Invoke-HaloAuthorisationCodeRefresh {
             $RefreshResponse = Invoke-WebRequest @RefreshRequestParams
             $TokenPayload = ConvertFrom-Json -InputObject $RefreshResponse.Content
         } catch {
+            $OAuthError = $null
+            if ($_.ErrorDetails.Message) {
+                try {
+                    $OAuthError = (ConvertFrom-Json -InputObject $_.ErrorDetails.Message -ErrorAction Stop).error
+                } catch {}
+            }
+            if ($OAuthError -ne 'invalid_grant') {
+                throw
+            }
             Write-Warning 'Could not refresh the Halo auth token, signing in again.'
         }
     }
