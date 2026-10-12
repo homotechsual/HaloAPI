@@ -2,6 +2,15 @@
 
 If you contributed one of these and there's no credit in the line PR to add it or let me know!
 
+## 2026-10-12 - Version 1.26.0
+
+* Add `Connect-HaloAPI -Interactive` for browser sign-in with an agent account using the authorisation code flow with PKCE, without a client secret (by @Robbie-Renada, #94).
+* Automatically refresh interactive sessions and reuse the renewed token in parallel batch workers instead of signing in separately in each runspace.
+* Reject redirect URI paths without a trailing slash so the configured callback matches the local listener.
+* Prevent rejected refresh tokens from being reused after a new browser sign-in.
+* Replace sensitive debug output across authentication, requests, responses, queries, errors, and batch processing with metadata-only diagnostics.
+* Add regression coverage for interactive authentication, refresh fallback, safe debug output, and renewed-token handoff to parallel workers.
+
 ## 2026-09-28 - Version 1.25.2
 
 * Fix paginated requests under-counting pages when the Halo API returns fewer records per page than requested; page counts now use the actual size of the first page returned.
