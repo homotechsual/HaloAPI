@@ -13,24 +13,31 @@ function Invoke-HaloBatchItem {
         [Boolean]$CommandExists,
         [Object]$Parameters,
         [Parameter( Mandatory )]
-        [Object]$ConnectionInformation
+        [Object]$ConnectionInformation,
+        [Object]$AuthToken
     )
 
-    $HaloConnectionParams = @{
-        URL = $ConnectionInformation.URL
-        ClientID = $ConnectionInformation.ClientID
-        ClientSecret = $ConnectionInformation.ClientSecret
-        Scopes = $ConnectionInformation.AuthScopes
-        Tenant = $ConnectionInformation.Tenant
-        AdditionalHeaders = $ConnectionInformation.AdditionalHeaders
+    if ($ConnectionInformation.AuthFlow -eq 'Authorisation Code') {
+        # Interactive sessions cannot sign in again per runspace, so reuse the caller's token.
+        Set-Variable -Name 'HAPIConnectionInformation' -Value $ConnectionInformation -Visibility Private -Scope Script -Force
+        Set-Variable -Name 'HAPIAuthToken' -Value $AuthToken -Visibility Private -Scope Script -Force
+    } else {
+        $HaloConnectionParams = @{
+            URL = $ConnectionInformation.URL
+            ClientID = $ConnectionInformation.ClientID
+            ClientSecret = $ConnectionInformation.ClientSecret
+            Scopes = $ConnectionInformation.AuthScopes
+            Tenant = $ConnectionInformation.Tenant
+            AdditionalHeaders = $ConnectionInformation.AdditionalHeaders
+        }
+        if ($DebugPreference -eq 'Continue') {
+            $HaloConnectionParams.Debug = $True
+        }
+        if ($VerbosePreference -eq 'Continue') {
+            $HaloConnectionParams.Verbose = $True
+        }
+        Connect-HaloAPI @HaloConnectionParams
     }
-    if ($DebugPreference -eq 'Continue') {
-        $HaloConnectionParams.Debug = $True
-    }
-    if ($VerbosePreference -eq 'Continue') {
-        $HaloConnectionParams.Verbose = $True
-    }
-    Connect-HaloAPI @HaloConnectionParams
 
     $CommandParameters = @{
         $EntityType = $BatchItem
@@ -88,7 +95,7 @@ function Invoke-HaloBatchProcessor {
     $Batch.Add([System.Collections.Generic.List[Object]]::New()) | Out-Null
     # Break $Input into an assoc. array of $Size-sized batches.
     $BatchGroup = 0
-    Write-Debug ('Input:{0}{1}' -f [Environment]::NewLine, ($BatchInput | ConvertTo-Json -AsArray -Depth 5))
+    Write-Debug ('Input contains {0} item(s); values omitted.' -f $BatchInput.Count)
     Write-Debug ('Entity type: {0}' -f $EntityType)
     Write-Debug ('Operation: {0}' -f $Operation)
     $BatchInput | ForEach-Object {
@@ -99,12 +106,17 @@ function Invoke-HaloBatchProcessor {
         $Batch[$BatchGroup].Add($_) | Out-Null
     }
     # Iterate over the batches, process each batch and then wait $Wait seconds before the next batch.
-    Write-Debug ('Batch:{0}{1}' -f [Environment]::NewLine, ($Batch | ConvertTo-Json -AsArray -Depth 5))
+    Write-Debug ('Input split into {0} batch(es); values omitted.' -f $Batch.Count)
     $CommandName = ('{0}-Halo{1}' -f $Operation, $EntityType)
     $CommandExists = Get-Command -Name $CommandName
     $ModulePath = $MyInvocation.MyCommand.Module.Path
     Write-Debug ('Module Path: {0}' -f $ModulePath)
     $Batch | ForEach-Object {
+        # Renew an interactive token up front so parallel runspaces don't each try to refresh it.
+        if (($Script:HAPIConnectionInformation.AuthFlow -eq 'Authorisation Code') -and ($Script:HAPIAuthToken.Expires -le (Get-Date).AddMinutes(5))) {
+            Invoke-HaloAuthorisationCodeRefresh
+        }
+        $AuthToken = $Script:HAPIAuthToken
         $_ | ForEach-Object -Parallel {
             Import-Module $Using:ModulePath
             $LocalBatchResults = $using:BatchResults
@@ -116,11 +128,12 @@ function Invoke-HaloBatchProcessor {
                         [String]$CommandName,
                         [Boolean]$CommandExists,
                         [Object]$Parameters,
-                        [Object]$ConnectionInformation
+                        [Object]$ConnectionInformation,
+                        [Object]$AuthToken
                     )
 
-                    Invoke-HaloBatchItem -BatchItem $BatchItem -EntityType $EntityType -CommandName $CommandName -CommandExists $CommandExists -Parameters $Parameters -ConnectionInformation $ConnectionInformation
-                }, @($_, $Using:EntityType, $Using:CommandName, ([bool]$Using:CommandExists), $Using:Parameters, $Using:HAPIConnectionInformation))
+                    Invoke-HaloBatchItem -BatchItem $BatchItem -EntityType $EntityType -CommandName $CommandName -CommandExists $CommandExists -Parameters $Parameters -ConnectionInformation $ConnectionInformation -AuthToken $AuthToken
+                }, @($_, $Using:EntityType, $Using:CommandName, ([bool]$Using:CommandExists), $Using:Parameters, $Using:HAPIConnectionInformation, $Using:AuthToken))
             if ($null -ne $Result) {
                 $LocalBatchResults.Add($Result)
             }

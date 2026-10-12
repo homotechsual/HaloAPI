@@ -21,7 +21,7 @@ Function New-HaloAgentBatch {
     Invoke-HaloPreFlightCheck
     try {
         if ($PSCmdlet.ShouldProcess('Agents', 'Create')) {
-            Write-Debug ('Input:{0} {1}' -f [Environment]::NewLine, ($Agents | ConvertTo-Json -AsArray -Depth 5))
+            Write-Debug ('Input contains {0} agent(s); values omitted.' -f $Agents.Count)
             Write-Debug ('Input type: {0}' -f $Agents.GetType())
             if ($Agents -is [Array]) {
                 $BatchParams = @{
@@ -35,7 +35,7 @@ Function New-HaloAgentBatch {
                 if ($BatchWait) {
                     $BatchParams.Wait = $BatchWait
                 }
-                Write-Debug ('Batch processor params:{0}{1}' -f [Environment]::NewLine, ($BatchParams | Out-String ))
+                Write-Debug ('Batch processor configured with entity type {0}, operation {1}, and size {2}.' -f $BatchParams.EntityType, $BatchParams.Operation, $BatchParams.Size)
                 $BatchResults = Invoke-HaloBatchProcessor @BatchParams
                 Return $BatchResults
             } else {

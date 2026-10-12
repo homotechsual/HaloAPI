@@ -21,12 +21,12 @@ function New-HaloError {
     $HTTPResponseMatchString = '*The API returned the following HTTP*'
     if ($ErrorRecord.ErrorDetails) {
         Write-Verbose 'ErrorDetails contained in error record.'
-        Write-Debug ('Raw ErrorDetails: {0}' -f ($ErrorRecord.ErrorDetails | Out-String))
+        Write-Debug 'Error details were present; content omitted.'
         $ErrorDetailsIsJson = Test-Json -Json $ErrorRecord.ErrorDetails -ErrorAction SilentlyContinue
         if ($ErrorDetailsIsJson) {
             Write-Verbose 'ErrorDetails is JSON.'
             $ErrorDetails = $ErrorRecord.ErrorDetails | ConvertFrom-Json
-            Write-Debug ('Raw error details: {0}' -f ($ErrorDetails | Out-String))
+            Write-Debug 'Parsed error details; content omitted.'
             if ($null -ne $ErrorDetails) {
                 if (($null -ne $ErrorDetails.resultCode) -and ($null -ne $ErrorDetails.errorMessage)) {
                     Write-Verbose 'ErrorDetails contains resultCode and errorMessage.'
@@ -71,7 +71,7 @@ function New-HaloError {
     }
     if (($ErrorRecord.Exception.Response -and $HasResponse) -or ($ExceptionMessage -notlike $HTTPResponseMatchString)) {
         $Response = $ErrorRecord.Exception.Response
-        Write-Debug ('Raw HTTP response: {0}' -f ($Response | Out-String))
+        Write-Debug ('HTTP error response received with status code {0}.' -f $Response.StatusCode.value__)
         if ($Response.StatusCode.value__ -and $Response.ReasonPhrase) {
             $ExceptionMessage.Add(('The API returned the following HTTP error response: {0} {1}' -f $Response.StatusCode.value__, $Response.ReasonPhrase)) | Out-Null
         } else {

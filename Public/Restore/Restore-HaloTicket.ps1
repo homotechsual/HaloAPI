@@ -24,7 +24,7 @@ function Restore-HaloTicket {
                 _validate_updates = $True
             }
         }
-        Write-Debug ('Tickets object: {0}' -f ($Tickets | Out-String))
+        Write-Debug ('Prepared {0} ticket(s) for restoration.' -f $Tickets.Count)
         if ($PSCmdlet.ShouldProcess($Tickets -is [Array] ? 'Tickets' : 'Ticket', 'Restore')) {
             Set-HaloTicket -Ticket $Tickets
         }

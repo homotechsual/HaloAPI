@@ -20,7 +20,7 @@ function New-HaloQuery {
         # Returns the query as a string instead of a hashtable.
         [Switch]$AsString
     )
-    Write-Verbose ('Building parameters for {0}. Use ''-Debug'' with ''-Verbose'' to see parameter values as they are built.' -f $CommandName)
+    Write-Verbose ('Building parameters for {0}. Use ''-Debug'' with ''-Verbose'' to see parameter names as they are built.' -f $CommandName)
     $QSCollection = [Hashtable]@{}
     foreach ($Parameter in $Parameters.Values) {
         # Skip system parameters.
@@ -52,13 +52,13 @@ function New-HaloQuery {
                     Write-Debug 'Building comma separated array string.'
                     $QueryValue = $Value -join ','
                     $QSCollection.Add($Query, $QueryValue)
-                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
+                    Write-Debug ('Adding parameter {0}; value omitted.' -f $Query)
                 } elseif ($Value -is [array]) {
                     $QSCollection.Add($Query, $Value)
-                    Write-Debug ('Adding parameter {0} with array values {1}' -f $Query, ($Value -join ', '))
+                    Write-Debug ('Adding parameter {0}; values omitted.' -f $Query)
                 } else {
                     $QSCollection.Add($Query, $Value)
-                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $Value)
+                    Write-Debug ('Adding parameter {0}; value omitted.' -f $Query)
                 }
             }
         }
@@ -77,7 +77,7 @@ function New-HaloQuery {
                 }
                 $Value = ([String]$ParameterVariable.Value).ToLower()
                 $QSCollection.Add($Query, $Value)
-                Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $Value)
+                Write-Debug ('Adding parameter {0}; value omitted.' -f $Query)
             }
         }
         if (($Parameter.ParameterType.Name -eq 'Int32') -or ($Parameter.ParameterType.Name -eq 'Int64') -or ($Parameter.ParameterType.Name -eq 'Int32[]') -or ($Parameter.ParameterType.Name -eq 'Int64[]')) {
@@ -98,13 +98,13 @@ function New-HaloQuery {
                     Write-Debug 'Building comma separated array string.'
                     $QueryValue = $Value -join ','
                     $QSCollection.Add($Query, $QueryValue)
-                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
+                    Write-Debug ('Adding parameter {0}; value omitted.' -f $Query)
                 } elseif ($Value -is [array]) {
                     $QSCollection.Add($Query, $Value)
-                    Write-Debug ('Adding parameter {0} with array values {1}' -f $Query, ($Value -join ', '))
+                    Write-Debug ('Adding parameter {0}; values omitted.' -f $Query)
                 } else {
                     $QSCollection.Add($Query, $Value)
-                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $Value)
+                    Write-Debug ('Adding parameter {0}; value omitted.' -f $Query)
                 }
             }
         }
@@ -126,15 +126,15 @@ function New-HaloQuery {
                     Write-Debug 'Building comma separated DateTime array string.'
                     $QueryValue = ($Value | ForEach-Object { $_.ToString('o') }) -join ','
                     $QSCollection.Add($Query, $QueryValue)
-                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
+                    Write-Debug ('Adding parameter {0}; value omitted.' -f $Query)
                 } elseif ($Value -is [array]) {
                     $QueryValue = $Value | ForEach-Object { $_.ToString('o') }
                     $QSCollection.Add($Query, $QueryValue)
-                    Write-Debug ('Adding parameter {0} with array values {1}' -f $Query, ($QueryValue -join ', '))
+                    Write-Debug ('Adding parameter {0}; values omitted.' -f $Query)
                 } else {
                     $QueryValue = $Value.ToString('o')
                     $QSCollection.Add($Query, $QueryValue)
-                    Write-Debug ('Adding parameter {0} with value {1}' -f $Query, $QueryValue)
+                    Write-Debug ('Adding parameter {0}; value omitted.' -f $Query)
                 }
             }
         }
@@ -158,7 +158,7 @@ function New-HaloQuery {
     if (('pageinate' -in $QSCollection.Keys) -and ('page_no' -notin $QSCollection.Keys) -and ($IsMulti)) {
         throw 'When using pagination you must specify an initial page number with ''-PageNo''.'
     }
-    Write-Debug ('Query collection contains {0}' -f ($QSCollection | Out-String))
+    Write-Debug ('Query collection contains parameter names: {0}' -f (@($QSCollection.Keys) -join ', '))
     if ($AsString) {
         $QueryStringCollection = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
         foreach ($Key in $QSCollection.Keys) {
