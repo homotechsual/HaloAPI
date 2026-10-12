@@ -182,34 +182,81 @@ Describe 'Invoke-HaloBatchProcessor' {
         }
     }
 
-    It 'refreshes a near-expiry interactive token once before starting workers' {
-        Mock -CommandName 'Invoke-HaloAuthorisationCodeRefresh' -ModuleName 'HaloAPI' -MockWith {
-            & (Get-Module -Name 'HaloAPI') {
+    It 'refreshes once before parallel workers and passes the renewed token to every worker' {
+        $OriginalModulePath = (Get-Module -Name 'HaloAPI').Path
+        $FixturePath = Join-Path -Path $TestDrive -ChildPath 'HaloAPI'
+        $null = New-Item -Path $FixturePath -ItemType Directory
+        Copy-Item -LiteralPath (Join-Path -Path $ModulePath -ChildPath 'Private\Invoke-HaloBatchProcessor.ps1') -Destination $FixturePath
+        $FixtureModulePath = Join-Path -Path $FixturePath -ChildPath 'HaloAPI.psm1'
+        # Each parallel runspace imports this fixture and executes the real processor and item helper.
+        @'
+. (Join-Path -Path $PSScriptRoot -ChildPath 'Invoke-HaloBatchProcessor.ps1')
+$Script:AllowRefresh = $false
+$Script:RefreshCount = 0
+
+function Connect-HaloAPI {
+    throw 'A worker must not reconnect an interactive session.'
+}
+
+function Invoke-HaloAuthorisationCodeRefresh {
+    if (-not $Script:AllowRefresh) {
+        throw 'A worker must not refresh the interactive token.'
+    }
+    $Script:RefreshCount++
+    $Script:HAPIAuthToken = @{
+        Type = 'Bearer'
+        Access = 'renewed-access'
+        Expires = [datetime]'2099-01-01T00:00:00Z'
+    }
+}
+
+function Set-HaloTestEntity {
+    param($TestEntity)
+    if ($Script:HAPIAuthToken.Access -ne 'renewed-access') {
+        Invoke-HaloAuthorisationCodeRefresh
+    }
+    [pscustomobject]@{
+        Id = $TestEntity.id
+        Access = $Script:HAPIAuthToken.Access
+        RunspaceId = [System.Management.Automation.Runspaces.Runspace]::DefaultRunspace.InstanceId
+    }
+}
+'@ | Set-Content -LiteralPath $FixtureModulePath
+
+        try {
+            Remove-Module -Name 'HaloAPI' -Force
+            $FixtureModule = Import-Module -Name $FixtureModulePath -Force -PassThru
+            $Observation = & $FixtureModule {
+                $Script:AllowRefresh = $true
+                $Script:HAPIConnectionInformation = @{
+                    AuthFlow = 'Authorisation Code'
+                    URL = 'https://example.halo/'
+                }
                 $Script:HAPIAuthToken = @{
                     Type = 'Bearer'
-                    Access = 'renewed-access'
-                    Expires = [datetime]'2099-01-01T00:00:00Z'
+                    Access = 'near-expiry-access'
+                    Expires = (Get-Date).AddMinutes(2)
+                }
+
+                $BatchInput = 1..4 | ForEach-Object { [pscustomobject]@{ id = $_ } }
+                $Results = @(Invoke-HaloBatchProcessor -BatchInput $BatchInput -EntityType 'TestEntity' -Operation 'Set' -Size 2 -Wait 0 -ErrorAction Stop)
+                [pscustomobject]@{
+                    Results = $Results
+                    RefreshCount = $Script:RefreshCount
+                    ParentRunspaceId = [System.Management.Automation.Runspaces.Runspace]::DefaultRunspace.InstanceId
                 }
             }
-        }
 
-        InModuleScope 'HaloAPI' {
-            $Script:HAPIConnectionInformation = @{
-                AuthFlow = 'Authorisation Code'
-                URL = 'https://example.halo/'
+            $Observation.RefreshCount | Should -Be 1
+            $Observation.Results.Count | Should -Be 4
+            ($Observation.Results.Id | Sort-Object) -join ',' | Should -Be '1,2,3,4'
+            foreach ($Result in $Observation.Results) {
+                $Result.Access | Should -Be 'renewed-access'
+                $Result.RunspaceId | Should -Not -Be $Observation.ParentRunspaceId
             }
-            $Script:HAPIAuthToken = @{
-                Type = 'Bearer'
-                Access = 'near-expiry-access'
-                Expires = (Get-Date).AddMinutes(2)
-            }
-
-            $null = Invoke-HaloBatchProcessor -BatchInput @([pscustomobject]@{ id = 1 }) -EntityType 'MissingTestEntity' -Operation 'Set' -ErrorAction SilentlyContinue
-        }
-
-        Should -Invoke -CommandName 'Invoke-HaloAuthorisationCodeRefresh' -ModuleName 'HaloAPI' -Times 1 -Exactly
-        InModuleScope 'HaloAPI' {
-            $Script:HAPIAuthToken.Access | Should -Be 'renewed-access'
+        } finally {
+            Remove-Module -Name 'HaloAPI' -Force
+            Import-Module -Name $OriginalModulePath -Force
         }
     }
 }
