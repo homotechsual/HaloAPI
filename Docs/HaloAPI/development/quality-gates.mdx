@@ -49,6 +49,43 @@ Generate coverage through the same entrypoint:
 pwsh -File .\DevOps\Quality\test.ps1 -Suite Meta -Verbosity Detailed -CodeCoverage
 ```
 
+## Local Live and E2E Testing
+
+Run test suites through the quality script entrypoints in `DevOps/Quality`.
+
+For local `Live` and `E2E` runs, use the Key Vault wrapper script. It loads the required environment variables from Azure Key Vault before invoking `DevOps/Quality/test.ps1`.
+
+1. Sign in to Azure first:
+
+    ```powershell
+    Connect-AzAccount
+    ```
+
+1. Run the `Live` suite:
+
+    ```powershell
+    pwsh -NoProfile -File .\DevOps\Quality\Invoke-HaloLiveTests.ps1 -Suite Live -Verbosity Normal
+    ```
+
+1. Run both `Live` and `E2E` in one invocation:
+
+    ```powershell
+    pwsh -NoProfile -File .\DevOps\Quality\Invoke-HaloLiveTests.ps1 -Suite Live,E2E -Verbosity Normal
+    ```
+
+The wrapper expects these secrets in Key Vault (default vault name: `MSPsUK`):
+
+* `HaloTestingURL`
+* `HaloTestingClientID`
+* `HaloTestingClientSecret`
+* `HaloTestingTenant`
+
+For non-live suites, use the standard test entrypoint directly:
+
+```powershell
+pwsh -NoProfile -File .\DevOps\Quality\test.ps1 -Suite Meta,Unit -Verbosity Normal
+```
+
 ## CI Quality Gates
 
 The GitHub Actions CI flow on `develop` currently validates:
