@@ -1772,7 +1772,16 @@ Describe 'Invoke-HaloAuthorisationCodeRefresh' {
     }
 
     It 'signs in through the browser again when the refresh is rejected' {
-        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith { throw 'invalid_grant' }
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
+                [System.Exception]::new('The remote server returned an error: (400) Bad Request.'),
+                'WebCmdletWebResponseException',
+                [System.Management.Automation.ErrorCategory]::InvalidOperation,
+                $null
+            )
+            $ErrorRecord.ErrorDetails = [System.Management.Automation.ErrorDetails]::new('{"error":"invalid_grant"}')
+            throw $ErrorRecord
+        }
 
         InModuleScope 'HaloAPI' {
             Invoke-HaloAuthorisationCodeRefresh
@@ -1785,7 +1794,16 @@ Describe 'Invoke-HaloAuthorisationCodeRefresh' {
     }
 
     It 'does not retain a rejected refresh token when browser sign-in returns no refresh token' {
-        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith { throw 'invalid_grant' }
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
+                [System.Exception]::new('The remote server returned an error: (400) Bad Request.'),
+                'WebCmdletWebResponseException',
+                [System.Management.Automation.ErrorCategory]::InvalidOperation,
+                $null
+            )
+            $ErrorRecord.ErrorDetails = [System.Management.Automation.ErrorDetails]::new('{"error":"invalid_grant"}')
+            throw $ErrorRecord
+        }
         Mock -CommandName 'Invoke-HaloAuthorisationCodeFlow' -ModuleName 'HaloAPI' -MockWith {
             [pscustomobject]@{ token_type = 'Bearer'; access_token = 'browser-access'; expires_in = 3600 }
         }
@@ -1797,6 +1815,17 @@ Describe 'Invoke-HaloAuthorisationCodeRefresh' {
         }
 
         Should -Invoke -CommandName 'Invoke-HaloAuthorisationCodeFlow' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+
+    It 'rethrows refresh failures that are not rejected credentials' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith { throw 'network unavailable' }
+
+        InModuleScope 'HaloAPI' {
+            { Invoke-HaloAuthorisationCodeRefresh } | Should -Throw -ExpectedMessage 'network unavailable'
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloAuthorisationCodeFlow' -ModuleName 'HaloAPI' -Times 0 -Exactly
+        Should -Invoke -CommandName 'Write-Warning' -ModuleName 'HaloAPI' -Times 0 -Exactly
     }
 
     It 'signs in through the browser again when there is no refresh token' {
