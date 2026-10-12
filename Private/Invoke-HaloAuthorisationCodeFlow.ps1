@@ -114,10 +114,10 @@ function Wait-HaloAuthorisationCode {
         # How long to wait for the user to complete sign-in, in seconds.
         [Int]$TimeoutSeconds = 300
     )
-    $Prefix = $RedirectURI.GetLeftPart([System.UriPartial]::Path)
-    if (-not $Prefix.EndsWith('/')) {
-        $Prefix = ('{0}/' -f $Prefix)
+    if (-not $RedirectURI.AbsolutePath.EndsWith('/')) {
+        throw 'RedirectURI must have a trailing slash so the Halo redirect URI matches the listener prefix.'
     }
+    $Prefix = $RedirectURI.GetLeftPart([System.UriPartial]::Path)
     $Listener = [System.Net.HttpListener]::New()
     $Listener.Prefixes.Add($Prefix)
     try {

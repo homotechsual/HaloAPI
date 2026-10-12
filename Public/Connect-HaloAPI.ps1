@@ -129,6 +129,9 @@ function Connect-HaloAPI {
         [Switch]$NoConfirm
     )
     $UseAuthorisationCode = $PSCmdlet.ParameterSetName -eq 'Authorisation Code'
+    if ($UseAuthorisationCode -and -not $RedirectURI.AbsolutePath.EndsWith('/')) {
+        throw 'RedirectURI must have a trailing slash so the Halo redirect URI matches the listener prefix.'
+    }
     # Validate that required parameters are provided when not using KeyVault
     if (-not $UseAuthorisationCode -and -not $UseKeyVault -and -not $SaveToKeyVault) {
         if ([string]::IsNullOrWhiteSpace($URL)) {
@@ -208,9 +211,9 @@ function Connect-HaloAPI {
     }
     if ($AuthInfoResponse.content) {
         $AuthInfo = $AuthInfoResponse.content | ConvertFrom-Json
-        Write-Debug ('Auth info response: {0}' -f $AuthInfo)
+        Write-Debug ('Auth info response received with properties: {0}' -f (@($AuthInfo.PSObject.Properties.Name) -join ', '))
         $AuthURIBuilder = [System.UriBuilder]::New($AuthInfo.auth_url)
-        Write-Verbose ('Auth info found, using the ''{0}'' endpoint.' -f $AuthInfo.auth_url)
+        Write-Verbose 'Auth info found.'
         if ($AuthURIBuilder.Path) {
             $AuthURIBuilder.Path = $AuthURIBuilder.Path.TrimEnd('/') + '/token'
         } else {
@@ -233,7 +236,12 @@ function Connect-HaloAPI {
         }
     }
     $AuthenticationURI = $AuthURIBuilder.ToString()
-    Write-Verbose ('Using authentication URL: {0}' -f $AuthenticationURI)
+    $AuthenticationLogURI = [System.UriBuilder]::New($AuthenticationURI)
+    $AuthenticationLogURI.UserName = $null
+    $AuthenticationLogURI.Password = $null
+    $AuthenticationLogURI.Query = $null
+    $AuthenticationLogURI.Fragment = $null
+    Write-Verbose ('Using authentication endpoint: {0}' -f $AuthenticationLogURI.Uri.GetLeftPart([System.UriPartial]::Authority))
     # The authorise endpoint sits alongside the token endpoint.
     $AuthoriseURIBuilder = [System.UriBuilder]::New($AuthenticationURI)
     $AuthoriseURIBuilder.Path = $AuthoriseURIBuilder.Path -replace 'token$', 'authorize'
@@ -263,7 +271,7 @@ function Connect-HaloAPI {
         $ConnectionInformation.LoginTimeout = $LoginTimeout
     }
     Set-Variable -Name 'HAPIConnectionInformation' -Value $ConnectionInformation -Visibility Private -Scope Script -Force
-    Write-Debug ('Connection information set to: {0}' -f ($Script:HAPIConnectionInformation | Out-String))
+    Write-Debug ('Connection information set for authentication flow: {0}' -f $Script:HAPIConnectionInformation.AuthFlow)
     # Halo authorisation request body.
     $AuthReqBody = @{
         grant_type = 'client_credentials'
@@ -289,12 +297,11 @@ function Connect-HaloAPI {
                 $AuthReponse = Invoke-WebRequest @WebRequestParams
                 $TokenPayload = ConvertFrom-Json -InputObject $AuthReponse.Content
             }
-            Write-Debug ('Raw Token Payload: {0}' -f ($TokenPayload | Out-String))
             # Build a script-scoped variable to hold the authentication information.
             $AuthToken = ConvertTo-HaloAuthToken -TokenPayload $TokenPayload
             Set-Variable -Name 'HAPIAuthToken' -Value $AuthToken -Visibility Private -Scope Script -Force
             Write-Verbose 'Got authentication token.'
-            Write-Debug ('Authentication token set to: {0}' -f ($Script:HAPIAuthToken | Out-String -Width 2048))
+            Write-Debug ('Authentication token set; expiry: {0}' -f $Script:HAPIAuthToken.Expires)
             Write-Debug 'Initialising the Halo Lookup class cache.'
             $LookupTypes = Get-HaloLookup -LookupID 11
             if ($LookupTypes) {

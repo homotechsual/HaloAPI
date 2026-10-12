@@ -46,7 +46,7 @@ function New-HaloGETRequest {
             $RawResult = $False
         }
         if ($QSCollection) {
-            Write-Debug ('Query string collection in New-HaloGETRequest contains: {0}' -f ($QSCollection | Out-String))
+            Write-Debug ('Query string collection in New-HaloGETRequest contains parameter names: {0}' -f (@($QSCollection.Keys) -join ', '))
             $QueryStringCollection = [system.web.httputility]::ParseQueryString([string]::Empty)
             Write-Verbose 'Building [HttpQSCollection] for New-HaloGETRequest'
             foreach ($Key in $QSCollection.Keys) {
@@ -72,9 +72,9 @@ function New-HaloGETRequest {
                 Method = $Method
                 Uri = ('{0}{1}{2}' -f $Script:HAPIConnectionInformation.URL, $Resource, $Query)
             }
-            Write-Debug ('Building new HaloRequest with params: {0}' -f ($WebRequestParams | Out-String))
+            Write-Debug ('Building a {0} Halo request.' -f $WebRequestParams.Method)
             $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
-            Write-Debug ('Halo request returned {0}' -f ($Response | Out-String))
+            Write-Debug ('Halo request returned {0} result(s).' -f @($Response).Count)
             if ((-not [string]::IsNullOrWhiteSpace($ResourceType)) -and ($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
                 $Result = $Response.$ResourceType
             } else {
@@ -99,9 +99,9 @@ function New-HaloGETRequest {
                     Method = $Method
                     Uri = ('{0}{1}{2}' -f $Script:HAPIConnectionInformation.URL, $Resource, $Query)
                 }
-                Write-Debug ('Building new HaloRequest with params: {0}' -f ($WebRequestParams | Out-String))
+                Write-Debug ('Building a {0} Halo request.' -f $WebRequestParams.Method)
                 $Response = Invoke-HaloRequest -WebRequestParams $WebRequestParams -RawResult:$RawResult
-                Write-Debug ('Halo request returned {0}' -f ($Response | Out-String))
+                Write-Debug ('Halo request returned {0} result(s).' -f @($Response).Count)
                 if ((-not [string]::IsNullOrWhiteSpace($ResourceType)) -and ($Response.PSObject.Properties.name -match $ResourceType) -and ($Response.$ResourceType -is [Object])) {
                     $PageResults = $Response.$ResourceType
                 } else {

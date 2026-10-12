@@ -188,11 +188,15 @@ function Invoke-HaloRequest {
         $Retries++
         Write-Verbose ('Attempt {0} of 10' -f $Retries)
         try {
-            Write-Verbose ('Making a {0} request to {1}' -f $WebRequestParams.Method, $WebRequestParams.Uri)
+            $LogURI = [System.UriBuilder]::New([System.Uri]$WebRequestParams.Uri)
+            $LogURI.UserName = $null
+            $LogURI.Password = $null
+            $LogURI.Query = $null
+            $LogURI.Fragment = $null
+            Write-Verbose ('Making a {0} request to {1}' -f $WebRequestParams.Method, $LogURI.Uri.GetLeftPart([System.UriPartial]::Authority))
             $Response = Invoke-WebRequest @WebRequestParams -Headers $RequestHeaders -ContentType $RequestContentType
             if ($Response) {
-                Write-Debug ('Response headers: {0}' -f ($Response.Headers | Out-String))
-                Write-Debug ('Raw Response: {0}' -f ($Response | Out-String))
+                Write-Debug ('Response received with status code {0} and content length {1}; headers and body omitted.' -f $Response.StatusCode, $Response.RawContentLength)
                 Write-Debug ('Response Members: {0}' -f ($Response | Get-Member | Out-String))
                 $Success = $True
                 if ($RawResult) {

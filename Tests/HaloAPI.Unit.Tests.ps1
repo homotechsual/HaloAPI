@@ -45,6 +45,30 @@ Describe 'New-HaloQuery' {
         }
     }
 
+    It 'does not write query values to the debug stream' {
+        $script:CapturedHaloDebug = [System.Collections.Generic.List[string]]::new()
+        Mock -CommandName 'Write-Debug' -ModuleName 'HaloAPI' -MockWith {
+            $script:CapturedHaloDebug.Add($Message)
+        }
+
+        InModuleScope 'HaloAPI' {
+            function Invoke-TestNewHaloQueryWithSecret {
+                [CmdletBinding()]
+                param(
+                    [string]$Password
+                )
+                $Parameters = (Get-Command -Name 'Invoke-TestNewHaloQueryWithSecret').Parameters
+                New-HaloQuery -CommandName 'Invoke-TestNewHaloQueryWithSecret' -Parameters $Parameters -Debug
+            }
+
+            $null = Invoke-TestNewHaloQueryWithSecret -Password 'query-secret'
+        }
+
+        $DebugOutput = $script:CapturedHaloDebug -join "`n"
+        $DebugOutput | Should -Not -Match 'query-secret'
+        $DebugOutput | Should -Match 'value omitted'
+    }
+
     It 'adds pagination defaults in multi mode when pagination is unspecified' {
         InModuleScope 'HaloAPI' {
             function Invoke-TestNewHaloQueryMultiDefault {
@@ -155,6 +179,37 @@ Describe 'Invoke-HaloBatchProcessor' {
             {
                 Invoke-HaloBatchProcessor -BatchInput @() -EntityType 'Action' -Operation 'Set'
             } | Should -Throw
+        }
+    }
+
+    It 'refreshes a near-expiry interactive token once before starting workers' {
+        Mock -CommandName 'Invoke-HaloAuthorisationCodeRefresh' -ModuleName 'HaloAPI' -MockWith {
+            & (Get-Module -Name 'HaloAPI') {
+                $Script:HAPIAuthToken = @{
+                    Type = 'Bearer'
+                    Access = 'renewed-access'
+                    Expires = [datetime]'2099-01-01T00:00:00Z'
+                }
+            }
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = @{
+                AuthFlow = 'Authorisation Code'
+                URL = 'https://example.halo/'
+            }
+            $Script:HAPIAuthToken = @{
+                Type = 'Bearer'
+                Access = 'near-expiry-access'
+                Expires = (Get-Date).AddMinutes(2)
+            }
+
+            $null = Invoke-HaloBatchProcessor -BatchInput @([pscustomobject]@{ id = 1 }) -EntityType 'MissingTestEntity' -Operation 'Set' -ErrorAction SilentlyContinue
+        }
+
+        Should -Invoke -CommandName 'Invoke-HaloAuthorisationCodeRefresh' -ModuleName 'HaloAPI' -Times 1 -Exactly
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIAuthToken.Access | Should -Be 'renewed-access'
         }
     }
 }
@@ -714,6 +769,25 @@ Describe 'New-HaloPOSTRequest' {
         }
     }
 
+    It 'does not write request values to the debug stream' {
+        Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {}
+        $script:CapturedHaloDebug = [System.Collections.Generic.List[string]]::new()
+        Mock -CommandName 'Write-Debug' -ModuleName 'HaloAPI' -MockWith {
+            $script:CapturedHaloDebug.Add($Message)
+        }
+
+        InModuleScope 'HaloAPI' {
+            $Script:HAPIConnectionInformation = [pscustomobject]@{ URL = 'https://example.halo/' }
+            $null = New-HaloPOSTRequest -Object @([pscustomobject]@{ password = 'body-secret' }) -Endpoint 'agents' -QSCollection @{
+                access_token = 'query-secret'
+            } -Debug
+        }
+
+        $DebugOutput = $script:CapturedHaloDebug -join "`n"
+        $DebugOutput | Should -Not -Match 'body-secret|query-secret'
+        $DebugOutput | Should -Match 'content omitted'
+    }
+
     It 'routes non-http exceptions through New-HaloError' {
         Mock -CommandName 'Invoke-HaloRequest' -ModuleName 'HaloAPI' -MockWith {
             throw 'boom'
@@ -902,6 +976,31 @@ Describe 'Connect-HaloAPI' {
             $Body.scope -eq 'all tickets' -and
             $Body.client_id -eq 'client-1'
         }
+    }
+
+    It 'does not write client secrets, headers, or token payloads to the debug stream' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ content = '{"auth_url":"https://auth.example/oauth2","tenant_id":"authTenant"}' }
+        } -ParameterFilter {
+            $Method -eq 'GET'
+        }
+
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ Content = '{"token_type":"Bearer","access_token":"access-secret","expires_in":3600,"refresh_token":"refresh-secret","id_token":"id-secret"}' }
+        } -ParameterFilter {
+            $Method -eq 'POST'
+        }
+
+        $script:CapturedHaloDebug = [System.Collections.Generic.List[string]]::new()
+        Mock -CommandName 'Write-Debug' -ModuleName 'HaloAPI' -MockWith {
+            $script:CapturedHaloDebug.Add($Message)
+        }
+
+        $null = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'client-id' -ClientSecret 'client-secret' -Scopes 'all' -AdditionalHeaders @{ 'X-Api-Key' = 'header-secret' } -Debug
+        $DebugOutput = $script:CapturedHaloDebug -join "`n"
+
+        $DebugOutput | Should -Not -Match 'client-secret|header-secret|access-secret|refresh-secret|id-secret'
+        $DebugOutput | Should -Match 'Authentication token set; expiry'
     }
 
     It 'falls back to auth/token when authinfo response is empty' {
@@ -1500,6 +1599,35 @@ Describe 'Connect-HaloAPI -Interactive' {
         }
     }
 
+    It 'does not write interactive tokens to the debug stream' {
+        Mock -CommandName 'Invoke-HaloAuthorisationCodeFlow' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{
+                token_type = 'Bearer'
+                access_token = 'interactive-access-secret'
+                expires_in = 3600
+                refresh_token = 'interactive-refresh-secret'
+                id_token = 'interactive-id-secret'
+            }
+        }
+
+        $script:CapturedHaloDebug = [System.Collections.Generic.List[string]]::new()
+        Mock -CommandName 'Write-Debug' -ModuleName 'HaloAPI' -MockWith {
+            $script:CapturedHaloDebug.Add($Message)
+        }
+
+        $null = Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'public-client' -Interactive -Debug
+        $DebugOutput = $script:CapturedHaloDebug -join "`n"
+
+        $DebugOutput | Should -Not -Match 'interactive-access-secret|interactive-refresh-secret|interactive-id-secret'
+        $DebugOutput | Should -Match 'Authentication token set; expiry'
+    }
+
+    It 'rejects a redirect URI path without a trailing slash' {
+        {
+            Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'public-client' -Interactive -RedirectURI 'http://localhost:8400/callback'
+        } | Should -Throw '*RedirectURI must have a trailing slash*'
+    }
+
     It 'does not accept a client secret with -Interactive' {
         { Connect-HaloAPI -URL 'https://example.halo/' -ClientID 'public-client' -ClientSecret 'secret' -Interactive } | Should -Throw
     }
@@ -1606,6 +1734,21 @@ Describe 'Invoke-HaloAuthorisationCodeRefresh' {
         }
 
         Should -Invoke -CommandName 'Write-Warning' -ModuleName 'HaloAPI' -Times 1 -Exactly
+        Should -Invoke -CommandName 'Invoke-HaloAuthorisationCodeFlow' -ModuleName 'HaloAPI' -Times 1 -Exactly
+    }
+
+    It 'does not retain a rejected refresh token when browser sign-in returns no refresh token' {
+        Mock -CommandName 'Invoke-WebRequest' -ModuleName 'HaloAPI' -MockWith { throw 'invalid_grant' }
+        Mock -CommandName 'Invoke-HaloAuthorisationCodeFlow' -ModuleName 'HaloAPI' -MockWith {
+            [pscustomobject]@{ token_type = 'Bearer'; access_token = 'browser-access'; expires_in = 3600 }
+        }
+
+        InModuleScope 'HaloAPI' {
+            Invoke-HaloAuthorisationCodeRefresh
+            $Script:HAPIAuthToken.Access | Should -Be 'browser-access'
+            $Script:HAPIAuthToken.Refresh | Should -BeNullOrEmpty
+        }
+
         Should -Invoke -CommandName 'Invoke-HaloAuthorisationCodeFlow' -ModuleName 'HaloAPI' -Times 1 -Exactly
     }
 

@@ -95,7 +95,7 @@ function Invoke-HaloBatchProcessor {
     $Batch.Add([System.Collections.Generic.List[Object]]::New()) | Out-Null
     # Break $Input into an assoc. array of $Size-sized batches.
     $BatchGroup = 0
-    Write-Debug ('Input:{0}{1}' -f [Environment]::NewLine, ($BatchInput | ConvertTo-Json -AsArray -Depth 5))
+    Write-Debug ('Input contains {0} item(s); values omitted.' -f $BatchInput.Count)
     Write-Debug ('Entity type: {0}' -f $EntityType)
     Write-Debug ('Operation: {0}' -f $Operation)
     $BatchInput | ForEach-Object {
@@ -106,7 +106,7 @@ function Invoke-HaloBatchProcessor {
         $Batch[$BatchGroup].Add($_) | Out-Null
     }
     # Iterate over the batches, process each batch and then wait $Wait seconds before the next batch.
-    Write-Debug ('Batch:{0}{1}' -f [Environment]::NewLine, ($Batch | ConvertTo-Json -AsArray -Depth 5))
+    Write-Debug ('Input split into {0} batch(es); values omitted.' -f $Batch.Count)
     $CommandName = ('{0}-Halo{1}' -f $Operation, $EntityType)
     $CommandExists = Get-Command -Name $CommandName
     $ModulePath = $MyInvocation.MyCommand.Module.Path

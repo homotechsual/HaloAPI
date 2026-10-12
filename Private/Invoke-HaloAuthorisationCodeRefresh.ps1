@@ -29,7 +29,7 @@ function Invoke-HaloAuthorisationCodeRefresh {
             $RefreshResponse = Invoke-WebRequest @RefreshRequestParams
             $TokenPayload = ConvertFrom-Json -InputObject $RefreshResponse.Content
         } catch {
-            Write-Warning ('Could not refresh the Halo auth token, signing in again. {0}' -f $_.Exception.Message)
+            Write-Warning 'Could not refresh the Halo auth token, signing in again.'
         }
     }
     $PreviousRefresh = $Script:HAPIAuthToken.Refresh
