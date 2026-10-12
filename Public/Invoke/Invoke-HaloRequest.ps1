@@ -87,14 +87,18 @@ function Invoke-HaloRequest {
     $Now = Get-Date
     if ($Script:HAPIAuthToken.Expires -le $Now) {
         Write-Verbose 'The auth token has expired, renewing.'
-        $ReconnectParameters = @{
-            URL = $Script:HAPIConnectionInformation.URL
-            ClientId = $Script:HAPIConnectionInformation.ClientID
-            ClientSecret = $Script:HAPIConnectionInformation.ClientSecret
-            Scopes = $Script:HAPIConnectionInformation.AuthScopes
-            Tenant = $Script:HAPIConnectionInformation.Tenant
+        if ($Script:HAPIConnectionInformation.AuthFlow -eq 'Authorisation Code') {
+            Invoke-HaloAuthorisationCodeRefresh
+        } else {
+            $ReconnectParameters = @{
+                URL = $Script:HAPIConnectionInformation.URL
+                ClientId = $Script:HAPIConnectionInformation.ClientID
+                ClientSecret = $Script:HAPIConnectionInformation.ClientSecret
+                Scopes = $Script:HAPIConnectionInformation.AuthScopes
+                Tenant = $Script:HAPIConnectionInformation.Tenant
+            }
+            $null = Connect-HaloAPI @ReconnectParameters -NoConfirm
         }
-        $null = Connect-HaloAPI @ReconnectParameters -NoConfirm
     }
     if ($null -ne $Script:HAPIAuthToken) {
         $AuthHeaders = @{

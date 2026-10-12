@@ -12,6 +12,9 @@ function Connect-HaloAPI {
         .EXAMPLE
             PS C:\> Connect-HaloAPI -URL "https://example.halopsa.com" -ClientId "c9534241-dde9-4d04-9d45-32b1fbff22ed" -ClientSecret "14c0c9af-2db1-48ab-b29c-51975df4afa2-739e4ef2-9aad-4fe9-b486-794feca48ea8" -Scopes "all" -Tenant "demo" -VaultName "MyVault" -SaveToKeyVault $true
             This logs into Halo using the Client Credentials authorisation flow and saves the secrets to the specified Azure Key Vault for future use.
+        .EXAMPLE
+            PS C:\> Connect-HaloAPI -URL "https://example.halopsa.com" -ClientId "c9534241-dde9-4d04-9d45-32b1fbff22ed" -Tenant "demo" -Interactive
+            This opens a browser to sign in to Halo with your own agent account using the Authorisation Code flow with PKCE. No client secret is needed: create the API application in Halo with the "Authorisation Code (Native Application)" authentication method and add "http://localhost:8400/" as a redirect URI. Requests then run with the signed-in agent's permissions and the token is refreshed automatically.
     #>
     [CmdletBinding(
         DefaultParameterSetName = 'Client Credentials'
@@ -23,11 +26,19 @@ function Connect-HaloAPI {
             ParameterSetName = 'Client Credentials',
             Mandatory = $False
         )]
+        [Parameter(
+            ParameterSetName = 'Authorisation Code',
+            Mandatory = $True
+        )]
         [URI]$URL,
         # The Client ID for the application configured in Halo. Not required if UseKeyVault is set to $true.
         [Parameter(
             ParameterSetName = 'Client Credentials',
             Mandatory = $False
+        )]
+        [Parameter(
+            ParameterSetName = 'Authorisation Code',
+            Mandatory = $True
         )]
         [String]$ClientID,
         # The Client Secret for the application configured in Halo. Not required if UseKeyVault is set to $true.
@@ -40,12 +51,34 @@ function Connect-HaloAPI {
         [Parameter(
             ParameterSetName = 'Client Credentials'
         )]
+        [Parameter(
+            ParameterSetName = 'Authorisation Code'
+        )]
         [String[]]$Scopes = 'all',
         # The tenant name required for hosted Halo instances.
         [Parameter(
             ParameterSetName = 'Client Credentials'
         )]
+        [Parameter(
+            ParameterSetName = 'Authorisation Code'
+        )]
         [String]$Tenant,
+        # Sign in through the browser with your own Halo agent account (Authorisation Code flow with PKCE) instead of using a client secret.
+        [Parameter(
+            ParameterSetName = 'Authorisation Code',
+            Mandatory = $True
+        )]
+        [Switch]$Interactive,
+        # The redirect URI configured on the Halo API application. A temporary local listener is started on this address to receive the sign-in response.
+        [Parameter(
+            ParameterSetName = 'Authorisation Code'
+        )]
+        [URI]$RedirectURI = 'http://localhost:8400/',
+        # How long to wait, in seconds, for the browser sign-in to complete.
+        [Parameter(
+            ParameterSetName = 'Authorisation Code'
+        )]
+        [Int]$LoginTimeout = 300,
         # Hashtable containing additional parameters to be sent with each request.
         [Hashtable]$AdditionalHeaders,
         # If $true, retrieve parameters from Azure Key Vault. If $false, use parameters passed to function.
@@ -81,16 +114,23 @@ function Connect-HaloAPI {
             ParameterSetName = 'Client Credentials',
             Mandatory = $False
         )]
+        [Parameter(
+            ParameterSetName = 'Authorisation Code'
+        )]
         [Int]$MaxRetries = 10,
         # Don't return a boolean to confirm the connection status.
         [Parameter(
             ParameterSetName = 'Client Credentials',
             Mandatory = $False
         )]
+        [Parameter(
+            ParameterSetName = 'Authorisation Code'
+        )]
         [Switch]$NoConfirm
     )
+    $UseAuthorisationCode = $PSCmdlet.ParameterSetName -eq 'Authorisation Code'
     # Validate that required parameters are provided when not using KeyVault
-    if (-not $UseKeyVault -and -not $SaveToKeyVault) {
+    if (-not $UseAuthorisationCode -and -not $UseKeyVault -and -not $SaveToKeyVault) {
         if ([string]::IsNullOrWhiteSpace($URL)) {
             throw 'URL parameter is required when UseKeyVault is not specified.'
         }
@@ -194,6 +234,10 @@ function Connect-HaloAPI {
     }
     $AuthenticationURI = $AuthURIBuilder.ToString()
     Write-Verbose ('Using authentication URL: {0}' -f $AuthenticationURI)
+    # The authorise endpoint sits alongside the token endpoint.
+    $AuthoriseURIBuilder = [System.UriBuilder]::New($AuthenticationURI)
+    $AuthoriseURIBuilder.Path = $AuthoriseURIBuilder.Path -replace 'token$', 'authorize'
+    $AuthoriseURI = $AuthoriseURIBuilder.Uri.AbsoluteUri
     # Make sure URL is a base URI.
     $BaseURIBuilder = [System.UriBuilder]::New($URL)
     if ($BaseURIBuilder.Path) {
@@ -210,6 +254,13 @@ function Connect-HaloAPI {
         Tenant = $Tenant
         AdditionalHeaders = $AdditionalHeaders
         MaxRetries = $MaxRetries
+        AuthFlow = $PSCmdlet.ParameterSetName
+        AuthURI = $AuthenticationURI
+    }
+    if ($UseAuthorisationCode) {
+        $ConnectionInformation.AuthoriseURI = $AuthoriseURI
+        $ConnectionInformation.RedirectURI = $RedirectURI.AbsoluteUri
+        $ConnectionInformation.LoginTimeout = $LoginTimeout
     }
     Set-Variable -Name 'HAPIConnectionInformation' -Value $ConnectionInformation -Visibility Private -Scope Script -Force
     Write-Debug ('Connection information set to: {0}' -f ($Script:HAPIConnectionInformation | Out-String))
@@ -232,17 +283,15 @@ function Connect-HaloAPI {
     do {
         $AuthRetries++
         try {
-            $AuthReponse = Invoke-WebRequest @WebRequestParams
-            $TokenPayload = ConvertFrom-Json -InputObject $AuthReponse.Content
+            if ($UseAuthorisationCode) {
+                $TokenPayload = Invoke-HaloAuthorisationCodeFlow -ConnectionInformation $Script:HAPIConnectionInformation
+            } else {
+                $AuthReponse = Invoke-WebRequest @WebRequestParams
+                $TokenPayload = ConvertFrom-Json -InputObject $AuthReponse.Content
+            }
             Write-Debug ('Raw Token Payload: {0}' -f ($TokenPayload | Out-String))
             # Build a script-scoped variable to hold the authentication information.
-            $AuthToken = @{
-                Type = $TokenPayload.token_type
-                Access = $TokenPayload.access_token
-                Expires = Get-TokenExpiry -ExpiresIn $TokenPayload.expires_in
-                Refresh = $TokenPayload.refresh_token
-                Id = $TokenPayload.id_token
-            }
+            $AuthToken = ConvertTo-HaloAuthToken -TokenPayload $TokenPayload
             Set-Variable -Name 'HAPIAuthToken' -Value $AuthToken -Visibility Private -Scope Script -Force
             Write-Verbose 'Got authentication token.'
             Write-Debug ('Authentication token set to: {0}' -f ($Script:HAPIAuthToken | Out-String -Width 2048))
