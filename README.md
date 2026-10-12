@@ -144,7 +144,7 @@ What happens next:
 1. PowerShell starts a short-lived listener on the redirect URI (`localhost` only) and opens your default browser at the Halo sign-in page. If no browser opens, the URL is printed so you can open it yourself.
 1. Sign in to Halo as normal (including any SSO or MFA your instance requires).
 1. Halo redirects back to the local listener, the browser shows *Signed in to Halo*, and you can close the tab. The module exchanges the code for a token and the connection is ready.
-1. As the token nears expiry the module renews it using the refresh token. If renewal is rejected or there is no refresh token, you are taken through the browser sign-in again. Parallel batch workers reuse the renewed token rather than prompting separately.
+1. When a token expires, the module renews it using the refresh token. Batch processing renews within five minutes of expiry so parallel workers can reuse the renewed token rather than prompting separately. If renewal is rejected or there is no refresh token, you are taken through the browser sign-in again.
 
 Interactive-only options:
 
