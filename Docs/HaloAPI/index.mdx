@@ -93,7 +93,7 @@ Connect-HaloAPI -ClientID "a1234567-bcd8-9e01-2f34-56g7hijk89lm" -Tenant "demo" 
 ```
 
 * `-Tenant` is only needed for hosted Halo instances. `-Scopes` defaults to `all` and is limited by the permissions granted to the application.
-* Avoid leaving the client secret in scripts or shell history. `Connect-HaloAPI` can read and save the URL, client ID and secret in Azure Key Vault using `-UseKeyVault`, `-SaveToKeyVault`, `-VaultName`, `-SecretName` and (for unattended Azure hosts) `-UseManagedIdentity`. See the [Connect-HaloAPI documentation](./commandlets/connect/Connect-HaloAPI.mdx).
+* Avoid leaving the client secret in scripts or shell history. `Connect-HaloAPI` can read and save the URL, client ID and secret in Azure Key Vault using `-UseKeyVault`, `-SaveToKeyVault`, `-VaultName`, `-SecretName` and (for unattended Azure hosts) `-UseManagedIdentity`. See the [Connect-HaloAPI documentation](./commandlets/Connect/Connect-HaloAPI.mdx).
 
 ### Option 2: Interactive browser sign-in (`-Interactive`)
 
@@ -152,7 +152,7 @@ Interactive-only options:
 
 Not all Halo's API endpoints have cmdlets but all documented endpoints exist in this module, along with many other undocumented endpoints. Want an endpoint / functionality implemented? Log an issue on [GitHub](https://github.com/homotechsual/haloapi/issues) and if possible someone might add it, or you can implement it yourself.
 
-For little used or one-off endpoints you can call `Invoke-HaloRequest` directly to reuse the same authentication token/connection and run arbitrary requests. See the [cmdlet documentation](./commandlets/invoke/Invoke-HaloRequest.mdx) for more information.
+For little used or one-off endpoints you can call `Invoke-HaloRequest` directly to reuse the same authentication token/connection and run arbitrary requests. See the [cmdlet documentation](./commandlets/Invoke/Invoke-HaloRequest.mdx) for more information.
 
 ## Who develops the module?
 
