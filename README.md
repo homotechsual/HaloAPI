@@ -23,7 +23,7 @@ Install-Module HaloAPI
 Everything else lives on the docs website:
 
 * [Overview, installing and getting started](https://docs.homotechsual.dev/modules/haloapi/): creating an API application in Halo and connecting with client credentials or the `-Interactive` browser sign-in.
-* Command reference: generated help for every cmdlet, in the sidebar of the docs site. Start with [Connect-HaloAPI](https://docs.homotechsual.dev/modules/haloapi/commandlets/connect/Connect-HaloAPI).
+* Command reference: generated help for every cmdlet, in the sidebar of the docs site. Start with [Connect-HaloAPI](https://docs.homotechsual.dev/modules/haloapi/commandlets/Connect/Connect-HaloAPI).
 * [Development guidance](https://docs.homotechsual.dev/modules/haloapi/development/): quality gates, local `Live` and `E2E` testing, releases and troubleshooting.
 
 Need help? Join the Discord servers above or [open an issue](https://github.com/homotechsual/HaloAPI/issues).
