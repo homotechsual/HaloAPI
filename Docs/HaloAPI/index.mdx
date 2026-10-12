@@ -26,25 +26,6 @@ The module is written for [PowerShell 7](https://learn.microsoft.com/en-us/power
 
 It covers the Halo Service Solutions products [HaloPSA](https://halopsa.com), [HaloITSM](https://haloitsm.com/) and [HaloServiceDesk](https://haloservicedesk.com/).
 
-## Who are we?
-
-We are Mikey O'Toole ([@homotechsual](https://github.com/homotechsual)) and Luke Whitelock ([@LWhitelock](https://github.com/lwhitelock)). We are both directors of (separate) UK-based managed IT services providers who share a passion for automation and good quality MSP software tools.
-
-## Code Coverage
-
-Code coverage is generated in CI for the `Meta` and `Unit` suites.
-
-CI enforces a minimum 70% coverage threshold for the `Unit` suite.
-
-Coverage artifacts are uploaded for each run as:
-
-* `code-coverage-meta-results` (`.artifacts/CodeCoverage.meta.xml`)
-* `code-coverage-unit-results` (`.artifacts/CodeCoverage.unit.xml`)
-
-You can access them from the CI workflow runs:
-
-[GitHub Actions CI workflow](https://github.com/homotechsual/HaloAPI/actions/workflows/ci.yml)
-
 ## Installing
 
 This module is published to the [PowerShell Gallery](https://www.powershellgallery.com/packages/HaloAPI/). You can install it using the following command:
@@ -172,3 +153,19 @@ Interactive-only options:
 Not all Halo's API endpoints have cmdlets but all documented endpoints exist in this module, along with many other undocumented endpoints. Want an endpoint / functionality implemented? Log an issue on [GitHub](https://github.com/homotechsual/haloapi/issues) and if possible someone might add it, or you can implement it yourself.
 
 For little used or one-off endpoints you can call `Invoke-HaloRequest` directly to reuse the same authentication token/connection and run arbitrary requests. See the [cmdlet documentation](./commandlets/invoke/Invoke-HaloRequest.mdx) for more information.
+
+## Who develops the module?
+
+I am Mikey O'Toole ([@homotechsual](https://github.com/homotechsual)). I am the director of a UK-based managed IT services provider with a passion for automation and good quality MSP software tools.
+
+PRs and significant code contributions have been provided by Mendy Green [@greenlighttec](https://github.com/greenlighttec), Robbie Emerson [@Robbie-Renada](https://github.com/Robbie-Renada). A full list of contributors can be found in the [GitHub repository](https://github.com/homotechsual/HaloAPI/graphs/contributors?all=1).
+
+The module was initially co-developed with Luke Whitelock ([@LWhitelock](https://github.com/lwhitelock)).
+
+## AI Use
+
+AI is used for code review, automated testing suggestions, and documentation generation (primarily examples or restructuring of documentation) within the development workflow.
+
+PRs and code contributions are reviewed with the assistance of AI tools and automated workflows (described in the [development quality gates](./development/quality-gates.mdx) section) to ensure adherence to coding standards and best practices.
+
+AI tools are not used to make final decisions on code changes; human review and judgment remain essential to maintain code quality and project standards.
